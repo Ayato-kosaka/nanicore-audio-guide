@@ -19,46 +19,48 @@ GitHub IssuesにてPBI（Product Backlog Item）単位で管理しています�
 
 ## 🛠 Setup (for Dev)
 
-This project uses a [TurboRepo](https://turbo.build/) monorepo structure.  
-It manages `expo` (mobile app), `functions` (API), and `shared` (shared types/validation) in a unified workspace.
+This project is built with [TurboRepo](https://turbo.build/) and uses a monorepo structure.  
+It manages `expo` (mobile app), `functions` (Cloud Functions), `shared` (types and schemas), and `e2e` (end-to-end tests) as separate workspaces.
 
 ---
 
 ### Prerequisites
 
-- Node.js v20+
-- `npm` v10+
+- **Node.js v18.x** (recommended)
+- **pnpm v8+** (managed via [Corepack](https://nodejs.org/api/corepack.html))
 
-> Note: No global installation is required. All CLIs like `turbo`, `firebase-tools`, and `supabase` can be run via `npx`.
+> ⚠️ **Note:** `npm` v10 is not fully compatible with TurboRepo in some setups.  
+> To avoid install errors, we recommend using `pnpm`.
 
 ---
 
 ### 1. Clone the repository
 
 ```bash
-git remote clone https://github.com/Ayato-kosaka/nanicore-audio-guide.git
+git clone https://github.com/Ayato-kosaka/nanicore-audio-guide.git
 cd nanicore-audio-guide
 ```
 
 ---
 
-### 2. Install dependencies
+### 2. Enable Corepack & Install Dependencies
 
 ```bash
-npm install
+corepack enable
+pnpm install
 ```
 
-TurboRepo will automatically install dependencies for `expo/`, `functions/`, and other workspaces.
+> `pnpm-workspace.yaml` handles all workspace packages. No need to install dependencies manually in each subfolder.
 
 ---
 
-### 3. Get the environment variable file
+### 3. Add environment variables
 
-The `.env` file is stored in Google Drive.  
-Please download it from the following link:  
+Download the shared `.env` file from Google Drive:
+
 👉 [Download .env from Google Drive](https://drive.google.com/drive/folders/1ajijkGh9hBy5OkSvDE2TCOEmDvzMNm1M?usp=sharing)
 
-After downloading, place it at the project root:
+Then place it in the project root:
 
 ```
 /nanicore-audio-guide/.env
@@ -66,30 +68,28 @@ After downloading, place it at the project root:
 
 ---
 
-### 4. Start development server
+### 4. Start Development Server
 
 ```bash
-npx turbo run dev
+pnpm dev
 ```
 
-| Package | Description |
-|---------|-------------|
-| `expo/` | Starts the Expo Dev Server for app development |
-| `functions/` | Not automatically started in dev (run separately if needed) |
-| `e2e/` | Not included in development startup (used in CI or manually) |
-
-> Defined in `turbo.json`, the `dev` task maps to each package’s respective dev script (e.g., `expo dev`).
+| Workspace | Description |
+|-----------|-------------|
+| `expo/` | Launches the Expo Dev Server |
+| `functions/` | Starts Firebase Emulator and watch mode |
+| `e2e/` | Not included by default (run manually or in CI) |
 
 ---
 
-## 🔧 Commonly Used Scripts
+## 🔧 Common Commands
 
 | Command | Description |
 |---------|-------------|
-| `npx turbo run dev` | Start the Expo app development server |
-| `npx turbo run lint` | Run lint across packages |
-| `npx turbo run typecheck` | TypeScript type checking |
-| `npx turbo run build` | Production build |
+| `pnpm dev` | Start development servers |
+| `pnpm lint` | Run ESLint across all packages |
+| `pnpm typecheck` | Run TypeScript checks across all packages |
+| `pnpm build` | Build all packages for production |
 
 ---
 

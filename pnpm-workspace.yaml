@@ -1,0 +1,5 @@
+packages:
+  - expo
+  - functions
+  - shared
+  - e2e
