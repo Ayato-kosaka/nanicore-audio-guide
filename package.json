@@ -1,0 +1,25 @@
+{
+  "name": "nanicore-audio-guide",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "npm@10.2.0",
+  "workspaces": [
+    "expo",
+    "functions",
+    "e2e"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write .",
+    "typecheck": "turbo run typecheck",
+    "deploy:functions": "npm --workspace functions run deploy"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.1.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.5.0",
+    "typescript": "^5.4.3"
+  }
+}
