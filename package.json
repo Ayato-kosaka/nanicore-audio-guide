@@ -13,7 +13,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "typecheck": "turbo run typecheck",
-    "deploy:functions": "npm --workspace functions run deploy"
+    "deploy:functions": "pnpm --workspace functions run deploy"
   },
   "devDependencies": {
     "firebase-tools": "^14.1.0",

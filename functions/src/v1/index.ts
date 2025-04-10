@@ -7,14 +7,15 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { onRequest } from "firebase-functions/v2/https";
+import { onRequest, Request } from 'firebase-functions/v2/https';
 import * as logger from "firebase-functions/logger";
-import { Request, Response } from "express";
+import { Response } from 'express';
+import { env } from "../lib/env";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
 export const helloWorld = onRequest((request: Request, response: Response) => {
   logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
+  response.send("Hello from Firebase!" + env.FUNCTIONS_HELLO_ENV);
 });
