@@ -15,7 +15,8 @@
     "typecheck": "turbo run typecheck",
     "deploy:functions": "pnpm --workspace functions run deploy",
     "apply:migration": "bash scripts/apply-migration.sh",
-    "db:pull": "bash scripts/db-pull.sh"
+    "db:pull": "bash scripts/db-pull.sh",
+    "db:reset": "bash scripts/reset-schema.sh"
   },
   "devDependencies": {
     "firebase-tools": "^14.1.0",
