@@ -10,7 +10,7 @@
 import { onRequest, Request } from 'firebase-functions/v2/https';
 import * as logger from "firebase-functions/logger";
 import { Response } from 'express';
-import { env } from "../lib/env";
+import { env } from "./lib/env";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript

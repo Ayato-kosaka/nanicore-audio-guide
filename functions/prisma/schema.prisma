@@ -1,0 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["dev"]
+}
+
+model m_spots {
+  id                 String   @id
+  source_type        String?
+  title              String?
+  image_url          String
+  landmark_latitude  Float
+  landmark_longitude Float
+  is_recommendable   Boolean?
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  lock_no            Int
+
+  @@index([landmark_latitude], map: "idx_m_spots_latitude")
+  @@index([landmark_longitude], map: "idx_m_spots_longitude")
+  @@schema("dev")
+}
