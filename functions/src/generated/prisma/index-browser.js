@@ -117,16 +117,44 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.M_spotsScalarFieldEnum = {
+exports.Prisma.Backend_event_logsScalarFieldEnum = {
   id: 'id',
-  source_type: 'source_type',
-  title: 'title',
-  image_url: 'image_url',
-  landmark_latitude: 'landmark_latitude',
-  landmark_longitude: 'landmark_longitude',
-  is_recommendable: 'is_recommendable',
+  event_name: 'event_name',
+  error_level: 'error_level',
+  function_name: 'function_name',
+  user_id: 'user_id',
+  payload: 'payload',
+  request_id: 'request_id',
   created_at: 'created_at',
-  lock_no: 'lock_no'
+  created_commit_id: 'created_commit_id'
+};
+
+exports.Prisma.External_api_logsScalarFieldEnum = {
+  id: 'id',
+  request_id: 'request_id',
+  function_name: 'function_name',
+  api_name: 'api_name',
+  endpoint: 'endpoint',
+  request_payload: 'request_payload',
+  response_payload: 'response_payload',
+  status_code: 'status_code',
+  error_message: 'error_message',
+  response_time_ms: 'response_time_ms',
+  user_id: 'user_id',
+  created_at: 'created_at',
+  created_commit_id: 'created_commit_id'
+};
+
+exports.Prisma.Frontend_event_logsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  event_name: 'event_name',
+  error_level: 'error_level',
+  screen_name: 'screen_name',
+  payload: 'payload',
+  created_at: 'created_at',
+  created_app_version: 'created_app_version',
+  created_commit_id: 'created_commit_id'
 };
 
 exports.Prisma.SortOrder = {
@@ -134,19 +162,46 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.backend_event_logs_error_level = exports.$Enums.backend_event_logs_error_level = {
+  trace: 'trace',
+  debug: 'debug',
+  info: 'info',
+  warn: 'warn',
+  error: 'error'
+};
 
+exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_error_level = {
+  trace: 'trace',
+  debug: 'debug',
+  info: 'info',
+  warn: 'warn',
+  error: 'error'
+};
 
 exports.Prisma.ModelName = {
-  m_spots: 'm_spots'
+  backend_event_logs: 'backend_event_logs',
+  external_api_logs: 'external_api_logs',
+  frontend_event_logs: 'frontend_event_logs'
 };
 
 /**

@@ -1,0 +1,33 @@
+-- ENUM型の定義（テーブルに合わせて一意な名前）
+CREATE TYPE frontend_event_logs_error_level AS ENUM ('trace', 'debug', 'info', 'warn', 'error');
+
+-- テーブル定義
+CREATE TABLE frontend_event_logs (
+    id TEXT PRIMARY KEY,
+    user_id TEXT,
+    event_name TEXT,
+    error_level frontend_event_logs_error_level DEFAULT 'debug',
+    screen_name TEXT,
+    payload TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_app_version TEXT NOT NULL,
+    created_commit_id TEXT NOT NULL
+);
+
+-- インデックス（必要な列に対して）
+CREATE INDEX idx_frontend_event_logs_error_level ON frontend_event_logs(error_level);
+CREATE INDEX idx_frontend_event_logs_created_at ON frontend_event_logs(created_at);
+
+-- コメント（テーブル）
+COMMENT ON TABLE frontend_event_logs IS 'フロントエンドで発生したユーザー操作・画面表示イベントなどを記録するログテーブル';
+
+-- コメント（カラム）
+COMMENT ON COLUMN frontend_event_logs.id IS 'フロントログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN frontend_event_logs.user_id IS '操作を行ったユーザーのID';
+COMMENT ON COLUMN frontend_event_logs.event_name IS 'イベント名（例：onPressPlay, mounted）';
+COMMENT ON COLUMN frontend_event_logs.error_level IS 'エラーレベル';
+COMMENT ON COLUMN frontend_event_logs.screen_name IS '発生元画面の識別名（例：SpotGuideDisplay）';
+COMMENT ON COLUMN frontend_event_logs.payload IS '任意のイベント追加情報（例：{ spot_id: ''abc'' }）';
+COMMENT ON COLUMN frontend_event_logs.created_at IS 'イベント発生日時';
+COMMENT ON COLUMN frontend_event_logs.created_app_version IS 'イベント発生時のアプリバージョン';
+COMMENT ON COLUMN frontend_event_logs.created_commit_id IS '発生時のコードバージョン（Git SHAなど）';

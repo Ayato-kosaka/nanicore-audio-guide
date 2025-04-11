@@ -9,7 +9,7 @@ if [ -z "$DB_SCHEMA" ]; then
   exit 1
 fi
 
-MIGRATION_DIR=infra/supabase/migrations"
+MIGRATION_DIR=infra/supabase/migrations
 
 # .sqlファイルをソートして取得
 FILES=($(ls "$MIGRATION_DIR"/*.sql 2>/dev/null | sort))
@@ -50,7 +50,6 @@ for ((i=START_INDEX; i<${#FILES[@]}; i++)); do
   FILE="${FILES[$i]}"
   echo "📄 Applying: $FILE (schema: $DB_SCHEMA)"
   psql "$DATABASE_URL" <<EOF
-CREATE SCHEMA IF NOT EXISTS $DB_SCHEMA;
 SET search_path TO $DB_SCHEMA;
 \i $FILE
 EOF
