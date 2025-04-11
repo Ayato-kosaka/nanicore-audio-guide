@@ -1,0 +1,55 @@
+-- ENUM型定義（データ取得元の種別）
+CREATE TYPE spot_guides_voice_type AS ENUM (
+    'SSML_VOICE_GENDER_UNSPECIFIED',
+    'MALE',
+    'FEMALE',
+    'NEUTRAL'
+);
+
+-- テーブル定義
+CREATE TABLE spot_guides (
+    id TEXT PRIMARY KEY,
+    spot_id TEXT NOT NULL,
+    lang TEXT NOT NULL,
+    title TEXT NOT NULL,
+    manuscript TEXT NOT NULL,
+    audio_storage_path TEXT NOT NULL,
+    voice_type spot_guides_voice_type NOT NULL,
+    tags TEXT[] NOT NULL,
+    price_amount NUMERIC(10,2) NOT NULL,
+    currency TEXT NOT NULL,
+    recommendation_weight INTEGER NOT NULL,
+    min_version_major INTEGER NOT NULL,
+    max_version_major INTEGER NOT NULL,
+    created_by TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_request_id TEXT NOT NULL,
+    lock_no INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (spot_id) REFERENCES ext_spots(id)
+);
+
+-- インデックス（用途に応じて）
+CREATE INDEX idx_spot_guides_spot_id ON spot_guides(spot_id);
+CREATE INDEX idx_spot_guides_lang ON spot_guides(lang);
+
+-- テーブルコメント
+COMMENT ON TABLE spot_guides IS '各スポットに対する多言語対応の音声ガイド情報を格納するテーブル';
+
+-- カラムコメント
+COMMENT ON COLUMN spot_guides.id IS 'ガイドの一意なID（nanoid(12) を使用）';
+COMMENT ON COLUMN spot_guides.spot_id IS '紐づくスポットID';
+COMMENT ON COLUMN spot_guides.lang IS 'ガイドの言語コード（ISO 639-1）';
+COMMENT ON COLUMN spot_guides.title IS 'ガイドタイトル（UI上での表示名）';
+COMMENT ON COLUMN spot_guides.manuscript IS 'ガイドの本文テキスト';
+COMMENT ON COLUMN spot_guides.audio_storage_path IS '音声ファイルの保存パス（Text-to-Speechなどで生成）';
+COMMENT ON COLUMN spot_guides.voice_type IS '音声合成に用いる声種（例：male, female, neutral）';
+COMMENT ON COLUMN spot_guides.tags IS 'ガイドに付与されるジャンル・属性タグ';
+COMMENT ON COLUMN spot_guides.price_amount IS 'ガイドの価格（税抜き、通貨単位なし）';
+COMMENT ON COLUMN spot_guides.currency IS 'ガイドの通貨コード（ISO 4217）';
+COMMENT ON COLUMN spot_guides.recommendation_weight IS 'レコメンドロジック用の重みスコア';
+COMMENT ON COLUMN spot_guides.min_version_major IS '表示対象となる最小クライアントバージョン';
+COMMENT ON COLUMN spot_guides.max_version_major IS '表示対象となる最大クライアントバージョン';
+COMMENT ON COLUMN spot_guides.created_by IS 'ガイド作成者（デフォルト生成ガイドの場合は usr_id_for_system）';
+COMMENT ON COLUMN spot_guides.created_at IS 'ガイド作成日時';
+COMMENT ON COLUMN spot_guides.created_request_id IS 'このガイドを作成した処理単位のトレースID';
+COMMENT ON COLUMN spot_guides.lock_no IS '楽観ロック用バージョン番号';

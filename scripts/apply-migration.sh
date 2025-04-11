@@ -49,8 +49,14 @@ fi
 for ((i=START_INDEX; i<${#FILES[@]}; i++)); do
   FILE="${FILES[$i]}"
   echo "📄 Applying: $FILE (schema: $DB_SCHEMA)"
-  psql "$DATABASE_URL" <<EOF
+
+  psql "$DATABASE_URL" --set ON_ERROR_STOP=on <<EOF
 SET search_path TO $DB_SCHEMA;
 \i $FILE
 EOF
+
+  if [ $? -ne 0 ]; then
+    echo "❌ マイグレーション中にエラーが発生しました（$FILE）。処理を中断します。"
+    break
+  fi
 done

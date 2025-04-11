@@ -129,6 +129,18 @@ exports.Prisma.Backend_event_logsScalarFieldEnum = {
   created_commit_id: 'created_commit_id'
 };
 
+exports.Prisma.Ext_spotsScalarFieldEnum = {
+  id: 'id',
+  source_type: 'source_type',
+  title: 'title',
+  image_url: 'image_url',
+  landmark_latitude: 'landmark_latitude',
+  landmark_longitude: 'landmark_longitude',
+  is_recommendable: 'is_recommendable',
+  created_at: 'created_at',
+  lock_no: 'lock_no'
+};
+
 exports.Prisma.External_api_logsScalarFieldEnum = {
   id: 'id',
   request_id: 'request_id',
@@ -155,6 +167,41 @@ exports.Prisma.Frontend_event_logsScalarFieldEnum = {
   created_at: 'created_at',
   created_app_version: 'created_app_version',
   created_commit_id: 'created_commit_id'
+};
+
+exports.Prisma.Spot_guidesScalarFieldEnum = {
+  id: 'id',
+  spot_id: 'spot_id',
+  lang: 'lang',
+  title: 'title',
+  manuscript: 'manuscript',
+  audio_storage_path: 'audio_storage_path',
+  voice_type: 'voice_type',
+  tags: 'tags',
+  price_amount: 'price_amount',
+  currency: 'currency',
+  recommendation_weight: 'recommendation_weight',
+  min_version_major: 'min_version_major',
+  max_version_major: 'max_version_major',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  created_request_id: 'created_request_id',
+  lock_no: 'lock_no'
+};
+
+exports.Prisma.Spot_visitsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  spot_id: 'spot_id',
+  represent_guide_id: 'represent_guide_id',
+  taken_photo_storage_path: 'taken_photo_storage_path',
+  prev_spot_id: 'prev_spot_id',
+  time_gap_minutes: 'time_gap_minutes',
+  min_version_major: 'min_version_major',
+  max_version_major: 'max_version_major',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  lock_no: 'lock_no'
 };
 
 exports.Prisma.SortOrder = {
@@ -190,6 +237,11 @@ exports.backend_event_logs_error_level = exports.$Enums.backend_event_logs_error
   error: 'error'
 };
 
+exports.ext_spots_source_type = exports.$Enums.ext_spots_source_type = {
+  LANDMARK_DETECTION: 'LANDMARK_DETECTION',
+  WEB_DETECTION: 'WEB_DETECTION'
+};
+
 exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_error_level = {
   trace: 'trace',
   debug: 'debug',
@@ -198,10 +250,20 @@ exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_err
   error: 'error'
 };
 
+exports.spot_guides_voice_type = exports.$Enums.spot_guides_voice_type = {
+  SSML_VOICE_GENDER_UNSPECIFIED: 'SSML_VOICE_GENDER_UNSPECIFIED',
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  NEUTRAL: 'NEUTRAL'
+};
+
 exports.Prisma.ModelName = {
   backend_event_logs: 'backend_event_logs',
+  ext_spots: 'ext_spots',
   external_api_logs: 'external_api_logs',
-  frontend_event_logs: 'frontend_event_logs'
+  frontend_event_logs: 'frontend_event_logs',
+  spot_guides: 'spot_guides',
+  spot_visits: 'spot_visits'
 };
 
 /**

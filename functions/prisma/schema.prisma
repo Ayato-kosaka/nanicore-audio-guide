@@ -29,6 +29,26 @@ model backend_event_logs {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ext_spots {
+  id                                              String                @id
+  source_type                                     ext_spots_source_type
+  title                                           String
+  image_url                                       String
+  landmark_latitude                               Float
+  landmark_longitude                              Float
+  is_recommendable                                Boolean
+  created_at                                      DateTime              @default(now()) @db.Timestamptz(6)
+  lock_no                                         Int                   @default(0)
+  spot_guides                                     spot_guides[]
+  spot_visits_spot_visits_prev_spot_idToext_spots spot_visits[]         @relation("spot_visits_prev_spot_idToext_spots")
+  spot_visits_spot_visits_spot_idToext_spots      spot_visits[]         @relation("spot_visits_spot_idToext_spots")
+
+  @@index([landmark_latitude], map: "idx_ext_spots_landmark_latitude")
+  @@index([landmark_longitude], map: "idx_ext_spots_landmark_longitude")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model external_api_logs {
   id                String   @id
   request_id        String?
@@ -67,6 +87,58 @@ model frontend_event_logs {
   @@schema("dev")
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model spot_guides {
+  id                    String                 @id
+  spot_id               String
+  lang                  String
+  title                 String
+  manuscript            String
+  audio_storage_path    String
+  voice_type            spot_guides_voice_type
+  tags                  String[]
+  price_amount          Decimal                @db.Decimal(10, 2)
+  currency              String
+  recommendation_weight Int
+  min_version_major     Int
+  max_version_major     Int
+  created_by            String
+  created_at            DateTime               @default(now()) @db.Timestamptz(6)
+  created_request_id    String
+  lock_no               Int                    @default(0)
+  ext_spots             ext_spots              @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spot_visits           spot_visits[]
+
+  @@index([lang], map: "idx_spot_guides_lang")
+  @@index([spot_id], map: "idx_spot_guides_spot_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model spot_visits {
+  id                                            String      @id
+  user_id                                       String
+  spot_id                                       String
+  represent_guide_id                            String
+  taken_photo_storage_path                      String?
+  prev_spot_id                                  String?
+  time_gap_minutes                              Int
+  min_version_major                             Int
+  max_version_major                             Int
+  created_at                                    DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at                                    DateTime    @default(now()) @db.Timestamptz(6)
+  lock_no                                       Int         @default(0)
+  ext_spots_spot_visits_prev_spot_idToext_spots ext_spots?  @relation("spot_visits_prev_spot_idToext_spots", fields: [prev_spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spot_guides                                   spot_guides @relation(fields: [represent_guide_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ext_spots_spot_visits_spot_idToext_spots      ext_spots   @relation("spot_visits_spot_idToext_spots", fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([prev_spot_id], map: "idx_spot_visits_prev_spot_id")
+  @@index([represent_guide_id], map: "idx_spot_visits_represent_guide_id")
+  @@index([spot_id], map: "idx_spot_visits_spot_id")
+  @@index([user_id], map: "idx_spot_visits_user_id")
+  @@schema("dev")
+}
+
 enum backend_event_logs_error_level {
   trace
   debug
@@ -77,12 +149,28 @@ enum backend_event_logs_error_level {
   @@schema("dev")
 }
 
+enum ext_spots_source_type {
+  LANDMARK_DETECTION
+  WEB_DETECTION
+
+  @@schema("dev")
+}
+
 enum frontend_event_logs_error_level {
   trace
   debug
   info
   warn
   error
+
+  @@schema("dev")
+}
+
+enum spot_guides_voice_type {
+  SSML_VOICE_GENDER_UNSPECIFIED
+  MALE
+  FEMALE
+  NEUTRAL
 
   @@schema("dev")
 }
