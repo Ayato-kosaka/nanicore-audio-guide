@@ -1,6 +1,6 @@
 import { prisma } from './prisma';
 import { env } from './env';
-import { backend_event_logs_error_level, Prisma } from '@shared/prisma';
+import { Prisma } from '@shared/prisma';
 const { nanoid } = require('nanoid');
 
 /**
@@ -17,7 +17,6 @@ const { nanoid } = require('nanoid');
  * @param request_id - トレースID（API間ログ紐付けに使用）
  * @returns {Promise<void>} 非同期処理（失敗時は dev 環境でのみ出力）
  */
-type x = backend_event_logs_error_level
 export const logBackendEvent = async ({
   event_name,
   error_level,
