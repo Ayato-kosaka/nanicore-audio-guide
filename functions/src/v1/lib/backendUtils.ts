@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { logBackendEvent, logExternalApi } from './logging';
+import { logBackendEvent, logExternalApi } from './logger';
 import jwt from 'jsonwebtoken';
 import { env } from './env';
 

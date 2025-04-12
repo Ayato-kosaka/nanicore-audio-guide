@@ -7,7 +7,7 @@ import {
   handleFunctionError,
   withAuthUser,
 } from '../lib/backendUtils';
-import { logBackendEvent } from '../lib/logging';
+import { logBackendEvent } from '../lib/logger';
 
 const schema = z.object({
   spot_id: z.string(),
