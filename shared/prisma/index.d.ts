@@ -4871,7 +4871,7 @@ export namespace Prisma {
     user_id: string | null
     event_name: string | null
     error_level: $Enums.frontend_event_logs_error_level | null
-    screen_name: string | null
+    path_name: string | null
     payload: string | null
     created_at: Date | null
     created_app_version: string | null
@@ -4883,7 +4883,7 @@ export namespace Prisma {
     user_id: string | null
     event_name: string | null
     error_level: $Enums.frontend_event_logs_error_level | null
-    screen_name: string | null
+    path_name: string | null
     payload: string | null
     created_at: Date | null
     created_app_version: string | null
@@ -4895,7 +4895,7 @@ export namespace Prisma {
     user_id: number
     event_name: number
     error_level: number
-    screen_name: number
+    path_name: number
     payload: number
     created_at: number
     created_app_version: number
@@ -4909,7 +4909,7 @@ export namespace Prisma {
     user_id?: true
     event_name?: true
     error_level?: true
-    screen_name?: true
+    path_name?: true
     payload?: true
     created_at?: true
     created_app_version?: true
@@ -4921,7 +4921,7 @@ export namespace Prisma {
     user_id?: true
     event_name?: true
     error_level?: true
-    screen_name?: true
+    path_name?: true
     payload?: true
     created_at?: true
     created_app_version?: true
@@ -4933,7 +4933,7 @@ export namespace Prisma {
     user_id?: true
     event_name?: true
     error_level?: true
-    screen_name?: true
+    path_name?: true
     payload?: true
     created_at?: true
     created_app_version?: true
@@ -5018,7 +5018,7 @@ export namespace Prisma {
     user_id: string | null
     event_name: string | null
     error_level: $Enums.frontend_event_logs_error_level | null
-    screen_name: string | null
+    path_name: string | null
     payload: string | null
     created_at: Date
     created_app_version: string
@@ -5047,7 +5047,7 @@ export namespace Prisma {
     user_id?: boolean
     event_name?: boolean
     error_level?: boolean
-    screen_name?: boolean
+    path_name?: boolean
     payload?: boolean
     created_at?: boolean
     created_app_version?: boolean
@@ -5059,7 +5059,7 @@ export namespace Prisma {
     user_id?: boolean
     event_name?: boolean
     error_level?: boolean
-    screen_name?: boolean
+    path_name?: boolean
     payload?: boolean
     created_at?: boolean
     created_app_version?: boolean
@@ -5071,7 +5071,7 @@ export namespace Prisma {
     user_id?: boolean
     event_name?: boolean
     error_level?: boolean
-    screen_name?: boolean
+    path_name?: boolean
     payload?: boolean
     created_at?: boolean
     created_app_version?: boolean
@@ -5083,14 +5083,14 @@ export namespace Prisma {
     user_id?: boolean
     event_name?: boolean
     error_level?: boolean
-    screen_name?: boolean
+    path_name?: boolean
     payload?: boolean
     created_at?: boolean
     created_app_version?: boolean
     created_commit_id?: boolean
   }
 
-  export type frontend_event_logsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "event_name" | "error_level" | "screen_name" | "payload" | "created_at" | "created_app_version" | "created_commit_id", ExtArgs["result"]["frontend_event_logs"]>
+  export type frontend_event_logsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "event_name" | "error_level" | "path_name" | "payload" | "created_at" | "created_app_version" | "created_commit_id", ExtArgs["result"]["frontend_event_logs"]>
 
   export type $frontend_event_logsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "frontend_event_logs"
@@ -5100,7 +5100,7 @@ export namespace Prisma {
       user_id: string | null
       event_name: string | null
       error_level: $Enums.frontend_event_logs_error_level | null
-      screen_name: string | null
+      path_name: string | null
       payload: string | null
       created_at: Date
       created_app_version: string
@@ -5532,7 +5532,7 @@ export namespace Prisma {
     readonly user_id: FieldRef<"frontend_event_logs", 'String'>
     readonly event_name: FieldRef<"frontend_event_logs", 'String'>
     readonly error_level: FieldRef<"frontend_event_logs", 'frontend_event_logs_error_level'>
-    readonly screen_name: FieldRef<"frontend_event_logs", 'String'>
+    readonly path_name: FieldRef<"frontend_event_logs", 'String'>
     readonly payload: FieldRef<"frontend_event_logs", 'String'>
     readonly created_at: FieldRef<"frontend_event_logs", 'DateTime'>
     readonly created_app_version: FieldRef<"frontend_event_logs", 'String'>
@@ -8491,7 +8491,7 @@ export namespace Prisma {
     user_id: 'user_id',
     event_name: 'event_name',
     error_level: 'error_level',
-    screen_name: 'screen_name',
+    path_name: 'path_name',
     payload: 'payload',
     created_at: 'created_at',
     created_app_version: 'created_app_version',
@@ -8995,7 +8995,7 @@ export namespace Prisma {
     user_id?: StringNullableFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
-    screen_name?: StringNullableFilter<"frontend_event_logs"> | string | null
+    path_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     payload?: StringNullableFilter<"frontend_event_logs"> | string | null
     created_at?: DateTimeFilter<"frontend_event_logs"> | Date | string
     created_app_version?: StringFilter<"frontend_event_logs"> | string
@@ -9007,7 +9007,7 @@ export namespace Prisma {
     user_id?: SortOrderInput | SortOrder
     event_name?: SortOrderInput | SortOrder
     error_level?: SortOrderInput | SortOrder
-    screen_name?: SortOrderInput | SortOrder
+    path_name?: SortOrderInput | SortOrder
     payload?: SortOrderInput | SortOrder
     created_at?: SortOrder
     created_app_version?: SortOrder
@@ -9022,7 +9022,7 @@ export namespace Prisma {
     user_id?: StringNullableFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
-    screen_name?: StringNullableFilter<"frontend_event_logs"> | string | null
+    path_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     payload?: StringNullableFilter<"frontend_event_logs"> | string | null
     created_at?: DateTimeFilter<"frontend_event_logs"> | Date | string
     created_app_version?: StringFilter<"frontend_event_logs"> | string
@@ -9034,7 +9034,7 @@ export namespace Prisma {
     user_id?: SortOrderInput | SortOrder
     event_name?: SortOrderInput | SortOrder
     error_level?: SortOrderInput | SortOrder
-    screen_name?: SortOrderInput | SortOrder
+    path_name?: SortOrderInput | SortOrder
     payload?: SortOrderInput | SortOrder
     created_at?: SortOrder
     created_app_version?: SortOrder
@@ -9052,7 +9052,7 @@ export namespace Prisma {
     user_id?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableWithAggregatesFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
-    screen_name?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
+    path_name?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     payload?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"frontend_event_logs"> | Date | string
     created_app_version?: StringWithAggregatesFilter<"frontend_event_logs"> | string
@@ -9574,7 +9574,7 @@ export namespace Prisma {
     user_id?: string | null
     event_name?: string | null
     error_level?: $Enums.frontend_event_logs_error_level | null
-    screen_name?: string | null
+    path_name?: string | null
     payload?: string | null
     created_at?: Date | string
     created_app_version: string
@@ -9586,7 +9586,7 @@ export namespace Prisma {
     user_id?: string | null
     event_name?: string | null
     error_level?: $Enums.frontend_event_logs_error_level | null
-    screen_name?: string | null
+    path_name?: string | null
     payload?: string | null
     created_at?: Date | string
     created_app_version: string
@@ -9598,7 +9598,7 @@ export namespace Prisma {
     user_id?: NullableStringFieldUpdateOperationsInput | string | null
     event_name?: NullableStringFieldUpdateOperationsInput | string | null
     error_level?: NullableEnumfrontend_event_logs_error_levelFieldUpdateOperationsInput | $Enums.frontend_event_logs_error_level | null
-    screen_name?: NullableStringFieldUpdateOperationsInput | string | null
+    path_name?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_app_version?: StringFieldUpdateOperationsInput | string
@@ -9610,7 +9610,7 @@ export namespace Prisma {
     user_id?: NullableStringFieldUpdateOperationsInput | string | null
     event_name?: NullableStringFieldUpdateOperationsInput | string | null
     error_level?: NullableEnumfrontend_event_logs_error_levelFieldUpdateOperationsInput | $Enums.frontend_event_logs_error_level | null
-    screen_name?: NullableStringFieldUpdateOperationsInput | string | null
+    path_name?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_app_version?: StringFieldUpdateOperationsInput | string
@@ -9622,7 +9622,7 @@ export namespace Prisma {
     user_id?: string | null
     event_name?: string | null
     error_level?: $Enums.frontend_event_logs_error_level | null
-    screen_name?: string | null
+    path_name?: string | null
     payload?: string | null
     created_at?: Date | string
     created_app_version: string
@@ -9634,7 +9634,7 @@ export namespace Prisma {
     user_id?: NullableStringFieldUpdateOperationsInput | string | null
     event_name?: NullableStringFieldUpdateOperationsInput | string | null
     error_level?: NullableEnumfrontend_event_logs_error_levelFieldUpdateOperationsInput | $Enums.frontend_event_logs_error_level | null
-    screen_name?: NullableStringFieldUpdateOperationsInput | string | null
+    path_name?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_app_version?: StringFieldUpdateOperationsInput | string
@@ -9646,7 +9646,7 @@ export namespace Prisma {
     user_id?: NullableStringFieldUpdateOperationsInput | string | null
     event_name?: NullableStringFieldUpdateOperationsInput | string | null
     error_level?: NullableEnumfrontend_event_logs_error_levelFieldUpdateOperationsInput | $Enums.frontend_event_logs_error_level | null
-    screen_name?: NullableStringFieldUpdateOperationsInput | string | null
+    path_name?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_app_version?: StringFieldUpdateOperationsInput | string
@@ -10339,7 +10339,7 @@ export namespace Prisma {
     user_id?: SortOrder
     event_name?: SortOrder
     error_level?: SortOrder
-    screen_name?: SortOrder
+    path_name?: SortOrder
     payload?: SortOrder
     created_at?: SortOrder
     created_app_version?: SortOrder
@@ -10351,7 +10351,7 @@ export namespace Prisma {
     user_id?: SortOrder
     event_name?: SortOrder
     error_level?: SortOrder
-    screen_name?: SortOrder
+    path_name?: SortOrder
     payload?: SortOrder
     created_at?: SortOrder
     created_app_version?: SortOrder
@@ -10363,7 +10363,7 @@ export namespace Prisma {
     user_id?: SortOrder
     event_name?: SortOrder
     error_level?: SortOrder
-    screen_name?: SortOrder
+    path_name?: SortOrder
     payload?: SortOrder
     created_at?: SortOrder
     created_app_version?: SortOrder

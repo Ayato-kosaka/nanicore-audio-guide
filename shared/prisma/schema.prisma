@@ -76,7 +76,7 @@ model frontend_event_logs {
   user_id             String?
   event_name          String?
   error_level         frontend_event_logs_error_level? @default(debug)
-  screen_name         String?
+  path_name           String?
   payload             String?
   created_at          DateTime                         @default(now()) @db.Timestamptz(6)
   created_app_version String

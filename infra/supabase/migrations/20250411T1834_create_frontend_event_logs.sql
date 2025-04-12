@@ -7,7 +7,7 @@ CREATE TABLE frontend_event_logs (
     user_id TEXT,
     event_name TEXT,
     error_level frontend_event_logs_error_level DEFAULT 'debug',
-    screen_name TEXT,
+    path_name TEXT,
     payload TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     created_app_version TEXT NOT NULL,
@@ -26,7 +26,7 @@ COMMENT ON COLUMN frontend_event_logs.id IS 'フロントログの一意なID（
 COMMENT ON COLUMN frontend_event_logs.user_id IS '操作を行ったユーザーのID';
 COMMENT ON COLUMN frontend_event_logs.event_name IS 'イベント名（例：onPressPlay, mounted）';
 COMMENT ON COLUMN frontend_event_logs.error_level IS 'エラーレベル';
-COMMENT ON COLUMN frontend_event_logs.screen_name IS '発生元画面の識別名（例：SpotGuideDisplay）';
+COMMENT ON COLUMN frontend_event_logs.path_name IS 'アクセス時のパス（例：/spot-guide/display）';
 COMMENT ON COLUMN frontend_event_logs.payload IS '任意のイベント追加情報（例：{ spot_id: ''abc'' }）';
 COMMENT ON COLUMN frontend_event_logs.created_at IS 'イベント発生日時';
 COMMENT ON COLUMN frontend_event_logs.created_app_version IS 'イベント発生時のアプリバージョン';

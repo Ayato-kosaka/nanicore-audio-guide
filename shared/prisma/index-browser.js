@@ -162,7 +162,7 @@ exports.Prisma.Frontend_event_logsScalarFieldEnum = {
   user_id: 'user_id',
   event_name: 'event_name',
   error_level: 'error_level',
-  screen_name: 'screen_name',
+  path_name: 'path_name',
   payload: 'payload',
   created_at: 'created_at',
   created_app_version: 'created_app_version',

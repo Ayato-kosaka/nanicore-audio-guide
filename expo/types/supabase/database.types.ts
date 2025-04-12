@@ -145,8 +145,8 @@ export type Database = {
             | null
           event_name: string | null
           id: string
+          path_name: string | null
           payload: string | null
-          screen_name: string | null
           user_id: string | null
         }
         Insert: {
@@ -158,8 +158,8 @@ export type Database = {
             | null
           event_name?: string | null
           id: string
+          path_name?: string | null
           payload?: string | null
-          screen_name?: string | null
           user_id?: string | null
         }
         Update: {
@@ -171,8 +171,8 @@ export type Database = {
             | null
           event_name?: string | null
           id?: string
+          path_name?: string | null
           payload?: string | null
-          screen_name?: string | null
           user_id?: string | null
         }
         Relationships: []

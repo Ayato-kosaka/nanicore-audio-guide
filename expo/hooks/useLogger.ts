@@ -23,13 +23,12 @@ const errorLevelPriority: Record<EnumLiteral<'frontend_event_logs_error_level'>,
  *
  * `useLogger()` を呼び出すことで `logFrontendEvent()` を利用可能になる。
  * - user_id は Supabase Auth から自動取得
- * - screen_name は `pathname.split('/')[1]` により自動補完
+ * - path_name は `usePathname()` により自動補完
  *
  * @returns `logFrontendEvent()` ログ送信関数
  */
 export const useLogger = () => {
-  const pathname = usePathname();
-  const screen_name = pathname.split('/')[1] || 'unknown';
+  const path_name = usePathname();
 
   /**
    * Supabase にフロントエンドイベントログを送信する。
@@ -62,7 +61,7 @@ export const useLogger = () => {
           id: nanoid(12),
           user_id: user?.id,
           event_name,
-          screen_name,
+          path_name,
           payload,
           error_level,
           created_at: now,
@@ -71,15 +70,15 @@ export const useLogger = () => {
         });
 
         if (__DEV__) {
-          console.log(`📤 [${error_level}] [${screen_name}] ${event_name}`, payload);
+          console.log(`📤 [${error_level}] [${path_name}] ${event_name}`, payload);
         }
       } catch (err: any) {
         if (__DEV__) {
-          console.error(`🚨 Failed to log event [${event_name}] on screen [${screen_name}]:`, err.message);
+          console.error(`🚨 Failed to log event [${event_name}] on screen [${path_name}]:`, err.message);
         }
       }
     },
-    [screen_name]
+    [path_name]
   );
 
   return { logFrontendEvent };
