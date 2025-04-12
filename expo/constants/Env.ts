@@ -3,7 +3,7 @@ import { Database } from '@/types/supabase/database.types';
 
 const extra = Constants.expoConfig?.extra ?? {};
 
-export const env = {
+export const Env = {
   APP_VERSION: Constants.expoConfig?.version as string,
   COMMIT_ID: extra.EXPO_PUBLIC_COMMIT_ID as string,
   NODE_ENV: extra.EXPO_PUBLIC_NODE_ENV as string,

@@ -1,4 +1,4 @@
-import { env } from '@/lib/env';
+import { Env } from '@/constants/Env';
 
 import { Image, StyleSheet, Platform } from 'react-native';
 
@@ -19,7 +19,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!{env.HELLO_ENV}</ThemedText>
+        <ThemedText type="title">Welcome!{Env.NODE_ENV}</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>

@@ -1,6 +1,6 @@
 import remoteConfig from '@react-native-firebase/remote-config';
 import { EnumLiteral } from '@/types/devDB.types';
-import { env } from './env';
+import { Env } from '../constants/Env';
 
 /**
  * Remote Config の取得値を保持する型。
@@ -42,13 +42,13 @@ export const initRemoteConfig = async (): Promise<RemoteConfigValues | null> => 
       welcome_message: remoteConfig().getValue('welcome_message').asString(),
     };
 
-    if (env.NODE_ENV === "development") {
+    if (Env.NODE_ENV === "development") {
       console.log('✅ Remote Config initialized:', cachedValues);
     }
 
     return cachedValues;
   } catch (err: any) {
-    if (env.NODE_ENV === "development") {
+    if (Env.NODE_ENV === "development") {
       console.error('⚠️ Remote Config initialization failed:', err.message);
     }
     return null;

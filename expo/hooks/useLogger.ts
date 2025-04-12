@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { nanoid } from 'nanoid';
 import { getRemoteConfig } from '../lib/remoteConfig';
-import { env } from '../lib/env';
+import { Env } from '../constants/Env';
 import { EnumLiteral, TableRow } from '@/types/devDB.types';
 import { DeepNonNullable } from '@/types/deep.types';
 
@@ -16,6 +16,15 @@ const errorLevelPriority: Record<EnumLiteral<'frontend_event_logs_error_level'>,
   info: 2,
   warn: 3,
   error: 4,
+};
+
+type FrontendEventLogInput = DeepNonNullable<
+  Omit<
+    TableRow<'frontend_event_logs'>,
+    'id' | 'user_id' | 'path_name' | 'payload' | 'created_at' | 'created_app_version' | 'created_commit_id'
+  >
+> & {
+  payload: Record<string, any>;
 };
 
 /**
@@ -43,7 +52,7 @@ export const useLogger = () => {
       event_name,
       error_level,
       payload,
-    }: DeepNonNullable<Omit<TableRow<'frontend_event_logs'>, 'id' | 'user_id' | 'created_at' | 'created_app_version' | 'created_commit_id'>>) => {
+    }: FrontendEventLogInput) => {
       try {
         const remoteConfig = getRemoteConfig();
         const currentLevel = remoteConfig?.v1_min_frontend_log_level ?? 'debug';
@@ -62,18 +71,18 @@ export const useLogger = () => {
           user_id: user?.id,
           event_name,
           path_name,
-          payload,
+          payload: JSON.stringify(payload),
           error_level,
           created_at: now,
-          created_app_version: env.APP_VERSION,
-          created_commit_id: env.COMMIT_ID,
+          created_app_version: Env.APP_VERSION,
+          created_commit_id: Env.COMMIT_ID,
         });
 
-        if (__DEV__) {
+        if (Env.NODE_ENV === "development") {
           console.log(`📤 [${error_level}] [${path_name}] ${event_name}`, payload);
         }
       } catch (err: any) {
-        if (__DEV__) {
+        if (Env.NODE_ENV === "development") {
           console.error(`🚨 Failed to log event [${event_name}] on screen [${path_name}]:`, err.message);
         }
       }

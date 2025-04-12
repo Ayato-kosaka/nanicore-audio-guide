@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import * as aesjs from 'aes-js';
 import 'react-native-get-random-values';
-import { env } from './env';
+import { Env } from '../constants/Env';
 
 /**
  * 🔐 大きなセッションデータをセキュアに保存するためのストレージクラス。
@@ -90,8 +90,8 @@ class LargeSecureStore {
  * - DB スキーマは動的環境変数で切り替え可能（開発/本番）
  */
 export const supabase = createClient<Database>(
-  env.SUPABASE_URL,
-  env.SUPABASE_ANON_KEY,
+  Env.SUPABASE_URL,
+  Env.SUPABASE_ANON_KEY,
   {
     auth: {
       storage: new LargeSecureStore(),
@@ -100,7 +100,7 @@ export const supabase = createClient<Database>(
       detectSessionInUrl: false,
     },
     db: {
-      schema: env.DB_SCHEMA,
+      schema: Env.DB_SCHEMA,
     },
   }
 );
