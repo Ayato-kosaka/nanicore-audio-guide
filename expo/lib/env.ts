@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import { Database } from '@/types/supabase/database.types';
 
 const extra = Constants.expoConfig?.extra ?? {};
 
@@ -8,5 +9,5 @@ export const env = {
   NODE_ENV: extra.EXPO_PUBLIC_NODE_ENV as string,
   SUPABASE_URL: extra.EXPO_PUBLIC_SUPABASE_URL as string,
   SUPABASE_ANON_KEY: extra.EXPO_PUBLIC_SUPABASE_ANON_KEY as string,
-  DB_SCHEMA: extra.EXPO_PUBLIC_DB_SCHEMA as string,
+  DB_SCHEMA: extra.EXPO_PUBLIC_DB_SCHEMA as keyof Database,
 };

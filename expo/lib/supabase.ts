@@ -1,5 +1,6 @@
 import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
+import { Database } from '@/types/supabase/database.types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import * as aesjs from 'aes-js';
@@ -88,7 +89,7 @@ class LargeSecureStore {
  * - 認証セッションは LargeSecureStore を使用し、安全かつ永続的に保存される。
  * - DB スキーマは動的環境変数で切り替え可能（開発/本番）
  */
-export const supabase = createClient(
+export const supabase = createClient<Database>(
   env.SUPABASE_URL,
   env.SUPABASE_ANON_KEY,
   {

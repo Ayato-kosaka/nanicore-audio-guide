@@ -1,5 +1,5 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-import { frontend_event_logs_error_level } from '@shared/prisma';
+import { EnumLiteral } from '@/types/devDB.types';
 import { env } from './env';
 
 /**
@@ -7,7 +7,7 @@ import { env } from './env';
  * - Cloud Functions やフロントエンドの動的制御に使用。
  */
 export type RemoteConfigValues = {
-  v1_min_frontend_log_level: frontend_event_logs_error_level;
+  v1_min_frontend_log_level: EnumLiteral<'frontend_event_logs_error_level'>;
   feature_x_enabled: boolean;
   welcome_message: string;
   v1_spot_visits_max_version_major: string;
@@ -36,7 +36,7 @@ export const initRemoteConfig = async (): Promise<RemoteConfigValues | null> => 
     await remoteConfig().fetchAndActivate();
 
     cachedValues = {
-      v1_min_frontend_log_level: remoteConfig().getValue('v1_min_frontend_log_level').asString() as frontend_event_logs_error_level,
+      v1_min_frontend_log_level: remoteConfig().getValue('v1_min_frontend_log_level').asString() as EnumLiteral<'frontend_event_logs_error_level'>,
       v1_spot_visits_max_version_major: remoteConfig().getValue('v1_spot_visits_max_version_major').asString(),
       feature_x_enabled: remoteConfig().getValue('feature_x_enabled').asBoolean(),
       welcome_message: remoteConfig().getValue('welcome_message').asString(),
