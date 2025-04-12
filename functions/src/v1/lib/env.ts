@@ -9,7 +9,10 @@ dotenv.config();
  * すべての必須変数を型安全に定義し、起動時にチェックできるようにする。
  */
 const envSchema = z.object({
-  FUNCTIONS_HELLO_ENV: z.string(),
+  FUNCTIONS_COMMIT_ID: z.string(),
+  FUNCTIONS_GCS_BUCKET_NAME: z.string(),
+  FUNCTIONS_NODE_ENV: z.string(),
+  FUNCTIONS_SUPABASE_JWT_SECRET: z.string(),
 });
 
 /**
