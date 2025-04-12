@@ -1,6 +1,6 @@
 import { prisma } from './prisma';
 import { env } from './env';
-import { backend_event_logs_error_level, Prisma } from 'functions/src/generated/prisma';
+import { backend_event_logs_error_level, Prisma } from '@shared/prisma';
 const { nanoid } = require('nanoid');
 
 /**
