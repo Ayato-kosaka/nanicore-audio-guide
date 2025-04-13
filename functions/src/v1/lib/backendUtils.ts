@@ -5,12 +5,12 @@ import jwt from 'jsonwebtoken';
 import { env } from './env';
 
 /**
- * 🆔 UUIDベースのリクエストIDを生成（API呼び出し間のトレースに使用）
+ * 🆔 リクエストIDを生成（API呼び出し間のトレースに使用）
  * 
- * @returns {string} トレース用のユニークなID（UUIDv4）
+ * @returns {string} トレース用のユニークなID（nanoid）
  */
 export const createRequestId = (): string => {
-  return uuidv4();
+  return nanoId();
 };
 
 /**
