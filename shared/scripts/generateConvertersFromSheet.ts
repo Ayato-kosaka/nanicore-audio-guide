@@ -126,12 +126,14 @@ function generateConverter(tableName: string, columns: TColumn[]): string {
   const imports = `import { TableRow } from '../utils/devDB.types';\nimport { Prisma } from '../prisma';\n\n`;
 
   return `${imports}
+export type Prisma${tablePascal} = Omit<Prisma.${prismaTypeName}, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_${tablePascal}(supabase: TableRow<'${tableName}'>): Omit<Prisma.${prismaTypeName}, '_count' | '_avg' | '_sum' | '_min' | '_max'> {
+export function convertSupabaseToPrisma_${tablePascal}(supabase: TableRow<'${tableName}'>): Prisma${tablePascal} {
   return {
 ${toPrismaBody}
   };
@@ -142,7 +144,7 @@ ${toPrismaBody}
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_${tablePascal}(prisma: Omit<Prisma.${prismaTypeName}, '_count' | '_avg' | '_sum' | '_min' | '_max'>): TableRow<'${tableName}'> {
+export function convertPrismaToSupabase_${tablePascal}(prisma: Prisma${tablePascal}): TableRow<'${tableName}'> {
   return {
 ${toSupabaseBody}
   };

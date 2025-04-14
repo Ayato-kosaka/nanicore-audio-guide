@@ -2,12 +2,14 @@ import { TableRow } from '../utils/devDB.types';
 import { Prisma } from '../prisma';
 
 
+export type PrismaSpotVisits = Omit<Prisma.Spot_visitsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_SpotVisits(supabase: TableRow<'spot_visits'>): Omit<Prisma.Spot_visitsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'> {
+export function convertSupabaseToPrisma_SpotVisits(supabase: TableRow<'spot_visits'>): PrismaSpotVisits {
   return {
     id: supabase.id,
     user_id: supabase.user_id,
@@ -29,7 +31,7 @@ export function convertSupabaseToPrisma_SpotVisits(supabase: TableRow<'spot_visi
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_SpotVisits(prisma: Omit<Prisma.Spot_visitsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>): TableRow<'spot_visits'> {
+export function convertPrismaToSupabase_SpotVisits(prisma: PrismaSpotVisits): TableRow<'spot_visits'> {
   return {
     id: prisma.id,
     user_id: prisma.user_id,

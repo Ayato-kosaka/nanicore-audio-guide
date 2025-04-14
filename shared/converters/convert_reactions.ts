@@ -2,12 +2,14 @@ import { TableRow } from '../utils/devDB.types';
 import { Prisma } from '../prisma';
 
 
+export type PrismaReactions = Omit<Prisma.ReactionsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_Reactions(supabase: TableRow<'reactions'>): Omit<Prisma.ReactionsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'> {
+export function convertSupabaseToPrisma_Reactions(supabase: TableRow<'reactions'>): PrismaReactions {
   return {
     id: supabase.id,
     user_id: supabase.user_id,
@@ -25,7 +27,7 @@ export function convertSupabaseToPrisma_Reactions(supabase: TableRow<'reactions'
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_Reactions(prisma: Omit<Prisma.ReactionsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>): TableRow<'reactions'> {
+export function convertPrismaToSupabase_Reactions(prisma: PrismaReactions): TableRow<'reactions'> {
   return {
     id: prisma.id,
     user_id: prisma.user_id,
