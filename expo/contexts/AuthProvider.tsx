@@ -87,8 +87,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
      * 👀 認証状態のリアルタイム監視。
      * - ログイン/ログアウトなどのイベントを自動検出
      */
+    let prevUserId: string | null = null;
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        const newUserId = session?.user?.id ?? null;
         // if (event === 'SIGNED_IN' && session) {
         //   setUser(session.user);
         //   setSession(session);
@@ -98,13 +100,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         //   setSession(null);
         //   router.replace('/login');
         // }
-        setUser(session?.user ?? null);
+        if (newUserId !== prevUserId) {
+          setUser(session?.user ?? null);
 
-        logFrontendEvent({
-          event_name: `onAuthStateChange:${event}`,
-          error_level: 'debug',
-          payload: { user_id: session?.user.id, event },
-        });
+          logFrontendEvent({
+            event_name: `onAuthStateChange:${event}`,
+            error_level: 'debug',
+            payload: { user_id: session?.user.id, event },
+          });
+          prevUserId = newUserId;
+        }
       }
     );
 

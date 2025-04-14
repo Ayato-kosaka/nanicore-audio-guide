@@ -26,8 +26,11 @@ export default function App() {
       console.log(`[LocaleRedirect] Detected locale: ${resolvedLocale}`);
     }
 
-    // 対応するロケールにリダイレクト
-    router.replace(`/${resolvedLocale}` as ExternalPathString);
+    const timer = setTimeout(() => {
+      // 対応するロケールにリダイレクト
+      router.replace(`/${resolvedLocale}` as ExternalPathString);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return null;
