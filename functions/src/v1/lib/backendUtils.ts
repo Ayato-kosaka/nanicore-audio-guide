@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { logBackendEvent, logExternalApi } from './logger';
 import jwt from 'jsonwebtoken';
 import { env } from './env';
-import { nanoid } from 'nanoid';
+const { nanoid } = require('nanoid');
 
 /**
  * 🆔 リクエストIDを生成（API呼び出し間のトレースに使用）

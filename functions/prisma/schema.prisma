@@ -91,7 +91,7 @@ model frontend_event_logs {
 model spot_guides {
   id                    String                 @id
   spot_id               String
-  lang                  String
+  language_tag          String
   title                 String
   manuscript            String
   audio_storage_path    String
@@ -109,7 +109,7 @@ model spot_guides {
   ext_spots             ext_spots              @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   spot_visits           spot_visits[]
 
-  @@index([lang], map: "idx_spot_guides_lang")
+  @@index([language_tag], map: "idx_spot_guides_language_tag")
   @@index([spot_id], map: "idx_spot_guides_spot_id")
   @@schema("dev")
 }

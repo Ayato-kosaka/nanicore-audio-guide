@@ -5934,7 +5934,7 @@ export namespace Prisma {
   export type Spot_guidesMinAggregateOutputType = {
     id: string | null
     spot_id: string | null
-    lang: string | null
+    language_tag: string | null
     title: string | null
     manuscript: string | null
     audio_storage_path: string | null
@@ -5953,7 +5953,7 @@ export namespace Prisma {
   export type Spot_guidesMaxAggregateOutputType = {
     id: string | null
     spot_id: string | null
-    lang: string | null
+    language_tag: string | null
     title: string | null
     manuscript: string | null
     audio_storage_path: string | null
@@ -5972,7 +5972,7 @@ export namespace Prisma {
   export type Spot_guidesCountAggregateOutputType = {
     id: number
     spot_id: number
-    lang: number
+    language_tag: number
     title: number
     manuscript: number
     audio_storage_path: number
@@ -6010,7 +6010,7 @@ export namespace Prisma {
   export type Spot_guidesMinAggregateInputType = {
     id?: true
     spot_id?: true
-    lang?: true
+    language_tag?: true
     title?: true
     manuscript?: true
     audio_storage_path?: true
@@ -6029,7 +6029,7 @@ export namespace Prisma {
   export type Spot_guidesMaxAggregateInputType = {
     id?: true
     spot_id?: true
-    lang?: true
+    language_tag?: true
     title?: true
     manuscript?: true
     audio_storage_path?: true
@@ -6048,7 +6048,7 @@ export namespace Prisma {
   export type Spot_guidesCountAggregateInputType = {
     id?: true
     spot_id?: true
-    lang?: true
+    language_tag?: true
     title?: true
     manuscript?: true
     audio_storage_path?: true
@@ -6155,7 +6155,7 @@ export namespace Prisma {
   export type Spot_guidesGroupByOutputType = {
     id: string
     spot_id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -6194,7 +6194,7 @@ export namespace Prisma {
   export type spot_guidesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     spot_id?: boolean
-    lang?: boolean
+    language_tag?: boolean
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
@@ -6217,7 +6217,7 @@ export namespace Prisma {
   export type spot_guidesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     spot_id?: boolean
-    lang?: boolean
+    language_tag?: boolean
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
@@ -6238,7 +6238,7 @@ export namespace Prisma {
   export type spot_guidesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     spot_id?: boolean
-    lang?: boolean
+    language_tag?: boolean
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
@@ -6259,7 +6259,7 @@ export namespace Prisma {
   export type spot_guidesSelectScalar = {
     id?: boolean
     spot_id?: boolean
-    lang?: boolean
+    language_tag?: boolean
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
@@ -6276,7 +6276,7 @@ export namespace Prisma {
     lock_no?: boolean
   }
 
-  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "lang" | "title" | "manuscript" | "audio_storage_path" | "voice_type" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_by" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
+  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "language_tag" | "title" | "manuscript" | "audio_storage_path" | "voice_type" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_by" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
   export type spot_guidesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
     spot_visits?: boolean | spot_guides$spot_visitsArgs<ExtArgs>
@@ -6298,7 +6298,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       spot_id: string
-      lang: string
+      language_tag: string
       title: string
       manuscript: string
       audio_storage_path: string
@@ -6740,7 +6740,7 @@ export namespace Prisma {
   interface spot_guidesFieldRefs {
     readonly id: FieldRef<"spot_guides", 'String'>
     readonly spot_id: FieldRef<"spot_guides", 'String'>
-    readonly lang: FieldRef<"spot_guides", 'String'>
+    readonly language_tag: FieldRef<"spot_guides", 'String'>
     readonly title: FieldRef<"spot_guides", 'String'>
     readonly manuscript: FieldRef<"spot_guides", 'String'>
     readonly audio_storage_path: FieldRef<"spot_guides", 'String'>
@@ -8504,7 +8504,7 @@ export namespace Prisma {
   export const Spot_guidesScalarFieldEnum: {
     id: 'id',
     spot_id: 'spot_id',
-    lang: 'lang',
+    language_tag: 'language_tag',
     title: 'title',
     manuscript: 'manuscript',
     audio_storage_path: 'audio_storage_path',
@@ -9065,7 +9065,7 @@ export namespace Prisma {
     NOT?: spot_guidesWhereInput | spot_guidesWhereInput[]
     id?: StringFilter<"spot_guides"> | string
     spot_id?: StringFilter<"spot_guides"> | string
-    lang?: StringFilter<"spot_guides"> | string
+    language_tag?: StringFilter<"spot_guides"> | string
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
@@ -9087,7 +9087,7 @@ export namespace Prisma {
   export type spot_guidesOrderByWithRelationInput = {
     id?: SortOrder
     spot_id?: SortOrder
-    lang?: SortOrder
+    language_tag?: SortOrder
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
@@ -9112,7 +9112,7 @@ export namespace Prisma {
     OR?: spot_guidesWhereInput[]
     NOT?: spot_guidesWhereInput | spot_guidesWhereInput[]
     spot_id?: StringFilter<"spot_guides"> | string
-    lang?: StringFilter<"spot_guides"> | string
+    language_tag?: StringFilter<"spot_guides"> | string
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
@@ -9134,7 +9134,7 @@ export namespace Prisma {
   export type spot_guidesOrderByWithAggregationInput = {
     id?: SortOrder
     spot_id?: SortOrder
-    lang?: SortOrder
+    language_tag?: SortOrder
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
@@ -9162,7 +9162,7 @@ export namespace Prisma {
     NOT?: spot_guidesScalarWhereWithAggregatesInput | spot_guidesScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"spot_guides"> | string
     spot_id?: StringWithAggregatesFilter<"spot_guides"> | string
-    lang?: StringWithAggregatesFilter<"spot_guides"> | string
+    language_tag?: StringWithAggregatesFilter<"spot_guides"> | string
     title?: StringWithAggregatesFilter<"spot_guides"> | string
     manuscript?: StringWithAggregatesFilter<"spot_guides"> | string
     audio_storage_path?: StringWithAggregatesFilter<"spot_guides"> | string
@@ -9655,7 +9655,7 @@ export namespace Prisma {
 
   export type spot_guidesCreateInput = {
     id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -9677,7 +9677,7 @@ export namespace Prisma {
   export type spot_guidesUncheckedCreateInput = {
     id: string
     spot_id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -9697,7 +9697,7 @@ export namespace Prisma {
 
   export type spot_guidesUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -9719,7 +9719,7 @@ export namespace Prisma {
   export type spot_guidesUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -9740,7 +9740,7 @@ export namespace Prisma {
   export type spot_guidesCreateManyInput = {
     id: string
     spot_id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -9759,7 +9759,7 @@ export namespace Prisma {
 
   export type spot_guidesUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -9779,7 +9779,7 @@ export namespace Prisma {
   export type spot_guidesUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -10414,7 +10414,7 @@ export namespace Prisma {
   export type spot_guidesCountOrderByAggregateInput = {
     id?: SortOrder
     spot_id?: SortOrder
-    lang?: SortOrder
+    language_tag?: SortOrder
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
@@ -10442,7 +10442,7 @@ export namespace Prisma {
   export type spot_guidesMaxOrderByAggregateInput = {
     id?: SortOrder
     spot_id?: SortOrder
-    lang?: SortOrder
+    language_tag?: SortOrder
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
@@ -10461,7 +10461,7 @@ export namespace Prisma {
   export type spot_guidesMinOrderByAggregateInput = {
     id?: SortOrder
     spot_id?: SortOrder
-    lang?: SortOrder
+    language_tag?: SortOrder
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
@@ -11191,7 +11191,7 @@ export namespace Prisma {
 
   export type spot_guidesCreateWithoutExt_spotsInput = {
     id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -11211,7 +11211,7 @@ export namespace Prisma {
 
   export type spot_guidesUncheckedCreateWithoutExt_spotsInput = {
     id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -11337,7 +11337,7 @@ export namespace Prisma {
     NOT?: spot_guidesScalarWhereInput | spot_guidesScalarWhereInput[]
     id?: StringFilter<"spot_guides"> | string
     spot_id?: StringFilter<"spot_guides"> | string
-    lang?: StringFilter<"spot_guides"> | string
+    language_tag?: StringFilter<"spot_guides"> | string
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
@@ -11565,7 +11565,7 @@ export namespace Prisma {
 
   export type spot_guidesCreateWithoutSpot_visitsInput = {
     id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -11586,7 +11586,7 @@ export namespace Prisma {
   export type spot_guidesUncheckedCreateWithoutSpot_visitsInput = {
     id: string
     spot_id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -11693,7 +11693,7 @@ export namespace Prisma {
 
   export type spot_guidesUpdateWithoutSpot_visitsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -11714,7 +11714,7 @@ export namespace Prisma {
   export type spot_guidesUncheckedUpdateWithoutSpot_visitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -11772,7 +11772,7 @@ export namespace Prisma {
 
   export type spot_guidesCreateManyExt_spotsInput = {
     id: string
-    lang: string
+    language_tag: string
     title: string
     manuscript: string
     audio_storage_path: string
@@ -11819,7 +11819,7 @@ export namespace Prisma {
 
   export type spot_guidesUpdateWithoutExt_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -11839,7 +11839,7 @@ export namespace Prisma {
 
   export type spot_guidesUncheckedUpdateWithoutExt_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
@@ -11859,7 +11859,7 @@ export namespace Prisma {
 
   export type spot_guidesUncheckedUpdateManyWithoutExt_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    lang?: StringFieldUpdateOperationsInput | string
+    language_tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string

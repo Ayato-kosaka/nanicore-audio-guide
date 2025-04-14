@@ -1,4 +1,4 @@
-import { TableRow } from './devDB.types';
+import { TableRow } from '@shared/utils/devDB.types';
 
 /**
  * 🎯 SpotGuide 画面に渡されるパラメータ（非シリアライズ形式）。

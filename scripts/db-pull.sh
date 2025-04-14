@@ -45,6 +45,6 @@ fi
 
 echo "📦 Extracted Supabase Project ID: $PROJECT_ID"
 echo "🧬 Generating Supabase types..."
-pnpx supabase gen types typescript --project-id "$PROJECT_ID" --schema $DB_SCHEMA > expo/types/supabase/database.types.ts
+pnpx supabase gen types typescript --project-id "$PROJECT_ID" --schema $DB_SCHEMA > shared/supabase/database.types.ts
 
-echo "✅ Supabase types generated at expo/types/supabase/database.types.ts"
+echo "✅ Supabase types generated at shared/supabase/database.types.ts"

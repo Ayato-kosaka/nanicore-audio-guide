@@ -14,7 +14,7 @@
     "format": "prettier --write .",
     "typecheck": "turbo run typecheck",
     "deploy:functions": "pnpm --workspace functions run deploy",
-    "apply:migration": "bash scripts/apply-migration.sh",
+    "db:migration": "bash scripts/apply-migration.sh",
     "db:pull": "bash scripts/db-pull.sh",
     "db:reset": "bash scripts/reset-schema.sh"
   },

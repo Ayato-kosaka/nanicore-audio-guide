@@ -82,6 +82,22 @@ pnpm dev
 
 ---
 
+### Trouble Shoot
+
+Q. `psql: コマンドが見つかりません`
+
+A. 
+```bash
+apt update
+apt install postgresql-client
+```
+
+Q. `2025/04/14 21:37:29 Access token not provided. Supply an access token by running supabase login or setting the SUPABASE_ACCESS_TOKEN environment variable.`
+
+A. `pnpx supabase login`
+
+---
+
 ## 🔧 Common Commands
 
 | Command | Description |

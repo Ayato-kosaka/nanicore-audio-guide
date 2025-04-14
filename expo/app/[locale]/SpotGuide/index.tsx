@@ -13,7 +13,7 @@ import { useWithLoading } from '@/hooks/useWithLoading';
 import { useCloudFunction } from '@/hooks/useCloudFunction';
 import { useLocale } from '@/hooks/useLocale';
 
-import { TableRow } from '@/types/devDB.types';
+import { TableRow } from '@shared/utils/devDB.types';
 import { SpotGuideParams, SpotGuideSerializedParams } from '@/types/navigation';
 import { deserializeSpotGuideParams } from '@/utils/navigation';
 import i18n from '@/lib/i18n';

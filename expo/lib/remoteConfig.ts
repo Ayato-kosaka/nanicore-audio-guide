@@ -1,5 +1,5 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-import { EnumLiteral } from '@/types/devDB.types';
+import { EnumLiteral } from '@shared/utils/devDB.types';
 import { Env } from '../constants/Env';
 
 /**

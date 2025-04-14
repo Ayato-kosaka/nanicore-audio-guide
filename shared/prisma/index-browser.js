@@ -172,7 +172,7 @@ exports.Prisma.Frontend_event_logsScalarFieldEnum = {
 exports.Prisma.Spot_guidesScalarFieldEnum = {
   id: 'id',
   spot_id: 'spot_id',
-  lang: 'lang',
+  language_tag: 'language_tag',
   title: 'title',
   manuscript: 'manuscript',
   audio_storage_path: 'audio_storage_path',

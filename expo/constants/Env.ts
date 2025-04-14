@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { Database } from '@/types/supabase/database.types';
+import { Database } from '@shared/supabase/database.types';
 
 const extra = Constants.expoConfig?.extra ?? {};
 
