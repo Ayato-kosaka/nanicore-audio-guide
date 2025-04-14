@@ -6,7 +6,8 @@ import { useNavigation } from "expo-router";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
-import type { FindOrCreateSpotFromImageResponse } from "@shared/zodSchemas/api/findOrCreateSpotFromImage.schema";
+import type { FindOrCreateSpotFromImageResponse } from "@shared/api/findOrCreateSpotFromImage.schema";
+import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext_spots";
 import i18n from "@/lib/i18n";
 import { RootStackParamList } from "@/types/navigation";
 import type { NavigationProp } from "@react-navigation/native";
@@ -62,7 +63,7 @@ export default function SpotCapture() {
         // Expo ImagePicker では `name` プロパティが省略されるため明示
       } as any);
 
-      const { ext_spots, uploadedUri, takenPhotoStoragePath } =
+      const { extSpots, uploadedUri, takenPhotoStoragePath } =
         await callCloudFunction<FormData, FindOrCreateSpotFromImageResponse>(
           "findOrCreateSpotFromImage",
           formData,
@@ -73,7 +74,7 @@ export default function SpotCapture() {
       navigation.navigate(
         "SpotGuide",
         serializeSpotGuideParams({
-          ext_spots,
+          extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
           imageUri: uploadedUri,
           takenPhotoStoragePath,
         })

@@ -259,6 +259,9 @@ importers:
       node-fetch:
         specifier: '2'
         version: 2.7.0(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@types/node':
         specifier: ^22.14.0

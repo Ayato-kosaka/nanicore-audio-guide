@@ -7,7 +7,7 @@
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "rootDir": "src",
+    "rootDir": "../",
     "resolveJsonModule": true,
     "types": [
       "node"
@@ -15,7 +15,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src"
+    "src",
+    "../shared/**/*.ts"
   ],
   "exclude": [
     "node_modules",

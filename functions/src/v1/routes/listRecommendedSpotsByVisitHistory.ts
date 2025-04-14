@@ -1,5 +1,4 @@
 import { onRequest } from 'firebase-functions/v2/https';
-import { z } from 'zod';
 import { prisma } from '../lib/prisma';
 import {
   createRequestId,
@@ -8,10 +7,9 @@ import {
   withAuthUser,
 } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
-
-const schema = z.object({
-  spot_id: z.string(),
-});
+import { listRecommendedSpotsByVisitHistoryRequestSchema } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
+import type { ListRecommendedSpotsByVisitHistoryResponse } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
+import { convertPrismaToSupabase_ExtSpots } from '@shared/converters/convert_ext_spots';
 
 const RECOMMENDED_SPOT_LIMIT = 20;
 
@@ -26,8 +24,8 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
   const functionName = 'listRecommendedSpotsByVisitHistory';
 
   try {
-    const input = schema.parse(req.query);
-    const spotId = input.spot_id;
+    const input = listRecommendedSpotsByVisitHistoryRequestSchema.parse(req.query);
+    const spotId = input.spotId;
 
     // 🔐 Supabase 認証トークンから userId を取得（失敗時は例外）
     const { userId } = await withAuthUser(req);
@@ -82,7 +80,10 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
       error_level: 'info',
     });
 
-    res.status(200).json(orderedSpots);
+    const response = {
+      extSpots: orderedSpots.map(convertPrismaToSupabase_ExtSpots),
+    } satisfies ListRecommendedSpotsByVisitHistoryResponse;
+    res.status(200).json(response);
   } catch (err: any) {
     handleFunctionError({
       err,
