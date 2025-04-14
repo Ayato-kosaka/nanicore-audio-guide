@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import { logBackendEvent, logExternalApi } from './logger';
 import jwt from 'jsonwebtoken';
 import { env } from './env';
+import { nanoid } from 'nanoid';
 
 /**
  * 🆔 リクエストIDを生成（API呼び出し間のトレースに使用）
@@ -10,7 +10,7 @@ import { env } from './env';
  * @returns {string} トレース用のユニークなID（nanoid）
  */
 export const createRequestId = (): string => {
-  return nanoId();
+  return nanoid(12);
 };
 
 /**
