@@ -4,12 +4,14 @@ import { Prisma } from '../prisma';
 
 export type PrismaExternalApiLogs = Omit<Prisma.External_api_logsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
 
+export type SupabaseExternalApiLogs = TableRow<'external_api_logs'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_ExternalApiLogs(supabase: TableRow<'external_api_logs'>): PrismaExternalApiLogs {
+export function convertSupabaseToPrisma_ExternalApiLogs(supabase: SupabaseExternalApiLogs): PrismaExternalApiLogs {
   return {
     id: supabase.id,
     request_id: supabase.request_id,
@@ -32,7 +34,7 @@ export function convertSupabaseToPrisma_ExternalApiLogs(supabase: TableRow<'exte
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_ExternalApiLogs(prisma: PrismaExternalApiLogs): TableRow<'external_api_logs'> {
+export function convertPrismaToSupabase_ExternalApiLogs(prisma: PrismaExternalApiLogs): SupabaseExternalApiLogs {
   return {
     id: prisma.id,
     request_id: prisma.request_id,

@@ -4,12 +4,14 @@ import { Prisma } from '../prisma';
 
 export type PrismaReactions = Omit<Prisma.ReactionsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
 
+export type SupabaseReactions = TableRow<'reactions'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_Reactions(supabase: TableRow<'reactions'>): PrismaReactions {
+export function convertSupabaseToPrisma_Reactions(supabase: SupabaseReactions): PrismaReactions {
   return {
     id: supabase.id,
     user_id: supabase.user_id,
@@ -27,7 +29,7 @@ export function convertSupabaseToPrisma_Reactions(supabase: TableRow<'reactions'
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_Reactions(prisma: PrismaReactions): TableRow<'reactions'> {
+export function convertPrismaToSupabase_Reactions(prisma: PrismaReactions): SupabaseReactions {
   return {
     id: prisma.id,
     user_id: prisma.user_id,

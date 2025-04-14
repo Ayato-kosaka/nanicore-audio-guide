@@ -4,12 +4,14 @@ import { Prisma } from '../prisma';
 
 export type PrismaSpotGuides = Omit<Prisma.Spot_guidesGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
 
+export type SupabaseSpotGuides = TableRow<'spot_guides'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_SpotGuides(supabase: TableRow<'spot_guides'>): PrismaSpotGuides {
+export function convertSupabaseToPrisma_SpotGuides(supabase: SupabaseSpotGuides): PrismaSpotGuides {
   return {
     id: supabase.id,
     spot_id: supabase.spot_id,
@@ -36,7 +38,7 @@ export function convertSupabaseToPrisma_SpotGuides(supabase: TableRow<'spot_guid
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_SpotGuides(prisma: PrismaSpotGuides): TableRow<'spot_guides'> {
+export function convertPrismaToSupabase_SpotGuides(prisma: PrismaSpotGuides): SupabaseSpotGuides {
   return {
     id: prisma.id,
     spot_id: prisma.spot_id,

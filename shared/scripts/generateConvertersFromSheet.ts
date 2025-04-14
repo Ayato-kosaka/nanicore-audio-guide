@@ -128,12 +128,14 @@ function generateConverter(tableName: string, columns: TColumn[]): string {
   return `${imports}
 export type Prisma${tablePascal} = Omit<Prisma.${prismaTypeName}, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
 
+export type Supabase${tablePascal} = TableRow<'${tableName}'>;
+
 /**
  * Supabase 型 → Prisma 型 に変換
  * @param supabase 通信用の Supabase 型オブジェクト
  * @returns アプリ内部用の Prisma 型オブジェクト
  */
-export function convertSupabaseToPrisma_${tablePascal}(supabase: TableRow<'${tableName}'>): Prisma${tablePascal} {
+export function convertSupabaseToPrisma_${tablePascal}(supabase: Supabase${tablePascal}): Prisma${tablePascal} {
   return {
 ${toPrismaBody}
   };
@@ -144,7 +146,7 @@ ${toPrismaBody}
  * @param prisma アプリ内部で操作される Prisma 型オブジェクト
  * @returns API 通信用の Supabase 型オブジェクト
  */
-export function convertPrismaToSupabase_${tablePascal}(prisma: Prisma${tablePascal}): TableRow<'${tableName}'> {
+export function convertPrismaToSupabase_${tablePascal}(prisma: Prisma${tablePascal}): Supabase${tablePascal} {
   return {
 ${toSupabaseBody}
   };
