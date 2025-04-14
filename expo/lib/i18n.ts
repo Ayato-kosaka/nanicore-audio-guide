@@ -1,53 +1,61 @@
 /**
  * 多言語対応のための i18n 初期化モジュール。
  *
- * ユーザー端末のロケールに応じて `i18n-js` に翻訳辞書を読み込む。
- * 対応言語は `en`, `ja`, `fr`, `zh`, `ar`。未対応言語は英語にフォールバックされる。
- * Expo Localization と連携して locale を動的設定。
+ * 未対応ロケールは自動的に英語（en-US）にフォールバック。
  *
- * @returns {i18n} 初期化済みの i18n インスタンス
+ * `getResolvedLocale(locale?: string)` により、
+ * 任意のロケール値から最適なサポートロケールを特定可能。
+ *
+ * ※ 実際の `locale` 設定は app/[locale]/_layout.tsx 側で行います。
  */
 
-import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
 
-import en from "../locales/en.json";
-import ja from "../locales/ja.json";
-import fr from "../locales/fr.json";
-import zh from "../locales/zh.json";
-import ar from "../locales/ar.json";
+// 各ロケール用翻訳ファイル
+import en_US from '../locales/en-US.json';
+import ja_JP from '../locales/ja-JP.json';
+import fr_FR from '../locales/fr-FR.json';
+import zh_CN from '../locales/zh-CN.json';
+import ar_SA from '../locales/ar-SA.json';
 
-const i18n = new I18n();
-
-// 翻訳辞書を設定（必要に応じて追加可能）
-i18n.translations = {
-  en,
-  ja,
-  fr,
-  zh,
-  ar,
+// 翻訳辞書をロケール形式で登録
+const TRANSLATIONS: Record<string, object> = {
+  'en-US': en_US,
+  'ja-JP': ja_JP,
+  'fr-FR': fr_FR,
+  'zh-CN': zh_CN,
+  'ar-SA': ar_SA,
 };
 
-// 未翻訳のキーがあった場合、英語にフォールバックする
+// サポートされているロケール一覧を公開
+export const I18N_SUPPORTED_LOCALES = Object.keys(TRANSLATIONS);
+
+// i18n インスタンスの生成と初期化
+const i18n = new I18n(TRANSLATIONS);
 i18n.enableFallback = true;
-
-// デフォルトロケールを明示的に英語に設定（テストや初期化時に使用）
-i18n.defaultLocale = "en";
+i18n.defaultLocale = 'en-US';
 
 /**
- * デバイスの優先ロケールから最上位の言語コードを設定
- * `languageCode` は 'ja', 'en' など2文字コード
+ * ユーザーが選択したロケールから適切な翻訳ロケールを解決する。
+ * - 完全一致（例: ja-JP）
+ * - 言語コード一致（例: ja）
+ * - 該当なし → 'en-US'
+ *
+ * @param locale 任意のロケール文字列（例: "ja-JP", "fr"）
+ * @returns i18n-js に適したロケールキー
  */
-const deviceLocales = Localization.getLocales();
-const preferredLocale = deviceLocales[0]?.languageCode ?? 'en';
-i18n.locale = preferredLocale;
+export function getResolvedLocale(locale?: string): string {
+  if (!locale) return i18n.defaultLocale;
 
-/**
- * アプリで使用可能な言語一覧。
- * - UI選択肢
- * - バリデーションチェック
- * - 言語切り替え表示などに活用
- */
-export const SUPPORTED_LANGUAGES = Object.keys(i18n.translations);
+  const normalized = locale.trim();
+
+  // 完全一致があれば採用
+  if (I18N_SUPPORTED_LOCALES.includes(normalized)) return normalized;
+
+  // 言語コードベースのフォールバック（例: "ja" → "ja-JP"）
+  const langCode = normalized.split('-')[0];
+  const matched = I18N_SUPPORTED_LOCALES.find(l => l.startsWith(langCode));
+  return matched || i18n.defaultLocale;
+}
 
 export default i18n;
