@@ -34,6 +34,11 @@ export type external_api_logs = $Result.DefaultSelection<Prisma.$external_api_lo
  */
 export type frontend_event_logs = $Result.DefaultSelection<Prisma.$frontend_event_logsPayload>
 /**
+ * Model reactions
+ * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ */
+export type reactions = $Result.DefaultSelection<Prisma.$reactionsPayload>
+/**
  * Model spot_guides
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
  */
@@ -78,6 +83,22 @@ export const frontend_event_logs_error_level: {
 export type frontend_event_logs_error_level = (typeof frontend_event_logs_error_level)[keyof typeof frontend_event_logs_error_level]
 
 
+export const reactions_action_type: {
+  like: 'like',
+  disLike: 'disLike',
+  regenerate: 'regenerate'
+};
+
+export type reactions_action_type = (typeof reactions_action_type)[keyof typeof reactions_action_type]
+
+
+export const reactions_target_type: {
+  spot_guides: 'spot_guides'
+};
+
+export type reactions_target_type = (typeof reactions_target_type)[keyof typeof reactions_target_type]
+
+
 export const spot_guides_voice_type: {
   SSML_VOICE_GENDER_UNSPECIFIED: 'SSML_VOICE_GENDER_UNSPECIFIED',
   MALE: 'MALE',
@@ -100,6 +121,14 @@ export const ext_spots_source_type: typeof $Enums.ext_spots_source_type
 export type frontend_event_logs_error_level = $Enums.frontend_event_logs_error_level
 
 export const frontend_event_logs_error_level: typeof $Enums.frontend_event_logs_error_level
+
+export type reactions_action_type = $Enums.reactions_action_type
+
+export const reactions_action_type: typeof $Enums.reactions_action_type
+
+export type reactions_target_type = $Enums.reactions_target_type
+
+export const reactions_target_type: typeof $Enums.reactions_target_type
 
 export type spot_guides_voice_type = $Enums.spot_guides_voice_type
 
@@ -269,6 +298,16 @@ export class PrismaClient<
     * ```
     */
   get frontend_event_logs(): Prisma.frontend_event_logsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.reactions`: Exposes CRUD operations for the **reactions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Reactions
+    * const reactions = await prisma.reactions.findMany()
+    * ```
+    */
+  get reactions(): Prisma.reactionsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.spot_guides`: Exposes CRUD operations for the **spot_guides** model.
@@ -733,6 +772,7 @@ export namespace Prisma {
     ext_spots: 'ext_spots',
     external_api_logs: 'external_api_logs',
     frontend_event_logs: 'frontend_event_logs',
+    reactions: 'reactions',
     spot_guides: 'spot_guides',
     spot_visits: 'spot_visits'
   };
@@ -753,7 +793,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "backend_event_logs" | "ext_spots" | "external_api_logs" | "frontend_event_logs" | "spot_guides" | "spot_visits"
+      modelProps: "backend_event_logs" | "ext_spots" | "external_api_logs" | "frontend_event_logs" | "reactions" | "spot_guides" | "spot_visits"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1053,6 +1093,80 @@ export namespace Prisma {
           }
         }
       }
+      reactions: {
+        payload: Prisma.$reactionsPayload<ExtArgs>
+        fields: Prisma.reactionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.reactionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.reactionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          findFirst: {
+            args: Prisma.reactionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.reactionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          findMany: {
+            args: Prisma.reactionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>[]
+          }
+          create: {
+            args: Prisma.reactionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          createMany: {
+            args: Prisma.reactionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.reactionsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>[]
+          }
+          delete: {
+            args: Prisma.reactionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          update: {
+            args: Prisma.reactionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.reactionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.reactionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.reactionsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>[]
+          }
+          upsert: {
+            args: Prisma.reactionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$reactionsPayload>
+          }
+          aggregate: {
+            args: Prisma.ReactionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReactions>
+          }
+          groupBy: {
+            args: Prisma.reactionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReactionsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.reactionsCountArgs<ExtArgs>
+            result: $Utils.Optional<ReactionsCountAggregateOutputType> | number
+          }
+        }
+      }
       spot_guides: {
         payload: Prisma.$spot_guidesPayload<ExtArgs>
         fields: Prisma.spot_guidesFieldRefs
@@ -1289,6 +1403,7 @@ export namespace Prisma {
     ext_spots?: ext_spotsOmit
     external_api_logs?: external_api_logsOmit
     frontend_event_logs?: frontend_event_logsOmit
+    reactions?: reactionsOmit
     spot_guides?: spot_guidesOmit
     spot_visits?: spot_visitsOmit
   }
@@ -5904,6 +6019,1074 @@ export namespace Prisma {
 
 
   /**
+   * Model reactions
+   */
+
+  export type AggregateReactions = {
+    _count: ReactionsCountAggregateOutputType | null
+    _avg: ReactionsAvgAggregateOutputType | null
+    _sum: ReactionsSumAggregateOutputType | null
+    _min: ReactionsMinAggregateOutputType | null
+    _max: ReactionsMaxAggregateOutputType | null
+  }
+
+  export type ReactionsAvgAggregateOutputType = {
+    lock_no: number | null
+  }
+
+  export type ReactionsSumAggregateOutputType = {
+    lock_no: number | null
+  }
+
+  export type ReactionsMinAggregateOutputType = {
+    id: string | null
+    user_id: string | null
+    target_type: $Enums.reactions_target_type | null
+    target_id: string | null
+    action_type: $Enums.reactions_action_type | null
+    created_at: Date | null
+    created_version: string | null
+    lock_no: number | null
+  }
+
+  export type ReactionsMaxAggregateOutputType = {
+    id: string | null
+    user_id: string | null
+    target_type: $Enums.reactions_target_type | null
+    target_id: string | null
+    action_type: $Enums.reactions_action_type | null
+    created_at: Date | null
+    created_version: string | null
+    lock_no: number | null
+  }
+
+  export type ReactionsCountAggregateOutputType = {
+    id: number
+    user_id: number
+    target_type: number
+    target_id: number
+    action_type: number
+    created_at: number
+    created_version: number
+    lock_no: number
+    _all: number
+  }
+
+
+  export type ReactionsAvgAggregateInputType = {
+    lock_no?: true
+  }
+
+  export type ReactionsSumAggregateInputType = {
+    lock_no?: true
+  }
+
+  export type ReactionsMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    target_type?: true
+    target_id?: true
+    action_type?: true
+    created_at?: true
+    created_version?: true
+    lock_no?: true
+  }
+
+  export type ReactionsMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    target_type?: true
+    target_id?: true
+    action_type?: true
+    created_at?: true
+    created_version?: true
+    lock_no?: true
+  }
+
+  export type ReactionsCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    target_type?: true
+    target_id?: true
+    action_type?: true
+    created_at?: true
+    created_version?: true
+    lock_no?: true
+    _all?: true
+  }
+
+  export type ReactionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which reactions to aggregate.
+     */
+    where?: reactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reactions to fetch.
+     */
+    orderBy?: reactionsOrderByWithRelationInput | reactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: reactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned reactions
+    **/
+    _count?: true | ReactionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReactionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReactionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReactionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReactionsMaxAggregateInputType
+  }
+
+  export type GetReactionsAggregateType<T extends ReactionsAggregateArgs> = {
+        [P in keyof T & keyof AggregateReactions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReactions[P]>
+      : GetScalarType<T[P], AggregateReactions[P]>
+  }
+
+
+
+
+  export type reactionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: reactionsWhereInput
+    orderBy?: reactionsOrderByWithAggregationInput | reactionsOrderByWithAggregationInput[]
+    by: ReactionsScalarFieldEnum[] | ReactionsScalarFieldEnum
+    having?: reactionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReactionsCountAggregateInputType | true
+    _avg?: ReactionsAvgAggregateInputType
+    _sum?: ReactionsSumAggregateInputType
+    _min?: ReactionsMinAggregateInputType
+    _max?: ReactionsMaxAggregateInputType
+  }
+
+  export type ReactionsGroupByOutputType = {
+    id: string
+    user_id: string
+    target_type: $Enums.reactions_target_type
+    target_id: string
+    action_type: $Enums.reactions_action_type
+    created_at: Date
+    created_version: string
+    lock_no: number
+    _count: ReactionsCountAggregateOutputType | null
+    _avg: ReactionsAvgAggregateOutputType | null
+    _sum: ReactionsSumAggregateOutputType | null
+    _min: ReactionsMinAggregateOutputType | null
+    _max: ReactionsMaxAggregateOutputType | null
+  }
+
+  type GetReactionsGroupByPayload<T extends reactionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReactionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReactionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReactionsGroupByOutputType[P]>
+            : GetScalarType<T[P], ReactionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type reactionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    target_type?: boolean
+    target_id?: boolean
+    action_type?: boolean
+    created_at?: boolean
+    created_version?: boolean
+    lock_no?: boolean
+  }, ExtArgs["result"]["reactions"]>
+
+  export type reactionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    target_type?: boolean
+    target_id?: boolean
+    action_type?: boolean
+    created_at?: boolean
+    created_version?: boolean
+    lock_no?: boolean
+  }, ExtArgs["result"]["reactions"]>
+
+  export type reactionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    target_type?: boolean
+    target_id?: boolean
+    action_type?: boolean
+    created_at?: boolean
+    created_version?: boolean
+    lock_no?: boolean
+  }, ExtArgs["result"]["reactions"]>
+
+  export type reactionsSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    target_type?: boolean
+    target_id?: boolean
+    action_type?: boolean
+    created_at?: boolean
+    created_version?: boolean
+    lock_no?: boolean
+  }
+
+  export type reactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "target_type" | "target_id" | "action_type" | "created_at" | "created_version" | "lock_no", ExtArgs["result"]["reactions"]>
+
+  export type $reactionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "reactions"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user_id: string
+      target_type: $Enums.reactions_target_type
+      target_id: string
+      action_type: $Enums.reactions_action_type
+      created_at: Date
+      created_version: string
+      lock_no: number
+    }, ExtArgs["result"]["reactions"]>
+    composites: {}
+  }
+
+  type reactionsGetPayload<S extends boolean | null | undefined | reactionsDefaultArgs> = $Result.GetResult<Prisma.$reactionsPayload, S>
+
+  type reactionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<reactionsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReactionsCountAggregateInputType | true
+    }
+
+  export interface reactionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['reactions'], meta: { name: 'reactions' } }
+    /**
+     * Find zero or one Reactions that matches the filter.
+     * @param {reactionsFindUniqueArgs} args - Arguments to find a Reactions
+     * @example
+     * // Get one Reactions
+     * const reactions = await prisma.reactions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends reactionsFindUniqueArgs>(args: SelectSubset<T, reactionsFindUniqueArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Reactions that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {reactionsFindUniqueOrThrowArgs} args - Arguments to find a Reactions
+     * @example
+     * // Get one Reactions
+     * const reactions = await prisma.reactions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends reactionsFindUniqueOrThrowArgs>(args: SelectSubset<T, reactionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Reactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsFindFirstArgs} args - Arguments to find a Reactions
+     * @example
+     * // Get one Reactions
+     * const reactions = await prisma.reactions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends reactionsFindFirstArgs>(args?: SelectSubset<T, reactionsFindFirstArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Reactions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsFindFirstOrThrowArgs} args - Arguments to find a Reactions
+     * @example
+     * // Get one Reactions
+     * const reactions = await prisma.reactions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends reactionsFindFirstOrThrowArgs>(args?: SelectSubset<T, reactionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Reactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Reactions
+     * const reactions = await prisma.reactions.findMany()
+     * 
+     * // Get first 10 Reactions
+     * const reactions = await prisma.reactions.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const reactionsWithIdOnly = await prisma.reactions.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends reactionsFindManyArgs>(args?: SelectSubset<T, reactionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Reactions.
+     * @param {reactionsCreateArgs} args - Arguments to create a Reactions.
+     * @example
+     * // Create one Reactions
+     * const Reactions = await prisma.reactions.create({
+     *   data: {
+     *     // ... data to create a Reactions
+     *   }
+     * })
+     * 
+     */
+    create<T extends reactionsCreateArgs>(args: SelectSubset<T, reactionsCreateArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Reactions.
+     * @param {reactionsCreateManyArgs} args - Arguments to create many Reactions.
+     * @example
+     * // Create many Reactions
+     * const reactions = await prisma.reactions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends reactionsCreateManyArgs>(args?: SelectSubset<T, reactionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Reactions and returns the data saved in the database.
+     * @param {reactionsCreateManyAndReturnArgs} args - Arguments to create many Reactions.
+     * @example
+     * // Create many Reactions
+     * const reactions = await prisma.reactions.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Reactions and only return the `id`
+     * const reactionsWithIdOnly = await prisma.reactions.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends reactionsCreateManyAndReturnArgs>(args?: SelectSubset<T, reactionsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Reactions.
+     * @param {reactionsDeleteArgs} args - Arguments to delete one Reactions.
+     * @example
+     * // Delete one Reactions
+     * const Reactions = await prisma.reactions.delete({
+     *   where: {
+     *     // ... filter to delete one Reactions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends reactionsDeleteArgs>(args: SelectSubset<T, reactionsDeleteArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Reactions.
+     * @param {reactionsUpdateArgs} args - Arguments to update one Reactions.
+     * @example
+     * // Update one Reactions
+     * const reactions = await prisma.reactions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends reactionsUpdateArgs>(args: SelectSubset<T, reactionsUpdateArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Reactions.
+     * @param {reactionsDeleteManyArgs} args - Arguments to filter Reactions to delete.
+     * @example
+     * // Delete a few Reactions
+     * const { count } = await prisma.reactions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends reactionsDeleteManyArgs>(args?: SelectSubset<T, reactionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Reactions
+     * const reactions = await prisma.reactions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends reactionsUpdateManyArgs>(args: SelectSubset<T, reactionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reactions and returns the data updated in the database.
+     * @param {reactionsUpdateManyAndReturnArgs} args - Arguments to update many Reactions.
+     * @example
+     * // Update many Reactions
+     * const reactions = await prisma.reactions.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Reactions and only return the `id`
+     * const reactionsWithIdOnly = await prisma.reactions.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends reactionsUpdateManyAndReturnArgs>(args: SelectSubset<T, reactionsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Reactions.
+     * @param {reactionsUpsertArgs} args - Arguments to update or create a Reactions.
+     * @example
+     * // Update or create a Reactions
+     * const reactions = await prisma.reactions.upsert({
+     *   create: {
+     *     // ... data to create a Reactions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Reactions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends reactionsUpsertArgs>(args: SelectSubset<T, reactionsUpsertArgs<ExtArgs>>): Prisma__reactionsClient<$Result.GetResult<Prisma.$reactionsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Reactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsCountArgs} args - Arguments to filter Reactions to count.
+     * @example
+     * // Count the number of Reactions
+     * const count = await prisma.reactions.count({
+     *   where: {
+     *     // ... the filter for the Reactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends reactionsCountArgs>(
+      args?: Subset<T, reactionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReactionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Reactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReactionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReactionsAggregateArgs>(args: Subset<T, ReactionsAggregateArgs>): Prisma.PrismaPromise<GetReactionsAggregateType<T>>
+
+    /**
+     * Group by Reactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {reactionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends reactionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: reactionsGroupByArgs['orderBy'] }
+        : { orderBy?: reactionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, reactionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReactionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the reactions model
+   */
+  readonly fields: reactionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for reactions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__reactionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the reactions model
+   */
+  interface reactionsFieldRefs {
+    readonly id: FieldRef<"reactions", 'String'>
+    readonly user_id: FieldRef<"reactions", 'String'>
+    readonly target_type: FieldRef<"reactions", 'reactions_target_type'>
+    readonly target_id: FieldRef<"reactions", 'String'>
+    readonly action_type: FieldRef<"reactions", 'reactions_action_type'>
+    readonly created_at: FieldRef<"reactions", 'DateTime'>
+    readonly created_version: FieldRef<"reactions", 'String'>
+    readonly lock_no: FieldRef<"reactions", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * reactions findUnique
+   */
+  export type reactionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter, which reactions to fetch.
+     */
+    where: reactionsWhereUniqueInput
+  }
+
+  /**
+   * reactions findUniqueOrThrow
+   */
+  export type reactionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter, which reactions to fetch.
+     */
+    where: reactionsWhereUniqueInput
+  }
+
+  /**
+   * reactions findFirst
+   */
+  export type reactionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter, which reactions to fetch.
+     */
+    where?: reactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reactions to fetch.
+     */
+    orderBy?: reactionsOrderByWithRelationInput | reactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for reactions.
+     */
+    cursor?: reactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of reactions.
+     */
+    distinct?: ReactionsScalarFieldEnum | ReactionsScalarFieldEnum[]
+  }
+
+  /**
+   * reactions findFirstOrThrow
+   */
+  export type reactionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter, which reactions to fetch.
+     */
+    where?: reactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reactions to fetch.
+     */
+    orderBy?: reactionsOrderByWithRelationInput | reactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for reactions.
+     */
+    cursor?: reactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of reactions.
+     */
+    distinct?: ReactionsScalarFieldEnum | ReactionsScalarFieldEnum[]
+  }
+
+  /**
+   * reactions findMany
+   */
+  export type reactionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter, which reactions to fetch.
+     */
+    where?: reactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of reactions to fetch.
+     */
+    orderBy?: reactionsOrderByWithRelationInput | reactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing reactions.
+     */
+    cursor?: reactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` reactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` reactions.
+     */
+    skip?: number
+    distinct?: ReactionsScalarFieldEnum | ReactionsScalarFieldEnum[]
+  }
+
+  /**
+   * reactions create
+   */
+  export type reactionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a reactions.
+     */
+    data: XOR<reactionsCreateInput, reactionsUncheckedCreateInput>
+  }
+
+  /**
+   * reactions createMany
+   */
+  export type reactionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many reactions.
+     */
+    data: reactionsCreateManyInput | reactionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * reactions createManyAndReturn
+   */
+  export type reactionsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * The data used to create many reactions.
+     */
+    data: reactionsCreateManyInput | reactionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * reactions update
+   */
+  export type reactionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a reactions.
+     */
+    data: XOR<reactionsUpdateInput, reactionsUncheckedUpdateInput>
+    /**
+     * Choose, which reactions to update.
+     */
+    where: reactionsWhereUniqueInput
+  }
+
+  /**
+   * reactions updateMany
+   */
+  export type reactionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update reactions.
+     */
+    data: XOR<reactionsUpdateManyMutationInput, reactionsUncheckedUpdateManyInput>
+    /**
+     * Filter which reactions to update
+     */
+    where?: reactionsWhereInput
+    /**
+     * Limit how many reactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * reactions updateManyAndReturn
+   */
+  export type reactionsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * The data used to update reactions.
+     */
+    data: XOR<reactionsUpdateManyMutationInput, reactionsUncheckedUpdateManyInput>
+    /**
+     * Filter which reactions to update
+     */
+    where?: reactionsWhereInput
+    /**
+     * Limit how many reactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * reactions upsert
+   */
+  export type reactionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the reactions to update in case it exists.
+     */
+    where: reactionsWhereUniqueInput
+    /**
+     * In case the reactions found by the `where` argument doesn't exist, create a new reactions with this data.
+     */
+    create: XOR<reactionsCreateInput, reactionsUncheckedCreateInput>
+    /**
+     * In case the reactions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<reactionsUpdateInput, reactionsUncheckedUpdateInput>
+  }
+
+  /**
+   * reactions delete
+   */
+  export type reactionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+    /**
+     * Filter which reactions to delete.
+     */
+    where: reactionsWhereUniqueInput
+  }
+
+  /**
+   * reactions deleteMany
+   */
+  export type reactionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which reactions to delete
+     */
+    where?: reactionsWhereInput
+    /**
+     * Limit how many reactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * reactions without action
+   */
+  export type reactionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the reactions
+     */
+    select?: reactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the reactions
+     */
+    omit?: reactionsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model spot_guides
    */
 
@@ -8501,6 +9684,20 @@ export namespace Prisma {
   export type Frontend_event_logsScalarFieldEnum = (typeof Frontend_event_logsScalarFieldEnum)[keyof typeof Frontend_event_logsScalarFieldEnum]
 
 
+  export const ReactionsScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    target_type: 'target_type',
+    target_id: 'target_id',
+    action_type: 'action_type',
+    created_at: 'created_at',
+    created_version: 'created_version',
+    lock_no: 'lock_no'
+  };
+
+  export type ReactionsScalarFieldEnum = (typeof ReactionsScalarFieldEnum)[keyof typeof ReactionsScalarFieldEnum]
+
+
   export const Spot_guidesScalarFieldEnum: {
     id: 'id',
     spot_id: 'spot_id',
@@ -8704,6 +9901,34 @@ export namespace Prisma {
    * Reference to a field of type 'frontend_event_logs_error_level[]'
    */
   export type ListEnumfrontend_event_logs_error_levelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'frontend_event_logs_error_level[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'reactions_target_type'
+   */
+  export type Enumreactions_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_target_type'>
+    
+
+
+  /**
+   * Reference to a field of type 'reactions_target_type[]'
+   */
+  export type ListEnumreactions_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_target_type[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'reactions_action_type'
+   */
+  export type Enumreactions_action_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_action_type'>
+    
+
+
+  /**
+   * Reference to a field of type 'reactions_action_type[]'
+   */
+  export type ListEnumreactions_action_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_action_type[]'>
     
 
 
@@ -9057,6 +10282,75 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"frontend_event_logs"> | Date | string
     created_app_version?: StringWithAggregatesFilter<"frontend_event_logs"> | string
     created_commit_id?: StringWithAggregatesFilter<"frontend_event_logs"> | string
+  }
+
+  export type reactionsWhereInput = {
+    AND?: reactionsWhereInput | reactionsWhereInput[]
+    OR?: reactionsWhereInput[]
+    NOT?: reactionsWhereInput | reactionsWhereInput[]
+    id?: StringFilter<"reactions"> | string
+    user_id?: StringFilter<"reactions"> | string
+    target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
+    target_id?: StringFilter<"reactions"> | string
+    action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
+    created_at?: DateTimeFilter<"reactions"> | Date | string
+    created_version?: StringFilter<"reactions"> | string
+    lock_no?: IntFilter<"reactions"> | number
+  }
+
+  export type reactionsOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_type?: SortOrder
+    target_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    created_version?: SortOrder
+    lock_no?: SortOrder
+  }
+
+  export type reactionsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: reactionsWhereInput | reactionsWhereInput[]
+    OR?: reactionsWhereInput[]
+    NOT?: reactionsWhereInput | reactionsWhereInput[]
+    user_id?: StringFilter<"reactions"> | string
+    target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
+    target_id?: StringFilter<"reactions"> | string
+    action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
+    created_at?: DateTimeFilter<"reactions"> | Date | string
+    created_version?: StringFilter<"reactions"> | string
+    lock_no?: IntFilter<"reactions"> | number
+  }, "id">
+
+  export type reactionsOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_type?: SortOrder
+    target_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    created_version?: SortOrder
+    lock_no?: SortOrder
+    _count?: reactionsCountOrderByAggregateInput
+    _avg?: reactionsAvgOrderByAggregateInput
+    _max?: reactionsMaxOrderByAggregateInput
+    _min?: reactionsMinOrderByAggregateInput
+    _sum?: reactionsSumOrderByAggregateInput
+  }
+
+  export type reactionsScalarWhereWithAggregatesInput = {
+    AND?: reactionsScalarWhereWithAggregatesInput | reactionsScalarWhereWithAggregatesInput[]
+    OR?: reactionsScalarWhereWithAggregatesInput[]
+    NOT?: reactionsScalarWhereWithAggregatesInput | reactionsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"reactions"> | string
+    user_id?: StringWithAggregatesFilter<"reactions"> | string
+    target_type?: Enumreactions_target_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_target_type
+    target_id?: StringWithAggregatesFilter<"reactions"> | string
+    action_type?: Enumreactions_action_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_action_type
+    created_at?: DateTimeWithAggregatesFilter<"reactions"> | Date | string
+    created_version?: StringWithAggregatesFilter<"reactions"> | string
+    lock_no?: IntWithAggregatesFilter<"reactions"> | number
   }
 
   export type spot_guidesWhereInput = {
@@ -9651,6 +10945,83 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_app_version?: StringFieldUpdateOperationsInput | string
     created_commit_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type reactionsCreateInput = {
+    id: string
+    user_id: string
+    target_type: $Enums.reactions_target_type
+    target_id: string
+    action_type: $Enums.reactions_action_type
+    created_at?: Date | string
+    created_version: string
+    lock_no?: number
+  }
+
+  export type reactionsUncheckedCreateInput = {
+    id: string
+    user_id: string
+    target_type: $Enums.reactions_target_type
+    target_id: string
+    action_type: $Enums.reactions_action_type
+    created_at?: Date | string
+    created_version: string
+    lock_no?: number
+  }
+
+  export type reactionsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_id?: StringFieldUpdateOperationsInput | string
+    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_version?: StringFieldUpdateOperationsInput | string
+    lock_no?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type reactionsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_id?: StringFieldUpdateOperationsInput | string
+    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_version?: StringFieldUpdateOperationsInput | string
+    lock_no?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type reactionsCreateManyInput = {
+    id: string
+    user_id: string
+    target_type: $Enums.reactions_target_type
+    target_id: string
+    action_type: $Enums.reactions_action_type
+    created_at?: Date | string
+    created_version: string
+    lock_no?: number
+  }
+
+  export type reactionsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_id?: StringFieldUpdateOperationsInput | string
+    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_version?: StringFieldUpdateOperationsInput | string
+    lock_no?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type reactionsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_id?: StringFieldUpdateOperationsInput | string
+    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_version?: StringFieldUpdateOperationsInput | string
+    lock_no?: IntFieldUpdateOperationsInput | number
   }
 
   export type spot_guidesCreateInput = {
@@ -10380,6 +11751,81 @@ export namespace Prisma {
     _max?: NestedEnumfrontend_event_logs_error_levelNullableFilter<$PrismaModel>
   }
 
+  export type Enumreactions_target_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_target_typeFilter<$PrismaModel> | $Enums.reactions_target_type
+  }
+
+  export type Enumreactions_action_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_action_typeFilter<$PrismaModel> | $Enums.reactions_action_type
+  }
+
+  export type reactionsCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_type?: SortOrder
+    target_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    created_version?: SortOrder
+    lock_no?: SortOrder
+  }
+
+  export type reactionsAvgOrderByAggregateInput = {
+    lock_no?: SortOrder
+  }
+
+  export type reactionsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_type?: SortOrder
+    target_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    created_version?: SortOrder
+    lock_no?: SortOrder
+  }
+
+  export type reactionsMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    target_type?: SortOrder
+    target_id?: SortOrder
+    action_type?: SortOrder
+    created_at?: SortOrder
+    created_version?: SortOrder
+    lock_no?: SortOrder
+  }
+
+  export type reactionsSumOrderByAggregateInput = {
+    lock_no?: SortOrder
+  }
+
+  export type Enumreactions_target_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_target_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumreactions_target_typeFilter<$PrismaModel>
+    _max?: NestedEnumreactions_target_typeFilter<$PrismaModel>
+  }
+
+  export type Enumreactions_action_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_action_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumreactions_action_typeFilter<$PrismaModel>
+    _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
+  }
+
   export type Enumspot_guides_voice_typeFilter<$PrismaModel = never> = {
     equals?: $Enums.spot_guides_voice_type | Enumspot_guides_voice_typeFieldRefInput<$PrismaModel>
     in?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
@@ -10756,6 +12202,14 @@ export namespace Prisma {
 
   export type NullableEnumfrontend_event_logs_error_levelFieldUpdateOperationsInput = {
     set?: $Enums.frontend_event_logs_error_level | null
+  }
+
+  export type Enumreactions_target_typeFieldUpdateOperationsInput = {
+    set?: $Enums.reactions_target_type
+  }
+
+  export type Enumreactions_action_typeFieldUpdateOperationsInput = {
+    set?: $Enums.reactions_action_type
   }
 
   export type spot_guidesCreatetagsInput = {
@@ -11143,6 +12597,40 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumfrontend_event_logs_error_levelNullableFilter<$PrismaModel>
     _max?: NestedEnumfrontend_event_logs_error_levelNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumreactions_target_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_target_typeFilter<$PrismaModel> | $Enums.reactions_target_type
+  }
+
+  export type NestedEnumreactions_action_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_action_typeFilter<$PrismaModel> | $Enums.reactions_action_type
+  }
+
+  export type NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_target_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumreactions_target_typeFilter<$PrismaModel>
+    _max?: NestedEnumreactions_target_typeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_action_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumreactions_action_typeFilter<$PrismaModel>
+    _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
   }
 
   export type NestedEnumspot_guides_voice_typeFilter<$PrismaModel = never> = {

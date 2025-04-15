@@ -177,6 +177,39 @@ export type Database = {
         }
         Relationships: []
       }
+      reactions: {
+        Row: {
+          action_type: Database["dev"]["Enums"]["reactions_action_type"]
+          created_at: string
+          created_version: string
+          id: string
+          lock_no: number
+          target_id: string
+          target_type: Database["dev"]["Enums"]["reactions_target_type"]
+          user_id: string
+        }
+        Insert: {
+          action_type: Database["dev"]["Enums"]["reactions_action_type"]
+          created_at?: string
+          created_version: string
+          id: string
+          lock_no?: number
+          target_id: string
+          target_type: Database["dev"]["Enums"]["reactions_target_type"]
+          user_id: string
+        }
+        Update: {
+          action_type?: Database["dev"]["Enums"]["reactions_action_type"]
+          created_at?: string
+          created_version?: string
+          id?: string
+          lock_no?: number
+          target_id?: string
+          target_type?: Database["dev"]["Enums"]["reactions_target_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       spot_guides: {
         Row: {
           audio_storage_path: string
@@ -333,6 +366,8 @@ export type Database = {
         | "info"
         | "warn"
         | "error"
+      reactions_action_type: "like" | "disLike" | "regenerate"
+      reactions_target_type: "spot_guides"
       spot_guides_voice_type:
         | "SSML_VOICE_GENDER_UNSPECIFIED"
         | "MALE"
@@ -468,6 +503,8 @@ export const Constants = {
         "warn",
         "error",
       ],
+      reactions_action_type: ["like", "disLike", "regenerate"],
+      reactions_target_type: ["spot_guides"],
       spot_guides_voice_type: [
         "SSML_VOICE_GENDER_UNSPECIFIED",
         "MALE",

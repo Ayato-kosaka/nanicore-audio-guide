@@ -169,6 +169,17 @@ exports.Prisma.Frontend_event_logsScalarFieldEnum = {
   created_commit_id: 'created_commit_id'
 };
 
+exports.Prisma.ReactionsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  target_type: 'target_type',
+  target_id: 'target_id',
+  action_type: 'action_type',
+  created_at: 'created_at',
+  created_version: 'created_version',
+  lock_no: 'lock_no'
+};
+
 exports.Prisma.Spot_guidesScalarFieldEnum = {
   id: 'id',
   spot_id: 'spot_id',
@@ -250,6 +261,16 @@ exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_err
   error: 'error'
 };
 
+exports.reactions_target_type = exports.$Enums.reactions_target_type = {
+  spot_guides: 'spot_guides'
+};
+
+exports.reactions_action_type = exports.$Enums.reactions_action_type = {
+  like: 'like',
+  disLike: 'disLike',
+  regenerate: 'regenerate'
+};
+
 exports.spot_guides_voice_type = exports.$Enums.spot_guides_voice_type = {
   SSML_VOICE_GENDER_UNSPECIFIED: 'SSML_VOICE_GENDER_UNSPECIFIED',
   MALE: 'MALE',
@@ -262,6 +283,7 @@ exports.Prisma.ModelName = {
   ext_spots: 'ext_spots',
   external_api_logs: 'external_api_logs',
   frontend_event_logs: 'frontend_event_logs',
+  reactions: 'reactions',
   spot_guides: 'spot_guides',
   spot_visits: 'spot_visits'
 };
