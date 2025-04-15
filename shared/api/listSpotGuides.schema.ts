@@ -20,7 +20,8 @@ export type ListSpotGuidesRequest = z.infer<typeof listSpotGuidesRequestSchema>;
  * listSpotGuides API のレスポンス型
  *
  * - `SupabaseSpotGuides` は DB上の spot_guides テーブルを変換・整形したフロントエンド向け構造
+ * - `audioUrl` は音声ファイルのURL
  */
 export type ListSpotGuidesResponse = {
-    spotGuides: SupabaseSpotGuides[];
+    spotGuides: (SupabaseSpotGuides & { audioUrl: string })[];
 };

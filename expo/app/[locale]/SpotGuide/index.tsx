@@ -5,8 +5,8 @@ import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { IconButton } from 'react-native-paper';
 import { AdMobInterstitial } from 'expo-ads-admob';
 
-import { SpotGuideCard } from './components/SpotGuideCard';
-import { SpotRecommendCard } from './components/SpotRecommendCard';
+import { SpotGuideCard } from './SpotGuideCard';
+import { SpotRecommendCard } from './SpotRecommendCard';
 
 import { useLogger } from '@/hooks/useLogger';
 import { useWithLoading } from '@/hooks/useWithLoading';
@@ -37,7 +37,7 @@ export default function SpotGuideScreen() {
   const serializedParams = useLocalSearchParams<SpotGuideSerializedParams>();
   const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams = deserializeSpotGuideParams(serializedParams);
 
-  const [spotGuides, setSpotGuides] = useState<PrismaSpotGuides[]>([]);
+  const [spotGuides, setSpotGuides] = useState<(PrismaSpotGuides & { audioUrl: string })[]>([]);
   const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
   const [lastAdShownIndex, setLastAdShownIndex] = useState<number | null>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
@@ -68,7 +68,10 @@ export default function SpotGuideScreen() {
           ListSpotGuidesRequest,
           ListSpotGuidesResponse
         >('listSpotGuides', { spotId: extSpots.id, languageTag: locale }, 'v1');
-        setSpotGuides(guides.spotGuides.map(convertSupabaseToPrisma_SpotGuides));
+        setSpotGuides(guides.spotGuides.map(spotGuide => ({
+          ...convertSupabaseToPrisma_SpotGuides(spotGuide),
+          audioUrl: spotGuide.audio_storage_path,
+        })));
 
         const recommends = await callCloudFunction<
           ListRecommendedSpotsByVisitHistoryRequest,
@@ -162,7 +165,7 @@ export default function SpotGuideScreen() {
         return (
           <SpotGuideCard
             spot={extSpots}
-            guides={spotGuides}
+            initialGuides={spotGuides}
             imageUri={displayImageUri}
             takenPhotoStoragePath={takenPhotoStoragePath}
           />
