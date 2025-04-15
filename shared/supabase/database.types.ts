@@ -256,7 +256,7 @@ export type Database = {
           represent_guide_id: string
           spot_id: string
           taken_photo_storage_path: string | null
-          time_gap_minutes: number
+          time_gap_minutes: number | null
           updated_at: string
           user_id: string
         }
@@ -270,7 +270,7 @@ export type Database = {
           represent_guide_id: string
           spot_id: string
           taken_photo_storage_path?: string | null
-          time_gap_minutes: number
+          time_gap_minutes?: number | null
           updated_at?: string
           user_id: string
         }
@@ -284,7 +284,7 @@ export type Database = {
           represent_guide_id?: string
           spot_id?: string
           taken_photo_storage_path?: string | null
-          time_gap_minutes?: number
+          time_gap_minutes?: number | null
           updated_at?: string
           user_id?: string
         }

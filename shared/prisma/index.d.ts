@@ -7419,7 +7419,7 @@ export namespace Prisma {
     represent_guide_id: string
     taken_photo_storage_path: string | null
     prev_spot_id: string | null
-    time_gap_minutes: number
+    time_gap_minutes: number | null
     min_version_major: number
     max_version_major: number
     created_at: Date
@@ -7546,7 +7546,7 @@ export namespace Prisma {
       represent_guide_id: string
       taken_photo_storage_path: string | null
       prev_spot_id: string | null
-      time_gap_minutes: number
+      time_gap_minutes: number | null
       min_version_major: number
       max_version_major: number
       created_at: Date
@@ -9189,7 +9189,7 @@ export namespace Prisma {
     represent_guide_id?: StringFilter<"spot_visits"> | string
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
-    time_gap_minutes?: IntFilter<"spot_visits"> | number
+    time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
     min_version_major?: IntFilter<"spot_visits"> | number
     max_version_major?: IntFilter<"spot_visits"> | number
     created_at?: DateTimeFilter<"spot_visits"> | Date | string
@@ -9207,7 +9207,7 @@ export namespace Prisma {
     represent_guide_id?: SortOrder
     taken_photo_storage_path?: SortOrderInput | SortOrder
     prev_spot_id?: SortOrderInput | SortOrder
-    time_gap_minutes?: SortOrder
+    time_gap_minutes?: SortOrderInput | SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
     created_at?: SortOrder
@@ -9228,7 +9228,7 @@ export namespace Prisma {
     represent_guide_id?: StringFilter<"spot_visits"> | string
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
-    time_gap_minutes?: IntFilter<"spot_visits"> | number
+    time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
     min_version_major?: IntFilter<"spot_visits"> | number
     max_version_major?: IntFilter<"spot_visits"> | number
     created_at?: DateTimeFilter<"spot_visits"> | Date | string
@@ -9246,7 +9246,7 @@ export namespace Prisma {
     represent_guide_id?: SortOrder
     taken_photo_storage_path?: SortOrderInput | SortOrder
     prev_spot_id?: SortOrderInput | SortOrder
-    time_gap_minutes?: SortOrder
+    time_gap_minutes?: SortOrderInput | SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
     created_at?: SortOrder
@@ -9269,7 +9269,7 @@ export namespace Prisma {
     represent_guide_id?: StringWithAggregatesFilter<"spot_visits"> | string
     taken_photo_storage_path?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
-    time_gap_minutes?: IntWithAggregatesFilter<"spot_visits"> | number
+    time_gap_minutes?: IntNullableWithAggregatesFilter<"spot_visits"> | number | null
     min_version_major?: IntWithAggregatesFilter<"spot_visits"> | number
     max_version_major?: IntWithAggregatesFilter<"spot_visits"> | number
     created_at?: DateTimeWithAggregatesFilter<"spot_visits"> | Date | string
@@ -9800,7 +9800,7 @@ export namespace Prisma {
     id: string
     user_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -9818,7 +9818,7 @@ export namespace Prisma {
     represent_guide_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -9830,7 +9830,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9848,7 +9848,7 @@ export namespace Prisma {
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9863,7 +9863,7 @@ export namespace Prisma {
     represent_guide_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -9875,7 +9875,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9890,7 +9890,7 @@ export namespace Prisma {
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11243,7 +11243,7 @@ export namespace Prisma {
     id: string
     user_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11259,7 +11259,7 @@ export namespace Prisma {
     spot_id: string
     represent_guide_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11281,7 +11281,7 @@ export namespace Prisma {
     id: string
     user_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11297,7 +11297,7 @@ export namespace Prisma {
     represent_guide_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11380,7 +11380,7 @@ export namespace Prisma {
     represent_guide_id?: StringFilter<"spot_visits"> | string
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
-    time_gap_minutes?: IntFilter<"spot_visits"> | number
+    time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
     min_version_major?: IntFilter<"spot_visits"> | number
     max_version_major?: IntFilter<"spot_visits"> | number
     created_at?: DateTimeFilter<"spot_visits"> | Date | string
@@ -11441,7 +11441,7 @@ export namespace Prisma {
     id: string
     user_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11457,7 +11457,7 @@ export namespace Prisma {
     spot_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11795,7 +11795,7 @@ export namespace Prisma {
     spot_id: string
     represent_guide_id: string
     taken_photo_storage_path?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11809,7 +11809,7 @@ export namespace Prisma {
     represent_guide_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11880,7 +11880,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11896,7 +11896,7 @@ export namespace Prisma {
     spot_id?: StringFieldUpdateOperationsInput | string
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11910,7 +11910,7 @@ export namespace Prisma {
     spot_id?: StringFieldUpdateOperationsInput | string
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11922,7 +11922,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11938,7 +11938,7 @@ export namespace Prisma {
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11952,7 +11952,7 @@ export namespace Prisma {
     represent_guide_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11966,7 +11966,7 @@ export namespace Prisma {
     spot_id: string
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
-    time_gap_minutes: number
+    time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
     created_at?: Date | string
@@ -11978,7 +11978,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11994,7 +11994,7 @@ export namespace Prisma {
     spot_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12008,7 +12008,7 @@ export namespace Prisma {
     spot_id?: StringFieldUpdateOperationsInput | string
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
-    time_gap_minutes?: IntFieldUpdateOperationsInput | number
+    time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

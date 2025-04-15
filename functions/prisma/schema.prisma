@@ -122,7 +122,7 @@ model spot_visits {
   represent_guide_id                            String
   taken_photo_storage_path                      String?
   prev_spot_id                                  String?
-  time_gap_minutes                              Int
+  time_gap_minutes                              Int?
   min_version_major                             Int
   max_version_major                             Int
   created_at                                    DateTime    @default(now()) @db.Timestamptz(6)

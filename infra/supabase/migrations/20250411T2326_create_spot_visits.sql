@@ -6,7 +6,7 @@ CREATE TABLE spot_visits (
     represent_guide_id TEXT NOT NULL,
     taken_photo_storage_path TEXT,
     prev_spot_id TEXT,
-    time_gap_minutes INTEGER NOT NULL,
+    time_gap_minutes INTEGER,
     min_version_major INTEGER NOT NULL,
     max_version_major INTEGER NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
