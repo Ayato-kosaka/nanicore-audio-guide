@@ -4,8 +4,9 @@ import { supabase } from '../lib/supabase';
 import { nanoid } from 'nanoid';
 import { getRemoteConfig } from '../lib/remoteConfig';
 import { Env } from '../constants/Env';
-import { EnumLiteral, TableRow } from '@shared/utils/devDB.types';
+import { EnumLiteral } from '@shared/utils/devDB.types';
 import { DeepNonNullable } from '@shared/utils/deep.types';
+import { SupabaseFrontendEventLogs } from '@shared/converters/convert_frontend_event_logs';
 
 /**
  * ログレベルの優先度マッピング。
@@ -20,7 +21,7 @@ const errorLevelPriority: Record<EnumLiteral<'frontend_event_logs_error_level'>,
 
 type FrontendEventLogInput = DeepNonNullable<
   Omit<
-    TableRow<'frontend_event_logs'>,
+    SupabaseFrontendEventLogs,
     'id' | 'user_id' | 'path_name' | 'payload' | 'created_at' | 'created_app_version' | 'created_commit_id'
   >
 > & {

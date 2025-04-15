@@ -1,14 +1,14 @@
-import { TableRow } from '@shared/utils/devDB.types';
+import { Prisma } from '@shared/prisma';
 
 /**
  * 🎯 SpotGuide 画面に渡されるパラメータ（非シリアライズ形式）。
  *
- * - ext_spots：Supabaseの `ext_spots` テーブルの行オブジェクト
+ * - ext_spots：Prismaの `ext_spots` テーブルの行オブジェクト
  * - imageUri：撮影画像の URI（ローカル or GCS URL）
  * - takenPhotoStoragePath：画像が保存された Cloud Storage パス
  */
 export type SpotGuideParams = {
-  ext_spots: TableRow<'ext_spots'>;
+  extSpots: Omit<Prisma.Ext_spotsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
   imageUri: string;
   takenPhotoStoragePath: string;
 };

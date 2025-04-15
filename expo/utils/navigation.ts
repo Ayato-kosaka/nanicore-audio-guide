@@ -2,10 +2,10 @@ import type { SpotGuideParams, SpotGuideSerializedParams } from '@/types/navigat
 
 export const serializeSpotGuideParams = (params: SpotGuideParams): SpotGuideSerializedParams => ({
   ...params,
-  ext_spots: JSON.stringify(params.ext_spots),
+  extSpots: JSON.stringify(params.extSpots),
 });
 
 export const deserializeSpotGuideParams = (params: SpotGuideSerializedParams): SpotGuideParams => ({
   ...params,
-  ext_spots: JSON.parse(params.ext_spots),
+  extSpots: JSON.parse(params.extSpots),
 });

@@ -13,12 +13,14 @@ import { useWithLoading } from '@/hooks/useWithLoading';
 import { useCloudFunction } from '@/hooks/useCloudFunction';
 import { useLocale } from '@/hooks/useLocale';
 
-import { TableRow } from '@shared/utils/devDB.types';
+import type { ListRecommendedSpotsByVisitHistoryRequest, ListRecommendedSpotsByVisitHistoryResponse } from "@shared/api/listRecommendedSpotsByVisitHistory.schema";
+import type { ListSpotGuidesRequest, ListSpotGuidesResponse } from "@shared/api/listSpotGuides.schema";
 import { SpotGuideParams, SpotGuideSerializedParams } from '@/types/navigation';
 import { deserializeSpotGuideParams } from '@/utils/navigation';
 import i18n from '@/lib/i18n';
 import { getAdMobInterstitialUnitId } from '@/constants/AdMob';
-
+import { convertSupabaseToPrisma_ExtSpots, PrismaExtSpots } from '@shared/converters/convert_ext_spots';
+import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from '@shared/converters/convert_spot_guides';
 /**
  * 📍 SpotGuideScreen
  *
@@ -33,19 +35,19 @@ export default function SpotGuideScreen() {
   const { callCloudFunction } = useCloudFunction();
   const locale = useLocale();
   const serializedParams = useLocalSearchParams<SpotGuideSerializedParams>();
-  const { ext_spots, imageUri, takenPhotoStoragePath }: SpotGuideParams = deserializeSpotGuideParams(serializedParams);
+  const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams = deserializeSpotGuideParams(serializedParams);
 
-  const [spotGuides, setSpotGuides] = useState<TableRow<'spot_guides'>[]>([]);
-  const [recommendedSpots, setRecommendedSpots] = useState<TableRow<'ext_spots'>[]>([]);
+  const [spotGuides, setSpotGuides] = useState<PrismaSpotGuides[]>([]);
+  const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
   const [lastAdShownIndex, setLastAdShownIndex] = useState<number | null>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
 
-  const displayImageUri = imageUri ?? ext_spots.image_url;
-  const carouselItems = useMemo(() => [ext_spots, ...recommendedSpots], [ext_spots, recommendedSpots]);
+  const displayImageUri = imageUri ?? extSpots.image_url;
+  const carouselItems = useMemo(() => [extSpots, ...recommendedSpots], [extSpots, recommendedSpots]);
   const currentIndex = carouselRef.current?.getCurrentIndex?.() ?? 0;
 
   useEffect(() => {
-    if (!ext_spots) {
+    if (!extSpots) {
       router.replace('/SpotCapture');
       return;
     }
@@ -55,24 +57,24 @@ export default function SpotGuideScreen() {
       error_level: 'info',
       payload: { serializedParams },
     });
-  }, [ext_spots]);
+  }, [extSpots]);
 
   useEffect(() => {
-    if (!ext_spots) return;
+    if (!extSpots) return;
 
     withLoading(async () => {
       try {
         const guides = await callCloudFunction<
-          { spot_id: string; language_tag: string },
-          TableRow<'spot_guides'>[]
-        >('listSpotGuides', { spot_id: ext_spots.id, language_tag: locale }, 'v1');
-        setSpotGuides(guides);
+          ListSpotGuidesRequest,
+          ListSpotGuidesResponse
+        >('listSpotGuides', { spotId: extSpots.id, languageTag: locale }, 'v1');
+        setSpotGuides(guides.spotGuides.map(convertSupabaseToPrisma_SpotGuides));
 
         const recommends = await callCloudFunction<
-          { spot_id: string },
-          TableRow<'ext_spots'>[]
-        >('listRecommendedSpotsByVisitHistory', { spot_id: ext_spots.id }, 'v1');
-        setRecommendedSpots(recommends);
+          ListRecommendedSpotsByVisitHistoryRequest,
+          ListRecommendedSpotsByVisitHistoryResponse
+        >('listRecommendedSpotsByVisitHistory', { spotId: extSpots.id }, 'v1');
+        setRecommendedSpots(recommends.extSpots.map(convertSupabaseToPrisma_ExtSpots));
       } catch (error: any) {
         logFrontendEvent({
           event_name: 'SpotGuideLoadFailed',
@@ -81,7 +83,7 @@ export default function SpotGuideScreen() {
         });
       }
     })();
-  }, [ext_spots, locale]);
+  }, [extSpots, locale]);
 
   const maybeShowAd = useCallback(
     async (index: number) => {
@@ -159,7 +161,7 @@ export default function SpotGuideScreen() {
       if (index === 0) {
         return (
           <SpotGuideCard
-            spot={ext_spots}
+            spot={extSpots}
             guides={spotGuides}
             imageUri={displayImageUri}
             takenPhotoStoragePath={takenPhotoStoragePath}
@@ -172,7 +174,7 @@ export default function SpotGuideScreen() {
     [spotGuides, recommendedSpots, displayImageUri]
   );
 
-  if (!ext_spots || isLoading) {
+  if (!extSpots || isLoading) {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
   }
 
