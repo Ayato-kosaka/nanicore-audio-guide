@@ -10,7 +10,7 @@ import { Prisma } from '@shared/prisma';
 export type SpotGuideParams = {
   extSpots: Omit<Prisma.Ext_spotsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
   imageUri: string;
-  takenPhotoStoragePath: string;
+  takenPhotoStoragePath: string | null;
 };
 
 /**

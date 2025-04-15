@@ -40,7 +40,7 @@ export const SpotGuideCard = ({
     spot: PrismaExtSpots;
     initialGuides: (PrismaSpotGuides & { audioUrl: string })[];
     imageUri: string;
-    takenPhotoStoragePath?: string;
+    takenPhotoStoragePath?: string | null;
 }) => {
     const { user } = useAuth();
     const { isLoading, withLoading } = useWithLoading();
