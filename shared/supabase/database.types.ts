@@ -55,35 +55,35 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          image_url: string
+          image_url: string | null
           is_recommendable: boolean
-          landmark_latitude: number
-          landmark_longitude: number
+          landmark_latitude: number | null
+          landmark_longitude: number | null
           lock_no: number
-          source_type: Database["dev"]["Enums"]["ext_spots_source_type"]
           title: string
+          vision_detection_type: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
         }
         Insert: {
-          created_at?: string
+          created_at: string
           id: string
-          image_url: string
+          image_url?: string | null
           is_recommendable: boolean
-          landmark_latitude: number
-          landmark_longitude: number
-          lock_no?: number
-          source_type: Database["dev"]["Enums"]["ext_spots_source_type"]
+          landmark_latitude?: number | null
+          landmark_longitude?: number | null
+          lock_no: number
           title: string
+          vision_detection_type: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
         }
         Update: {
           created_at?: string
           id?: string
-          image_url?: string
+          image_url?: string | null
           is_recommendable?: boolean
-          landmark_latitude?: number
-          landmark_longitude?: number
+          landmark_latitude?: number | null
+          landmark_longitude?: number | null
           lock_no?: number
-          source_type?: Database["dev"]["Enums"]["ext_spots_source_type"]
           title?: string
+          vision_detection_type?: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
         }
         Relationships: []
       }
@@ -359,7 +359,7 @@ export type Database = {
         | "info"
         | "warn"
         | "error"
-      ext_spots_source_type: "LANDMARK_DETECTION" | "WEB_DETECTION"
+      ext_spots_vision_detection_type: "LANDMARK_DETECTION" | "WEB_DETECTION"
       frontend_event_logs_error_level:
         | "trace"
         | "debug"
@@ -495,7 +495,7 @@ export const Constants = {
         "warn",
         "error",
       ],
-      ext_spots_source_type: ["LANDMARK_DETECTION", "WEB_DETECTION"],
+      ext_spots_vision_detection_type: ["LANDMARK_DETECTION", "WEB_DETECTION"],
       frontend_event_logs_error_level: [
         "trace",
         "debug",

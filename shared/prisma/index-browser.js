@@ -131,7 +131,7 @@ exports.Prisma.Backend_event_logsScalarFieldEnum = {
 
 exports.Prisma.Ext_spotsScalarFieldEnum = {
   id: 'id',
-  source_type: 'source_type',
+  vision_detection_type: 'vision_detection_type',
   title: 'title',
   image_url: 'image_url',
   landmark_latitude: 'landmark_latitude',
@@ -248,7 +248,7 @@ exports.backend_event_logs_error_level = exports.$Enums.backend_event_logs_error
   error: 'error'
 };
 
-exports.ext_spots_source_type = exports.$Enums.ext_spots_source_type = {
+exports.ext_spots_vision_detection_type = exports.$Enums.ext_spots_vision_detection_type = {
   LANDMARK_DETECTION: 'LANDMARK_DETECTION',
   WEB_DETECTION: 'WEB_DETECTION'
 };
