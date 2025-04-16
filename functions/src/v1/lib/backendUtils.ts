@@ -62,7 +62,7 @@ export const handleFunctionError = ({
  * @returns {Promise<any>} 取得したAPIレスポンス
  * @throws 外部API呼び出し時のネットワーク・パースエラー
  */
-export const callExternalApi = async ({
+export const callExternalApi = async <T>({
   requestId,
   functionName,
   apiName,
@@ -78,7 +78,7 @@ export const callExternalApi = async ({
   method: 'GET' | 'POST';
   requestPayload?: any;
   userId: string;
-}): Promise<any> => {
+}): Promise<T> => {
   const start = Date.now();
   let status_code = 0;
   let response_payload: any = null;
@@ -107,7 +107,7 @@ export const callExternalApi = async ({
   } finally {
     const response_time_ms = Date.now() - start;
 
-    await logExternalApi({
+    logExternalApi({
       request_id: requestId,
       function_name: functionName,
       api_name: apiName,
