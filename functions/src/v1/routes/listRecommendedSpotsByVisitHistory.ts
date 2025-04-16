@@ -61,7 +61,7 @@ export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
       error_level: 'info',
     });
 
-    // 4. Supabase型に変換して返却
+    // Supabase型に変換して返却
     const response = {
       extSpots: orderedSpots.map(convertPrismaToSupabase_ExtSpots),
     } satisfies ListRecommendedSpotsByVisitHistoryResponse;
