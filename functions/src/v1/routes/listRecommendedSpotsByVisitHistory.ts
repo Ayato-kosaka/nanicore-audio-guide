@@ -3,10 +3,9 @@ import { prisma } from '../lib/prisma';
 import {
   createRequestId,
   getCurrentVersionMajorFromRequest,
-  handleFunctionError,
   withAuthUser,
 } from '../lib/backendUtils';
-import { logBackendEvent } from '../lib/logger';
+import { logBackendEvent, handleFunctionError } from '../lib/logger';
 import { listRecommendedSpotsByVisitHistoryRequestSchema } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
 import type { ListRecommendedSpotsByVisitHistoryResponse } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
 import { convertPrismaToSupabase_ExtSpots } from '@shared/converters/convert_ext_spots';
@@ -86,10 +85,11 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
     res.status(200).json(response);
   } catch (err: any) {
     handleFunctionError({
-      err,
-      functionName,
-      requestId,
+      req,
       res,
+      err,
+      requestId,
+      functionName,
     });
   }
 });

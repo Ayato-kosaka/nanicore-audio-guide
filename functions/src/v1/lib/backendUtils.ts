@@ -1,5 +1,4 @@
-import { Response } from 'express';
-import { logBackendEvent, logExternalApi } from './logger';
+import { logExternalApi } from './logger';
 import jwt from 'jsonwebtoken';
 import { env } from './env';
 const { nanoid } = require('nanoid');
@@ -11,42 +10,6 @@ const { nanoid } = require('nanoid');
  */
 export const createRequestId = (): string => {
   return nanoid(12);
-};
-
-/**
- * 🛑 Firebase Function 内で未処理の例外が発生した場合の共通エラーハンドラ。
- * ログに記録しつつ、HTTP 500エラーとリクエストIDを返す。
- *
- * @param res - Expressのレスポンスオブジェクト
- * @param err - キャッチされた例外オブジェクト
- * @param requestId - トレースID
- * @param functionName - 処理中だった関数名
- * @param userId - ユーザーID（認証済みユーザー）
- * @returns {Response} エラー応答
- */
-export const handleFunctionError = ({
-  res,
-  err,
-  requestId,
-  functionName,
-  userId,
-}: {
-  res: Response,
-  err: any,
-  requestId: string,
-  functionName: string,
-  userId?: string | null,
-}): Response => {
-  logBackendEvent({
-    request_id: requestId,
-    function_name: functionName,
-    event_name: 'unhandledException',
-    user_id: userId ?? null,
-    payload: { message: err.message, stack: err.stack },
-    error_level: 'error',
-  });
-
-  return res.status(500).json({ error: 'Internal server error', requestId });
 };
 
 /**
