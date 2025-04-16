@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { getRemoteConfig } from '../lib/remoteConfig';
 import { Env } from '../constants/Env';
 import { EnumLiteral } from '@shared/utils/devDB.types';
-import { DeepNonNullable } from '@shared/utils/deep.types';
+import { DeepNonNullable } from '@shared/utils/types';
 import { SupabaseFrontendEventLogs } from '@shared/converters/convert_frontend_event_logs';
 
 /**

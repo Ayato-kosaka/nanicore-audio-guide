@@ -19,12 +19,12 @@ export type DeepNonNullable<T> = {
  */
 export type DeepStrictNonNullable<T> = {
   [K in keyof T]: T[K] extends (...args: any) => any
-    ? T[K]
-    : T[K] extends Array<infer U>
-      ? Array<DeepStrictNonNullable<Exclude<U, null>>>
-      : T[K] extends object
-        ? DeepStrictNonNullable<Exclude<T[K], null>>
-        : Exclude<T[K], null>;
+  ? T[K]
+  : T[K] extends Array<infer U>
+  ? Array<DeepStrictNonNullable<Exclude<U, null>>>
+  : T[K] extends object
+  ? DeepStrictNonNullable<Exclude<T[K], null>>
+  : Exclude<T[K], null>;
 };
 
 /**
@@ -36,12 +36,12 @@ export type DeepStrictNonNullable<T> = {
  */
 export type DeepRequired<T> = {
   [K in keyof T]-?: T[K] extends (...args: any) => any
-    ? T[K]
-    : T[K] extends Array<infer U>
-      ? Array<DeepRequired<U>>
-      : T[K] extends object
-        ? DeepRequired<T[K]>
-        : T[K];
+  ? T[K]
+  : T[K] extends Array<infer U>
+  ? Array<DeepRequired<U>>
+  : T[K] extends object
+  ? DeepRequired<T[K]>
+  : T[K];
 };
 
 /**
@@ -53,12 +53,12 @@ export type DeepRequired<T> = {
  */
 export type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends (...args: any) => any
-    ? T[K]
-    : T[K] extends Array<infer U>
-      ? Array<DeepPartial<U>>
-      : T[K] extends object
-        ? DeepPartial<T[K]>
-        : T[K];
+  ? T[K]
+  : T[K] extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T[K] extends object
+  ? DeepPartial<T[K]>
+  : T[K];
 };
 
 /**
@@ -70,10 +70,20 @@ export type DeepPartial<T> = {
  */
 export type DeepReadonly<T> = {
   readonly [K in keyof T]: T[K] extends (...args: any) => any
-    ? T[K]
-    : T[K] extends Array<infer U>
-      ? ReadonlyArray<DeepReadonly<U>>
-      : T[K] extends object
-        ? DeepReadonly<T[K]>
-        : T[K];
+  ? T[K]
+  : T[K] extends Array<infer U>
+  ? ReadonlyArray<DeepReadonly<U>>
+  : T[K] extends object
+  ? DeepReadonly<T[K]>
+  : T[K];
 };
+
+/**
+ * 指定された関数型の引数型を取得する。
+ *
+ * @example
+ * type RequestType<T> = T extends (req: infer R) => any ? R : never;
+ * type A = RequestType<() => void>; // void
+ * type B = RequestType<(req: { foo: string }) => void>; // { foo: string }
+ */
+export type RequestType<T> = T extends (req: infer R) => any ? R : never;
