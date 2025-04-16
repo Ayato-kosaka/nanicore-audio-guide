@@ -3,7 +3,6 @@ import { Response } from 'express';
 import { prisma } from './prisma';
 import { env } from './env';
 import { Prisma } from '@shared/prisma';
-import { ZodIssue } from 'zod';
 const { nanoid } = require('nanoid');
 
 /**
@@ -151,40 +150,4 @@ export const handleFunctionError = ({
     request_id: requestId,
   });
   res.status(500).json({ error: 'Internal server error', requestId });
-};
-
-/**
- * 🛑 リクエストのバリデーションエラーをログに記録し、HTTP 400エラーとリクエストIDを返す。
- *
- * @param req - Expressのリクエストオブジェクト
- * @param res - Expressのレスポンスオブジェクト
- * @param requestId - トレースID
- * @param functionName - 処理中だった関数名
- * @param userId - ユーザーID（認証済みユーザー）
- * @param issues - Zodのエラー内容
- */
-export const handleInvalidRequest = ({
-  req,
-  res,
-  requestId,
-  functionName,
-  userId,
-  zodIssues,
-}: {
-  req: Request,
-  res: Response,
-  requestId: string,
-  functionName: string,
-  userId: string,
-  zodIssues: ZodIssue[],
-}): void => {
-  logBackendEvent({
-    event_name: 'invalidRequest',
-    error_level: 'error',
-    function_name: functionName,
-    user_id: userId,
-    payload: { payload: Object.keys(req.query).length ? req.query : req.body },
-    request_id: requestId,
-  });
-  res.status(400).json({ error: 'Invalid request', zodIssues, requestId });
 };

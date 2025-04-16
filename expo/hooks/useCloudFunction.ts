@@ -30,7 +30,7 @@ export const useCloudFunction = () => {
    * @throws ネットワークエラーまたは認証なし・応答エラー時に例外をスロー
    */
   const callCloudFunction = useCallback(
-    async <T extends object | FormData, R>(
+    async <T extends Record<string, any> | FormData, R>(
       functionName: string,
       requestPayload: T,
       version: APIVersion,
@@ -62,7 +62,7 @@ export const useCloudFunction = () => {
           payload:
             isMultipart || requestPayload instanceof FormData
               ? { info: '[multipart/form-data]' }
-              : (requestPayload as Record<string, any>),
+              : requestPayload,
         });
 
         const response = await fetch(endpoint, {

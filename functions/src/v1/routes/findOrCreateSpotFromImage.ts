@@ -4,16 +4,16 @@ import { identifySpotCandidates } from '../lib/vision';
 import {
     createRequestId,
     getCurrentVersionFromRequest,
-    withAuthUser,
 } from '../lib/backendUtils';
 import {
     logBackendEvent,
     handleFunctionError,
-    handleInvalidRequest,
 } from '../lib/logger';
 import { getWikipediaImageFromMid } from '../lib/wikipedia';
 import { prisma } from '../lib/prisma';
 import { uploadFile } from '../lib/storage';
+import { handleInvalidRequest } from '../lib/request';
+import { withAuthUser } from '../lib/auth';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
