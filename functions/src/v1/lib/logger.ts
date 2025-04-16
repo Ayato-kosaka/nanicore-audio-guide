@@ -169,14 +169,14 @@ export const handleInvalidRequest = ({
   requestId,
   functionName,
   userId,
-  issues,
+  zodIssues,
 }: {
   req: Request,
   res: Response,
   requestId: string,
   functionName: string,
   userId: string,
-  issues: ZodIssue[],
+  zodIssues: ZodIssue[],
 }): void => {
   logBackendEvent({
     event_name: 'invalidRequest',
@@ -186,5 +186,5 @@ export const handleInvalidRequest = ({
     payload: { payload: Object.keys(req.query).length ? req.query : req.body },
     request_id: requestId,
   });
-  res.status(400).json({ error: 'Invalid request', issues, requestId });
+  res.status(400).json({ error: 'Invalid request', zodIssues, requestId });
 };
