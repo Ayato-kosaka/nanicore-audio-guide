@@ -192,6 +192,9 @@ importers:
       '@google-cloud/storage':
         specifier: ^7.16.0
         version: 7.16.0(encoding@0.1.13)
+      '@google-cloud/text-to-speech':
+        specifier: ^6.0.1
+        version: 6.0.1
       '@google-cloud/vision':
         specifier: ^5.1.0
         version: 5.1.0
@@ -1601,6 +1604,10 @@ packages:
   '@google-cloud/storage@7.16.0':
     resolution: {integrity: sha512-7/5LRgykyOfQENcm6hDKP8SX/u9XxE5YOiWOkgkwcoO+cG8xT/cyOvp9wwN3IxfdYgpHs8CE7Nq2PKX2lNaEXw==}
     engines: {node: '>=14'}
+
+  '@google-cloud/text-to-speech@6.0.1':
+    resolution: {integrity: sha512-d9BLvmrAHTc1is38VdFxFLORvkzhDcfBz4h+j6Af21znj5pMlomX8VV7vD0SyRznORAXcwUaBDQ7zvCfChSA1A==}
+    engines: {node: '>=18'}
 
   '@google-cloud/vision@5.1.0':
     resolution: {integrity: sha512-lLF6eTjFRngoV5mnOSqimWsNBt1u56ncxbO/vEFgVfw2TqPCEN2HDmFZquA+FZMDuxQnEVb6hUJCTlVgG3SJBg==}
@@ -9805,6 +9812,12 @@ snapshots:
       uuid: 8.3.2
     transitivePeerDependencies:
       - encoding
+      - supports-color
+
+  '@google-cloud/text-to-speech@6.0.1':
+    dependencies:
+      google-gax: 5.0.1-rc.0
+    transitivePeerDependencies:
       - supports-color
 
   '@google-cloud/vision@5.1.0':
