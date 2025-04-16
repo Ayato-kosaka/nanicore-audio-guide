@@ -53,8 +53,8 @@ export const identifySpotCandidates = async (
         endpoint: 'annotateImage',
         request_payload: JSON.stringify(request),
         response_payload: JSON.stringify(result),
-        status_code: 200,
-        error_message: null,
+        status_code: result.error?.code ?? 200,
+        error_message: result.error?.message ?? null,
         response_time_ms: duration,
         user_id: userId,
     });

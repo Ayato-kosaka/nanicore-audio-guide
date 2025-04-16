@@ -2,7 +2,7 @@ import { onRequest, Request } from 'firebase-functions/v2/https';
 import multer from 'multer';
 import type { Response } from 'express';
 import { z, ZodSchema } from 'zod';
-import { handleFunctionError, logBackendEvent } from './logger';
+import { logBackendEvent } from './logger';
 import { withAuthUser } from './auth';
 import { handleInvalidRequest } from './request';
 import { createRequestId } from './backendUtils';
@@ -37,6 +37,7 @@ export const withValidatedAuthHandler = <T>(
     onRequest(async (req, res) => {
         const requestId = createRequestId();
         const functionName = fn.name || 'anonymousHandler';
+        const isBody = options?.useMulter || Object.keys(req.body).length > 0;
 
         try {
             // 🔐 ユーザー認証（失敗時は例外）
@@ -69,7 +70,6 @@ export const withValidatedAuthHandler = <T>(
                 });
             }
 
-            const isBody = options?.useMulter || Object.keys(req.body).length > 0;
             const source = isBody ? req.body : req.query;
 
             const result = zodSource.safeParse(source);
@@ -112,12 +112,14 @@ export const withValidatedAuthHandler = <T>(
                 functionName,
             });
         } catch (err: any) {
-            handleFunctionError({
-                req,
-                res,
-                err,
-                requestId,
-                functionName,
+            logBackendEvent({
+                event_name: 'unhandledException',
+                error_level: 'error',
+                function_name: functionName,
+                user_id: null,
+                payload: { message: err.message, stack: err.stack, payload: isBody ? req.query : req.body },
+                request_id: requestId,
             });
+            res.status(500).json({ error: 'Internal server error', requestId });
         }
     });  

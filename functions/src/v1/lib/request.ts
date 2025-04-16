@@ -33,7 +33,14 @@ export const handleInvalidRequest = ({
         error_level: 'error',
         function_name: functionName,
         user_id: userId,
-        payload: { payload: Object.keys(req.query).length ? req.query : req.body },
+        payload: {
+            payload: Object.keys(req.query).length ? req.query : req.body,
+            zodIssues: zodIssues.map((issue) => ({
+                code: issue.code,
+                message: issue.message,
+                path: issue.path,
+            })),
+        },
         request_id: requestId,
     });
     res.status(400).json({ error: 'Invalid request', zodIssues, requestId });

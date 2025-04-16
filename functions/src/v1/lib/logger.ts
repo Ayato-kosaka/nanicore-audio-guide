@@ -115,39 +115,3 @@ export const logExternalApi = async ({
     }
   }
 };
-
-/**
- * 🛑 Firebase Function 内で未処理の例外が発生した場合の共通エラーハンドラ。
- * ログに記録しつつ、HTTP 500エラーとリクエストIDを返す。
- *
- * @param res - Expressのレスポンスオブジェクト
- * @param err - キャッチされた例外オブジェクト
- * @param requestId - トレースID
- * @param functionName - 処理中だった関数名
- * @param userId - ユーザーID（認証済みユーザー）
- */
-export const handleFunctionError = ({
-  req,
-  res,
-  err,
-  requestId,
-  functionName,
-  userId,
-}: {
-  req: Request,
-  res: Response,
-  err: any,
-  requestId: string,
-  functionName: string,
-  userId?: string | null,
-}): void => {
-  logBackendEvent({
-    event_name: 'unhandledException',
-    error_level: 'error',
-    function_name: functionName,
-    user_id: userId ?? null,
-    payload: { message: err.message, stack: err.stack, payload: Object.keys(req.query).length ? req.query : req.body },
-    request_id: requestId,
-  });
-  res.status(500).json({ error: 'Internal server error', requestId });
-};
