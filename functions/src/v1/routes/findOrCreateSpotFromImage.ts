@@ -1,66 +1,25 @@
-import { onRequest } from 'firebase-functions/v2/https';
-import multer from 'multer';
+import { z } from 'zod';
+import { withValidatedAuthHandler } from '../lib/handler';
 import { identifySpotCandidates } from '../lib/vision';
-import {
-    createRequestId,
-    getCurrentVersionFromRequest,
-} from '../lib/backendUtils';
-import {
-    logBackendEvent,
-    handleFunctionError,
-} from '../lib/logger';
+import { getCurrentVersionFromRequest } from '../lib/backendUtils';
 import { getWikipediaImageFromMid } from '../lib/wikipedia';
 import { prisma } from '../lib/prisma';
 import { uploadFile } from '../lib/storage';
-import { handleInvalidRequest } from '../lib/request';
-import { withAuthUser } from '../lib/auth';
-
-const upload = multer({ storage: multer.memoryStorage() });
+import { logBackendEvent } from '../lib/logger';
 
 /**
  * 📸 アップロードされた画像を Vision API で解析し、
- * スポット情報を取得または作成する Cloud Function。
+ * 該当するスポット情報を DB に取得または、登録する Cloud Function。
  */
-export const findOrCreateSpotFromImage = onRequest(async (req, res) => {
-    const requestId = createRequestId();
-    const functionName = 'findOrCreateSpotFromImage';
+export const findOrCreateSpotFromImage = withValidatedAuthHandler(
+    z.object({}),
+    async ({ req, res, requestId, userId, functionName }) => {
+        const file = req.file!;
 
-    try {
-        const { userId } = await withAuthUser(req);
-
-        // 🚀 アクセスログ（非同期記録）
-        logBackendEvent({
-            request_id: requestId,
-            function_name: functionName,
-            event_name: 'accessed',
-            user_id: userId,
-            payload: {},
-            error_level: 'info',
-        });
-
-        // 📂 画像ファイル受信（multipart/form-data）
-        await new Promise<void>((resolve, reject) => {
-            upload.single('image')(req as any, res as any, (err) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
-
-        if (!req.file) {
-            return handleInvalidRequest({
-                req,
-                res,
-                requestId,
-                functionName,
-                userId,
-                zodIssues: [],
-            });
-        }
-
-        // ☁️ GCSへアップロード → 公開URL生成
+        // ☁️ GCSへアップロード
         const { path: imagePath, signedUrl: imageUri } = await uploadFile({
-            buffer: req.file.buffer,
-            mimeType: req.file.mimetype,
+            buffer: file.buffer,
+            mimeType: file.mimetype,
             resourceType: 'user-uploads',
             usageType: 'photos',
             identifier: userId,
@@ -70,8 +29,12 @@ export const findOrCreateSpotFromImage = onRequest(async (req, res) => {
             expiresInSeconds: 24 * 60 * 60,
         });
 
-        // 👁️ Vision APIでスポット候補を検出
-        const { candidates, fullMatchingImages } = await identifySpotCandidates(imageUri, requestId, userId);
+        // 🔍 Vision API による候補抽出
+        const { candidates, fullMatchingImages } = await identifySpotCandidates(
+            imageUri,
+            requestId,
+            userId
+        );
 
         if (candidates.length === 0) {
             logBackendEvent({
@@ -83,24 +46,23 @@ export const findOrCreateSpotFromImage = onRequest(async (req, res) => {
                 error_level: 'warn',
             });
             res.status(404).json({ error: 'No valid spot candidate found' });
+            return;
         }
 
         const top = candidates[0];
-        const spotId: string =
-            top.detectionType === 'LANDMARK_DETECTION' ? top.mid : top.entityId;
+        const spotId = top.detectionType === 'LANDMARK_DETECTION' ? top.mid : top.entityId;
 
-        // 🧾 既存チェック
-        const existing = await prisma.ext_spots.findUnique({
-            where: { id: spotId },
-        });
+        // 📋 既存スポットがあればそれを返す
+        const existing = await prisma.ext_spots.findUnique({ where: { id: spotId } });
         if (existing) {
             res.status(200).json(existing);
+            return;
         }
 
-        // 🔍 Wikipedia画像・タイトル取得
         let image_url: string | null = null;
         let spotTitle: string | null = top.description ?? null;
 
+        // 📚 Wikipedia から画像＋タイトルを取得（可能なら）
         if (top.detectionType === 'LANDMARK_DETECTION' && top.mid) {
             const wiki = await getWikipediaImageFromMid(top.mid, requestId, userId);
             image_url = wiki?.imageUrl ?? null;
@@ -134,7 +96,7 @@ export const findOrCreateSpotFromImage = onRequest(async (req, res) => {
 
         if (!spotTitle) throw new Error('spotTitle is required');
 
-        // 📝 新規スポット作成
+        // 📝 スポット情報を DB に作成
         const inserted = await prisma.ext_spots.create({
             data: {
                 id: spotId,
@@ -160,13 +122,9 @@ export const findOrCreateSpotFromImage = onRequest(async (req, res) => {
             uploadedUri: imageUri,
             takenPhotoStoragePath: imagePath,
         });
-    } catch (err: any) {
-        return handleFunctionError({
-            req,
-            res,
-            err,
-            requestId,
-            functionName,
-        });
+    },
+    {
+        useMulter: true,
+        multerFieldName: 'image',
     }
-});
+);
