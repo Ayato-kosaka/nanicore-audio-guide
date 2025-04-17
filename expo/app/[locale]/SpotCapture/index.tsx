@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Button, ActivityIndicator, StyleSheet, Alert } from "react-native";
+import { View, Button, ActivityIndicator, StyleSheet, Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "expo-router";
 
@@ -55,13 +55,22 @@ export default function SpotCapture() {
       const asset = result.assets[0];
 
       const formData = new FormData();
-      formData.append("image", {
-        uri: asset.uri,
-        name: asset.fileName ?? "upload.jpg",
-        type: "image/jpeg",
-        // 📌 TypeScript型チェック回避のため `as any` を使用
-        // Expo ImagePicker では `name` プロパティが省略されるため明示
-      } as any);
+      if (Platform.OS === "web") {
+        const response = await fetch(asset.uri);
+        const blob = await response.blob();
+
+        formData.append("image", new File([blob], asset.fileName ?? "upload.jpg", {
+          type: blob.type || "image/jpeg",
+        }));
+      } else {
+        const uri = asset.uri.startsWith("file://") ? asset.uri : `file://${asset.uri}`;
+        const file: any = {
+          uri,
+          name: asset.fileName ?? "upload.jpg",
+          type: "image/jpeg",
+        };
+        formData.append("image", file);
+      }
 
       const { extSpots, uploadedUri, takenPhotoStoragePath } =
         await callCloudFunction<FormData, FindOrCreateSpotFromImageResponse>(
