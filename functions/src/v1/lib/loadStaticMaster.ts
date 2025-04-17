@@ -37,7 +37,7 @@ const loadStaticMaster = async <T extends keyof Database['dev']['Tables']>(table
         throw new Error(`❌ Schema validation failed for ${tableName}: ${validated.error.message}`)
     }
 
-    return validated.data as unknown as TableRow<T>;
+    return validated.data as unknown as TableRow<T>[];
 }
 
 /**

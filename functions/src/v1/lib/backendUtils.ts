@@ -17,6 +17,7 @@ export const createRequestId = (): string => {
  * @param requestId - 呼び出し単位の一意なトレースID
  * @param functionName - 呼び出し元の関数名（例: generateSpotGuide）
  * @param apiName - 外部サービス名（例: Claude, GoogleVision）
+ * @param customHeaders - リクエストヘッダー
  * @param endpoint - リクエスト先エンドポイントURL
  * @param method - HTTPメソッド（GETまたはPOST）
  * @param payload - リクエストのボディ（POSTのみ）
@@ -29,6 +30,7 @@ export const callExternalApi = async <T>({
   functionName,
   apiName,
   endpoint,
+  customHeaders = {},
   method,
   requestPayload,
   userId,
@@ -37,6 +39,7 @@ export const callExternalApi = async <T>({
   functionName: string;
   apiName: string;
   endpoint: string;
+  customHeaders?: Record<string, string>;
   method: 'GET' | 'POST';
   requestPayload?: any;
   userId: string;
@@ -49,7 +52,10 @@ export const callExternalApi = async <T>({
   try {
     const apiResponse = await fetch(endpoint, {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...customHeaders,
+      },
       body: method === 'POST' ? JSON.stringify(requestPayload) : undefined,
     });
 
