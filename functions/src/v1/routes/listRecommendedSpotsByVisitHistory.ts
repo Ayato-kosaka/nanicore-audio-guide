@@ -1,47 +1,29 @@
-import { onRequest } from 'firebase-functions/v2/https';
 import { prisma } from '../lib/prisma';
 import {
-  createRequestId,
   getCurrentVersionMajorFromRequest,
-  withAuthUser,
 } from '../lib/backendUtils';
-import { logBackendEvent, handleFunctionError } from '../lib/logger';
+import { logBackendEvent } from '../lib/logger';
 import { listRecommendedSpotsByVisitHistoryRequestSchema } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
 import type { ListRecommendedSpotsByVisitHistoryResponse } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
 import { convertPrismaToSupabase_ExtSpots } from '@shared/converters/convert_ext_spots';
+import { withValidatedAuthHandler } from '../lib/handler';
 
 const RECOMMENDED_SPOT_LIMIT = 20;
 
 /**
  * 📍 過去の訪問履歴に基づいて、次におすすめのスポットを取得する。
  *
- * - 入力: `spot_id`（クエリ）
- * - 出力: おすすめスポットの配列（最大20件、順序保証付き）
+ * @param input.spotId - 訪問履歴の起点となるスポットID
+ * @returns おすすめスポットの配列（最大20件、順序保証付き）
  */
-export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => {
-  const requestId = createRequestId();
-  const functionName = 'listRecommendedSpotsByVisitHistory';
-
-  try {
-    const input = listRecommendedSpotsByVisitHistoryRequestSchema.parse(req.query);
+export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
+  listRecommendedSpotsByVisitHistoryRequestSchema,
+  async ({ req, res, input, requestId, userId, functionName }) => {
     const spotId = input.spotId;
-
-    // 🔐 Supabase 認証トークンから userId を取得（失敗時は例外）
-    const { userId } = await withAuthUser(req);
-
-    // 📘 アクセスログ（非同期、失敗しても無視される）
-    logBackendEvent({
-      request_id: requestId,
-      function_name: functionName,
-      event_name: 'listRecommendedSpotsByVisitHistoryAccessed',
-      payload: { spotId },
-      user_id: userId,
-      error_level: 'info',
-    });
 
     const currentVersionMajor = getCurrentVersionMajorFromRequest(req);
 
-    // 訪問履歴から次に訪れるスポット候補を取得（出現頻度順）
+    // 履歴ベースで訪問先を集計（出現頻度順）
     const visitResults = await prisma.spot_visits.groupBy({
       by: ['spot_id'],
       where: {
@@ -56,7 +38,7 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
 
     const recommendedSpotIds = visitResults.map((r) => r.spot_id);
 
-    // 詳細スポット情報を取得（推奨表示対象のみ）
+    // 推薦先スポット情報を取得（is_recommendable = true）
     const spots = await prisma.ext_spots.findMany({
       where: {
         id: { in: recommendedSpotIds },
@@ -64,7 +46,7 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
       },
     });
 
-    // 順序を維持しつつマッピング
+    // 順序を維持して並び替え（map + find）
     const orderedSpots = visitResults
       .map((r) => spots.find((s) => s.id === r.spot_id))
       .filter((s): s is NonNullable<typeof s> => !!s);
@@ -79,17 +61,11 @@ export const listRecommendedSpotsByVisitHistory = onRequest(async (req, res) => 
       error_level: 'info',
     });
 
+    // Supabase型に変換して返却
     const response = {
       extSpots: orderedSpots.map(convertPrismaToSupabase_ExtSpots),
     } satisfies ListRecommendedSpotsByVisitHistoryResponse;
+
     res.status(200).json(response);
-  } catch (err: any) {
-    handleFunctionError({
-      req,
-      res,
-      err,
-      requestId,
-      functionName,
-    });
   }
-});
+);

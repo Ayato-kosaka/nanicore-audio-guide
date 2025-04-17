@@ -1,6 +1,5 @@
 import { logExternalApi } from './logger';
-import jwt from 'jsonwebtoken';
-import { env } from './env';
+import { Request } from 'firebase-functions/v2/https';
 const { nanoid } = require('nanoid');
 
 /**
@@ -86,30 +85,25 @@ export const callExternalApi = async <T>({
 };
 
 /**
- * 🔐 SupabaseのJWTトークンからユーザーIDを検証・抽出する。
- *
- * - Bearerトークン形式のJWTを `authorization` ヘッダーから抽出
- * - 未指定・署名不一致などの不正な場合は例外をスロー
- *
- * @param req - Express互換のリクエストオブジェクト
- * @returns {Promise<{ userId: string }>} 検証済みユーザーID
- * @throws {Error} 認証情報が無効・不在・期限切れなどの場合
+ * 📱 リクエストヘッダーからアプリのバージョン（文字列）を抽出する。
+ * 
+ * - ヘッダー名: `x-app-version`
+ * - 正常例: '1.2.3' → '1.2.3'
+ * - 異常例（未指定 / 不正）→ 例外をスロー
+ * 
+ * @param req - Firebase Functionsのリクエストオブジェクト
+ * @returns {string} アプリのバージョン（文字列）
+ * @throws {Error} バージョン形式が不正または未指定の場合
  */
-export const withAuthUser = async (req: any): Promise<{ userId: string }> => {
-  const authHeader = req.headers.authorization;
+export const getCurrentVersionFromRequest = (req: Request): string => {
+  const rawVersion: string | undefined =
+    req.headers['x-app-version'] || req.query?.version || req.body?.version;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw new Error('Missing or malformed Authorization header');
+  if (typeof rawVersion !== 'string') {
+    throw new Error('Missing or invalid x-app-version header');
   }
 
-  const token = authHeader.replace('Bearer ', '').trim();
-
-  try {
-    const decoded = jwt.verify(token, env.FUNCTIONS_SUPABASE_JWT_SECRET) as { sub: string };
-    return { userId: decoded.sub };
-  } catch (error: any) {
-    throw new Error(`Invalid Supabase JWT: ${error.message}`);
-  }
+  return rawVersion;
 };
 
 /**
@@ -118,24 +112,18 @@ export const withAuthUser = async (req: any): Promise<{ userId: string }> => {
  * - ヘッダー名: `x-app-version`
  * - 正常例: '1.2.3' → 1
  * - 異常例（未指定 / 不正）→ 例外をスロー
- *
- * @param req - Express互換のリクエストオブジェクト
+ * 
+ * @param req - Firebase Functionsのリクエストオブジェクト
  * @returns {number} メジャーバージョン（整数）
  * @throws {Error} バージョン形式が不正または未指定の場合
  */
-export const getCurrentVersionMajorFromRequest = (req: any): number => {
-  const rawVersion: string | undefined =
-    req.headers['x-app-version'] || req.query?.version || req.body?.version;
-
-  if (typeof rawVersion !== 'string') {
-    throw new Error('Missing or invalid x-app-version header');
-  }
-
-  const majorStr = rawVersion.split('.')[0];
+export const getCurrentVersionMajorFromRequest = (req: Request): number => {
+  const version = getCurrentVersionFromRequest(req);
+  const majorStr = version.split('.')[0];
   const major = parseInt(majorStr, 10);
 
   if (Number.isNaN(major) || major < 0) {
-    throw new Error(`Invalid version format: ${rawVersion}`);
+    throw new Error(`Invalid version format: ${version}`);
   }
 
   return major;

@@ -10,7 +10,6 @@ export const generateSpotGuideRequestSchema = z.object({
     extSpot: z.object({
         id: z.string().min(1, 'extSpot.id is required'),
         title: z.string().min(1, 'extSpot.title is required'),
-        source_type: z.string().min(1, 'extSpot.source_type is required'),
     }),
     languageTag: z.string().min(1, 'languageTag is required'),
 });

@@ -11,7 +11,7 @@ import { useAuth } from '@/contexts/AuthProvider';
 import i18n from '@/lib/i18n';
 import { getRemoteConfig } from '@/lib/remoteConfig';
 import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from '@shared/converters/convert_spot_guides';
-import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
+import { convertPrismaToSupabase_ExtSpots, PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 import { Env } from '@/constants/Env';
 import type { GenerateSpotGuideRequest, GenerateSpotGuideResponse } from '@shared/api/generateSpotGuide.schema';
 import { useLocale } from '@/hooks/useLocale';
@@ -175,7 +175,7 @@ export const SpotGuideCard = ({
             const { spotGuide, audioUrl } = await callCloudFunction<
                 GenerateSpotGuideRequest,
                 GenerateSpotGuideResponse
-            >('generateSpotGuide', { extSpot: spot, languageTag: locale }, 'v1');
+            >('generateSpotGuide', { extSpot: convertPrismaToSupabase_ExtSpots(spot), languageTag: locale }, 'v1');
 
             setSpotGuideList((prev) => [
                 ...prev,
