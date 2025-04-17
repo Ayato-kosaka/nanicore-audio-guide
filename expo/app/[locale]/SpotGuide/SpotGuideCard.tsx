@@ -6,7 +6,7 @@ import { useWithLoading } from '@/hooks/useWithLoading';
 import { useCloudFunction } from '@/hooks/useCloudFunction';
 import { useLogger } from '@/hooks/useLogger';
 import { supabase } from '@/lib/supabase';
-import { nanoid } from 'nanoid';
+import { randomUUID } from 'crypto';
 import { useAuth } from '@/contexts/AuthProvider';
 import i18n from '@/lib/i18n';
 import { getRemoteConfig } from '@/lib/remoteConfig';
@@ -55,7 +55,7 @@ export const SpotGuideCard = ({
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [imageSrc, setImageSrc] = useState(imageUri);
 
-    const visitIdRef = useRef<string>(nanoid(12));
+    const visitIdRef = useRef<string>(randomUUID());
     const currentGuide = spotGuideIndex < spotGuideList.length ? spotGuideList[spotGuideIndex] : null;
     /**
      * 🎧 現在のガイドの音声を再生する。
@@ -131,7 +131,7 @@ export const SpotGuideCard = ({
         try {
             if (willLike) {
                 const { error } = await supabase.from('reactions').insert({
-                    id: nanoid(12),
+                    id: randomUUID(),
                     user_id: user.id,
                     target_type: 'spot_guides',
                     target_id: guideId,
@@ -211,7 +211,7 @@ export const SpotGuideCard = ({
 
         try {
             supabase.from('reactions').insert({
-                id: nanoid(12),
+                id: randomUUID(),
                 user_id: user.id,
                 target_type: 'spot_guides',
                 target_id: currentGuideId,

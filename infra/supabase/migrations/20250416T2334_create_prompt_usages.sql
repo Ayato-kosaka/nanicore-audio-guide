@@ -33,7 +33,7 @@ CREATE INDEX idx_prompt_usages_target_id ON prompt_usages(target_id);
 COMMENT ON TABLE prompt_usages IS 'プロンプトファミリー・バリエーションによる実際の生成結果と使用ログを記録するテーブル';
 
 -- カラムコメント
-COMMENT ON COLUMN prompt_usages.id IS '利用ログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN prompt_usages.id IS '利用ログの一意なID（UUID）';
 COMMENT ON COLUMN prompt_usages.family_id IS '使用されたプロンプトファミリーID';
 COMMENT ON COLUMN prompt_usages.variant_id IS '使用されたプロンプトバリエーションID';
 COMMENT ON COLUMN prompt_usages.target_type IS '生成対象のモデル種別（例：Postなど）';

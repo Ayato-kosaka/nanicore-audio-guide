@@ -1,14 +1,14 @@
 import { logExternalApi } from './logger';
 import { Request } from 'firebase-functions/v2/https';
-const { nanoid } = require('nanoid');
+import { randomUUID } from 'crypto';
 
 /**
  * 🆔 リクエストIDを生成（API呼び出し間のトレースに使用）
  * 
- * @returns {string} トレース用のユニークなID（nanoid）
+ * @returns {string} トレース用のユニークなID（randomUUID）
  */
 export const createRequestId = (): string => {
-  return nanoid(12);
+  return randomUUID();
 };
 
 /**

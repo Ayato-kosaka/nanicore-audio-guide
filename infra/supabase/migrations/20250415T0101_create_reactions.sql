@@ -21,7 +21,7 @@ CREATE INDEX idx_reactions_target_id ON reactions(target_id);
 COMMENT ON TABLE reactions IS 'ユーザーによるリアクション（例：いいね、やり直しなど）を記録するテーブル';
 
 -- コメント（カラム）
-COMMENT ON COLUMN reactions.id IS 'リアクションの一意なID（nanoid(12)）';
+COMMENT ON COLUMN reactions.id IS 'リアクションの一意なID（UUID）';
 COMMENT ON COLUMN reactions.user_id IS 'リアクションをしたユーザーのID（匿名可）';
 COMMENT ON COLUMN reactions.target_type IS 'リアクション対象のテーブル（例：spot, spot_guide）';
 COMMENT ON COLUMN reactions.target_id IS '対象となるスポットやガイドのID';

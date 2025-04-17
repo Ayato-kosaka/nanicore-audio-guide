@@ -7,8 +7,7 @@ import { generateSpotGuideRequestSchema } from '@shared/api/generateSpotGuide.sc
 import { generateSpotGuideContent } from '../lib/claude';
 import { synthesizeTextToSpeech } from '../lib/textToSpeech';
 import { getRemoteConfigValue } from '../lib/remoteConfig';
-
-const { nanoid } = require('nanoid');
+import { randomUUID } from 'crypto';
 
 const DEFAULT_SPOT_GUIDE_CREATED_BY = 'system';
 
@@ -23,7 +22,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
     generateSpotGuideRequestSchema,
     async ({ req, res, input, requestId, userId, functionName }) => {
         const { extSpot, languageTag } = input;
-        const spotGuideId = nanoid(12);
+        const spotGuideId = randomUUID();
 
         // 📦 Remote Config より対象バージョン上限を取得
         const maxVersionMajor = parseInt(
@@ -92,7 +91,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
         // 🧠 プロンプト使用履歴の登録
         await prisma.prompt_usages.create({
             data: {
-                id: nanoid(12),
+                id: randomUUID(),
                 family_id: familyId,
                 variant_id: variantId,
                 target_type: 'spot_guides',

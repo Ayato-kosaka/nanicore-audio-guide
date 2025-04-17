@@ -28,7 +28,7 @@ CREATE INDEX idx_spot_guides_recommendation_weight ON spot_guides(recommendation
 COMMENT ON TABLE spot_guides IS '各スポットに対する多言語対応の音声ガイド情報を格納するテーブル';
 
 -- カラムコメント
-COMMENT ON COLUMN spot_guides.id IS 'ガイドの一意なID（nanoid(12) を使用）';
+COMMENT ON COLUMN spot_guides.id IS 'ガイドの一意なID（UUID）';
 COMMENT ON COLUMN spot_guides.spot_id IS '紐づくスポットID';
 COMMENT ON COLUMN spot_guides.language_tag IS 'ガイドの言語タグ（IETF BCP 47準拠、例：en-US, ja-JP）';
 COMMENT ON COLUMN spot_guides.title IS 'ガイドタイトル（UI上での表示名）';

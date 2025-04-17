@@ -22,7 +22,7 @@ CREATE INDEX idx_frontend_event_logs_created_at ON frontend_event_logs(created_a
 COMMENT ON TABLE frontend_event_logs IS 'フロントエンドで発生したユーザー操作・画面表示イベントなどを記録するログテーブル';
 
 -- コメント（カラム）
-COMMENT ON COLUMN frontend_event_logs.id IS 'フロントログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN frontend_event_logs.id IS 'フロントログの一意なID（UUID）';
 COMMENT ON COLUMN frontend_event_logs.user_id IS '操作を行ったユーザーのID';
 COMMENT ON COLUMN frontend_event_logs.event_name IS 'イベント名（例：onPressPlay, mounted）';
 COMMENT ON COLUMN frontend_event_logs.error_level IS 'エラーレベル';

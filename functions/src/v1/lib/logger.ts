@@ -1,7 +1,7 @@
 import { prisma } from './prisma';
 import { env } from './env';
 import { Prisma } from '@shared/prisma';
-const { nanoid } = require('nanoid');
+import { randomUUID } from 'crypto';
 
 /**
  * 🚀 バックエンドイベントを `backend_event_logs` テーブルに記録する。
@@ -28,7 +28,7 @@ export const logBackendEvent = async ({
   try {
     await prisma.backend_event_logs.create({
       data: {
-        id: nanoid(12),
+        id: randomUUID(),
         event_name,
         error_level,
         function_name,
@@ -88,7 +88,7 @@ export const logExternalApi = async ({
   try {
     await prisma.external_api_logs.create({
       data: {
-        id: nanoid(12),
+        id: randomUUID(),
         request_id,
         function_name,
         api_name,

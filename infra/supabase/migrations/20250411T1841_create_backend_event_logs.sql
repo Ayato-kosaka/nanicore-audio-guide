@@ -23,7 +23,7 @@ CREATE INDEX idx_backend_event_logs_request_id ON backend_event_logs(request_id)
 COMMENT ON TABLE backend_event_logs IS 'Cloud Functions 側での「アクションログ」や「内部イベントログ」を保存';
 
 -- カラムコメント
-COMMENT ON COLUMN backend_event_logs.id IS 'バックエンドログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN backend_event_logs.id IS 'バックエンドログの一意なID（UUID）';
 COMMENT ON COLUMN backend_event_logs.event_name IS 'イベント名（例：guide_rendered, cache_cleared）';
 COMMENT ON COLUMN backend_event_logs.error_level IS 'エラーレベル';
 COMMENT ON COLUMN backend_event_logs.function_name IS '実行された関数名（Cloud Function名など）';

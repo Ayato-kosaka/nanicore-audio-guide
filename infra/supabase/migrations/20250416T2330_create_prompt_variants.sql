@@ -20,7 +20,7 @@ CREATE INDEX idx_prompt_variants_variant_number ON prompt_variants(variant_numbe
 COMMENT ON TABLE prompt_variants IS 'プロンプトファミリーごとの改善・育成履歴を管理するバリエーションテーブル';
 
 -- カラムコメント
-COMMENT ON COLUMN prompt_variants.id IS 'プロンプトバリエーションのID（nanoid(12)）';
+COMMENT ON COLUMN prompt_variants.id IS 'プロンプトバリエーションのID（UUID）';
 COMMENT ON COLUMN prompt_variants.family_id IS '紐づくプロンプトファミリーID';
 COMMENT ON COLUMN prompt_variants.variant_number IS 'ファミリー内のバージョン番号（1〜）';
 COMMENT ON COLUMN prompt_variants.prompt_text IS '実際にLLMに渡すプロンプトテンプレート';

@@ -27,7 +27,7 @@ CREATE INDEX idx_spot_visits_prev_spot_id ON spot_visits(prev_spot_id);
 COMMENT ON TABLE spot_visits IS 'ユーザーによるスポット訪問ログを記録するテーブル';
 
 -- カラムコメント
-COMMENT ON COLUMN spot_visits.id IS '訪問ログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN spot_visits.id IS '訪問ログの一意なID（UUID）';
 COMMENT ON COLUMN spot_visits.user_id IS '訪問したユーザーのID';
 COMMENT ON COLUMN spot_visits.spot_id IS '訪問されたスポットID';
 COMMENT ON COLUMN spot_visits.represent_guide_id IS '当該訪問時に利用されたガイドID';

@@ -24,7 +24,7 @@ CREATE INDEX idx_external_api_logs_created_at ON external_api_logs(created_at);
 COMMENT ON TABLE external_api_logs IS '外部APIを Cloud Functions から呼び出す際のログ情報を記録するテーブル。主にトラブルシュート／使用状況の可視化／パフォーマンス監視を目的とする。';
 
 -- カラムコメント
-COMMENT ON COLUMN external_api_logs.id IS '外部APIログの一意なID（nanoid(12)）';
+COMMENT ON COLUMN external_api_logs.id IS '外部APIログの一意なID（UUID）';
 COMMENT ON COLUMN external_api_logs.request_id IS '呼び出し単位のトレースID（ログ間の関連付けに使用）';
 COMMENT ON COLUMN external_api_logs.function_name IS '呼び出し元の関数名（例：recognizeSpot）';
 COMMENT ON COLUMN external_api_logs.api_name IS '使用した外部APIの名前（例：GoogleVision）';
