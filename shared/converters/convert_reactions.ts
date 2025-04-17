@@ -36,7 +36,7 @@ export function convertPrismaToSupabase_Reactions(prisma: PrismaReactions): Supa
     target_type: prisma.target_type,
     target_id: prisma.target_id,
     action_type: prisma.action_type,
-    created_at: prisma.created_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
     created_version: prisma.created_version,
     lock_no: prisma.lock_no,
   };

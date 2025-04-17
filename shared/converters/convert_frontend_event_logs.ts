@@ -38,7 +38,7 @@ export function convertPrismaToSupabase_FrontendEventLogs(prisma: PrismaFrontend
     error_level: prisma.error_level,
     path_name: prisma.path_name,
     payload: prisma.payload,
-    created_at: prisma.created_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
     created_app_version: prisma.created_app_version,
     created_commit_id: prisma.created_commit_id,
   };

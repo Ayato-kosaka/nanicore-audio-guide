@@ -39,7 +39,7 @@ export function convertPrismaToSupabase_BackendEventLogs(prisma: PrismaBackendEv
     user_id: prisma.user_id,
     payload: prisma.payload,
     request_id: prisma.request_id,
-    created_at: prisma.created_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
     created_commit_id: prisma.created_commit_id,
   };
 }

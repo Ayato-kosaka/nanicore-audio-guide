@@ -44,8 +44,8 @@ export function convertPrismaToSupabase_SpotVisits(prisma: PrismaSpotVisits): Su
     time_gap_minutes: prisma.time_gap_minutes,
     min_version_major: prisma.min_version_major,
     max_version_major: prisma.max_version_major,
-    created_at: prisma.created_at.toISOString(),
-    updated_at: prisma.updated_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
+    updated_at: prisma.updated_at?.toISOString() ?? null,
     lock_no: prisma.lock_no,
   };
 }

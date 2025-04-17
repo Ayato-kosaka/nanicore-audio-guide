@@ -47,7 +47,7 @@ export function convertPrismaToSupabase_ExternalApiLogs(prisma: PrismaExternalAp
     error_message: prisma.error_message,
     response_time_ms: prisma.response_time_ms,
     user_id: prisma.user_id,
-    created_at: prisma.created_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
     created_commit_id: prisma.created_commit_id,
   };
 }

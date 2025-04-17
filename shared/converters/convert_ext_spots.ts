@@ -39,7 +39,7 @@ export function convertPrismaToSupabase_ExtSpots(prisma: PrismaExtSpots): Supaba
     landmark_latitude: prisma.landmark_latitude,
     landmark_longitude: prisma.landmark_longitude,
     is_recommendable: prisma.is_recommendable,
-    created_at: prisma.created_at.toISOString(),
+    created_at: prisma.created_at?.toISOString() ?? null,
     lock_no: prisma.lock_no,
   };
 }

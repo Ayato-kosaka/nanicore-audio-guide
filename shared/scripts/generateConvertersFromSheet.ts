@@ -89,18 +89,26 @@ function generateConverter(tableName: string, columns: TColumn[]): string {
 
   // Supabase → Prisma 変換本体
   const toPrismaBody = columns
-    .map(({ c_name, c_datatype }) => {
+    .map(({ c_name, c_datatype, c_not_null }) => {
       const isArray = isArrayColumn(c_datatype);
       const baseType = getBaseType(c_datatype);
 
       if (isArray) {
-        if (isDateColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Date(v)) : null,`;
-        if (isDecimalColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Prisma.Decimal(v)) : null,`;
+        if (isDateColumn(baseType)) return c_not_null
+          ? `    ${c_name}: supabase.${c_name}.map((v) => new Date(v)),`
+          : `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Date(v)) : null,`;
+        if (isDecimalColumn(baseType)) return c_not_null
+          ? `    ${c_name}: supabase.${c_name}.map((v) => new Prisma.Decimal(v)),`
+          : `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Prisma.Decimal(v)) : null,`;
         return `    ${c_name}: supabase.${c_name},`;
       }
 
-      if (isDateColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? new Date(supabase.${c_name}) : null,`;
-      if (isDecimalColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? new Prisma.Decimal(supabase.${c_name}) : null,`;
+      if (isDateColumn(baseType)) return c_not_null
+        ? `    ${c_name}: new Date(supabase.${c_name}),`
+        : `    ${c_name}: supabase.${c_name} !== null ? new Date(supabase.${c_name}) : null,`;
+      if (isDecimalColumn(baseType)) return c_not_null
+        ? `    ${c_name}: new Prisma.Decimal(supabase.${c_name}),`
+        : `    ${c_name}: supabase.${c_name} !== null ? new Prisma.Decimal(supabase.${c_name}) : null,`;
       return `    ${c_name}: supabase.${c_name},`;
     })
     .join('\n');
