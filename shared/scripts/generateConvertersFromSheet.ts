@@ -94,13 +94,13 @@ function generateConverter(tableName: string, columns: TColumn[]): string {
       const baseType = getBaseType(c_datatype);
 
       if (isArray) {
-        if (isDateColumn(baseType)) return `    ${c_name}: supabase.${c_name}.map((v) => new Date(v)),`;
-        if (isDecimalColumn(baseType)) return `    ${c_name}: supabase.${c_name}.map((v) => new Prisma.Decimal(v)),`;
+        if (isDateColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Date(v)) : null,`;
+        if (isDecimalColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Prisma.Decimal(v)) : null,`;
         return `    ${c_name}: supabase.${c_name},`;
       }
 
-      if (isDateColumn(baseType)) return `    ${c_name}: new Date(supabase.${c_name}),`;
-      if (isDecimalColumn(baseType)) return `    ${c_name}: new Prisma.Decimal(supabase.${c_name}),`;
+      if (isDateColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? new Date(supabase.${c_name}) : null,`;
+      if (isDecimalColumn(baseType)) return `    ${c_name}: supabase.${c_name} !== null ? new Prisma.Decimal(supabase.${c_name}) : null,`;
       return `    ${c_name}: supabase.${c_name},`;
     })
     .join('\n');
@@ -112,13 +112,13 @@ function generateConverter(tableName: string, columns: TColumn[]): string {
       const baseType = getBaseType(c_datatype);
 
       if (isArray) {
-        if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}.map((v) => v.toISOString()),`;
-        if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}.map((v) => v.toNumber()),`;
+        if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toISOString()) ?? null,`;
+        if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toNumber()) ?? null,`;
         return `    ${c_name}: prisma.${c_name},`;
       }
 
-      if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}.toISOString(),`;
-      if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}.toNumber(),`;
+      if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toISOString() ?? null,`;
+      if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toNumber() ?? null,`;
       return `    ${c_name}: prisma.${c_name},`;
     })
     .join('\n');

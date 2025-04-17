@@ -1,5 +1,5 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-import { EnumLiteral } from '@shared/utils/devDB.types';
+import { $Enums } from '@shared/prisma';
 import { Env } from '../constants/Env';
 import { RemoteConfigValues } from '@shared/remoteConfig/remoteConfig.schema';
 
@@ -24,7 +24,7 @@ export const initRemoteConfig = async (): Promise<RemoteConfigValues | null> => 
     await remoteConfig().fetchAndActivate();
 
     cachedValues = {
-      v1_min_frontend_log_level: remoteConfig().getValue('v1_min_frontend_log_level').asString(),
+      v1_min_frontend_log_level: remoteConfig().getValue('v1_min_frontend_log_level').asString() as $Enums.backend_event_logs_error_level,
       v1_spot_visits_max_version_major: remoteConfig().getValue('v1_spot_visits_max_version_major').asString(),
       v1_spot_guides_max_version_major: remoteConfig().getValue('v1_spot_guides_max_version_major').asString(),
     };

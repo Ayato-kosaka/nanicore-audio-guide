@@ -1,5 +1,3 @@
-import { Request } from 'firebase-functions/v2/https';
-import { Response } from 'express';
 import { prisma } from './prisma';
 import { env } from './env';
 import { Prisma } from '@shared/prisma';
@@ -37,6 +35,7 @@ export const logBackendEvent = async ({
         user_id,
         payload,
         request_id,
+        created_at: new Date(),
         created_commit_id: env.FUNCTIONS_COMMIT_ID,
       },
     });
@@ -100,6 +99,7 @@ export const logExternalApi = async ({
         error_message,
         response_time_ms,
         user_id,
+        created_at: new Date(),
         created_commit_id: env.FUNCTIONS_COMMIT_ID,
       },
     });

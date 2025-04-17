@@ -24,7 +24,8 @@ export const SpotRecommendCard = React.memo(function SpotRecommendCard({
 }) {
     const router = useRouter();
     const { logFrontendEvent } = useLogger();
-    const [imageSrc, setImageSrc] = useState(spot.image_url);
+    // レコメンド対象のスポットは必ず画像URLが存在する
+    const [imageSrc, setImageSrc] = useState(spot.image_url!);
 
     /**
      * 📸 画像読み込み失敗時にローカル画像へフォールバック。
@@ -48,7 +49,7 @@ export const SpotRecommendCard = React.memo(function SpotRecommendCard({
             pathname: '/SpotGuide',
             params: serializeSpotGuideParams({
                 extSpots: spot,
-                imageUri: spot.image_url,
+                imageUri: spot.image_url!,
                 takenPhotoStoragePath: null,
             }),
         });
