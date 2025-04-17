@@ -35,7 +35,7 @@ function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
  */
 export const listSpotGuides = withValidatedAuthHandler(
     listSpotGuidesRequestSchema,
-    async ({ req, res, input, requestId, userId, functionName }) => {
+    async function listSpotGuides({ req, res, input, requestId, userId, functionName }) {
         const { spotId, languageTag } = input;
         const currentVersionMajor = getCurrentVersionMajorFromRequest(req);
 

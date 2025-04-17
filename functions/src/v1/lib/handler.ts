@@ -1,23 +1,84 @@
-import { onRequest, Request } from 'firebase-functions/v2/https';
-import multer from 'multer';
-import type { Response } from 'express';
-import { z, ZodSchema } from 'zod';
+import { onRequest } from 'firebase-functions/v2/https';
+import { ZodSchema } from 'zod';
 import { logBackendEvent } from './logger';
 import { withAuthUser } from './auth';
 import { handleInvalidRequest } from './request';
 import { createRequestId } from './backendUtils';
+import * as Busboy from 'busboy';
+import type { Request } from 'firebase-functions/v2/https';
+import { Response } from 'express';
 
 /**
- * ✅ Firebase Cloud Functions 用の共通ラッパー。
- * - Supabase認証チェック
- * - Zodによる入力バリデーション
- * - アクセスログ記録（非同期）
- * を一括で処理し、ビジネスロジックを簡潔に保つ。
+ * ファイルアップロード時の解析結果型
+ */
+type ParsedFile = {
+    buffer: Buffer;
+    info: {
+        filename: string;
+        mimeType: string;
+    };
+};
+
+/**
+ * 📂 Firebase Functions v2 に対応した Busboy ベースのマルチパートパーサー。
+ * - 画像などのバイナリデータを安全に扱うために必要。
  *
- * @param schema - 入力検証に使用する Zod スキーマ
- * @param fn - 検証＆認証済みで実行されるビジネスロジック本体
- * @param options - multer使用時の設定（画像アップロード対応など）
- * @returns Firebase HTTPS Function ハンドラ
+ * @param req - リクエストオブジェクト
+ * @returns フィールドとオプションのファイルを含むパース結果
+ */
+const parseMultipartForm = (req: Request): Promise<{ fields: Record<string, any>, file?: ParsedFile }> => {
+    return new Promise((resolve, reject) => {
+        const busboy = Busboy.default({ headers: req.headers });
+        const fields: Record<string, any> = {};
+        let parsedFile: ParsedFile | undefined;
+
+        busboy.on('field', (fieldname: string, value: string) => {
+            fields[fieldname] = value;
+        });
+
+        busboy.on('file', (
+            fieldname: string,
+            fileStream: NodeJS.ReadableStream,
+            fileInfo: { filename: string; encoding: string; mimeType: string },
+        ) => {
+            const chunks: Buffer[] = [];
+            fileStream.on('data', (data: Buffer) => chunks.push(data));
+            fileStream.on('end', () => {
+                parsedFile = {
+                    buffer: Buffer.concat(chunks),
+                    info: {
+                        filename: fileInfo.filename,
+                        mimeType: fileInfo.mimeType,
+                    },
+                };
+            });
+        });
+
+        busboy.on('finish', () => {
+            resolve({ fields, file: parsedFile });
+        });
+
+        busboy.on('error', reject);
+
+        if (!req.rawBody) {
+            return reject(new Error('Missing rawBody in request. Make sure to enable "rawBody" in Firebase Function settings.'));
+        }
+
+        busboy.end(req.rawBody);
+    });
+};
+
+/**
+ * ✅ Firebase Cloud Functions 用の共通ハンドラ。
+ * - Supabase認証
+ * - Zod入力検証
+ * - アクセスログ記録（非同期）
+ * を一括で行い、ロジックの簡素化と安全性を確保。
+ *
+ * @param schema - Zod スキーマ（入力バリデーション）
+ * @param fn - 認証済み・検証済みで実行される処理本体
+ * @param options - マルチパート対応オプション
+ * @returns Cloud Function ハンドラ
  */
 export const withValidatedAuthHandler = <T>(
     schema: ZodSchema<T>,
@@ -28,51 +89,34 @@ export const withValidatedAuthHandler = <T>(
         requestId: string;
         userId: string;
         functionName: string;
+        file?: ParsedFile;
     }) => Promise<void>,
     options?: {
-        useMulter?: boolean;
-        multerFieldName?: string;
+        useMultipart?: boolean;
+        fileRequired?: boolean;
     }
 ) =>
     onRequest(async (req, res) => {
         const requestId = createRequestId();
         const functionName = fn.name || 'anonymousHandler';
-        const isBody = options?.useMulter || Object.keys(req.body).length > 0;
+        const isMultipart = options?.useMultipart;
+        const isBody = Object.keys(req.body).length > 0;
 
         try {
-            // 🔐 ユーザー認証（失敗時は例外）
             const { userId } = await withAuthUser(req);
 
-            // 📂 ファイルアップロード（multer） 
-            let zodSource = schema;
+            let parsed: { fields: Record<string, any>, file?: ParsedFile } = { fields: {} };
+            if (isMultipart) {
+                parsed = await parseMultipartForm(req);
 
-            // 📦 ファイルアップロード対応（必要な場合のみ）
-            if (options?.useMulter) {
-                const upload = multer({ storage: multer.memoryStorage() });
-                const fieldName = options.multerFieldName || 'file';
-
-                await new Promise<void>((resolve, reject) => {
-                    upload.single(fieldName)(req as any, res as any, (err) => {
-                        if (err) reject(err);
-                        else resolve();
-                    });
-                });
-
-                // ファイルの存在確認（Zodに反映）
-                zodSource = zodSource.superRefine((_, ctx) => {
-                    if (!req.file) {
-                        ctx.addIssue({
-                            code: z.ZodIssueCode.custom,
-                            message: 'File is required',
-                            path: [fieldName],
-                        });
-                    }
-                });
+                if (options?.fileRequired && !parsed.file) {
+                    res.status(400).json({ error: 'File is required', requestId });
+                    return;
+                }
             }
 
-            const source = isBody ? req.body : req.query;
-
-            const result = zodSource.safeParse(source);
+            const inputSource = isMultipart ? parsed.fields : (isBody ? req.body : req.query);
+            const result = schema.safeParse(inputSource);
 
             if (!result.success) {
                 return handleInvalidRequest({
@@ -85,7 +129,7 @@ export const withValidatedAuthHandler = <T>(
                 });
             }
 
-            // 📘 実行ログ（await不要、非同期記録）
+            // 📘 ログ記録（非同期）
             logBackendEvent({
                 request_id: requestId,
                 function_name: functionName,
@@ -95,14 +139,13 @@ export const withValidatedAuthHandler = <T>(
                 payload: {
                     method: req.method,
                     path: req.path,
-                    source: isBody ? 'body' : 'query',
-                    hasFile: !!req.file,
+                    source: isMultipart ? 'multipart' : (isBody ? 'body' : 'query'),
+                    hasFile: !!parsed.file,
                     query: req.query,
-                    body: req.body,
+                    body: isMultipart ? 'multipart' : req.body,
                 },
             });
 
-            // ✅ ビジネスロジック本体を実行
             await fn({
                 req,
                 res,
@@ -110,6 +153,7 @@ export const withValidatedAuthHandler = <T>(
                 requestId,
                 userId,
                 functionName,
+                file: parsed.file,
             });
         } catch (err: any) {
             logBackendEvent({
@@ -117,9 +161,13 @@ export const withValidatedAuthHandler = <T>(
                 error_level: 'error',
                 function_name: functionName,
                 user_id: null,
-                payload: { message: err.message, stack: err.stack, payload: isBody ? req.query : req.body },
+                payload: {
+                    message: err.message,
+                    stack: err.stack,
+                    payload: isBody ? req.query : req.body,
+                },
                 request_id: requestId,
             });
             res.status(500).json({ error: 'Internal server error', requestId });
         }
-    });  
+    });

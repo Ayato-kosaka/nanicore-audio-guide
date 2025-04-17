@@ -6,20 +6,28 @@ import { getWikipediaImageFromMid } from '../lib/wikipedia';
 import { prisma } from '../lib/prisma';
 import { uploadFile } from '../lib/storage';
 import { logBackendEvent } from '../lib/logger';
+import { FindOrCreateSpotFromImageResponse } from '../../../../shared/api/findOrCreateSpotFromImage.schema';
+import { convertPrismaToSupabase_ExtSpots } from '../../../../shared/converters/convert_ext_spots';
 
 /**
- * 📸 アップロードされた画像を Vision API で解析し、
- * 該当するスポット情報を DB に取得または、登録する Cloud Function。
+ * ✨ アップロード画像を解析し、対応するスポット情報を返却または新規作成する Cloud Function。
+ *
+ * @param file - アップロードされた画像ファイル（multipart）
+ * @param requestId - 各リクエストの一意な ID（トレース用）
+ * @param userId - リクエスト元のユーザー ID
+ * @param req - Firebase Request オブジェクト
+ * @param res - Firebase Response オブジェクト
+ * @returns FindOrCreateSpotFromImageResponse JSON
  */
 export const findOrCreateSpotFromImage = withValidatedAuthHandler(
     z.object({}),
-    async ({ req, res, requestId, userId, functionName }) => {
-        const file = req.file!;
+    async function findOrCreateSpotFromImage({ req, res, requestId, userId, functionName, file }) {
+        if (!file) return;
 
-        // ☁️ GCSへアップロード
+        // ☁️ GCS へアップロードし URI を生成
         const { path: imagePath, signedUrl: imageUri } = await uploadFile({
             buffer: file.buffer,
-            mimeType: file.mimetype,
+            mimeType: file.info.mimeType,
             resourceType: 'user-uploads',
             usageType: 'photos',
             identifier: userId,
@@ -52,17 +60,21 @@ export const findOrCreateSpotFromImage = withValidatedAuthHandler(
         const top = candidates[0];
         const spotId = top.detectionType === 'LANDMARK_DETECTION' ? top.mid : top.entityId;
 
-        // 📋 既存スポットがあればそれを返す
+        // 📋 既存スポットがあればそれを返却
         const existing = await prisma.ext_spots.findUnique({ where: { id: spotId } });
         if (existing) {
-            res.status(200).json(existing);
+            res.status(200).json({
+                ext_spots: existing,
+                uploadedUri: imageUri,
+                takenPhotoStoragePath: imagePath,
+            });
             return;
         }
 
         let image_url: string | null = null;
         let spotTitle: string | null = top.description ?? null;
 
-        // 📚 Wikipedia から画像＋タイトルを取得（可能なら）
+        // 📚 Wikipedia からタイトル/画像を取得
         if (top.detectionType === 'LANDMARK_DETECTION' && top.mid) {
             const wiki = await getWikipediaImageFromMid(top.mid, requestId, userId);
             image_url = wiki?.imageUrl ?? null;
@@ -94,9 +106,9 @@ export const findOrCreateSpotFromImage = withValidatedAuthHandler(
             }
         }
 
-        if (!spotTitle) throw new Error('spotTitle is required');
+        if (!spotTitle) throw new Error('Spot title is required');
 
-        // 📝 スポット情報を DB に作成
+        // 📍 新しいスポットとして DB に登録
         const inserted = await prisma.ext_spots.create({
             data: {
                 id: spotId,
@@ -117,14 +129,16 @@ export const findOrCreateSpotFromImage = withValidatedAuthHandler(
             },
         });
 
-        res.status(200).json({
-            ext_spots: inserted,
+        const response: FindOrCreateSpotFromImageResponse = {
+            extSpots: convertPrismaToSupabase_ExtSpots(inserted),
             uploadedUri: imageUri,
             takenPhotoStoragePath: imagePath,
-        });
+        };
+
+        res.status(200).json(response);
     },
     {
-        useMulter: true,
-        multerFieldName: 'image',
+        useMultipart: true,
+        fileRequired: true,
     }
 );

@@ -4,7 +4,12 @@ import { env } from './env';
 /**
  * 📁 Cloud Storage クライアントとバケット初期化
  */
-const storage = new Storage();
+const storage = env.FUNCTIONS_NODE_ENV === "production"
+  ? new Storage()
+  : new Storage({
+    projectId: env.FUNCTIONS_DEV_GCP_PROJECT_ID,
+    credentials: JSON.parse(Buffer.from(env.FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf-8'))
+  });
 const bucketName = env.FUNCTIONS_GCS_BUCKET_NAME;
 const environment = env.FUNCTIONS_NODE_ENV;
 const bucket = storage.bucket(bucketName);

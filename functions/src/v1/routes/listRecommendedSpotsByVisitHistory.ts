@@ -18,7 +18,7 @@ const RECOMMENDED_SPOT_LIMIT = 20;
  */
 export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
   listRecommendedSpotsByVisitHistoryRequestSchema,
-  async ({ req, res, input, requestId, userId, functionName }) => {
+  async function listRecommendedSpotsByVisitHistory({ req, res, input, requestId, userId, functionName }) {
     const spotId = input.spotId;
 
     const currentVersionMajor = getCurrentVersionMajorFromRequest(req);

@@ -20,7 +20,7 @@ const DEFAULT_SPOT_GUIDE_CREATED_BY = 'system';
  */
 export const generateSpotGuide = withValidatedAuthHandler(
     generateSpotGuideRequestSchema,
-    async ({ req, res, input, requestId, userId, functionName }) => {
+    async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
         const { extSpot, languageTag } = input;
         const spotGuideId = randomUUID();
 
