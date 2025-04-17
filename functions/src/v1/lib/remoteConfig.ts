@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import { logBackendEvent } from './logger';
-import { RemoteConfigValues, remoteConfigSchema } from '@shared/remoteConfig/remoteConfig.schema';
+import { RemoteConfigValues, remoteConfigSchema } from '../../../../shared/remoteConfig/remoteConfig.schema';
 
 if (!admin.apps.length) {
     admin.initializeApp();

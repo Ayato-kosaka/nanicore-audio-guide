@@ -1,8 +1,8 @@
 import { Storage } from '@google-cloud/storage'
 import { z } from 'zod'
 import { env } from './env'
-import { TableRow } from '@shared/utils/devDB.types'
-import { Database } from '@shared/supabase/database.types'
+import { TableRow } from '../../../../shared/utils/devDB.types'
+import { Database } from '../../../../shared/supabase/database.types'
 import { logBackendEvent } from './logger'
 const storage = new Storage()
 

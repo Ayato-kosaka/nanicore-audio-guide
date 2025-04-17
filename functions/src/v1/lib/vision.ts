@@ -2,7 +2,7 @@ import vision from '@google-cloud/vision';
 import { google } from '@google-cloud/vision/build/protos/protos';
 import { logExternalApi } from './logger';
 import { FeaturesMethod } from '@google-cloud/vision/build/src/helpers';
-import { RequestType } from '@shared/utils/types';
+import { RequestType } from '../../../../shared/utils/types';
 
 const client = new vision.ImageAnnotatorClient();
 

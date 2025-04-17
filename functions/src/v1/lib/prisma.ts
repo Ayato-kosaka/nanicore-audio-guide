@@ -1,4 +1,4 @@
-import { PrismaClient } from "@shared/prisma";
+import { PrismaClient } from "../../../../shared/prisma";
 
 /**
  * 📦 Prisma Client のシングルトンインスタンスを生成・保持するモジュール。

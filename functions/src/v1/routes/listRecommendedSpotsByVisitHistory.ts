@@ -3,9 +3,9 @@ import {
   getCurrentVersionMajorFromRequest,
 } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
-import { listRecommendedSpotsByVisitHistoryRequestSchema } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
-import type { ListRecommendedSpotsByVisitHistoryResponse } from '@shared/api/listRecommendedSpotsByVisitHistory.schema';
-import { convertPrismaToSupabase_ExtSpots } from '@shared/converters/convert_ext_spots';
+import { listRecommendedSpotsByVisitHistoryRequestSchema } from '../../../../shared/api/listRecommendedSpotsByVisitHistory.schema';
+import type { ListRecommendedSpotsByVisitHistoryResponse } from '../../../../shared/api/listRecommendedSpotsByVisitHistory.schema';
+import { convertPrismaToSupabase_ExtSpots } from '../../../../shared/converters/convert_ext_spots';
 import { withValidatedAuthHandler } from '../lib/handler';
 
 const RECOMMENDED_SPOT_LIMIT = 20;
@@ -62,9 +62,9 @@ export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
     });
 
     // Supabase型に変換して返却
-    const response = {
+    const response: ListRecommendedSpotsByVisitHistoryResponse = {
       extSpots: orderedSpots.map(convertPrismaToSupabase_ExtSpots),
-    } satisfies ListRecommendedSpotsByVisitHistoryResponse;
+    };
 
     res.status(200).json(response);
   }

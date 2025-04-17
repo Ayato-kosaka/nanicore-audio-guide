@@ -3,7 +3,7 @@ import { getCurrentVersionFromRequest } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
 import { withValidatedAuthHandler } from '../lib/handler';
 import { uploadFile } from '../lib/storage';
-import { generateSpotGuideRequestSchema } from '@shared/api/generateSpotGuide.schema';
+import { generateSpotGuideRequestSchema } from '../../../../shared/api/generateSpotGuide.schema';
 import { generateSpotGuideContent } from '../lib/claude';
 import { synthesizeTextToSpeech } from '../lib/textToSpeech';
 import { getRemoteConfigValue } from '../lib/remoteConfig';

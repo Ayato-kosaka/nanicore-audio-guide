@@ -1,6 +1,6 @@
 import { prisma } from './prisma';
 import { env } from './env';
-import { Prisma } from '@shared/prisma';
+import { Prisma } from '../../../../shared/prisma';
 import { randomUUID } from 'crypto';
 
 /**

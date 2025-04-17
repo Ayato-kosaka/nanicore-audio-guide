@@ -4,8 +4,8 @@ import {
 } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
 import { withValidatedAuthHandler } from '../lib/handler';
-import { listSpotGuidesRequestSchema, ListSpotGuidesResponse } from '@shared/api/listSpotGuides.schema';
-import { convertPrismaToSupabase_SpotGuides } from '@shared/converters/convert_spot_guides';
+import { listSpotGuidesRequestSchema, ListSpotGuidesResponse } from '../../../../shared/api/listSpotGuides.schema';
+import { convertPrismaToSupabase_SpotGuides } from '../../../../shared/converters/convert_spot_guides';
 import { generateSignedUrl } from '../lib/storage';
 
 /** 最大ガイド件数（乱数取得でも制限） */
