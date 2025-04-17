@@ -14,9 +14,9 @@ export type SupabaseExtSpots = TableRow<'ext_spots'>;
 export function convertSupabaseToPrisma_ExtSpots(supabase: SupabaseExtSpots): PrismaExtSpots {
   return {
     id: supabase.id,
-    source_type: supabase.source_type,
     title: supabase.title,
     image_url: supabase.image_url,
+    vision_detection_type: supabase.vision_detection_type,
     landmark_latitude: supabase.landmark_latitude,
     landmark_longitude: supabase.landmark_longitude,
     is_recommendable: supabase.is_recommendable,
@@ -33,9 +33,9 @@ export function convertSupabaseToPrisma_ExtSpots(supabase: SupabaseExtSpots): Pr
 export function convertPrismaToSupabase_ExtSpots(prisma: PrismaExtSpots): SupabaseExtSpots {
   return {
     id: prisma.id,
-    source_type: prisma.source_type,
     title: prisma.title,
     image_url: prisma.image_url,
+    vision_detection_type: prisma.vision_detection_type,
     landmark_latitude: prisma.landmark_latitude,
     landmark_longitude: prisma.landmark_longitude,
     is_recommendable: prisma.is_recommendable,

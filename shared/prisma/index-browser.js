@@ -169,6 +169,40 @@ exports.Prisma.Frontend_event_logsScalarFieldEnum = {
   created_commit_id: 'created_commit_id'
 };
 
+exports.Prisma.Prompt_familiesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  purpose: 'purpose',
+  weight: 'weight'
+};
+
+exports.Prisma.Prompt_usagesScalarFieldEnum = {
+  id: 'id',
+  family_id: 'family_id',
+  variant_id: 'variant_id',
+  target_type: 'target_type',
+  target_id: 'target_id',
+  generated_text: 'generated_text',
+  used_prompt_text: 'used_prompt_text',
+  input_data: 'input_data',
+  llm_model: 'llm_model',
+  temperature: 'temperature',
+  generated_by: 'generated_by',
+  created_at: 'created_at',
+  metadata: 'metadata'
+};
+
+exports.Prisma.Prompt_variantsScalarFieldEnum = {
+  id: 'id',
+  family_id: 'family_id',
+  variant_number: 'variant_number',
+  prompt_text: 'prompt_text',
+  improvement_note: 'improvement_note',
+  created_by: 'created_by',
+  metadata: 'metadata'
+};
+
 exports.Prisma.ReactionsScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -261,6 +295,18 @@ exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_err
   error: 'error'
 };
 
+exports.prompt_families_purpose = exports.$Enums.prompt_families_purpose = {
+  spot_guide_manuscript: 'spot_guide_manuscript'
+};
+
+exports.prompt_usages_target_type = exports.$Enums.prompt_usages_target_type = {
+  spot_guides: 'spot_guides'
+};
+
+exports.prompt_usages_generated_by = exports.$Enums.prompt_usages_generated_by = {
+  system: 'system'
+};
+
 exports.reactions_target_type = exports.$Enums.reactions_target_type = {
   spot_guides: 'spot_guides'
 };
@@ -283,6 +329,9 @@ exports.Prisma.ModelName = {
   ext_spots: 'ext_spots',
   external_api_logs: 'external_api_logs',
   frontend_event_logs: 'frontend_event_logs',
+  prompt_families: 'prompt_families',
+  prompt_usages: 'prompt_usages',
+  prompt_variants: 'prompt_variants',
   reactions: 'reactions',
   spot_guides: 'spot_guides',
   spot_visits: 'spot_visits'

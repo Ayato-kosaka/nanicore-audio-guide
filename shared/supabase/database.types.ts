@@ -177,6 +177,131 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_families: {
+        Row: {
+          description: string
+          id: string
+          name: string
+          purpose: Database["dev"]["Enums"]["prompt_families_purpose"]
+          weight: number
+        }
+        Insert: {
+          description: string
+          id: string
+          name: string
+          purpose: Database["dev"]["Enums"]["prompt_families_purpose"]
+          weight: number
+        }
+        Update: {
+          description?: string
+          id?: string
+          name?: string
+          purpose?: Database["dev"]["Enums"]["prompt_families_purpose"]
+          weight?: number
+        }
+        Relationships: []
+      }
+      prompt_usages: {
+        Row: {
+          created_at: string
+          family_id: string
+          generated_by: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_text: string
+          id: string
+          input_data: Json | null
+          llm_model: string
+          metadata: Json | null
+          target_id: string
+          target_type: Database["dev"]["Enums"]["prompt_usages_target_type"]
+          temperature: number | null
+          used_prompt_text: string
+          variant_id: string
+        }
+        Insert: {
+          created_at: string
+          family_id: string
+          generated_by: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_text: string
+          id: string
+          input_data?: Json | null
+          llm_model: string
+          metadata?: Json | null
+          target_id: string
+          target_type: Database["dev"]["Enums"]["prompt_usages_target_type"]
+          temperature?: number | null
+          used_prompt_text: string
+          variant_id: string
+        }
+        Update: {
+          created_at?: string
+          family_id?: string
+          generated_by?: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_text?: string
+          id?: string
+          input_data?: Json | null
+          llm_model?: string
+          metadata?: Json | null
+          target_id?: string
+          target_type?: Database["dev"]["Enums"]["prompt_usages_target_type"]
+          temperature?: number | null
+          used_prompt_text?: string
+          variant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_usages_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_families"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prompt_usages_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prompt_variants: {
+        Row: {
+          created_by: string
+          family_id: string
+          id: string
+          improvement_note: string | null
+          metadata: Json | null
+          prompt_text: string
+          variant_number: number
+        }
+        Insert: {
+          created_by: string
+          family_id: string
+          id: string
+          improvement_note?: string | null
+          metadata?: Json | null
+          prompt_text: string
+          variant_number: number
+        }
+        Update: {
+          created_by?: string
+          family_id?: string
+          id?: string
+          improvement_note?: string | null
+          metadata?: Json | null
+          prompt_text?: string
+          variant_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_variants_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reactions: {
         Row: {
           action_type: Database["dev"]["Enums"]["reactions_action_type"]
@@ -216,7 +341,7 @@ export type Database = {
           created_at: string
           created_by: string
           created_request_id: string
-          currency: string
+          currency: string | null
           id: string
           language_tag: string
           lock_no: number
@@ -232,13 +357,13 @@ export type Database = {
         }
         Insert: {
           audio_storage_path: string
-          created_at?: string
+          created_at: string
           created_by: string
           created_request_id: string
-          currency: string
+          currency?: string | null
           id: string
           language_tag: string
-          lock_no?: number
+          lock_no: number
           manuscript: string
           max_version_major: number
           min_version_major: number
@@ -254,7 +379,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           created_request_id?: string
-          currency?: string
+          currency?: string | null
           id?: string
           language_tag?: string
           lock_no?: number
@@ -366,6 +491,9 @@ export type Database = {
         | "info"
         | "warn"
         | "error"
+      prompt_families_purpose: "spot_guide_manuscript"
+      prompt_usages_generated_by: "system"
+      prompt_usages_target_type: "spot_guides"
       reactions_action_type: "like" | "disLike" | "regenerate"
       reactions_target_type: "spot_guides"
       spot_guides_voice_type:
@@ -503,6 +631,9 @@ export const Constants = {
         "warn",
         "error",
       ],
+      prompt_families_purpose: ["spot_guide_manuscript"],
+      prompt_usages_generated_by: ["system"],
+      prompt_usages_target_type: ["spot_guides"],
       reactions_action_type: ["like", "disLike", "regenerate"],
       reactions_target_type: ["spot_guides"],
       spot_guides_voice_type: [

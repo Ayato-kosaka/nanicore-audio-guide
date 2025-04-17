@@ -17,20 +17,21 @@ CREATE TABLE spot_guides (
     voice_type spot_guides_voice_type NOT NULL,
     tags TEXT[] NOT NULL,
     price_amount NUMERIC(10,2) NOT NULL,
-    currency TEXT NOT NULL,
+    currency TEXT,
     recommendation_weight INTEGER NOT NULL,
     min_version_major INTEGER NOT NULL,
     max_version_major INTEGER NOT NULL,
     created_by TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL,
     created_request_id TEXT NOT NULL,
-    lock_no INTEGER NOT NULL DEFAULT 0,
+    lock_no INTEGER NOT NULL,
     FOREIGN KEY (spot_id) REFERENCES ext_spots(id)
 );
 
 -- インデックス
 CREATE INDEX idx_spot_guides_spot_id ON spot_guides(spot_id);
 CREATE INDEX idx_spot_guides_language_tag ON spot_guides(language_tag);
+CREATE INDEX idx_spot_guides_recommendation_weight ON spot_guides(recommendation_weight);
 
 -- テーブルコメント
 COMMENT ON TABLE spot_guides IS '各スポットに対する多言語対応の音声ガイド情報を格納するテーブル';

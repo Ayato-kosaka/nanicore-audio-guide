@@ -88,6 +88,63 @@ model frontend_event_logs {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model prompt_families {
+  id              String                  @id
+  name            String
+  description     String
+  purpose         prompt_families_purpose
+  weight          Int
+  prompt_usages   prompt_usages[]
+  prompt_variants prompt_variants[]
+
+  @@index([weight], map: "idx_prompt_families_weight")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model prompt_usages {
+  id               String                     @id
+  family_id        String
+  variant_id       String
+  target_type      prompt_usages_target_type
+  target_id        String
+  generated_text   String
+  used_prompt_text String
+  input_data       Json?
+  llm_model        String
+  temperature      Decimal?                   @db.Decimal(3, 2)
+  generated_by     prompt_usages_generated_by
+  created_at       DateTime                   @db.Timestamptz(6)
+  metadata         Json?
+  prompt_families  prompt_families            @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  prompt_variants  prompt_variants            @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([family_id], map: "idx_prompt_usages_family_id")
+  @@index([target_id], map: "idx_prompt_usages_target_id")
+  @@index([target_type], map: "idx_prompt_usages_target_type")
+  @@index([variant_id], map: "idx_prompt_usages_variant_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model prompt_variants {
+  id               String          @id
+  family_id        String
+  variant_number   Int
+  prompt_text      String
+  improvement_note String?
+  created_by       String
+  metadata         Json?
+  prompt_usages    prompt_usages[]
+  prompt_families  prompt_families @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([family_id, variant_number])
+  @@index([family_id], map: "idx_prompt_variants_family_id")
+  @@index([variant_number], map: "idx_prompt_variants_variant_number")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model reactions {
   id              String                @id
   user_id         String
@@ -113,18 +170,19 @@ model spot_guides {
   voice_type            spot_guides_voice_type
   tags                  String[]
   price_amount          Decimal                @db.Decimal(10, 2)
-  currency              String
+  currency              String?
   recommendation_weight Int
   min_version_major     Int
   max_version_major     Int
   created_by            String
-  created_at            DateTime               @default(now()) @db.Timestamptz(6)
+  created_at            DateTime               @db.Timestamptz(6)
   created_request_id    String
-  lock_no               Int                    @default(0)
+  lock_no               Int
   ext_spots             ext_spots              @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   spot_visits           spot_visits[]
 
   @@index([language_tag], map: "idx_spot_guides_language_tag")
+  @@index([recommendation_weight], map: "idx_spot_guides_recommendation_weight")
   @@index([spot_id], map: "idx_spot_guides_spot_id")
   @@schema("dev")
 }
@@ -177,6 +235,24 @@ enum frontend_event_logs_error_level {
   info
   warn
   error
+
+  @@schema("dev")
+}
+
+enum prompt_families_purpose {
+  spot_guide_manuscript
+
+  @@schema("dev")
+}
+
+enum prompt_usages_generated_by {
+  system
+
+  @@schema("dev")
+}
+
+enum prompt_usages_target_type {
+  spot_guides
 
   @@schema("dev")
 }
