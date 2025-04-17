@@ -24,7 +24,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          created_at?: string
+          created_at: string
           created_commit_id: string
           error_level?:
             | Database["dev"]["Enums"]["backend_event_logs_error_level"]
@@ -105,7 +105,7 @@ export type Database = {
         }
         Insert: {
           api_name?: string | null
-          created_at?: string
+          created_at: string
           created_commit_id: string
           endpoint?: string | null
           error_message?: string | null
@@ -151,7 +151,7 @@ export type Database = {
         }
         Insert: {
           created_app_version: string
-          created_at?: string
+          created_at: string
           created_commit_id: string
           error_level?:
             | Database["dev"]["Enums"]["frontend_event_logs_error_level"]
@@ -205,7 +205,7 @@ export type Database = {
         Row: {
           created_at: string
           family_id: string
-          generated_by: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_by: string
           generated_text: string
           id: string
           input_data: Json | null
@@ -220,7 +220,7 @@ export type Database = {
         Insert: {
           created_at: string
           family_id: string
-          generated_by: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_by: string
           generated_text: string
           id: string
           input_data?: Json | null
@@ -235,7 +235,7 @@ export type Database = {
         Update: {
           created_at?: string
           family_id?: string
-          generated_by?: Database["dev"]["Enums"]["prompt_usages_generated_by"]
+          generated_by?: string
           generated_text?: string
           id?: string
           input_data?: Json | null
@@ -315,10 +315,10 @@ export type Database = {
         }
         Insert: {
           action_type: Database["dev"]["Enums"]["reactions_action_type"]
-          created_at?: string
+          created_at: string
           created_version: string
           id: string
-          lock_no?: number
+          lock_no: number
           target_id: string
           target_type: Database["dev"]["Enums"]["reactions_target_type"]
           user_id: string
@@ -353,7 +353,6 @@ export type Database = {
           spot_id: string
           tags: string[]
           title: string
-          voice_type: Database["dev"]["Enums"]["spot_guides_voice_type"]
         }
         Insert: {
           audio_storage_path: string
@@ -372,7 +371,6 @@ export type Database = {
           spot_id: string
           tags: string[]
           title: string
-          voice_type: Database["dev"]["Enums"]["spot_guides_voice_type"]
         }
         Update: {
           audio_storage_path?: string
@@ -391,7 +389,6 @@ export type Database = {
           spot_id?: string
           tags?: string[]
           title?: string
-          voice_type?: Database["dev"]["Enums"]["spot_guides_voice_type"]
         }
         Relationships: [
           {
@@ -419,9 +416,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          created_at?: string
+          created_at: string
           id: string
-          lock_no?: number
+          lock_no: number
           max_version_major: number
           min_version_major: number
           prev_spot_id?: string | null
@@ -429,7 +426,7 @@ export type Database = {
           spot_id: string
           taken_photo_storage_path?: string | null
           time_gap_minutes?: number | null
-          updated_at?: string
+          updated_at: string
           user_id: string
         }
         Update: {
@@ -492,15 +489,9 @@ export type Database = {
         | "warn"
         | "error"
       prompt_families_purpose: "spot_guide_manuscript"
-      prompt_usages_generated_by: "system"
       prompt_usages_target_type: "spot_guides"
       reactions_action_type: "like" | "disLike" | "regenerate"
       reactions_target_type: "spot_guides"
-      spot_guides_voice_type:
-        | "SSML_VOICE_GENDER_UNSPECIFIED"
-        | "MALE"
-        | "FEMALE"
-        | "NEUTRAL"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -632,16 +623,9 @@ export const Constants = {
         "error",
       ],
       prompt_families_purpose: ["spot_guide_manuscript"],
-      prompt_usages_generated_by: ["system"],
       prompt_usages_target_type: ["spot_guides"],
       reactions_action_type: ["like", "disLike", "regenerate"],
       reactions_target_type: ["spot_guides"],
-      spot_guides_voice_type: [
-        "SSML_VOICE_GENDER_UNSPECIFIED",
-        "MALE",
-        "FEMALE",
-        "NEUTRAL",
-      ],
     },
   },
 } as const

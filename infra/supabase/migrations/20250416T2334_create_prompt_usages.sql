@@ -3,11 +3,6 @@ CREATE TYPE prompt_usages_target_type AS ENUM (
     'spot_guides'
 );
 
--- ENUM型定義（生成実行者の種別）
-CREATE TYPE prompt_usages_generated_by AS ENUM (
-    'system'
-);
-
 -- テーブル定義
 CREATE TABLE prompt_usages (
     id TEXT PRIMARY KEY,
@@ -20,7 +15,7 @@ CREATE TABLE prompt_usages (
     input_data JSONB,
     llm_model TEXT NOT NULL,
     temperature NUMERIC(3,2),
-    generated_by prompt_usages_generated_by NOT NULL,
+    generated_by TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
     metadata JSONB,
 

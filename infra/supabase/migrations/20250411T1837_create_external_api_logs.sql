@@ -11,7 +11,7 @@ CREATE TABLE external_api_logs (
     error_message TEXT,
     response_time_ms INTEGER,
     user_id TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL,
     created_commit_id TEXT NOT NULL
 );
 

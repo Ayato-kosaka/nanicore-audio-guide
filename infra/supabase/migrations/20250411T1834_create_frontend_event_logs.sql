@@ -6,10 +6,10 @@ CREATE TABLE frontend_event_logs (
     id TEXT PRIMARY KEY,
     user_id TEXT,
     event_name TEXT,
-    error_level frontend_event_logs_error_level DEFAULT 'debug',
+    error_level frontend_event_logs_error_level,
     path_name TEXT,
     payload TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL,
     created_app_version TEXT NOT NULL,
     created_commit_id TEXT NOT NULL
 );

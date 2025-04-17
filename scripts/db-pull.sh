@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 set -a
 source functions/.env
 set +a
@@ -48,3 +49,9 @@ echo "🧬 Generating Supabase types..."
 pnpx supabase gen types typescript --project-id "$PROJECT_ID" --schema $DB_SCHEMA > shared/supabase/database.types.ts
 
 echo "✅ Supabase types generated at shared/supabase/database.types.ts"
+
+echo "🛠️ Running converter generation for shared..."
+pnpm --filter shared run generate:converters
+echo "✅ Converters generated"
+
+echo "✅ All done!"

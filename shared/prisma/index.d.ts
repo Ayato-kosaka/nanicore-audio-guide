@@ -105,13 +105,6 @@ export const prompt_families_purpose: {
 export type prompt_families_purpose = (typeof prompt_families_purpose)[keyof typeof prompt_families_purpose]
 
 
-export const prompt_usages_generated_by: {
-  system: 'system'
-};
-
-export type prompt_usages_generated_by = (typeof prompt_usages_generated_by)[keyof typeof prompt_usages_generated_by]
-
-
 export const prompt_usages_target_type: {
   spot_guides: 'spot_guides'
 };
@@ -134,16 +127,6 @@ export const reactions_target_type: {
 
 export type reactions_target_type = (typeof reactions_target_type)[keyof typeof reactions_target_type]
 
-
-export const spot_guides_voice_type: {
-  SSML_VOICE_GENDER_UNSPECIFIED: 'SSML_VOICE_GENDER_UNSPECIFIED',
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  NEUTRAL: 'NEUTRAL'
-};
-
-export type spot_guides_voice_type = (typeof spot_guides_voice_type)[keyof typeof spot_guides_voice_type]
-
 }
 
 export type backend_event_logs_error_level = $Enums.backend_event_logs_error_level
@@ -162,10 +145,6 @@ export type prompt_families_purpose = $Enums.prompt_families_purpose
 
 export const prompt_families_purpose: typeof $Enums.prompt_families_purpose
 
-export type prompt_usages_generated_by = $Enums.prompt_usages_generated_by
-
-export const prompt_usages_generated_by: typeof $Enums.prompt_usages_generated_by
-
 export type prompt_usages_target_type = $Enums.prompt_usages_target_type
 
 export const prompt_usages_target_type: typeof $Enums.prompt_usages_target_type
@@ -177,10 +156,6 @@ export const reactions_action_type: typeof $Enums.reactions_action_type
 export type reactions_target_type = $Enums.reactions_target_type
 
 export const reactions_target_type: typeof $Enums.reactions_target_type
-
-export type spot_guides_voice_type = $Enums.spot_guides_voice_type
-
-export const spot_guides_voice_type: typeof $Enums.spot_guides_voice_type
 
 /**
  * ##  Prisma Client ʲˢ
@@ -7557,7 +7532,7 @@ export namespace Prisma {
     used_prompt_text: string | null
     llm_model: string | null
     temperature: Decimal | null
-    generated_by: $Enums.prompt_usages_generated_by | null
+    generated_by: string | null
     created_at: Date | null
   }
 
@@ -7571,7 +7546,7 @@ export namespace Prisma {
     used_prompt_text: string | null
     llm_model: string | null
     temperature: Decimal | null
-    generated_by: $Enums.prompt_usages_generated_by | null
+    generated_by: string | null
     created_at: Date | null
   }
 
@@ -7743,7 +7718,7 @@ export namespace Prisma {
     input_data: JsonValue | null
     llm_model: string
     temperature: Decimal | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date
     metadata: JsonValue | null
     _count: Prompt_usagesCountAggregateOutputType | null
@@ -7868,7 +7843,7 @@ export namespace Prisma {
       input_data: Prisma.JsonValue | null
       llm_model: string
       temperature: Prisma.Decimal | null
-      generated_by: $Enums.prompt_usages_generated_by
+      generated_by: string
       created_at: Date
       metadata: Prisma.JsonValue | null
     }, ExtArgs["result"]["prompt_usages"]>
@@ -8306,7 +8281,7 @@ export namespace Prisma {
     readonly input_data: FieldRef<"prompt_usages", 'Json'>
     readonly llm_model: FieldRef<"prompt_usages", 'String'>
     readonly temperature: FieldRef<"prompt_usages", 'Decimal'>
-    readonly generated_by: FieldRef<"prompt_usages", 'prompt_usages_generated_by'>
+    readonly generated_by: FieldRef<"prompt_usages", 'String'>
     readonly created_at: FieldRef<"prompt_usages", 'DateTime'>
     readonly metadata: FieldRef<"prompt_usages", 'Json'>
   }
@@ -10970,7 +10945,6 @@ export namespace Prisma {
     title: string | null
     manuscript: string | null
     audio_storage_path: string | null
-    voice_type: $Enums.spot_guides_voice_type | null
     price_amount: Decimal | null
     currency: string | null
     recommendation_weight: number | null
@@ -10989,7 +10963,6 @@ export namespace Prisma {
     title: string | null
     manuscript: string | null
     audio_storage_path: string | null
-    voice_type: $Enums.spot_guides_voice_type | null
     price_amount: Decimal | null
     currency: string | null
     recommendation_weight: number | null
@@ -11008,7 +10981,6 @@ export namespace Prisma {
     title: number
     manuscript: number
     audio_storage_path: number
-    voice_type: number
     tags: number
     price_amount: number
     currency: number
@@ -11046,7 +11018,6 @@ export namespace Prisma {
     title?: true
     manuscript?: true
     audio_storage_path?: true
-    voice_type?: true
     price_amount?: true
     currency?: true
     recommendation_weight?: true
@@ -11065,7 +11036,6 @@ export namespace Prisma {
     title?: true
     manuscript?: true
     audio_storage_path?: true
-    voice_type?: true
     price_amount?: true
     currency?: true
     recommendation_weight?: true
@@ -11084,7 +11054,6 @@ export namespace Prisma {
     title?: true
     manuscript?: true
     audio_storage_path?: true
-    voice_type?: true
     tags?: true
     price_amount?: true
     currency?: true
@@ -11191,7 +11160,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags: string[]
     price_amount: Decimal
     currency: string | null
@@ -11230,7 +11198,6 @@ export namespace Prisma {
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
-    voice_type?: boolean
     tags?: boolean
     price_amount?: boolean
     currency?: boolean
@@ -11253,7 +11220,6 @@ export namespace Prisma {
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
-    voice_type?: boolean
     tags?: boolean
     price_amount?: boolean
     currency?: boolean
@@ -11274,7 +11240,6 @@ export namespace Prisma {
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
-    voice_type?: boolean
     tags?: boolean
     price_amount?: boolean
     currency?: boolean
@@ -11295,7 +11260,6 @@ export namespace Prisma {
     title?: boolean
     manuscript?: boolean
     audio_storage_path?: boolean
-    voice_type?: boolean
     tags?: boolean
     price_amount?: boolean
     currency?: boolean
@@ -11308,7 +11272,7 @@ export namespace Prisma {
     lock_no?: boolean
   }
 
-  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "language_tag" | "title" | "manuscript" | "audio_storage_path" | "voice_type" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_by" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
+  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "language_tag" | "title" | "manuscript" | "audio_storage_path" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_by" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
   export type spot_guidesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
     spot_visits?: boolean | spot_guides$spot_visitsArgs<ExtArgs>
@@ -11334,7 +11298,6 @@ export namespace Prisma {
       title: string
       manuscript: string
       audio_storage_path: string
-      voice_type: $Enums.spot_guides_voice_type
       tags: string[]
       price_amount: Prisma.Decimal
       currency: string | null
@@ -11776,7 +11739,6 @@ export namespace Prisma {
     readonly title: FieldRef<"spot_guides", 'String'>
     readonly manuscript: FieldRef<"spot_guides", 'String'>
     readonly audio_storage_path: FieldRef<"spot_guides", 'String'>
-    readonly voice_type: FieldRef<"spot_guides", 'spot_guides_voice_type'>
     readonly tags: FieldRef<"spot_guides", 'String[]'>
     readonly price_amount: FieldRef<"spot_guides", 'Decimal'>
     readonly currency: FieldRef<"spot_guides", 'String'>
@@ -13597,7 +13559,6 @@ export namespace Prisma {
     title: 'title',
     manuscript: 'manuscript',
     audio_storage_path: 'audio_storage_path',
-    voice_type: 'voice_type',
     tags: 'tags',
     price_amount: 'price_amount',
     currency: 'currency',
@@ -13839,20 +13800,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'prompt_usages_generated_by'
-   */
-  export type Enumprompt_usages_generated_byFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_generated_by'>
-    
-
-
-  /**
-   * Reference to a field of type 'prompt_usages_generated_by[]'
-   */
-  export type ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_generated_by[]'>
-    
-
-
-  /**
    * Reference to a field of type 'reactions_target_type'
    */
   export type Enumreactions_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_target_type'>
@@ -13877,20 +13824,6 @@ export namespace Prisma {
    * Reference to a field of type 'reactions_action_type[]'
    */
   export type ListEnumreactions_action_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_action_type[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'spot_guides_voice_type'
-   */
-  export type Enumspot_guides_voice_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'spot_guides_voice_type'>
-    
-
-
-  /**
-   * Reference to a field of type 'spot_guides_voice_type[]'
-   */
-  export type ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'spot_guides_voice_type[]'>
     
   /**
    * Deep Input Types
@@ -14292,7 +14225,7 @@ export namespace Prisma {
     input_data?: JsonNullableFilter<"prompt_usages">
     llm_model?: StringFilter<"prompt_usages"> | string
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFilter<"prompt_usages"> | $Enums.prompt_usages_generated_by
+    generated_by?: StringFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
     prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
@@ -14331,7 +14264,7 @@ export namespace Prisma {
     input_data?: JsonNullableFilter<"prompt_usages">
     llm_model?: StringFilter<"prompt_usages"> | string
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFilter<"prompt_usages"> | $Enums.prompt_usages_generated_by
+    generated_by?: StringFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
     prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
@@ -14373,7 +14306,7 @@ export namespace Prisma {
     input_data?: JsonNullableWithAggregatesFilter<"prompt_usages">
     llm_model?: StringWithAggregatesFilter<"prompt_usages"> | string
     temperature?: DecimalNullableWithAggregatesFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byWithAggregatesFilter<"prompt_usages"> | $Enums.prompt_usages_generated_by
+    generated_by?: StringWithAggregatesFilter<"prompt_usages"> | string
     created_at?: DateTimeWithAggregatesFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableWithAggregatesFilter<"prompt_usages">
   }
@@ -14528,7 +14461,6 @@ export namespace Prisma {
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
-    voice_type?: Enumspot_guides_voice_typeFilter<"spot_guides"> | $Enums.spot_guides_voice_type
     tags?: StringNullableListFilter<"spot_guides">
     price_amount?: DecimalFilter<"spot_guides"> | Decimal | DecimalJsLike | number | string
     currency?: StringNullableFilter<"spot_guides"> | string | null
@@ -14550,7 +14482,6 @@ export namespace Prisma {
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
-    voice_type?: SortOrder
     tags?: SortOrder
     price_amount?: SortOrder
     currency?: SortOrderInput | SortOrder
@@ -14575,7 +14506,6 @@ export namespace Prisma {
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
-    voice_type?: Enumspot_guides_voice_typeFilter<"spot_guides"> | $Enums.spot_guides_voice_type
     tags?: StringNullableListFilter<"spot_guides">
     price_amount?: DecimalFilter<"spot_guides"> | Decimal | DecimalJsLike | number | string
     currency?: StringNullableFilter<"spot_guides"> | string | null
@@ -14597,7 +14527,6 @@ export namespace Prisma {
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
-    voice_type?: SortOrder
     tags?: SortOrder
     price_amount?: SortOrder
     currency?: SortOrderInput | SortOrder
@@ -14625,7 +14554,6 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"spot_guides"> | string
     manuscript?: StringWithAggregatesFilter<"spot_guides"> | string
     audio_storage_path?: StringWithAggregatesFilter<"spot_guides"> | string
-    voice_type?: Enumspot_guides_voice_typeWithAggregatesFilter<"spot_guides"> | $Enums.spot_guides_voice_type
     tags?: StringNullableListFilter<"spot_guides">
     price_amount?: DecimalWithAggregatesFilter<"spot_guides"> | Decimal | DecimalJsLike | number | string
     currency?: StringNullableWithAggregatesFilter<"spot_guides"> | string | null
@@ -14744,7 +14672,7 @@ export namespace Prisma {
     user_id?: string | null
     payload?: NullableJsonNullValueInput | InputJsonValue
     request_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -14756,7 +14684,7 @@ export namespace Prisma {
     user_id?: string | null
     payload?: NullableJsonNullValueInput | InputJsonValue
     request_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -14792,7 +14720,7 @@ export namespace Prisma {
     user_id?: string | null
     payload?: NullableJsonNullValueInput | InputJsonValue
     request_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -14928,7 +14856,7 @@ export namespace Prisma {
     error_message?: string | null
     response_time_ms?: number | null
     user_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -14944,7 +14872,7 @@ export namespace Prisma {
     error_message?: string | null
     response_time_ms?: number | null
     user_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -14992,7 +14920,7 @@ export namespace Prisma {
     error_message?: string | null
     response_time_ms?: number | null
     user_id?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_commit_id: string
   }
 
@@ -15035,7 +14963,7 @@ export namespace Prisma {
     error_level?: $Enums.frontend_event_logs_error_level | null
     path_name?: string | null
     payload?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_app_version: string
     created_commit_id: string
   }
@@ -15047,7 +14975,7 @@ export namespace Prisma {
     error_level?: $Enums.frontend_event_logs_error_level | null
     path_name?: string | null
     payload?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_app_version: string
     created_commit_id: string
   }
@@ -15083,7 +15011,7 @@ export namespace Prisma {
     error_level?: $Enums.frontend_event_logs_error_level | null
     path_name?: string | null
     payload?: string | null
-    created_at?: Date | string
+    created_at: Date | string
     created_app_version: string
     created_commit_id: string
   }
@@ -15185,7 +15113,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_usagesInput
@@ -15203,7 +15131,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -15217,7 +15145,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput
@@ -15235,7 +15163,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -15251,7 +15179,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -15265,7 +15193,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -15281,7 +15209,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -15365,9 +15293,9 @@ export namespace Prisma {
     target_type: $Enums.reactions_target_type
     target_id: string
     action_type: $Enums.reactions_action_type
-    created_at?: Date | string
+    created_at: Date | string
     created_version: string
-    lock_no?: number
+    lock_no: number
   }
 
   export type reactionsUncheckedCreateInput = {
@@ -15376,9 +15304,9 @@ export namespace Prisma {
     target_type: $Enums.reactions_target_type
     target_id: string
     action_type: $Enums.reactions_action_type
-    created_at?: Date | string
+    created_at: Date | string
     created_version: string
-    lock_no?: number
+    lock_no: number
   }
 
   export type reactionsUpdateInput = {
@@ -15409,9 +15337,9 @@ export namespace Prisma {
     target_type: $Enums.reactions_target_type
     target_id: string
     action_type: $Enums.reactions_action_type
-    created_at?: Date | string
+    created_at: Date | string
     created_version: string
-    lock_no?: number
+    lock_no: number
   }
 
   export type reactionsUpdateManyMutationInput = {
@@ -15442,7 +15370,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -15464,7 +15391,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -15484,7 +15410,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15506,7 +15431,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15527,7 +15451,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -15546,7 +15469,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15566,7 +15488,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15586,9 +15507,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput
     spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
     ext_spots_spot_visits_spot_idToext_spots: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_spot_idToext_spotsInput
@@ -15604,9 +15525,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsUpdateInput = {
@@ -15649,9 +15570,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsUpdateManyMutationInput = {
@@ -16250,13 +16171,6 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type Enumprompt_usages_generated_byFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_generated_by | Enumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel> | $Enums.prompt_usages_generated_by
-  }
-
   export type Prompt_familiesScalarRelationFilter = {
     is?: prompt_familiesWhereInput
     isNot?: prompt_familiesWhereInput
@@ -16343,16 +16257,6 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
-  export type Enumprompt_usages_generated_byWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_generated_by | Enumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_generated_byWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_generated_by
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel>
   }
 
   export type prompt_variantsFamily_idVariant_numberCompoundUniqueInput = {
@@ -16471,13 +16375,6 @@ export namespace Prisma {
     _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
   }
 
-  export type Enumspot_guides_voice_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.spot_guides_voice_type | Enumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel> | $Enums.spot_guides_voice_type
-  }
-
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -16509,7 +16406,6 @@ export namespace Prisma {
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
-    voice_type?: SortOrder
     tags?: SortOrder
     price_amount?: SortOrder
     currency?: SortOrder
@@ -16537,7 +16433,6 @@ export namespace Prisma {
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
-    voice_type?: SortOrder
     price_amount?: SortOrder
     currency?: SortOrder
     recommendation_weight?: SortOrder
@@ -16556,7 +16451,6 @@ export namespace Prisma {
     title?: SortOrder
     manuscript?: SortOrder
     audio_storage_path?: SortOrder
-    voice_type?: SortOrder
     price_amount?: SortOrder
     currency?: SortOrder
     recommendation_weight?: SortOrder
@@ -16574,16 +16468,6 @@ export namespace Prisma {
     min_version_major?: SortOrder
     max_version_major?: SortOrder
     lock_no?: SortOrder
-  }
-
-  export type Enumspot_guides_voice_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.spot_guides_voice_type | Enumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumspot_guides_voice_typeWithAggregatesFilter<$PrismaModel> | $Enums.spot_guides_voice_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel>
-    _max?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel>
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -16961,10 +16845,6 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type Enumprompt_usages_generated_byFieldUpdateOperationsInput = {
-    set?: $Enums.prompt_usages_generated_by
-  }
-
   export type prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput = {
     create?: XOR<prompt_familiesCreateWithoutPrompt_usagesInput, prompt_familiesUncheckedCreateWithoutPrompt_usagesInput>
     connectOrCreate?: prompt_familiesCreateOrConnectWithoutPrompt_usagesInput
@@ -17067,10 +16947,6 @@ export namespace Prisma {
     connectOrCreate?: spot_visitsCreateOrConnectWithoutSpot_guidesInput | spot_visitsCreateOrConnectWithoutSpot_guidesInput[]
     createMany?: spot_visitsCreateManySpot_guidesInputEnvelope
     connect?: spot_visitsWhereUniqueInput | spot_visitsWhereUniqueInput[]
-  }
-
-  export type Enumspot_guides_voice_typeFieldUpdateOperationsInput = {
-    set?: $Enums.spot_guides_voice_type
   }
 
   export type spot_guidesUpdatetagsInput = {
@@ -17467,13 +17343,6 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type NestedEnumprompt_usages_generated_byFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_generated_by | Enumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel> | $Enums.prompt_usages_generated_by
-  }
-
   export type NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
     in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
@@ -17498,16 +17367,6 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumprompt_usages_generated_byWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_generated_by | Enumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_generated_by[] | ListEnumprompt_usages_generated_byFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_generated_byWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_generated_by
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_generated_byFilter<$PrismaModel>
   }
 
   export type NestedEnumreactions_target_typeFilter<$PrismaModel = never> = {
@@ -17544,13 +17403,6 @@ export namespace Prisma {
     _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
   }
 
-  export type NestedEnumspot_guides_voice_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.spot_guides_voice_type | Enumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel> | $Enums.spot_guides_voice_type
-  }
-
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -17560,16 +17412,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type NestedEnumspot_guides_voice_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.spot_guides_voice_type | Enumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.spot_guides_voice_type[] | ListEnumspot_guides_voice_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumspot_guides_voice_typeWithAggregatesFilter<$PrismaModel> | $Enums.spot_guides_voice_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel>
-    _max?: NestedEnumspot_guides_voice_typeFilter<$PrismaModel>
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -17594,7 +17436,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -17614,7 +17455,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -17645,9 +17485,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
     spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
     ext_spots_spot_visits_spot_idToext_spots: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_spot_idToext_spotsInput
   }
@@ -17661,9 +17501,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsCreateOrConnectWithoutExt_spots_spot_visits_prev_spot_idToext_spotsInput = {
@@ -17683,9 +17523,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput
     spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
   }
@@ -17699,9 +17539,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsCreateOrConnectWithoutExt_spots_spot_visits_spot_idToext_spotsInput = {
@@ -17740,7 +17580,6 @@ export namespace Prisma {
     title?: StringFilter<"spot_guides"> | string
     manuscript?: StringFilter<"spot_guides"> | string
     audio_storage_path?: StringFilter<"spot_guides"> | string
-    voice_type?: Enumspot_guides_voice_typeFilter<"spot_guides"> | $Enums.spot_guides_voice_type
     tags?: StringNullableListFilter<"spot_guides">
     price_amount?: DecimalFilter<"spot_guides"> | Decimal | DecimalJsLike | number | string
     currency?: StringNullableFilter<"spot_guides"> | string | null
@@ -17812,7 +17651,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_variants: prompt_variantsCreateNestedOneWithoutPrompt_usagesInput
@@ -17828,7 +17667,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -17903,7 +17742,7 @@ export namespace Prisma {
     input_data?: JsonNullableFilter<"prompt_usages">
     llm_model?: StringFilter<"prompt_usages"> | string
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFilter<"prompt_usages"> | $Enums.prompt_usages_generated_by
+    generated_by?: StringFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
   }
@@ -18054,7 +17893,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_usagesInput
@@ -18070,7 +17909,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18193,9 +18032,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput
     ext_spots_spot_visits_spot_idToext_spots: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_spot_idToext_spotsInput
   }
@@ -18209,9 +18048,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsCreateOrConnectWithoutSpot_guidesInput = {
@@ -18318,7 +18157,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -18339,7 +18177,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -18446,7 +18283,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18467,7 +18303,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18525,7 +18360,6 @@ export namespace Prisma {
     title: string
     manuscript: string
     audio_storage_path: string
-    voice_type: $Enums.spot_guides_voice_type
     tags?: spot_guidesCreatetagsInput | string[]
     price_amount: Decimal | DecimalJsLike | number | string
     currency?: string | null
@@ -18547,9 +18381,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsCreateManyExt_spots_spot_visits_spot_idToext_spotsInput = {
@@ -18561,9 +18395,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_guidesUpdateWithoutExt_spotsInput = {
@@ -18572,7 +18406,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18592,7 +18425,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18612,7 +18444,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     manuscript?: StringFieldUpdateOperationsInput | string
     audio_storage_path?: StringFieldUpdateOperationsInput | string
-    voice_type?: Enumspot_guides_voice_typeFieldUpdateOperationsInput | $Enums.spot_guides_voice_type
     tags?: spot_guidesUpdatetagsInput | string[]
     price_amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     currency?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18719,7 +18550,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18742,7 +18573,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_variants?: prompt_variantsUpdateOneRequiredWithoutPrompt_usagesNestedInput
@@ -18758,7 +18589,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18773,7 +18604,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18817,7 +18648,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: $Enums.prompt_usages_generated_by
+    generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18831,7 +18662,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
     prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput
@@ -18847,7 +18678,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18862,7 +18693,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: Enumprompt_usages_generated_byFieldUpdateOperationsInput | $Enums.prompt_usages_generated_by
+    generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -18876,9 +18707,9 @@ export namespace Prisma {
     time_gap_minutes?: number | null
     min_version_major: number
     max_version_major: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    lock_no?: number
+    created_at: Date | string
+    updated_at: Date | string
+    lock_no: number
   }
 
   export type spot_visitsUpdateWithoutSpot_guidesInput = {

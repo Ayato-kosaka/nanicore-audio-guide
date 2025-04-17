@@ -221,7 +221,6 @@ exports.Prisma.Spot_guidesScalarFieldEnum = {
   title: 'title',
   manuscript: 'manuscript',
   audio_storage_path: 'audio_storage_path',
-  voice_type: 'voice_type',
   tags: 'tags',
   price_amount: 'price_amount',
   currency: 'currency',
@@ -303,10 +302,6 @@ exports.prompt_usages_target_type = exports.$Enums.prompt_usages_target_type = {
   spot_guides: 'spot_guides'
 };
 
-exports.prompt_usages_generated_by = exports.$Enums.prompt_usages_generated_by = {
-  system: 'system'
-};
-
 exports.reactions_target_type = exports.$Enums.reactions_target_type = {
   spot_guides: 'spot_guides'
 };
@@ -315,13 +310,6 @@ exports.reactions_action_type = exports.$Enums.reactions_action_type = {
   like: 'like',
   disLike: 'disLike',
   regenerate: 'regenerate'
-};
-
-exports.spot_guides_voice_type = exports.$Enums.spot_guides_voice_type = {
-  SSML_VOICE_GENDER_UNSPECIFIED: 'SSML_VOICE_GENDER_UNSPECIFIED',
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  NEUTRAL: 'NEUTRAL'
 };
 
 exports.Prisma.ModelName = {

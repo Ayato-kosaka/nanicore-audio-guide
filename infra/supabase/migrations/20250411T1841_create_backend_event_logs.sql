@@ -10,7 +10,7 @@ CREATE TABLE backend_event_logs (
     user_id TEXT,
     payload JSON,
     request_id TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL,
     created_commit_id TEXT NOT NULL
 );
 

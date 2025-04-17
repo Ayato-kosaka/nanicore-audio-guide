@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 set -a
 source functions/.env
 set +a

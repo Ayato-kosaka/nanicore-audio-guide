@@ -1,11 +1,3 @@
--- ENUM型定義（データ取得元の種別）
-CREATE TYPE spot_guides_voice_type AS ENUM (
-    'SSML_VOICE_GENDER_UNSPECIFIED',
-    'MALE',
-    'FEMALE',
-    'NEUTRAL'
-);
-
 -- テーブル定義
 CREATE TABLE spot_guides (
     id TEXT PRIMARY KEY,
@@ -14,7 +6,6 @@ CREATE TABLE spot_guides (
     title TEXT NOT NULL,
     manuscript TEXT NOT NULL,
     audio_storage_path TEXT NOT NULL,
-    voice_type spot_guides_voice_type NOT NULL,
     tags TEXT[] NOT NULL,
     price_amount NUMERIC(10,2) NOT NULL,
     currency TEXT,
@@ -43,7 +34,6 @@ COMMENT ON COLUMN spot_guides.language_tag IS 'ガイドの言語タグ（IETF B
 COMMENT ON COLUMN spot_guides.title IS 'ガイドタイトル（UI上での表示名）';
 COMMENT ON COLUMN spot_guides.manuscript IS 'ガイドの本文テキスト';
 COMMENT ON COLUMN spot_guides.audio_storage_path IS '音声ファイルの保存パス（Text-to-Speechなどで生成）';
-COMMENT ON COLUMN spot_guides.voice_type IS '音声合成に用いる声種（例：male, female, neutral）';
 COMMENT ON COLUMN spot_guides.tags IS 'ガイドに付与されるジャンル・属性タグ';
 COMMENT ON COLUMN spot_guides.price_amount IS 'ガイドの価格（税抜き、通貨単位なし）';
 COMMENT ON COLUMN spot_guides.currency IS 'ガイドの通貨コード（ISO 4217）';

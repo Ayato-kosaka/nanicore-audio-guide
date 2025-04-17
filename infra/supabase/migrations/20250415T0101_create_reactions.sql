@@ -9,9 +9,9 @@ CREATE TABLE reactions (
     target_type reactions_target_type NOT NULL,
     target_id TEXT NOT NULL,
     action_type reactions_action_type NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL,
     created_version TEXT NOT NULL,
-    lock_no INTEGER NOT NULL DEFAULT 0
+    lock_no INTEGER NOT NULL
 );
 
 -- インデックス

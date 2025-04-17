@@ -19,7 +19,7 @@ model backend_event_logs {
   user_id           String?
   payload           Json?                           @db.Json
   request_id        String?
-  created_at        DateTime                        @default(now()) @db.Timestamptz(6)
+  created_at        DateTime                        @db.Timestamptz(6)
   created_commit_id String
 
   @@index([created_at], map: "idx_backend_event_logs_created_at")
@@ -61,7 +61,7 @@ model external_api_logs {
   error_message     String?
   response_time_ms  Int?
   user_id           String?
-  created_at        DateTime @default(now()) @db.Timestamptz(6)
+  created_at        DateTime @db.Timestamptz(6)
   created_commit_id String
 
   @@index([created_at], map: "idx_external_api_logs_created_at")
@@ -75,10 +75,10 @@ model frontend_event_logs {
   id                  String                           @id
   user_id             String?
   event_name          String?
-  error_level         frontend_event_logs_error_level? @default(debug)
+  error_level         frontend_event_logs_error_level?
   path_name           String?
   payload             String?
-  created_at          DateTime                         @default(now()) @db.Timestamptz(6)
+  created_at          DateTime                         @db.Timestamptz(6)
   created_app_version String
   created_commit_id   String
 
@@ -103,7 +103,7 @@ model prompt_families {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model prompt_usages {
-  id               String                     @id
+  id               String                    @id
   family_id        String
   variant_id       String
   target_type      prompt_usages_target_type
@@ -112,12 +112,12 @@ model prompt_usages {
   used_prompt_text String
   input_data       Json?
   llm_model        String
-  temperature      Decimal?                   @db.Decimal(3, 2)
-  generated_by     prompt_usages_generated_by
-  created_at       DateTime                   @db.Timestamptz(6)
+  temperature      Decimal?                  @db.Decimal(3, 2)
+  generated_by     String
+  created_at       DateTime                  @db.Timestamptz(6)
   metadata         Json?
-  prompt_families  prompt_families            @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  prompt_variants  prompt_variants            @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  prompt_families  prompt_families           @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  prompt_variants  prompt_variants           @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([family_id], map: "idx_prompt_usages_family_id")
   @@index([target_id], map: "idx_prompt_usages_target_id")
@@ -151,9 +151,9 @@ model reactions {
   target_type     reactions_target_type
   target_id       String
   action_type     reactions_action_type
-  created_at      DateTime              @default(now()) @db.Timestamptz(6)
+  created_at      DateTime              @db.Timestamptz(6)
   created_version String
-  lock_no         Int                   @default(0)
+  lock_no         Int
 
   @@index([target_id], map: "idx_reactions_target_id")
   @@schema("dev")
@@ -161,24 +161,23 @@ model reactions {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model spot_guides {
-  id                    String                 @id
+  id                    String        @id
   spot_id               String
   language_tag          String
   title                 String
   manuscript            String
   audio_storage_path    String
-  voice_type            spot_guides_voice_type
   tags                  String[]
-  price_amount          Decimal                @db.Decimal(10, 2)
+  price_amount          Decimal       @db.Decimal(10, 2)
   currency              String?
   recommendation_weight Int
   min_version_major     Int
   max_version_major     Int
   created_by            String
-  created_at            DateTime               @db.Timestamptz(6)
+  created_at            DateTime      @db.Timestamptz(6)
   created_request_id    String
   lock_no               Int
-  ext_spots             ext_spots              @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ext_spots             ext_spots     @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   spot_visits           spot_visits[]
 
   @@index([language_tag], map: "idx_spot_guides_language_tag")
@@ -198,9 +197,9 @@ model spot_visits {
   time_gap_minutes                              Int?
   min_version_major                             Int
   max_version_major                             Int
-  created_at                                    DateTime    @default(now()) @db.Timestamptz(6)
-  updated_at                                    DateTime    @default(now()) @db.Timestamptz(6)
-  lock_no                                       Int         @default(0)
+  created_at                                    DateTime    @db.Timestamptz(6)
+  updated_at                                    DateTime    @db.Timestamptz(6)
+  lock_no                                       Int
   ext_spots_spot_visits_prev_spot_idToext_spots ext_spots?  @relation("spot_visits_prev_spot_idToext_spots", fields: [prev_spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   spot_guides                                   spot_guides @relation(fields: [represent_guide_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   ext_spots_spot_visits_spot_idToext_spots      ext_spots   @relation("spot_visits_spot_idToext_spots", fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -245,12 +244,6 @@ enum prompt_families_purpose {
   @@schema("dev")
 }
 
-enum prompt_usages_generated_by {
-  system
-
-  @@schema("dev")
-}
-
 enum prompt_usages_target_type {
   spot_guides
 
@@ -267,15 +260,6 @@ enum reactions_action_type {
 
 enum reactions_target_type {
   spot_guides
-
-  @@schema("dev")
-}
-
-enum spot_guides_voice_type {
-  SSML_VOICE_GENDER_UNSPECIFIED
-  MALE
-  FEMALE
-  NEUTRAL
 
   @@schema("dev")
 }
