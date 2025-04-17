@@ -14,6 +14,7 @@ const envSchema = z.object({
   FUNCTIONS_NODE_ENV: z.string(),
   FUNCTIONS_SUPABASE_JWT_SECRET: z.string(),
   FUNCTIONS_GOOGLE_KG_API_KEY: z.string(),
+  FUNCTIONS_CLAUDE_API_KEY: z.string(),
 });
 
 /**

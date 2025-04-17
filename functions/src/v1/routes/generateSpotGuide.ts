@@ -1,7 +1,5 @@
 import { prisma } from '../lib/prisma';
-import {
-    getCurrentVersionFromRequest,
-} from '../lib/backendUtils';
+import { getCurrentVersionFromRequest } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
 import { withValidatedAuthHandler } from '../lib/handler';
 import { uploadFile } from '../lib/storage';
@@ -9,44 +7,45 @@ import { generateSpotGuideRequestSchema } from '@shared/api/generateSpotGuide.sc
 import { generateSpotGuideContent } from '../lib/claude';
 import { synthesizeTextToSpeech } from '../lib/textToSpeech';
 import { getRemoteConfigValue } from '../lib/remoteConfig';
-const nanoid = require('nanoid');
+
+const { nanoid } = require('nanoid');
 
 const DEFAULT_SPOT_GUIDE_CREATED_BY = 'system';
 
 /**
- * 🧠 Claude × TTS を用いて、観光ガイドを生成し保存する Cloud Function。
+ * 🧠 Claude × TTS を用いて、観光ガイドを生成・保存する Cloud Function。
  *
  * @param extSpot - 観光スポット情報
  * @param languageTag - 言語タグ
- * @returns ガイド情報 + 音声URL を返却（JSON形式）
+ * @returns 作成されたガイド情報 + 音声URL を返却（JSON形式）
  */
 export const generateSpotGuide = withValidatedAuthHandler(
     generateSpotGuideRequestSchema,
     async ({ req, res, input, requestId, userId, functionName }) => {
         const { extSpot, languageTag } = input;
-
-        // 🆔 一意なガイドIDを生成
         const spotGuideId = nanoid(12);
 
-        // 📦 Remote Configから適用対象バージョン最大値を取得
+        // 📦 Remote Config より対象バージョン上限を取得
         const maxVersionMajor = parseInt(
-            await getRemoteConfigValue(
-                'v1_spot_guides_max_version_major',
-                requestId,
-                userId
-            )
+            await getRemoteConfigValue('v1_spot_guides_max_version_major', requestId, userId)
         );
 
-        // ✍️ Claudeにより観光ガイドコンテンツ（タイトル・本文・タグ）を生成
-        const { title, manuscript, tags, ssmlGender } =
-            await generateSpotGuideContent(
-                extSpot.title,
-                languageTag,
-                requestId,
-                userId
-            );
+        // ✍️ Claude によるコンテンツ生成
+        const {
+            title,
+            manuscript,
+            tags,
+            ssmlGender,
+            familyId,
+            variantId,
+            promptText,
+            generatedText,
+            promptInput,
+            llmModel,
+            temperature,
+        } = await generateSpotGuideContent(extSpot.title, languageTag, requestId, userId);
 
-        // 🔊 TTS による音声合成（音声性別も Claudeから取得）
+        // 🔊 TTS による音声合成
         const audioBuffer = await synthesizeTextToSpeech({
             text: manuscript,
             languageTag,
@@ -55,7 +54,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
             userId,
         });
 
-        // ☁️ Cloud Storage に音声ファイルをアップロード
+        // ☁️ 音声ファイルを Cloud Storage にアップロード
         const { path: audioPath, signedUrl: audioUrl } = await uploadFile({
             buffer: audioBuffer,
             mimeType: 'audio/mpeg',
@@ -67,7 +66,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
             createdVersion: getCurrentVersionFromRequest(req),
         });
 
-        // 🧾 DBへスポットガイド情報を登録
+        // 🧾 spot_guides 登録
         const spotGuide = await prisma.spot_guides.create({
             data: {
                 id: spotGuideId,
@@ -77,14 +76,34 @@ export const generateSpotGuide = withValidatedAuthHandler(
                 manuscript,
                 tags,
                 audio_storage_path: audioPath,
-                voice_type: ssmlGender,
                 price_amount: 0,
                 currency: null,
-                weight: 0,
+                recommendation_weight: 1,
                 min_version_major: 1,
                 max_version_major: maxVersionMajor,
                 // 【思想】登録未済のスポットでは、システムがその場で生成・登録する #17
                 created_by: DEFAULT_SPOT_GUIDE_CREATED_BY,
+                created_at: new Date(),
+                created_request_id: requestId,
+                lock_no: 0,
+            },
+        });
+
+        // 🧠 プロンプト使用履歴の登録
+        await prisma.prompt_usages.create({
+            data: {
+                id: nanoid(12),
+                family_id: familyId,
+                variant_id: variantId,
+                target_type: 'spot_guides',
+                target_id: spotGuideId,
+                generated_text: generatedText,
+                used_prompt_text: promptText,
+                input_data: promptInput,
+                llm_model: llmModel,
+                temperature,
+                generated_by: DEFAULT_SPOT_GUIDE_CREATED_BY,
+                created_at: new Date(),
             },
         });
 
@@ -102,7 +121,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
             },
         });
 
-        // 🎧 クライアントへレスポンス返却（音声URL含む）
+        // ✅ レスポンス返却（音声URL付き）
         res.status(200).json({
             ...spotGuide,
             audioUrl,
