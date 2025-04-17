@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { useLogger } from '@/hooks/useLogger';
 import i18n from '@/lib/i18n';
 import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 import { serializeSpotGuideParams } from '@/utils/navigation';
+import { useLocale } from '@/hooks/useLocale';
 
 /**
  * 📍 SpotRecommendCard
@@ -26,14 +27,17 @@ export const SpotRecommendCard = React.memo(function SpotRecommendCard({
     const { logFrontendEvent } = useLogger();
     // レコメンド対象のスポットは必ず画像URLが存在する
     const [imageSrc, setImageSrc] = useState(spot.image_url!);
+    const locale = useLocale();
 
     /**
      * 📸 画像読み込み失敗時にローカル画像へフォールバック。
      */
     const handleImageError = useCallback(() => {
-        setImageSrc(
-            Image.resolveAssetSource(require('@/assets/images/no_image_logo.png')).uri
-        );
+        const placeholderImage = require('@/assets/images/no_image_logo.png');
+        const resolvedAsset = Platform.OS === 'web'
+            ? placeholderImage
+            : Image.resolveAssetSource(placeholderImage);
+        setImageSrc(resolvedAsset.uri);
         logFrontendEvent({
             event_name: 'imageLoadError',
             error_level: 'error',
@@ -46,14 +50,17 @@ export const SpotRecommendCard = React.memo(function SpotRecommendCard({
      */
     const handlePress = useCallback(() => {
         router.push({
-            pathname: '/SpotGuide',
-            params: serializeSpotGuideParams({
-                extSpots: spot,
-                imageUri: spot.image_url!,
-                takenPhotoStoragePath: null,
-            }),
+            pathname: '/[locale]/SpotGuide',
+            params: {
+                ...serializeSpotGuideParams({
+                    extSpots: spot,
+                    imageUri: spot.image_url!,
+                    takenPhotoStoragePath: null,
+                }),
+                locale,
+            },
         });
-    }, [router, spot]);
+    }, [router, spot, locale]);
 
     return (
         <View style={styles.container}>

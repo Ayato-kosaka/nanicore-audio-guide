@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 import { Audio } from 'expo-av';
 import { IconButton } from 'react-native-paper';
 import { useWithLoading } from '@/hooks/useWithLoading';
@@ -56,7 +56,7 @@ export const SpotGuideCard = ({
     const [imageSrc, setImageSrc] = useState(imageUri);
 
     const visitIdRef = useRef<string>(nanoid(12));
-    const currentGuide = spotGuideList[spotGuideIndex];
+    const currentGuide = spotGuideIndex < spotGuideList.length ? spotGuideList[spotGuideIndex] : null;
     /**
      * 🎧 現在のガイドの音声を再生する。
      *
@@ -69,7 +69,7 @@ export const SpotGuideCard = ({
 
         try {
             const { sound: newSound } = await Audio.Sound.createAsync(
-                { uri: currentGuide.audioUrl },
+                { uri: currentGuide?.audioUrl },
                 { shouldPlay: true }
             );
             setSound(newSound);
@@ -116,7 +116,7 @@ export const SpotGuideCard = ({
      * - Supabase の reactions テーブルを更新
      */
     const handleToggleLike = useCallback(async () => {
-        if (!user?.id) return;
+        if (!user?.id || !currentGuide?.id) return;
 
         const guideId = currentGuide.id;
         const willLike = !isLiked;
@@ -240,7 +240,11 @@ export const SpotGuideCard = ({
      * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
      */
     const handleImageError = useCallback(() => {
-        setImageSrc(Image.resolveAssetSource(require('@/assets/images/no_image_logo.png')).uri);
+        const placeholderImage = require('@/assets/images/no_image_logo.png');
+        const resolvedAsset = Platform.OS === 'web'
+            ? placeholderImage
+            : Image.resolveAssetSource(placeholderImage);
+        setImageSrc(resolvedAsset.uri);
         logFrontendEvent({
             event_name: 'imageLoadError',
             error_level: 'error',
@@ -282,7 +286,7 @@ export const SpotGuideCard = ({
                 id: visitIdRef.current,
                 user_id: user.id,
                 spot_id: spot.id,
-                represent_guide_id: currentGuide.id,
+                represent_guide_id: null,
                 taken_photo_storage_path: takenPhotoStoragePath ?? null,
                 prev_spot_id: previousVisit?.spot_id ?? null,
                 time_gap_minutes: minutesSinceLastVisit,
@@ -306,9 +310,9 @@ export const SpotGuideCard = ({
                 onError={handleImageError}
                 testID="spot-image"
             />
-            <Text style={styles.title}>{currentGuide.title}</Text>
+            <Text style={styles.title}>{currentGuide?.title}</Text>
             <Text style={styles.guideText}>
-                {currentGuide.manuscript ?? i18n.t('SpotGuide.generating')}
+                {currentGuide?.manuscript ?? i18n.t('SpotGuide.generating')}
             </Text>
             <View style={styles.buttonRow}>
                 <IconButton

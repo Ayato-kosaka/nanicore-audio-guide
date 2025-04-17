@@ -8,6 +8,6 @@ export const serializeSpotGuideParams = (params: SpotGuideParams): SpotGuideSeri
 
 export const deserializeSpotGuideParams = (params: SpotGuideSerializedParams): SpotGuideParams => ({
   ...params,
-  extSpots: JSON.parse(params.extSpots),
+  extSpots: params.extSpots ? JSON.parse(params.extSpots) : null,
   takenPhotoStoragePath: params.takenPhotoStoragePath || null,
 });

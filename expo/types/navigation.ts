@@ -1,4 +1,4 @@
-import { Prisma } from '@shared/prisma';
+import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 
 /**
  * 🎯 SpotGuide 画面に渡されるパラメータ（非シリアライズ形式）。
@@ -8,9 +8,9 @@ import { Prisma } from '@shared/prisma';
  * - takenPhotoStoragePath：画像が保存された Cloud Storage パス
  */
 export type SpotGuideParams = {
-  extSpots: Omit<Prisma.Ext_spotsGroupByOutputType, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
-  imageUri: string;
-  takenPhotoStoragePath: string | null;
+  extSpots?: PrismaExtSpots;
+  imageUri?: string;
+  takenPhotoStoragePath?: string | null;
 };
 
 /**
@@ -20,7 +20,7 @@ export type SpotGuideParams = {
  * - DeepLinkや`expo-router`の query param 用などに利用可能
  */
 export type SpotGuideSerializedParams = {
-  [K in keyof SpotGuideParams]: string;
+  [K in keyof SpotGuideParams]?: string;
 };
 
 /**

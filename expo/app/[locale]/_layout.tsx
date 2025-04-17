@@ -44,10 +44,9 @@ export default function LocalLayout() {
     <AuthProvider>
       <SplashHandler>
         <Stack
-          initialRouteName="index"
+          initialRouteName="SpotCapture/index"
           screenOptions={{ headerShown: false }}
         >
-          <Stack.Screen name="index" />
         </Stack>
       </SplashHandler>
     </AuthProvider>

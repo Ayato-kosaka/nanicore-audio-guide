@@ -74,12 +74,6 @@ export const useCloudFunction = () => {
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
-          logFrontendEvent({
-            event_name: `callCloudFunctionError:${version}/${functionName}`,
-            error_level: 'error',
-            payload: { status: response.status, body: errorText },
-          });
           throw new Error(
             `Function ${functionName} failed with status ${response.status}`
           );
@@ -87,11 +81,6 @@ export const useCloudFunction = () => {
 
         return await response.json();
       } catch (error: any) {
-        logFrontendEvent({
-          event_name: `callCloudFunctionException:${version}/${functionName}`,
-          error_level: 'error',
-          payload: { message: error?.message },
-        });
         throw error;
       }
     },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { View, ActivityIndicator, Share, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Share, Dimensions, Image, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { IconButton } from 'react-native-paper';
@@ -35,35 +35,34 @@ export default function SpotGuideScreen() {
   const { callCloudFunction } = useCloudFunction();
   const locale = useLocale();
   const serializedParams = useLocalSearchParams<SpotGuideSerializedParams>();
-  const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams = deserializeSpotGuideParams(serializedParams);
+  const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams =
+    useMemo(() => deserializeSpotGuideParams(serializedParams), [serializedParams]);
 
   const [spotGuides, setSpotGuides] = useState<(PrismaSpotGuides & { audioUrl: string })[]>([]);
   const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
   const [lastAdShownIndex, setLastAdShownIndex] = useState<number | null>(null);
   const carouselRef = useRef<ICarouselInstance>(null);
 
-  const displayImageUri = imageUri ?? extSpots.image_url;
   const carouselItems = useMemo(() => [extSpots, ...recommendedSpots], [extSpots, recommendedSpots]);
   const currentIndex = carouselRef.current?.getCurrentIndex?.() ?? 0;
 
   useEffect(() => {
     if (!extSpots) {
-      router.replace('/SpotCapture');
+      router.replace(`/${locale}/SpotCapture`);
       return;
     }
-
-    logFrontendEvent({
-      event_name: 'SpotGuideMounted',
-      error_level: 'info',
-      payload: { serializedParams },
-    });
-  }, [extSpots]);
-
-  useEffect(() => {
-    if (!extSpots) return;
+    let mounted = true;
 
     withLoading(async () => {
+      if (!mounted) return;
+
       try {
+        logFrontendEvent({
+          event_name: 'SpotGuideMounted',
+          error_level: 'info',
+          payload: { serializedParams },
+        });
+
         const guides = await callCloudFunction<
           ListSpotGuidesRequest,
           ListSpotGuidesResponse
@@ -86,7 +85,11 @@ export default function SpotGuideScreen() {
         });
       }
     })();
-  }, [extSpots, locale]);
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const maybeShowAd = useCallback(
     async (index: number) => {
@@ -130,7 +133,7 @@ export default function SpotGuideScreen() {
   };
 
   const handleReturnToCamera = () => {
-    router.replace('/SpotCapture');
+    router.replace(`/${locale}/SpotCapture`);
     logFrontendEvent({
       event_name: 'returnToCamera',
       error_level: 'info',
@@ -138,17 +141,28 @@ export default function SpotGuideScreen() {
     });
   };
 
+  const displayImageUri = useMemo(() => {
+    const placeholderImage = require('@/assets/images/no_image_logo.png');
+    const resolvedAsset = Platform.OS === 'web'
+      ? placeholderImage
+      : Image.resolveAssetSource(placeholderImage);
+    return imageUri
+      ?? extSpots?.image_url
+      ?? resolvedAsset.uri;
+  }, [imageUri, extSpots?.image_url]);
+
   const handleShareInstagram = async () => {
+    if (!imageUri) return;
     try {
       await Share.share({
-        url: displayImageUri,
+        url: imageUri,
         message: i18n.t('SpotGuide.shareMessage'),
       });
 
       logFrontendEvent({
         event_name: 'shareInstagram',
         error_level: 'info',
-        payload: { imageUri: displayImageUri },
+        payload: { imageUri },
       });
     } catch (error: any) {
       logFrontendEvent({
@@ -161,6 +175,7 @@ export default function SpotGuideScreen() {
 
   const renderItem = useCallback(
     ({ index }: { index: number }) => {
+      if (!extSpots) return <></>;
       if (index === 0) {
         return (
           <SpotGuideCard
@@ -196,7 +211,9 @@ export default function SpotGuideScreen() {
       />
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 10 }}>
         <IconButton icon="arrow-left" onPress={handleReturnToCamera} testID="back-to-camera" />
-        <IconButton icon="share-variant" onPress={handleShareInstagram} testID="share-button" />
+        {imageUri && (
+          <IconButton icon="share-variant" onPress={handleShareInstagram} testID="share-button" />
+        )}
         {currentIndex > 0 && (
           <IconButton icon="chevron-left" onPress={handleBack} testID="carousel-back" />
         )}
