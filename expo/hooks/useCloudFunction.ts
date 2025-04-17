@@ -37,7 +37,7 @@ export const useCloudFunction = () => {
       isMultipart: boolean = false,
     ): Promise<R> => {
       const appVersion = Env.APP_VERSION;
-      const endpoint = `${Env.CLOUD_FUNCTION_BASE_URL}/${version}/${functionName}`;
+      const endpoint = `${Env.CLOUD_FUNCTION_BASE_URL}/${version}-${functionName}`;
 
       // 🔐 認証トークンの有無をチェック
       const accessToken = session?.access_token;
@@ -57,7 +57,7 @@ export const useCloudFunction = () => {
 
       try {
         logFrontendEvent({
-          event_name: `callCloudFunction:${version}/${functionName}`,
+          event_name: `callCloudFunction:${version}-${functionName}`,
           error_level: 'info',
           payload:
             isMultipart || requestPayload instanceof FormData
@@ -74,9 +74,18 @@ export const useCloudFunction = () => {
         });
 
         if (!response.ok) {
-          throw new Error(
-            `Function ${functionName} failed with status ${response.status}`
-          );
+          let errorMessage = `Function ${version}-${functionName} failed with status ${response.status}`;
+
+          try {
+            const errorBody = await response.json();
+            if (errorBody?.requestId) {
+              errorMessage += ` (requestId: ${errorBody.requestId})`;
+            }
+          } catch (_) {
+            // JSON parse 失敗時は何もしない（静かにスルー）
+          }
+
+          throw new Error(errorMessage);
         }
 
         return await response.json();
