@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Button, ActivityIndicator, StyleSheet, Alert, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
@@ -24,7 +24,7 @@ export default function SpotCapture() {
   const { logFrontendEvent } = useLogger();
   const { isLoading, withLoading } = useWithLoading();
   const { callCloudFunction } = useCloudFunction();
-  const navigation = useNavigation<NavigationProp<RootStackParamList, "SpotGuide">>();
+  const router = useRouter();
 
   useEffect(() => {
     logFrontendEvent({
@@ -80,14 +80,17 @@ export default function SpotCapture() {
           true // isMultipart
         );
 
-      navigation.navigate(
-        "SpotGuide",
-        serializeSpotGuideParams({
-          extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
-          imageUri: uploadedUri,
-          takenPhotoStoragePath,
-        })
-      );
+      router.push({
+        pathname: "/[locale]/SpotGuide",
+        params: {
+          locale: i18n.locale,
+          ...serializeSpotGuideParams({
+            extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
+            imageUri: uploadedUri,
+            takenPhotoStoragePath,
+          })
+        }
+      });
     } catch (error: any) {
       logFrontendEvent({
         event_name: "captureFailed",
