@@ -17,10 +17,7 @@ CREATE TABLE prompt_usages (
     temperature NUMERIC(3,2),
     generated_by TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
-    metadata JSONB,
-
-    FOREIGN KEY (family_id) REFERENCES prompt_families(id),
-    FOREIGN KEY (variant_id) REFERENCES prompt_variants(id)
+    metadata JSONB
 );
 
 -- インデックス

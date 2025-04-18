@@ -3,7 +3,7 @@ CREATE TABLE spot_visits (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     spot_id TEXT NOT NULL,
-    represent_guide_id TEXT NOT NULL,
+    represent_guide_id TEXT,
     taken_photo_storage_path TEXT,
     prev_spot_id TEXT,
     time_gap_minutes INTEGER,

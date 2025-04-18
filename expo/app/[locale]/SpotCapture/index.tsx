@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { View, Button, ActivityIndicator, StyleSheet, Alert, Platform } from "react-native";
+import { View, Button, ActivityIndicator, StyleSheet, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "expo-router";
+import { useRouter } from "expo-router";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
@@ -9,9 +9,8 @@ import { useCloudFunction } from "@/hooks/useCloudFunction";
 import type { FindOrCreateSpotFromImageResponse } from "@shared/api/findOrCreateSpotFromImage.schema";
 import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext_spots";
 import i18n from "@/lib/i18n";
-import { RootStackParamList } from "@/types/navigation";
-import type { NavigationProp } from "@react-navigation/native";
 import { serializeSpotGuideParams } from "@/utils/navigation";
+import { useSnackbar } from "@/contexts/SnackbarProvider";
 
 /**
  * 📸 SpotCapture 画面
@@ -24,7 +23,8 @@ export default function SpotCapture() {
   const { logFrontendEvent } = useLogger();
   const { isLoading, withLoading } = useWithLoading();
   const { callCloudFunction } = useCloudFunction();
-  const navigation = useNavigation<NavigationProp<RootStackParamList, "SpotGuide">>();
+  const router = useRouter();
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
     logFrontendEvent({
@@ -72,7 +72,7 @@ export default function SpotCapture() {
         formData.append("image", file);
       }
 
-      const { extSpots, uploadedUri, takenPhotoStoragePath } =
+      const { extSpots, takenPhotoStoragePath } =
         await callCloudFunction<FormData, FindOrCreateSpotFromImageResponse>(
           "findOrCreateSpotFromImage",
           formData,
@@ -80,25 +80,24 @@ export default function SpotCapture() {
           true // isMultipart
         );
 
-      navigation.navigate(
-        "SpotGuide",
-        serializeSpotGuideParams({
-          extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
-          imageUri: uploadedUri,
-          takenPhotoStoragePath,
-        })
-      );
+      router.push({
+        pathname: "/[locale]/SpotGuide",
+        params: {
+          locale: i18n.locale,
+          ...serializeSpotGuideParams({
+            extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
+            imageUri: asset.uri,
+            takenPhotoStoragePath,
+          })
+        }
+      });
     } catch (error: any) {
       logFrontendEvent({
         event_name: "captureFailed",
         error_level: "error",
         payload: { message: error.message },
       });
-
-      Alert.alert(
-        i18n.t("Common.errorTitle"), // e.g. "Error"
-        i18n.t("SpotCapture.errorMessage") // e.g. "Failed to recognize image. Please try again."
-      );
+      showSnackbar(i18n.t("SpotCapture.errorMessage"));
     }
   });
 
