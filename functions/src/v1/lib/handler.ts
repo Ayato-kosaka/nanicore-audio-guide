@@ -7,6 +7,7 @@ import { createRequestId } from './backendUtils';
 import * as Busboy from 'busboy';
 import type { Request } from 'firebase-functions/v2/https';
 import { Response } from 'express';
+import { prisma } from '../lib/prisma';
 
 /**
  * ファイルアップロード時の解析結果型
@@ -169,5 +170,7 @@ export const withValidatedAuthHandler = <T>(
                 request_id: requestId,
             });
             res.status(500).json({ error: 'Internal server error', requestId });
+        } finally {
+            await prisma.$disconnect();
         }
     });
