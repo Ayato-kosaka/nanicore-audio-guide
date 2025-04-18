@@ -21,7 +21,8 @@ const MasterSchema = z.object({
  * @returns テーブルのデータ
  */
 const loadStaticMaster = async <T extends keyof Database['dev']['Tables']>(tableName: T) => {
-    const file = storage.bucket(env.FUNCTIONS_GCS_BUCKET_NAME).file(`${tableName}.json`)
+    const file = storage.bucket(env.FUNCTIONS_GCS_BUCKET_NAME)
+        .file(`system/dbro/spreadsheets/10tAoHPEHd8_ssaW3YfM_xHX5bqvOqU0lGDTxK7ATQXc/${tableName}.json`)
     const [contents] = await file.download()
     const jsonText = contents.toString('utf-8')
 
@@ -37,7 +38,7 @@ const loadStaticMaster = async <T extends keyof Database['dev']['Tables']>(table
         throw new Error(`❌ Schema validation failed for ${tableName}: ${validated.error.message}`)
     }
 
-    return validated.data as unknown as TableRow<T>[];
+    return validated.data.data as unknown as TableRow<T>[];
 }
 
 /**
@@ -65,6 +66,7 @@ export const loadStaticMasterWithLog = async <T extends keyof Database['dev']['T
             user_id: userId,
             payload: {
                 tableName,
+                err: JSON.stringify(err)
             },
             request_id: requestId,
         })
