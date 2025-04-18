@@ -3,13 +3,33 @@ import { loadStaticMasterWithLog } from './loadStaticMaster';
 import { callExternalApi } from './backendUtils';
 
 // Claude API のレスポンス型
-interface CompletionResponse {
-    completion: string;
+interface MessageResponse {
     id: string;
     model: string;
-    stop_reason: 'stop_sequence' | 'max_tokens' | 'end_turn' | null;
-    type: 'completion';
-}
+    role: 'assistant';
+    type: 'message';
+    content: {
+        type: 'text';
+        text: string;
+        citations: {
+            type: 'char_location';
+            cited_text: string;
+            document_index: number; // x > 0
+            document_title: string | null;
+            start_char_index: number; // x > 0
+            end_char_index: number;
+        }[] | null;
+    }[];
+    stop_reason: 'end_turn' | 'max_tokens' | 'stop_sequence' | 'tool_use';
+    stop_sequence: string | null;
+    usage: {
+        input_tokens: number;
+        output_tokens: number;
+        // オプションで追加できる項目
+        cache_creation_input_tokens?: number;
+        cache_read_input_tokens?: number;
+    };
+};
 
 // スポットガイド生成レスポンス型
 export type SpotGuideManuscriptResponse = {
@@ -90,7 +110,7 @@ Use the following JSON format.
 
         // 📡 Claude API を呼び出し
         // @see https://docs.anthropic.com/en/api/messages
-        const response = await callExternalApi<CompletionResponse>({
+        const response = await callExternalApi<MessageResponse>({
             requestId,
             functionName: 'generateSpotGuideContent',
             apiName: 'Claude',
@@ -110,11 +130,11 @@ Use the following JSON format.
 
         // 📤 JSONとしてレスポンスをパースし返却
         return {
-            ...JSON.parse(response.completion || '{}') as SpotGuideManuscriptResponse,
+            ...JSON.parse(response.content[0].text || '{}') as SpotGuideManuscriptResponse,
             familyId: selectedFamily.id,
             variantId: selectedVariant.id,
             promptText: prompt,
-            generatedText: response.completion,
+            generatedText: response.content[0].text,
             promptInput: { spotTitle, languageTag },
             llmModel,
             temperature,
