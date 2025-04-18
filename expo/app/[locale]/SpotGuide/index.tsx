@@ -60,7 +60,7 @@ export default function SpotGuideScreen() {
         logFrontendEvent({
           event_name: 'SpotGuideMounted',
           error_level: 'info',
-          payload: { serializedParams },
+          payload: { extSpots, imageUri, takenPhotoStoragePath },
         });
 
         const guides = await callCloudFunction<
@@ -69,7 +69,7 @@ export default function SpotGuideScreen() {
         >('listSpotGuides', { spotId: extSpots.id, languageTag: locale }, 'v1');
         setSpotGuides(guides.spotGuides.map(spotGuide => ({
           ...convertSupabaseToPrisma_SpotGuides(spotGuide),
-          audioUrl: spotGuide.audio_storage_path,
+          audioUrl: spotGuide.audioUrl,
         })));
 
         const recommends = await callCloudFunction<

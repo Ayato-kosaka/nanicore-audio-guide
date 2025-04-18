@@ -63,13 +63,13 @@ export const SpotGuideCard = ({
      * - すでに再生中であれば再生しない
      * - 音声再生後、終了時に自動でアンロード
      */
-    const handlePlayAudio = useCallback(async () => {
-        if (isPlaying || !currentGuide?.audioUrl) return;
+    const playAudioFromGuide = useCallback(async (guide: typeof currentGuide) => {
+        if (isPlaying || !guide?.audioUrl) return;
         setIsPlaying(true);
 
         try {
             const { sound: newSound } = await Audio.Sound.createAsync(
-                { uri: currentGuide?.audioUrl },
+                { uri: guide?.audioUrl },
                 { shouldPlay: true }
             );
             setSound(newSound);
@@ -86,10 +86,10 @@ export const SpotGuideCard = ({
                     newSound.unloadAsync();
 
                     // ガイド再生終了時に訪問記録を更新
-                    if (user?.id && currentGuide?.id) {
+                    if (user?.id && guide?.id) {
                         supabase
                             .from('spot_visits')
-                            .update({ represent_guide_id: currentGuide.id })
+                            .update({ represent_guide_id: guide.id })
                             .eq('id', visitIdRef.current);
                     }
                 }
@@ -108,7 +108,10 @@ export const SpotGuideCard = ({
                 payload: { error: err.message ?? 'Unknown error during audio playback.' },
             });
         }
-    }, [currentGuide?.audioUrl, isPlaying, spot.id, user?.id, currentGuide?.id]);
+    }, [isPlaying, spot.id, user?.id]);
+    const handlePlayAudio = useCallback(() => {
+        playAudioFromGuide(currentGuide);
+    }, [playAudioFromGuide, currentGuide]);
 
     /**
      * 💖 ガイドに対する「いいね」をトグルする。
@@ -177,9 +180,10 @@ export const SpotGuideCard = ({
                 GenerateSpotGuideResponse
             >('generateSpotGuide', { extSpot: convertPrismaToSupabase_ExtSpots(spot), languageTag: locale }, 'v1');
 
+            const newGuide = { ...convertSupabaseToPrisma_SpotGuides(spotGuide), audioUrl };
             setSpotGuideList((prev) => [
                 ...prev,
-                { ...convertSupabaseToPrisma_SpotGuides(spotGuide), audioUrl },
+                newGuide,
             ]);
 
             logFrontendEvent({
@@ -187,6 +191,7 @@ export const SpotGuideCard = ({
                 payload: { spot_guide_id: spotGuide.id },
                 error_level: 'info',
             });
+            return newGuide;
         } catch (err: any) {
             logFrontendEvent({
                 event_name: 'generateSpotGuideFailed',
@@ -221,11 +226,12 @@ export const SpotGuideCard = ({
                 lock_no: 0,
             });
 
+            let newGuide: typeof currentGuide | undefined;
             if (spotGuideList.length === spotGuideIndex + 1) {
-                await generateSpotGuide();
+                newGuide = await generateSpotGuide();
             }
             setSpotGuideIndex((prev) => prev + 1);
-            handlePlayAudio();
+            playAudioFromGuide(newGuide ?? currentGuide);
 
         } catch (err: any) {
             logFrontendEvent({
@@ -265,10 +271,11 @@ export const SpotGuideCard = ({
             const remoteConfig = getRemoteConfig();
             if (!remoteConfig?.v1_spot_visits_max_version_major) return;
 
+            let newGuide: typeof currentGuide | undefined;
             if (spotGuideList.length === 0) {
-                await generateSpotGuide();
+                newGuide = await generateSpotGuide();
             }
-            handlePlayAudio();
+            playAudioFromGuide(newGuide ?? currentGuide);
 
             const { data: previousVisit } = await supabase
                 .from('spot_visits')
