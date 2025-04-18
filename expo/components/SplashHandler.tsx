@@ -3,6 +3,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useAuth } from '@/contexts/AuthProvider';
 import { initRemoteConfig } from '@/lib/remoteConfig';
 import { Env } from '@/constants/Env';
+import { PaperProvider } from 'react-native-paper';
+import { SnackbarProvider } from '@/contexts/SnackbarProvider';
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -71,5 +73,11 @@ export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
 
   if (!isAppReady) return null;
 
-  return <>{children}</>;
+  return (
+    <PaperProvider>
+      <SnackbarProvider>
+        {children}
+      </SnackbarProvider>
+    </PaperProvider>
+  );
 };
