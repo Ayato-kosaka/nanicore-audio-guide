@@ -1830,12 +1830,10 @@ export namespace Prisma {
    */
 
   export type Prompt_familiesCountOutputType = {
-    prompt_usages: number
     prompt_variants: number
   }
 
   export type Prompt_familiesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_usages?: boolean | Prompt_familiesCountOutputTypeCountPrompt_usagesArgs
     prompt_variants?: boolean | Prompt_familiesCountOutputTypeCountPrompt_variantsArgs
   }
 
@@ -1853,46 +1851,8 @@ export namespace Prisma {
   /**
    * Prompt_familiesCountOutputType without action
    */
-  export type Prompt_familiesCountOutputTypeCountPrompt_usagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: prompt_usagesWhereInput
-  }
-
-  /**
-   * Prompt_familiesCountOutputType without action
-   */
   export type Prompt_familiesCountOutputTypeCountPrompt_variantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: prompt_variantsWhereInput
-  }
-
-
-  /**
-   * Count Type Prompt_variantsCountOutputType
-   */
-
-  export type Prompt_variantsCountOutputType = {
-    prompt_usages: number
-  }
-
-  export type Prompt_variantsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_usages?: boolean | Prompt_variantsCountOutputTypeCountPrompt_usagesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * Prompt_variantsCountOutputType without action
-   */
-  export type Prompt_variantsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Prompt_variantsCountOutputType
-     */
-    select?: Prompt_variantsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * Prompt_variantsCountOutputType without action
-   */
-  export type Prompt_variantsCountOutputTypeCountPrompt_usagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: prompt_usagesWhereInput
   }
 
 
@@ -6568,7 +6528,6 @@ export namespace Prisma {
     description?: boolean
     purpose?: boolean
     weight?: boolean
-    prompt_usages?: boolean | prompt_families$prompt_usagesArgs<ExtArgs>
     prompt_variants?: boolean | prompt_families$prompt_variantsArgs<ExtArgs>
     _count?: boolean | Prompt_familiesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt_families"]>
@@ -6599,7 +6558,6 @@ export namespace Prisma {
 
   export type prompt_familiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "purpose" | "weight", ExtArgs["result"]["prompt_families"]>
   export type prompt_familiesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_usages?: boolean | prompt_families$prompt_usagesArgs<ExtArgs>
     prompt_variants?: boolean | prompt_families$prompt_variantsArgs<ExtArgs>
     _count?: boolean | Prompt_familiesCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -6609,7 +6567,6 @@ export namespace Prisma {
   export type $prompt_familiesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "prompt_families"
     objects: {
-      prompt_usages: Prisma.$prompt_usagesPayload<ExtArgs>[]
       prompt_variants: Prisma.$prompt_variantsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7012,7 +6969,6 @@ export namespace Prisma {
    */
   export interface Prisma__prompt_familiesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    prompt_usages<T extends prompt_families$prompt_usagesArgs<ExtArgs> = {}>(args?: Subset<T, prompt_families$prompt_usagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$prompt_usagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prompt_variants<T extends prompt_families$prompt_variantsArgs<ExtArgs> = {}>(args?: Subset<T, prompt_families$prompt_variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$prompt_variantsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7436,30 +7392,6 @@ export namespace Prisma {
   }
 
   /**
-   * prompt_families.prompt_usages
-   */
-  export type prompt_families$prompt_usagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the prompt_usages
-     */
-    select?: prompt_usagesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the prompt_usages
-     */
-    omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    where?: prompt_usagesWhereInput
-    orderBy?: prompt_usagesOrderByWithRelationInput | prompt_usagesOrderByWithRelationInput[]
-    cursor?: prompt_usagesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Prompt_usagesScalarFieldEnum | Prompt_usagesScalarFieldEnum[]
-  }
-
-  /**
    * prompt_families.prompt_variants
    */
   export type prompt_families$prompt_variantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7756,8 +7688,6 @@ export namespace Prisma {
     generated_by?: boolean
     created_at?: boolean
     metadata?: boolean
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt_usages"]>
 
   export type prompt_usagesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7774,8 +7704,6 @@ export namespace Prisma {
     generated_by?: boolean
     created_at?: boolean
     metadata?: boolean
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt_usages"]>
 
   export type prompt_usagesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7792,8 +7720,6 @@ export namespace Prisma {
     generated_by?: boolean
     created_at?: boolean
     metadata?: boolean
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt_usages"]>
 
   export type prompt_usagesSelectScalar = {
@@ -7813,25 +7739,10 @@ export namespace Prisma {
   }
 
   export type prompt_usagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_id" | "target_type" | "target_id" | "generated_text" | "used_prompt_text" | "input_data" | "llm_model" | "temperature" | "generated_by" | "created_at" | "metadata", ExtArgs["result"]["prompt_usages"]>
-  export type prompt_usagesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
-  }
-  export type prompt_usagesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
-  }
-  export type prompt_usagesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    prompt_variants?: boolean | prompt_variantsDefaultArgs<ExtArgs>
-  }
 
   export type $prompt_usagesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "prompt_usages"
-    objects: {
-      prompt_families: Prisma.$prompt_familiesPayload<ExtArgs>
-      prompt_variants: Prisma.$prompt_variantsPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       family_id: string
@@ -8240,8 +8151,6 @@ export namespace Prisma {
    */
   export interface Prisma__prompt_usagesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    prompt_families<T extends prompt_familiesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, prompt_familiesDefaultArgs<ExtArgs>>): Prisma__prompt_familiesClient<$Result.GetResult<Prisma.$prompt_familiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    prompt_variants<T extends prompt_variantsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, prompt_variantsDefaultArgs<ExtArgs>>): Prisma__prompt_variantsClient<$Result.GetResult<Prisma.$prompt_variantsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8301,10 +8210,6 @@ export namespace Prisma {
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    /**
      * Filter, which prompt_usages to fetch.
      */
     where: prompt_usagesWhereUniqueInput
@@ -8323,10 +8228,6 @@ export namespace Prisma {
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    /**
      * Filter, which prompt_usages to fetch.
      */
     where: prompt_usagesWhereUniqueInput
@@ -8344,10 +8245,6 @@ export namespace Prisma {
      * Omit specific fields from the prompt_usages
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
     /**
      * Filter, which prompt_usages to fetch.
      */
@@ -8397,10 +8294,6 @@ export namespace Prisma {
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    /**
      * Filter, which prompt_usages to fetch.
      */
     where?: prompt_usagesWhereInput
@@ -8449,10 +8342,6 @@ export namespace Prisma {
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    /**
      * Filter, which prompt_usages to fetch.
      */
     where?: prompt_usagesWhereInput
@@ -8496,10 +8385,6 @@ export namespace Prisma {
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    /**
      * The data needed to create a prompt_usages.
      */
     data: XOR<prompt_usagesCreateInput, prompt_usagesUncheckedCreateInput>
@@ -8533,10 +8418,6 @@ export namespace Prisma {
      */
     data: prompt_usagesCreateManyInput | prompt_usagesCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8551,10 +8432,6 @@ export namespace Prisma {
      * Omit specific fields from the prompt_usages
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
     /**
      * The data needed to update a prompt_usages.
      */
@@ -8607,10 +8484,6 @@ export namespace Prisma {
      * Limit how many prompt_usages to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8625,10 +8498,6 @@ export namespace Prisma {
      * Omit specific fields from the prompt_usages
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
     /**
      * The filter to search for the prompt_usages to update in case it exists.
      */
@@ -8655,10 +8524,6 @@ export namespace Prisma {
      * Omit specific fields from the prompt_usages
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
     /**
      * Filter which prompt_usages to delete.
      */
@@ -8691,10 +8556,6 @@ export namespace Prisma {
      * Omit specific fields from the prompt_usages
      */
     omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
   }
 
 
@@ -8908,9 +8769,7 @@ export namespace Prisma {
     improvement_note?: boolean
     created_by?: boolean
     metadata?: boolean
-    prompt_usages?: boolean | prompt_variants$prompt_usagesArgs<ExtArgs>
     prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    _count?: boolean | Prompt_variantsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt_variants"]>
 
   export type prompt_variantsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8947,9 +8806,7 @@ export namespace Prisma {
 
   export type prompt_variantsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_number" | "prompt_text" | "improvement_note" | "created_by" | "metadata", ExtArgs["result"]["prompt_variants"]>
   export type prompt_variantsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    prompt_usages?: boolean | prompt_variants$prompt_usagesArgs<ExtArgs>
     prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
-    _count?: boolean | Prompt_variantsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type prompt_variantsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prompt_families?: boolean | prompt_familiesDefaultArgs<ExtArgs>
@@ -8961,7 +8818,6 @@ export namespace Prisma {
   export type $prompt_variantsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "prompt_variants"
     objects: {
-      prompt_usages: Prisma.$prompt_usagesPayload<ExtArgs>[]
       prompt_families: Prisma.$prompt_familiesPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -9366,7 +9222,6 @@ export namespace Prisma {
    */
   export interface Prisma__prompt_variantsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    prompt_usages<T extends prompt_variants$prompt_usagesArgs<ExtArgs> = {}>(args?: Subset<T, prompt_variants$prompt_usagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$prompt_usagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prompt_families<T extends prompt_familiesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, prompt_familiesDefaultArgs<ExtArgs>>): Prisma__prompt_familiesClient<$Result.GetResult<Prisma.$prompt_familiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9797,30 +9652,6 @@ export namespace Prisma {
      * Limit how many prompt_variants to delete.
      */
     limit?: number
-  }
-
-  /**
-   * prompt_variants.prompt_usages
-   */
-  export type prompt_variants$prompt_usagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the prompt_usages
-     */
-    select?: prompt_usagesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the prompt_usages
-     */
-    omit?: prompt_usagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: prompt_usagesInclude<ExtArgs> | null
-    where?: prompt_usagesWhereInput
-    orderBy?: prompt_usagesOrderByWithRelationInput | prompt_usagesOrderByWithRelationInput[]
-    cursor?: prompt_usagesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Prompt_usagesScalarFieldEnum | Prompt_usagesScalarFieldEnum[]
   }
 
   /**
@@ -12410,7 +12241,7 @@ export namespace Prisma {
     id: string
     user_id: string
     spot_id: string
-    represent_guide_id: string
+    represent_guide_id: string | null
     taken_photo_storage_path: string | null
     prev_spot_id: string | null
     time_gap_minutes: number | null
@@ -12454,7 +12285,7 @@ export namespace Prisma {
     updated_at?: boolean
     lock_no?: boolean
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spot_visits"]>
 
@@ -12472,7 +12303,7 @@ export namespace Prisma {
     updated_at?: boolean
     lock_no?: boolean
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spot_visits"]>
 
@@ -12490,7 +12321,7 @@ export namespace Prisma {
     updated_at?: boolean
     lock_no?: boolean
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spot_visits"]>
 
@@ -12512,17 +12343,17 @@ export namespace Prisma {
   export type spot_visitsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "spot_id" | "represent_guide_id" | "taken_photo_storage_path" | "prev_spot_id" | "time_gap_minutes" | "min_version_major" | "max_version_major" | "created_at" | "updated_at" | "lock_no", ExtArgs["result"]["spot_visits"]>
   export type spot_visitsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }
   export type spot_visitsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }
   export type spot_visitsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots_spot_visits_prev_spot_idToext_spots?: boolean | spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>
-    spot_guides?: boolean | spot_guidesDefaultArgs<ExtArgs>
+    spot_guides?: boolean | spot_visits$spot_guidesArgs<ExtArgs>
     ext_spots_spot_visits_spot_idToext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
   }
 
@@ -12530,14 +12361,14 @@ export namespace Prisma {
     name: "spot_visits"
     objects: {
       ext_spots_spot_visits_prev_spot_idToext_spots: Prisma.$ext_spotsPayload<ExtArgs> | null
-      spot_guides: Prisma.$spot_guidesPayload<ExtArgs>
+      spot_guides: Prisma.$spot_guidesPayload<ExtArgs> | null
       ext_spots_spot_visits_spot_idToext_spots: Prisma.$ext_spotsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       user_id: string
       spot_id: string
-      represent_guide_id: string
+      represent_guide_id: string | null
       taken_photo_storage_path: string | null
       prev_spot_id: string | null
       time_gap_minutes: number | null
@@ -12941,7 +12772,7 @@ export namespace Prisma {
   export interface Prisma__spot_visitsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     ext_spots_spot_visits_prev_spot_idToext_spots<T extends spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs> = {}>(args?: Subset<T, spot_visits$ext_spots_spot_visits_prev_spot_idToext_spotsArgs<ExtArgs>>): Prisma__ext_spotsClient<$Result.GetResult<Prisma.$ext_spotsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    spot_guides<T extends spot_guidesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, spot_guidesDefaultArgs<ExtArgs>>): Prisma__spot_guidesClient<$Result.GetResult<Prisma.$spot_guidesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    spot_guides<T extends spot_visits$spot_guidesArgs<ExtArgs> = {}>(args?: Subset<T, spot_visits$spot_guidesArgs<ExtArgs>>): Prisma__spot_guidesClient<$Result.GetResult<Prisma.$spot_guidesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     ext_spots_spot_visits_spot_idToext_spots<T extends ext_spotsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ext_spotsDefaultArgs<ExtArgs>>): Prisma__ext_spotsClient<$Result.GetResult<Prisma.$ext_spotsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13396,6 +13227,25 @@ export namespace Prisma {
      */
     include?: ext_spotsInclude<ExtArgs> | null
     where?: ext_spotsWhereInput
+  }
+
+  /**
+   * spot_visits.spot_guides
+   */
+  export type spot_visits$spot_guidesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the spot_guides
+     */
+    select?: spot_guidesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the spot_guides
+     */
+    omit?: spot_guidesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: spot_guidesInclude<ExtArgs> | null
+    where?: spot_guidesWhereInput
   }
 
   /**
@@ -14160,7 +14010,6 @@ export namespace Prisma {
     description?: StringFilter<"prompt_families"> | string
     purpose?: Enumprompt_families_purposeFilter<"prompt_families"> | $Enums.prompt_families_purpose
     weight?: IntFilter<"prompt_families"> | number
-    prompt_usages?: Prompt_usagesListRelationFilter
     prompt_variants?: Prompt_variantsListRelationFilter
   }
 
@@ -14170,7 +14019,6 @@ export namespace Prisma {
     description?: SortOrder
     purpose?: SortOrder
     weight?: SortOrder
-    prompt_usages?: prompt_usagesOrderByRelationAggregateInput
     prompt_variants?: prompt_variantsOrderByRelationAggregateInput
   }
 
@@ -14183,7 +14031,6 @@ export namespace Prisma {
     description?: StringFilter<"prompt_families"> | string
     purpose?: Enumprompt_families_purposeFilter<"prompt_families"> | $Enums.prompt_families_purpose
     weight?: IntFilter<"prompt_families"> | number
-    prompt_usages?: Prompt_usagesListRelationFilter
     prompt_variants?: Prompt_variantsListRelationFilter
   }, "id">
 
@@ -14228,8 +14075,6 @@ export namespace Prisma {
     generated_by?: StringFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
-    prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
-    prompt_variants?: XOR<Prompt_variantsScalarRelationFilter, prompt_variantsWhereInput>
   }
 
   export type prompt_usagesOrderByWithRelationInput = {
@@ -14246,8 +14091,6 @@ export namespace Prisma {
     generated_by?: SortOrder
     created_at?: SortOrder
     metadata?: SortOrderInput | SortOrder
-    prompt_families?: prompt_familiesOrderByWithRelationInput
-    prompt_variants?: prompt_variantsOrderByWithRelationInput
   }
 
   export type prompt_usagesWhereUniqueInput = Prisma.AtLeast<{
@@ -14267,8 +14110,6 @@ export namespace Prisma {
     generated_by?: StringFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
-    prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
-    prompt_variants?: XOR<Prompt_variantsScalarRelationFilter, prompt_variantsWhereInput>
   }, "id">
 
   export type prompt_usagesOrderByWithAggregationInput = {
@@ -14322,7 +14163,6 @@ export namespace Prisma {
     improvement_note?: StringNullableFilter<"prompt_variants"> | string | null
     created_by?: StringFilter<"prompt_variants"> | string
     metadata?: JsonNullableFilter<"prompt_variants">
-    prompt_usages?: Prompt_usagesListRelationFilter
     prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
   }
 
@@ -14334,7 +14174,6 @@ export namespace Prisma {
     improvement_note?: SortOrderInput | SortOrder
     created_by?: SortOrder
     metadata?: SortOrderInput | SortOrder
-    prompt_usages?: prompt_usagesOrderByRelationAggregateInput
     prompt_families?: prompt_familiesOrderByWithRelationInput
   }
 
@@ -14350,7 +14189,6 @@ export namespace Prisma {
     improvement_note?: StringNullableFilter<"prompt_variants"> | string | null
     created_by?: StringFilter<"prompt_variants"> | string
     metadata?: JsonNullableFilter<"prompt_variants">
-    prompt_usages?: Prompt_usagesListRelationFilter
     prompt_families?: XOR<Prompt_familiesScalarRelationFilter, prompt_familiesWhereInput>
   }, "id" | "family_id_variant_number">
 
@@ -14573,7 +14411,7 @@ export namespace Prisma {
     id?: StringFilter<"spot_visits"> | string
     user_id?: StringFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
-    represent_guide_id?: StringFilter<"spot_visits"> | string
+    represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
     time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
@@ -14583,7 +14421,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"spot_visits"> | Date | string
     lock_no?: IntFilter<"spot_visits"> | number
     ext_spots_spot_visits_prev_spot_idToext_spots?: XOR<Ext_spotsNullableScalarRelationFilter, ext_spotsWhereInput> | null
-    spot_guides?: XOR<Spot_guidesScalarRelationFilter, spot_guidesWhereInput>
+    spot_guides?: XOR<Spot_guidesNullableScalarRelationFilter, spot_guidesWhereInput> | null
     ext_spots_spot_visits_spot_idToext_spots?: XOR<Ext_spotsScalarRelationFilter, ext_spotsWhereInput>
   }
 
@@ -14591,7 +14429,7 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     spot_id?: SortOrder
-    represent_guide_id?: SortOrder
+    represent_guide_id?: SortOrderInput | SortOrder
     taken_photo_storage_path?: SortOrderInput | SortOrder
     prev_spot_id?: SortOrderInput | SortOrder
     time_gap_minutes?: SortOrderInput | SortOrder
@@ -14612,7 +14450,7 @@ export namespace Prisma {
     NOT?: spot_visitsWhereInput | spot_visitsWhereInput[]
     user_id?: StringFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
-    represent_guide_id?: StringFilter<"spot_visits"> | string
+    represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
     time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
@@ -14622,7 +14460,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"spot_visits"> | Date | string
     lock_no?: IntFilter<"spot_visits"> | number
     ext_spots_spot_visits_prev_spot_idToext_spots?: XOR<Ext_spotsNullableScalarRelationFilter, ext_spotsWhereInput> | null
-    spot_guides?: XOR<Spot_guidesScalarRelationFilter, spot_guidesWhereInput>
+    spot_guides?: XOR<Spot_guidesNullableScalarRelationFilter, spot_guidesWhereInput> | null
     ext_spots_spot_visits_spot_idToext_spots?: XOR<Ext_spotsScalarRelationFilter, ext_spotsWhereInput>
   }, "id">
 
@@ -14630,7 +14468,7 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     spot_id?: SortOrder
-    represent_guide_id?: SortOrder
+    represent_guide_id?: SortOrderInput | SortOrder
     taken_photo_storage_path?: SortOrderInput | SortOrder
     prev_spot_id?: SortOrderInput | SortOrder
     time_gap_minutes?: SortOrderInput | SortOrder
@@ -14653,7 +14491,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"spot_visits"> | string
     user_id?: StringWithAggregatesFilter<"spot_visits"> | string
     spot_id?: StringWithAggregatesFilter<"spot_visits"> | string
-    represent_guide_id?: StringWithAggregatesFilter<"spot_visits"> | string
+    represent_guide_id?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
     time_gap_minutes?: IntNullableWithAggregatesFilter<"spot_visits"> | number | null
@@ -15046,7 +14884,6 @@ export namespace Prisma {
     description: string
     purpose: $Enums.prompt_families_purpose
     weight: number
-    prompt_usages?: prompt_usagesCreateNestedManyWithoutPrompt_familiesInput
     prompt_variants?: prompt_variantsCreateNestedManyWithoutPrompt_familiesInput
   }
 
@@ -15056,7 +14893,6 @@ export namespace Prisma {
     description: string
     purpose: $Enums.prompt_families_purpose
     weight: number
-    prompt_usages?: prompt_usagesUncheckedCreateNestedManyWithoutPrompt_familiesInput
     prompt_variants?: prompt_variantsUncheckedCreateNestedManyWithoutPrompt_familiesInput
   }
 
@@ -15066,7 +14902,6 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
     weight?: IntFieldUpdateOperationsInput | number
-    prompt_usages?: prompt_usagesUpdateManyWithoutPrompt_familiesNestedInput
     prompt_variants?: prompt_variantsUpdateManyWithoutPrompt_familiesNestedInput
   }
 
@@ -15076,7 +14911,6 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
     weight?: IntFieldUpdateOperationsInput | number
-    prompt_usages?: prompt_usagesUncheckedUpdateManyWithoutPrompt_familiesNestedInput
     prompt_variants?: prompt_variantsUncheckedUpdateManyWithoutPrompt_familiesNestedInput
   }
 
@@ -15106,6 +14940,8 @@ export namespace Prisma {
 
   export type prompt_usagesCreateInput = {
     id: string
+    family_id: string
+    variant_id: string
     target_type: $Enums.prompt_usages_target_type
     target_id: string
     generated_text: string
@@ -15116,8 +14952,6 @@ export namespace Prisma {
     generated_by: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_usagesInput
-    prompt_variants: prompt_variantsCreateNestedOneWithoutPrompt_usagesInput
   }
 
   export type prompt_usagesUncheckedCreateInput = {
@@ -15138,6 +14972,8 @@ export namespace Prisma {
 
   export type prompt_usagesUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    family_id?: StringFieldUpdateOperationsInput | string
+    variant_id?: StringFieldUpdateOperationsInput | string
     target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
@@ -15148,8 +14984,6 @@ export namespace Prisma {
     generated_by?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput
-    prompt_variants?: prompt_variantsUpdateOneRequiredWithoutPrompt_usagesNestedInput
   }
 
   export type prompt_usagesUncheckedUpdateInput = {
@@ -15186,6 +15020,8 @@ export namespace Prisma {
 
   export type prompt_usagesUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    family_id?: StringFieldUpdateOperationsInput | string
+    variant_id?: StringFieldUpdateOperationsInput | string
     target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
@@ -15221,7 +15057,6 @@ export namespace Prisma {
     improvement_note?: string | null
     created_by: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesCreateNestedManyWithoutPrompt_variantsInput
     prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_variantsInput
   }
 
@@ -15233,7 +15068,6 @@ export namespace Prisma {
     improvement_note?: string | null
     created_by: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUncheckedCreateNestedManyWithoutPrompt_variantsInput
   }
 
   export type prompt_variantsUpdateInput = {
@@ -15243,7 +15077,6 @@ export namespace Prisma {
     improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
     created_by?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUpdateManyWithoutPrompt_variantsNestedInput
     prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_variantsNestedInput
   }
 
@@ -15255,7 +15088,6 @@ export namespace Prisma {
     improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
     created_by?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUncheckedUpdateManyWithoutPrompt_variantsNestedInput
   }
 
   export type prompt_variantsCreateManyInput = {
@@ -15511,7 +15343,7 @@ export namespace Prisma {
     updated_at: Date | string
     lock_no: number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput
-    spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
+    spot_guides?: spot_guidesCreateNestedOneWithoutSpot_visitsInput
     ext_spots_spot_visits_spot_idToext_spots: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_spot_idToext_spotsInput
   }
 
@@ -15519,7 +15351,7 @@ export namespace Prisma {
     id: string
     user_id: string
     spot_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
     time_gap_minutes?: number | null
@@ -15541,7 +15373,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lock_no?: IntFieldUpdateOperationsInput | number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsUpdateOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsNestedInput
-    spot_guides?: spot_guidesUpdateOneRequiredWithoutSpot_visitsNestedInput
+    spot_guides?: spot_guidesUpdateOneWithoutSpot_visitsNestedInput
     ext_spots_spot_visits_spot_idToext_spots?: ext_spotsUpdateOneRequiredWithoutSpot_visits_spot_visits_spot_idToext_spotsNestedInput
   }
 
@@ -15549,7 +15381,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15564,7 +15396,7 @@ export namespace Prisma {
     id: string
     user_id: string
     spot_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
     time_gap_minutes?: number | null
@@ -15591,7 +15423,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16091,20 +15923,10 @@ export namespace Prisma {
     not?: NestedEnumprompt_families_purposeFilter<$PrismaModel> | $Enums.prompt_families_purpose
   }
 
-  export type Prompt_usagesListRelationFilter = {
-    every?: prompt_usagesWhereInput
-    some?: prompt_usagesWhereInput
-    none?: prompt_usagesWhereInput
-  }
-
   export type Prompt_variantsListRelationFilter = {
     every?: prompt_variantsWhereInput
     some?: prompt_variantsWhereInput
     none?: prompt_variantsWhereInput
-  }
-
-  export type prompt_usagesOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type prompt_variantsOrderByRelationAggregateInput = {
@@ -16169,16 +15991,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type Prompt_familiesScalarRelationFilter = {
-    is?: prompt_familiesWhereInput
-    isNot?: prompt_familiesWhereInput
-  }
-
-  export type Prompt_variantsScalarRelationFilter = {
-    is?: prompt_variantsWhereInput
-    isNot?: prompt_variantsWhereInput
   }
 
   export type prompt_usagesCountOrderByAggregateInput = {
@@ -16257,6 +16069,11 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type Prompt_familiesScalarRelationFilter = {
+    is?: prompt_familiesWhereInput
+    isNot?: prompt_familiesWhereInput
   }
 
   export type prompt_variantsFamily_idVariant_numberCompoundUniqueInput = {
@@ -16491,9 +16308,9 @@ export namespace Prisma {
     isNot?: ext_spotsWhereInput | null
   }
 
-  export type Spot_guidesScalarRelationFilter = {
-    is?: spot_guidesWhereInput
-    isNot?: spot_guidesWhereInput
+  export type Spot_guidesNullableScalarRelationFilter = {
+    is?: spot_guidesWhereInput | null
+    isNot?: spot_guidesWhereInput | null
   }
 
   export type spot_visitsCountOrderByAggregateInput = {
@@ -16733,25 +16550,11 @@ export namespace Prisma {
     set?: $Enums.frontend_event_logs_error_level | null
   }
 
-  export type prompt_usagesCreateNestedManyWithoutPrompt_familiesInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput> | prompt_usagesCreateWithoutPrompt_familiesInput[] | prompt_usagesUncheckedCreateWithoutPrompt_familiesInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_familiesInput | prompt_usagesCreateOrConnectWithoutPrompt_familiesInput[]
-    createMany?: prompt_usagesCreateManyPrompt_familiesInputEnvelope
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-  }
-
   export type prompt_variantsCreateNestedManyWithoutPrompt_familiesInput = {
     create?: XOR<prompt_variantsCreateWithoutPrompt_familiesInput, prompt_variantsUncheckedCreateWithoutPrompt_familiesInput> | prompt_variantsCreateWithoutPrompt_familiesInput[] | prompt_variantsUncheckedCreateWithoutPrompt_familiesInput[]
     connectOrCreate?: prompt_variantsCreateOrConnectWithoutPrompt_familiesInput | prompt_variantsCreateOrConnectWithoutPrompt_familiesInput[]
     createMany?: prompt_variantsCreateManyPrompt_familiesInputEnvelope
     connect?: prompt_variantsWhereUniqueInput | prompt_variantsWhereUniqueInput[]
-  }
-
-  export type prompt_usagesUncheckedCreateNestedManyWithoutPrompt_familiesInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput> | prompt_usagesCreateWithoutPrompt_familiesInput[] | prompt_usagesUncheckedCreateWithoutPrompt_familiesInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_familiesInput | prompt_usagesCreateOrConnectWithoutPrompt_familiesInput[]
-    createMany?: prompt_usagesCreateManyPrompt_familiesInputEnvelope
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
   }
 
   export type prompt_variantsUncheckedCreateNestedManyWithoutPrompt_familiesInput = {
@@ -16763,20 +16566,6 @@ export namespace Prisma {
 
   export type Enumprompt_families_purposeFieldUpdateOperationsInput = {
     set?: $Enums.prompt_families_purpose
-  }
-
-  export type prompt_usagesUpdateManyWithoutPrompt_familiesNestedInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput> | prompt_usagesCreateWithoutPrompt_familiesInput[] | prompt_usagesUncheckedCreateWithoutPrompt_familiesInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_familiesInput | prompt_usagesCreateOrConnectWithoutPrompt_familiesInput[]
-    upsert?: prompt_usagesUpsertWithWhereUniqueWithoutPrompt_familiesInput | prompt_usagesUpsertWithWhereUniqueWithoutPrompt_familiesInput[]
-    createMany?: prompt_usagesCreateManyPrompt_familiesInputEnvelope
-    set?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    disconnect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    delete?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    update?: prompt_usagesUpdateWithWhereUniqueWithoutPrompt_familiesInput | prompt_usagesUpdateWithWhereUniqueWithoutPrompt_familiesInput[]
-    updateMany?: prompt_usagesUpdateManyWithWhereWithoutPrompt_familiesInput | prompt_usagesUpdateManyWithWhereWithoutPrompt_familiesInput[]
-    deleteMany?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
   }
 
   export type prompt_variantsUpdateManyWithoutPrompt_familiesNestedInput = {
@@ -16793,20 +16582,6 @@ export namespace Prisma {
     deleteMany?: prompt_variantsScalarWhereInput | prompt_variantsScalarWhereInput[]
   }
 
-  export type prompt_usagesUncheckedUpdateManyWithoutPrompt_familiesNestedInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput> | prompt_usagesCreateWithoutPrompt_familiesInput[] | prompt_usagesUncheckedCreateWithoutPrompt_familiesInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_familiesInput | prompt_usagesCreateOrConnectWithoutPrompt_familiesInput[]
-    upsert?: prompt_usagesUpsertWithWhereUniqueWithoutPrompt_familiesInput | prompt_usagesUpsertWithWhereUniqueWithoutPrompt_familiesInput[]
-    createMany?: prompt_usagesCreateManyPrompt_familiesInputEnvelope
-    set?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    disconnect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    delete?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    update?: prompt_usagesUpdateWithWhereUniqueWithoutPrompt_familiesInput | prompt_usagesUpdateWithWhereUniqueWithoutPrompt_familiesInput[]
-    updateMany?: prompt_usagesUpdateManyWithWhereWithoutPrompt_familiesInput | prompt_usagesUpdateManyWithWhereWithoutPrompt_familiesInput[]
-    deleteMany?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
-  }
-
   export type prompt_variantsUncheckedUpdateManyWithoutPrompt_familiesNestedInput = {
     create?: XOR<prompt_variantsCreateWithoutPrompt_familiesInput, prompt_variantsUncheckedCreateWithoutPrompt_familiesInput> | prompt_variantsCreateWithoutPrompt_familiesInput[] | prompt_variantsUncheckedCreateWithoutPrompt_familiesInput[]
     connectOrCreate?: prompt_variantsCreateOrConnectWithoutPrompt_familiesInput | prompt_variantsCreateOrConnectWithoutPrompt_familiesInput[]
@@ -16821,18 +16596,6 @@ export namespace Prisma {
     deleteMany?: prompt_variantsScalarWhereInput | prompt_variantsScalarWhereInput[]
   }
 
-  export type prompt_familiesCreateNestedOneWithoutPrompt_usagesInput = {
-    create?: XOR<prompt_familiesCreateWithoutPrompt_usagesInput, prompt_familiesUncheckedCreateWithoutPrompt_usagesInput>
-    connectOrCreate?: prompt_familiesCreateOrConnectWithoutPrompt_usagesInput
-    connect?: prompt_familiesWhereUniqueInput
-  }
-
-  export type prompt_variantsCreateNestedOneWithoutPrompt_usagesInput = {
-    create?: XOR<prompt_variantsCreateWithoutPrompt_usagesInput, prompt_variantsUncheckedCreateWithoutPrompt_usagesInput>
-    connectOrCreate?: prompt_variantsCreateOrConnectWithoutPrompt_usagesInput
-    connect?: prompt_variantsWhereUniqueInput
-  }
-
   export type Enumprompt_usages_target_typeFieldUpdateOperationsInput = {
     set?: $Enums.prompt_usages_target_type
   }
@@ -16845,54 +16608,10 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput = {
-    create?: XOR<prompt_familiesCreateWithoutPrompt_usagesInput, prompt_familiesUncheckedCreateWithoutPrompt_usagesInput>
-    connectOrCreate?: prompt_familiesCreateOrConnectWithoutPrompt_usagesInput
-    upsert?: prompt_familiesUpsertWithoutPrompt_usagesInput
-    connect?: prompt_familiesWhereUniqueInput
-    update?: XOR<XOR<prompt_familiesUpdateToOneWithWhereWithoutPrompt_usagesInput, prompt_familiesUpdateWithoutPrompt_usagesInput>, prompt_familiesUncheckedUpdateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_variantsUpdateOneRequiredWithoutPrompt_usagesNestedInput = {
-    create?: XOR<prompt_variantsCreateWithoutPrompt_usagesInput, prompt_variantsUncheckedCreateWithoutPrompt_usagesInput>
-    connectOrCreate?: prompt_variantsCreateOrConnectWithoutPrompt_usagesInput
-    upsert?: prompt_variantsUpsertWithoutPrompt_usagesInput
-    connect?: prompt_variantsWhereUniqueInput
-    update?: XOR<XOR<prompt_variantsUpdateToOneWithWhereWithoutPrompt_usagesInput, prompt_variantsUpdateWithoutPrompt_usagesInput>, prompt_variantsUncheckedUpdateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_usagesCreateNestedManyWithoutPrompt_variantsInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput> | prompt_usagesCreateWithoutPrompt_variantsInput[] | prompt_usagesUncheckedCreateWithoutPrompt_variantsInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_variantsInput | prompt_usagesCreateOrConnectWithoutPrompt_variantsInput[]
-    createMany?: prompt_usagesCreateManyPrompt_variantsInputEnvelope
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-  }
-
   export type prompt_familiesCreateNestedOneWithoutPrompt_variantsInput = {
     create?: XOR<prompt_familiesCreateWithoutPrompt_variantsInput, prompt_familiesUncheckedCreateWithoutPrompt_variantsInput>
     connectOrCreate?: prompt_familiesCreateOrConnectWithoutPrompt_variantsInput
     connect?: prompt_familiesWhereUniqueInput
-  }
-
-  export type prompt_usagesUncheckedCreateNestedManyWithoutPrompt_variantsInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput> | prompt_usagesCreateWithoutPrompt_variantsInput[] | prompt_usagesUncheckedCreateWithoutPrompt_variantsInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_variantsInput | prompt_usagesCreateOrConnectWithoutPrompt_variantsInput[]
-    createMany?: prompt_usagesCreateManyPrompt_variantsInputEnvelope
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-  }
-
-  export type prompt_usagesUpdateManyWithoutPrompt_variantsNestedInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput> | prompt_usagesCreateWithoutPrompt_variantsInput[] | prompt_usagesUncheckedCreateWithoutPrompt_variantsInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_variantsInput | prompt_usagesCreateOrConnectWithoutPrompt_variantsInput[]
-    upsert?: prompt_usagesUpsertWithWhereUniqueWithoutPrompt_variantsInput | prompt_usagesUpsertWithWhereUniqueWithoutPrompt_variantsInput[]
-    createMany?: prompt_usagesCreateManyPrompt_variantsInputEnvelope
-    set?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    disconnect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    delete?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    update?: prompt_usagesUpdateWithWhereUniqueWithoutPrompt_variantsInput | prompt_usagesUpdateWithWhereUniqueWithoutPrompt_variantsInput[]
-    updateMany?: prompt_usagesUpdateManyWithWhereWithoutPrompt_variantsInput | prompt_usagesUpdateManyWithWhereWithoutPrompt_variantsInput[]
-    deleteMany?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
   }
 
   export type prompt_familiesUpdateOneRequiredWithoutPrompt_variantsNestedInput = {
@@ -16901,20 +16620,6 @@ export namespace Prisma {
     upsert?: prompt_familiesUpsertWithoutPrompt_variantsInput
     connect?: prompt_familiesWhereUniqueInput
     update?: XOR<XOR<prompt_familiesUpdateToOneWithWhereWithoutPrompt_variantsInput, prompt_familiesUpdateWithoutPrompt_variantsInput>, prompt_familiesUncheckedUpdateWithoutPrompt_variantsInput>
-  }
-
-  export type prompt_usagesUncheckedUpdateManyWithoutPrompt_variantsNestedInput = {
-    create?: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput> | prompt_usagesCreateWithoutPrompt_variantsInput[] | prompt_usagesUncheckedCreateWithoutPrompt_variantsInput[]
-    connectOrCreate?: prompt_usagesCreateOrConnectWithoutPrompt_variantsInput | prompt_usagesCreateOrConnectWithoutPrompt_variantsInput[]
-    upsert?: prompt_usagesUpsertWithWhereUniqueWithoutPrompt_variantsInput | prompt_usagesUpsertWithWhereUniqueWithoutPrompt_variantsInput[]
-    createMany?: prompt_usagesCreateManyPrompt_variantsInputEnvelope
-    set?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    disconnect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    delete?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    connect?: prompt_usagesWhereUniqueInput | prompt_usagesWhereUniqueInput[]
-    update?: prompt_usagesUpdateWithWhereUniqueWithoutPrompt_variantsInput | prompt_usagesUpdateWithWhereUniqueWithoutPrompt_variantsInput[]
-    updateMany?: prompt_usagesUpdateManyWithWhereWithoutPrompt_variantsInput | prompt_usagesUpdateManyWithWhereWithoutPrompt_variantsInput[]
-    deleteMany?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
   }
 
   export type Enumreactions_target_typeFieldUpdateOperationsInput = {
@@ -17026,10 +16731,12 @@ export namespace Prisma {
     update?: XOR<XOR<ext_spotsUpdateToOneWithWhereWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput, ext_spotsUpdateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput>, ext_spotsUncheckedUpdateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput>
   }
 
-  export type spot_guidesUpdateOneRequiredWithoutSpot_visitsNestedInput = {
+  export type spot_guidesUpdateOneWithoutSpot_visitsNestedInput = {
     create?: XOR<spot_guidesCreateWithoutSpot_visitsInput, spot_guidesUncheckedCreateWithoutSpot_visitsInput>
     connectOrCreate?: spot_guidesCreateOrConnectWithoutSpot_visitsInput
     upsert?: spot_guidesUpsertWithoutSpot_visitsInput
+    disconnect?: spot_guidesWhereInput | boolean
+    delete?: spot_guidesWhereInput | boolean
     connect?: spot_guidesWhereUniqueInput
     update?: XOR<XOR<spot_guidesUpdateToOneWithWhereWithoutSpot_visitsInput, spot_guidesUpdateWithoutSpot_visitsInput>, spot_guidesUncheckedUpdateWithoutSpot_visitsInput>
   }
@@ -17488,7 +17195,7 @@ export namespace Prisma {
     created_at: Date | string
     updated_at: Date | string
     lock_no: number
-    spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
+    spot_guides?: spot_guidesCreateNestedOneWithoutSpot_visitsInput
     ext_spots_spot_visits_spot_idToext_spots: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_spot_idToext_spotsInput
   }
 
@@ -17496,7 +17203,7 @@ export namespace Prisma {
     id: string
     user_id: string
     spot_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     time_gap_minutes?: number | null
     min_version_major: number
@@ -17527,13 +17234,13 @@ export namespace Prisma {
     updated_at: Date | string
     lock_no: number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsCreateNestedOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput
-    spot_guides: spot_guidesCreateNestedOneWithoutSpot_visitsInput
+    spot_guides?: spot_guidesCreateNestedOneWithoutSpot_visitsInput
   }
 
   export type spot_visitsUncheckedCreateWithoutExt_spots_spot_visits_spot_idToext_spotsInput = {
     id: string
     user_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
     time_gap_minutes?: number | null
@@ -17615,7 +17322,7 @@ export namespace Prisma {
     id?: StringFilter<"spot_visits"> | string
     user_id?: StringFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
-    represent_guide_id?: StringFilter<"spot_visits"> | string
+    represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
     prev_spot_id?: StringNullableFilter<"spot_visits"> | string | null
     time_gap_minutes?: IntNullableFilter<"spot_visits"> | number | null
@@ -17642,46 +17349,6 @@ export namespace Prisma {
     data: XOR<spot_visitsUpdateManyMutationInput, spot_visitsUncheckedUpdateManyWithoutExt_spots_spot_visits_spot_idToext_spotsInput>
   }
 
-  export type prompt_usagesCreateWithoutPrompt_familiesInput = {
-    id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_variants: prompt_variantsCreateNestedOneWithoutPrompt_usagesInput
-  }
-
-  export type prompt_usagesUncheckedCreateWithoutPrompt_familiesInput = {
-    id: string
-    variant_id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesCreateOrConnectWithoutPrompt_familiesInput = {
-    where: prompt_usagesWhereUniqueInput
-    create: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput>
-  }
-
-  export type prompt_usagesCreateManyPrompt_familiesInputEnvelope = {
-    data: prompt_usagesCreateManyPrompt_familiesInput | prompt_usagesCreateManyPrompt_familiesInput[]
-    skipDuplicates?: boolean
-  }
-
   export type prompt_variantsCreateWithoutPrompt_familiesInput = {
     id: string
     variant_number: number
@@ -17689,7 +17356,6 @@ export namespace Prisma {
     improvement_note?: string | null
     created_by: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesCreateNestedManyWithoutPrompt_variantsInput
   }
 
   export type prompt_variantsUncheckedCreateWithoutPrompt_familiesInput = {
@@ -17699,7 +17365,6 @@ export namespace Prisma {
     improvement_note?: string | null
     created_by: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUncheckedCreateNestedManyWithoutPrompt_variantsInput
   }
 
   export type prompt_variantsCreateOrConnectWithoutPrompt_familiesInput = {
@@ -17710,41 +17375,6 @@ export namespace Prisma {
   export type prompt_variantsCreateManyPrompt_familiesInputEnvelope = {
     data: prompt_variantsCreateManyPrompt_familiesInput | prompt_variantsCreateManyPrompt_familiesInput[]
     skipDuplicates?: boolean
-  }
-
-  export type prompt_usagesUpsertWithWhereUniqueWithoutPrompt_familiesInput = {
-    where: prompt_usagesWhereUniqueInput
-    update: XOR<prompt_usagesUpdateWithoutPrompt_familiesInput, prompt_usagesUncheckedUpdateWithoutPrompt_familiesInput>
-    create: XOR<prompt_usagesCreateWithoutPrompt_familiesInput, prompt_usagesUncheckedCreateWithoutPrompt_familiesInput>
-  }
-
-  export type prompt_usagesUpdateWithWhereUniqueWithoutPrompt_familiesInput = {
-    where: prompt_usagesWhereUniqueInput
-    data: XOR<prompt_usagesUpdateWithoutPrompt_familiesInput, prompt_usagesUncheckedUpdateWithoutPrompt_familiesInput>
-  }
-
-  export type prompt_usagesUpdateManyWithWhereWithoutPrompt_familiesInput = {
-    where: prompt_usagesScalarWhereInput
-    data: XOR<prompt_usagesUpdateManyMutationInput, prompt_usagesUncheckedUpdateManyWithoutPrompt_familiesInput>
-  }
-
-  export type prompt_usagesScalarWhereInput = {
-    AND?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
-    OR?: prompt_usagesScalarWhereInput[]
-    NOT?: prompt_usagesScalarWhereInput | prompt_usagesScalarWhereInput[]
-    id?: StringFilter<"prompt_usages"> | string
-    family_id?: StringFilter<"prompt_usages"> | string
-    variant_id?: StringFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
-    target_id?: StringFilter<"prompt_usages"> | string
-    generated_text?: StringFilter<"prompt_usages"> | string
-    used_prompt_text?: StringFilter<"prompt_usages"> | string
-    input_data?: JsonNullableFilter<"prompt_usages">
-    llm_model?: StringFilter<"prompt_usages"> | string
-    temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFilter<"prompt_usages"> | string
-    created_at?: DateTimeFilter<"prompt_usages"> | Date | string
-    metadata?: JsonNullableFilter<"prompt_usages">
   }
 
   export type prompt_variantsUpsertWithWhereUniqueWithoutPrompt_familiesInput = {
@@ -17776,161 +17406,12 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"prompt_variants">
   }
 
-  export type prompt_familiesCreateWithoutPrompt_usagesInput = {
-    id: string
-    name: string
-    description: string
-    purpose: $Enums.prompt_families_purpose
-    weight: number
-    prompt_variants?: prompt_variantsCreateNestedManyWithoutPrompt_familiesInput
-  }
-
-  export type prompt_familiesUncheckedCreateWithoutPrompt_usagesInput = {
-    id: string
-    name: string
-    description: string
-    purpose: $Enums.prompt_families_purpose
-    weight: number
-    prompt_variants?: prompt_variantsUncheckedCreateNestedManyWithoutPrompt_familiesInput
-  }
-
-  export type prompt_familiesCreateOrConnectWithoutPrompt_usagesInput = {
-    where: prompt_familiesWhereUniqueInput
-    create: XOR<prompt_familiesCreateWithoutPrompt_usagesInput, prompt_familiesUncheckedCreateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_variantsCreateWithoutPrompt_usagesInput = {
-    id: string
-    variant_number: number
-    prompt_text: string
-    improvement_note?: string | null
-    created_by: string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_variantsInput
-  }
-
-  export type prompt_variantsUncheckedCreateWithoutPrompt_usagesInput = {
-    id: string
-    family_id: string
-    variant_number: number
-    prompt_text: string
-    improvement_note?: string | null
-    created_by: string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_variantsCreateOrConnectWithoutPrompt_usagesInput = {
-    where: prompt_variantsWhereUniqueInput
-    create: XOR<prompt_variantsCreateWithoutPrompt_usagesInput, prompt_variantsUncheckedCreateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_familiesUpsertWithoutPrompt_usagesInput = {
-    update: XOR<prompt_familiesUpdateWithoutPrompt_usagesInput, prompt_familiesUncheckedUpdateWithoutPrompt_usagesInput>
-    create: XOR<prompt_familiesCreateWithoutPrompt_usagesInput, prompt_familiesUncheckedCreateWithoutPrompt_usagesInput>
-    where?: prompt_familiesWhereInput
-  }
-
-  export type prompt_familiesUpdateToOneWithWhereWithoutPrompt_usagesInput = {
-    where?: prompt_familiesWhereInput
-    data: XOR<prompt_familiesUpdateWithoutPrompt_usagesInput, prompt_familiesUncheckedUpdateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_familiesUpdateWithoutPrompt_usagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
-    weight?: IntFieldUpdateOperationsInput | number
-    prompt_variants?: prompt_variantsUpdateManyWithoutPrompt_familiesNestedInput
-  }
-
-  export type prompt_familiesUncheckedUpdateWithoutPrompt_usagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
-    weight?: IntFieldUpdateOperationsInput | number
-    prompt_variants?: prompt_variantsUncheckedUpdateManyWithoutPrompt_familiesNestedInput
-  }
-
-  export type prompt_variantsUpsertWithoutPrompt_usagesInput = {
-    update: XOR<prompt_variantsUpdateWithoutPrompt_usagesInput, prompt_variantsUncheckedUpdateWithoutPrompt_usagesInput>
-    create: XOR<prompt_variantsCreateWithoutPrompt_usagesInput, prompt_variantsUncheckedCreateWithoutPrompt_usagesInput>
-    where?: prompt_variantsWhereInput
-  }
-
-  export type prompt_variantsUpdateToOneWithWhereWithoutPrompt_usagesInput = {
-    where?: prompt_variantsWhereInput
-    data: XOR<prompt_variantsUpdateWithoutPrompt_usagesInput, prompt_variantsUncheckedUpdateWithoutPrompt_usagesInput>
-  }
-
-  export type prompt_variantsUpdateWithoutPrompt_usagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    variant_number?: IntFieldUpdateOperationsInput | number
-    prompt_text?: StringFieldUpdateOperationsInput | string
-    improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
-    created_by?: StringFieldUpdateOperationsInput | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_variantsNestedInput
-  }
-
-  export type prompt_variantsUncheckedUpdateWithoutPrompt_usagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    family_id?: StringFieldUpdateOperationsInput | string
-    variant_number?: IntFieldUpdateOperationsInput | number
-    prompt_text?: StringFieldUpdateOperationsInput | string
-    improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
-    created_by?: StringFieldUpdateOperationsInput | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesCreateWithoutPrompt_variantsInput = {
-    id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families: prompt_familiesCreateNestedOneWithoutPrompt_usagesInput
-  }
-
-  export type prompt_usagesUncheckedCreateWithoutPrompt_variantsInput = {
-    id: string
-    family_id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesCreateOrConnectWithoutPrompt_variantsInput = {
-    where: prompt_usagesWhereUniqueInput
-    create: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput>
-  }
-
-  export type prompt_usagesCreateManyPrompt_variantsInputEnvelope = {
-    data: prompt_usagesCreateManyPrompt_variantsInput | prompt_usagesCreateManyPrompt_variantsInput[]
-    skipDuplicates?: boolean
-  }
-
   export type prompt_familiesCreateWithoutPrompt_variantsInput = {
     id: string
     name: string
     description: string
     purpose: $Enums.prompt_families_purpose
     weight: number
-    prompt_usages?: prompt_usagesCreateNestedManyWithoutPrompt_familiesInput
   }
 
   export type prompt_familiesUncheckedCreateWithoutPrompt_variantsInput = {
@@ -17939,28 +17420,11 @@ export namespace Prisma {
     description: string
     purpose: $Enums.prompt_families_purpose
     weight: number
-    prompt_usages?: prompt_usagesUncheckedCreateNestedManyWithoutPrompt_familiesInput
   }
 
   export type prompt_familiesCreateOrConnectWithoutPrompt_variantsInput = {
     where: prompt_familiesWhereUniqueInput
     create: XOR<prompt_familiesCreateWithoutPrompt_variantsInput, prompt_familiesUncheckedCreateWithoutPrompt_variantsInput>
-  }
-
-  export type prompt_usagesUpsertWithWhereUniqueWithoutPrompt_variantsInput = {
-    where: prompt_usagesWhereUniqueInput
-    update: XOR<prompt_usagesUpdateWithoutPrompt_variantsInput, prompt_usagesUncheckedUpdateWithoutPrompt_variantsInput>
-    create: XOR<prompt_usagesCreateWithoutPrompt_variantsInput, prompt_usagesUncheckedCreateWithoutPrompt_variantsInput>
-  }
-
-  export type prompt_usagesUpdateWithWhereUniqueWithoutPrompt_variantsInput = {
-    where: prompt_usagesWhereUniqueInput
-    data: XOR<prompt_usagesUpdateWithoutPrompt_variantsInput, prompt_usagesUncheckedUpdateWithoutPrompt_variantsInput>
-  }
-
-  export type prompt_usagesUpdateManyWithWhereWithoutPrompt_variantsInput = {
-    where: prompt_usagesScalarWhereInput
-    data: XOR<prompt_usagesUpdateManyMutationInput, prompt_usagesUncheckedUpdateManyWithoutPrompt_variantsInput>
   }
 
   export type prompt_familiesUpsertWithoutPrompt_variantsInput = {
@@ -17980,7 +17444,6 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
     weight?: IntFieldUpdateOperationsInput | number
-    prompt_usages?: prompt_usagesUpdateManyWithoutPrompt_familiesNestedInput
   }
 
   export type prompt_familiesUncheckedUpdateWithoutPrompt_variantsInput = {
@@ -17989,7 +17452,6 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     purpose?: Enumprompt_families_purposeFieldUpdateOperationsInput | $Enums.prompt_families_purpose
     weight?: IntFieldUpdateOperationsInput | number
-    prompt_usages?: prompt_usagesUncheckedUpdateManyWithoutPrompt_familiesNestedInput
   }
 
   export type ext_spotsCreateWithoutSpot_guidesInput = {
@@ -18376,7 +17838,7 @@ export namespace Prisma {
     id: string
     user_id: string
     spot_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     time_gap_minutes?: number | null
     min_version_major: number
@@ -18389,7 +17851,7 @@ export namespace Prisma {
   export type spot_visitsCreateManyExt_spots_spot_visits_spot_idToext_spotsInput = {
     id: string
     user_id: string
-    represent_guide_id: string
+    represent_guide_id?: string | null
     taken_photo_storage_path?: string | null
     prev_spot_id?: string | null
     time_gap_minutes?: number | null
@@ -18466,7 +17928,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lock_no?: IntFieldUpdateOperationsInput | number
-    spot_guides?: spot_guidesUpdateOneRequiredWithoutSpot_visitsNestedInput
+    spot_guides?: spot_guidesUpdateOneWithoutSpot_visitsNestedInput
     ext_spots_spot_visits_spot_idToext_spots?: ext_spotsUpdateOneRequiredWithoutSpot_visits_spot_visits_spot_idToext_spotsNestedInput
   }
 
@@ -18474,7 +17936,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
@@ -18488,7 +17950,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     spot_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
     min_version_major?: IntFieldUpdateOperationsInput | number
@@ -18509,13 +17971,13 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lock_no?: IntFieldUpdateOperationsInput | number
     ext_spots_spot_visits_prev_spot_idToext_spots?: ext_spotsUpdateOneWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsNestedInput
-    spot_guides?: spot_guidesUpdateOneRequiredWithoutSpot_visitsNestedInput
+    spot_guides?: spot_guidesUpdateOneWithoutSpot_visitsNestedInput
   }
 
   export type spot_visitsUncheckedUpdateWithoutExt_spots_spot_visits_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18529,7 +17991,7 @@ export namespace Prisma {
   export type spot_visitsUncheckedUpdateManyWithoutExt_spots_spot_visits_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    represent_guide_id?: StringFieldUpdateOperationsInput | string
+    represent_guide_id?: NullableStringFieldUpdateOperationsInput | string | null
     taken_photo_storage_path?: NullableStringFieldUpdateOperationsInput | string | null
     prev_spot_id?: NullableStringFieldUpdateOperationsInput | string | null
     time_gap_minutes?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18538,21 +18000,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     lock_no?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type prompt_usagesCreateManyPrompt_familiesInput = {
-    id: string
-    variant_id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type prompt_variantsCreateManyPrompt_familiesInput = {
@@ -18564,51 +18011,6 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
-  export type prompt_usagesUpdateWithoutPrompt_familiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_variants?: prompt_variantsUpdateOneRequiredWithoutPrompt_usagesNestedInput
-  }
-
-  export type prompt_usagesUncheckedUpdateWithoutPrompt_familiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesUncheckedUpdateManyWithoutPrompt_familiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
   export type prompt_variantsUpdateWithoutPrompt_familiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     variant_number?: IntFieldUpdateOperationsInput | number
@@ -18616,7 +18018,6 @@ export namespace Prisma {
     improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
     created_by?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUpdateManyWithoutPrompt_variantsNestedInput
   }
 
   export type prompt_variantsUncheckedUpdateWithoutPrompt_familiesInput = {
@@ -18626,7 +18027,6 @@ export namespace Prisma {
     improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
     created_by?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_usages?: prompt_usagesUncheckedUpdateManyWithoutPrompt_variantsNestedInput
   }
 
   export type prompt_variantsUncheckedUpdateManyWithoutPrompt_familiesInput = {
@@ -18635,66 +18035,6 @@ export namespace Prisma {
     prompt_text?: StringFieldUpdateOperationsInput | string
     improvement_note?: NullableStringFieldUpdateOperationsInput | string | null
     created_by?: StringFieldUpdateOperationsInput | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesCreateManyPrompt_variantsInput = {
-    id: string
-    family_id: string
-    target_type: $Enums.prompt_usages_target_type
-    target_id: string
-    generated_text: string
-    used_prompt_text: string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model: string
-    temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
-    created_at: Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesUpdateWithoutPrompt_variantsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    prompt_families?: prompt_familiesUpdateOneRequiredWithoutPrompt_usagesNestedInput
-  }
-
-  export type prompt_usagesUncheckedUpdateWithoutPrompt_variantsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    family_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type prompt_usagesUncheckedUpdateManyWithoutPrompt_variantsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    family_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
-    target_id?: StringFieldUpdateOperationsInput | string
-    generated_text?: StringFieldUpdateOperationsInput | string
-    used_prompt_text?: StringFieldUpdateOperationsInput | string
-    input_data?: NullableJsonNullValueInput | InputJsonValue
-    llm_model?: StringFieldUpdateOperationsInput | string
-    temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 

@@ -247,22 +247,7 @@ export type Database = {
           used_prompt_text?: string
           variant_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "prompt_usages_family_id_fkey"
-            columns: ["family_id"]
-            isOneToOne: false
-            referencedRelation: "prompt_families"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "prompt_usages_variant_id_fkey"
-            columns: ["variant_id"]
-            isOneToOne: false
-            referencedRelation: "prompt_variants"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       prompt_variants: {
         Row: {
@@ -408,7 +393,7 @@ export type Database = {
           max_version_major: number
           min_version_major: number
           prev_spot_id: string | null
-          represent_guide_id: string
+          represent_guide_id: string | null
           spot_id: string
           taken_photo_storage_path: string | null
           time_gap_minutes: number | null
@@ -422,7 +407,7 @@ export type Database = {
           max_version_major: number
           min_version_major: number
           prev_spot_id?: string | null
-          represent_guide_id: string
+          represent_guide_id?: string | null
           spot_id: string
           taken_photo_storage_path?: string | null
           time_gap_minutes?: number | null
@@ -436,7 +421,7 @@ export type Database = {
           max_version_major?: number
           min_version_major?: number
           prev_spot_id?: string | null
-          represent_guide_id?: string
+          represent_guide_id?: string | null
           spot_id?: string
           taken_photo_storage_path?: string | null
           time_gap_minutes?: number | null

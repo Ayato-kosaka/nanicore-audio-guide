@@ -94,7 +94,6 @@ model prompt_families {
   description     String
   purpose         prompt_families_purpose
   weight          Int
-  prompt_usages   prompt_usages[]
   prompt_variants prompt_variants[]
 
   @@index([weight], map: "idx_prompt_families_weight")
@@ -116,8 +115,6 @@ model prompt_usages {
   generated_by     String
   created_at       DateTime                  @db.Timestamptz(6)
   metadata         Json?
-  prompt_families  prompt_families           @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  prompt_variants  prompt_variants           @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([family_id], map: "idx_prompt_usages_family_id")
   @@index([target_id], map: "idx_prompt_usages_target_id")
@@ -135,7 +132,6 @@ model prompt_variants {
   improvement_note String?
   created_by       String
   metadata         Json?
-  prompt_usages    prompt_usages[]
   prompt_families  prompt_families @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([family_id, variant_number])
@@ -188,21 +184,21 @@ model spot_guides {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model spot_visits {
-  id                                            String      @id
+  id                                            String       @id
   user_id                                       String
   spot_id                                       String
-  represent_guide_id                            String
+  represent_guide_id                            String?
   taken_photo_storage_path                      String?
   prev_spot_id                                  String?
   time_gap_minutes                              Int?
   min_version_major                             Int
   max_version_major                             Int
-  created_at                                    DateTime    @db.Timestamptz(6)
-  updated_at                                    DateTime    @db.Timestamptz(6)
+  created_at                                    DateTime     @db.Timestamptz(6)
+  updated_at                                    DateTime     @db.Timestamptz(6)
   lock_no                                       Int
-  ext_spots_spot_visits_prev_spot_idToext_spots ext_spots?  @relation("spot_visits_prev_spot_idToext_spots", fields: [prev_spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  spot_guides                                   spot_guides @relation(fields: [represent_guide_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ext_spots_spot_visits_spot_idToext_spots      ext_spots   @relation("spot_visits_spot_idToext_spots", fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ext_spots_spot_visits_prev_spot_idToext_spots ext_spots?   @relation("spot_visits_prev_spot_idToext_spots", fields: [prev_spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spot_guides                                   spot_guides? @relation(fields: [represent_guide_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ext_spots_spot_visits_spot_idToext_spots      ext_spots    @relation("spot_visits_spot_idToext_spots", fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([prev_spot_id], map: "idx_spot_visits_prev_spot_id")
   @@index([represent_guide_id], map: "idx_spot_visits_represent_guide_id")
