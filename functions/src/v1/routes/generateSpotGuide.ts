@@ -3,11 +3,12 @@ import { getCurrentVersionFromRequest } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
 import { withValidatedAuthHandler } from '../lib/handler';
 import { uploadFile } from '../lib/storage';
-import { generateSpotGuideRequestSchema } from '../../../../shared/api/generateSpotGuide.schema';
+import { generateSpotGuideRequestSchema, GenerateSpotGuideResponse } from '../../../../shared/api/generateSpotGuide.schema';
 import { generateSpotGuideContent } from '../lib/claude';
 import { synthesizeTextToSpeech } from '../lib/textToSpeech';
 import { getRemoteConfigValue } from '../lib/remoteConfig';
 import { randomUUID } from 'crypto';
+import { convertPrismaToSupabase_SpotGuides } from '../../../../shared/converters/convert_spot_guides';
 
 const DEFAULT_SPOT_GUIDE_CREATED_BY = 'system';
 
@@ -121,9 +122,11 @@ export const generateSpotGuide = withValidatedAuthHandler(
         });
 
         // ✅ レスポンス返却（音声URL付き）
-        res.status(200).json({
-            ...spotGuide,
+        const response: GenerateSpotGuideResponse = {
+            spotGuide: convertPrismaToSupabase_SpotGuides(spotGuide),
             audioUrl,
-        });
+        };
+
+        res.status(200).json(response);
     }
 );
