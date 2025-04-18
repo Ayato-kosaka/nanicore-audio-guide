@@ -72,7 +72,7 @@ export default function SpotCapture() {
         formData.append("image", file);
       }
 
-      const { extSpots, uploadedUri, takenPhotoStoragePath } =
+      const { extSpots, takenPhotoStoragePath } =
         await callCloudFunction<FormData, FindOrCreateSpotFromImageResponse>(
           "findOrCreateSpotFromImage",
           formData,
@@ -86,7 +86,7 @@ export default function SpotCapture() {
           locale: i18n.locale,
           ...serializeSpotGuideParams({
             extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
-            imageUri: uploadedUri,
+            imageUri: asset.uri,
             takenPhotoStoragePath,
           })
         }
