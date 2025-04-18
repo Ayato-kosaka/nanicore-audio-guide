@@ -63,11 +63,12 @@ export const findOrCreateSpotFromImage = withValidatedAuthHandler(
         // 📋 既存スポットがあればそれを返却
         const existing = await prisma.ext_spots.findUnique({ where: { id: spotId } });
         if (existing) {
-            res.status(200).json({
-                ext_spots: existing,
+            const response: FindOrCreateSpotFromImageResponse = {
+                extSpots: convertPrismaToSupabase_ExtSpots(existing),
                 uploadedUri: imageUri,
                 takenPhotoStoragePath: imagePath,
-            });
+            };
+            res.status(200).json(response);
             return;
         }
 
