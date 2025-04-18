@@ -50,7 +50,9 @@ for ((i=START_INDEX; i<${#FILES[@]}; i++)); do
   FILE="${FILES[$i]}"
   echo "📄 Applying: $FILE (schema: $DB_SCHEMA)"
 
-  psql "$DATABASE_URL" --set ON_ERROR_STOP=on <<EOF
+# 🚫 psql 用に `?pgbouncer=true` を除外
+PSQL_DATABASE_URL=$(echo "$DATABASE_URL" | sed 's/[?&]pgbouncer=true//g')
+  psql "$PSQL_DATABASE_URL" --set ON_ERROR_STOP=on <<EOF
 SET search_path TO $DB_SCHEMA;
 \i $FILE
 EOF
