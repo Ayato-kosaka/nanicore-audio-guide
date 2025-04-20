@@ -40,11 +40,11 @@ export const logBackendEvent = async ({
       },
     });
 
-    if (process.env.NODE_ENV === 'development') {
+    if (env.FUNCTIONS_NODE_ENV === 'development') {
       console.log(`📘 [${error_level}] ${function_name}:${event_name}`, payload);
     }
   } catch (error: any) {
-    if (process.env.NODE_ENV === 'development') {
+    if (env.FUNCTIONS_NODE_ENV === 'development') {
       console.error('❌ Failed to log backend event', {
         error: error.message,
         function_name,

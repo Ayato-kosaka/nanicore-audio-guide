@@ -103,6 +103,8 @@ export const withValidatedAuthHandler = <T>(
         const isMultipart = options?.useMultipart;
         const isBody = Object.keys(req.body).length > 0;
 
+        res.setHeader('x-request-id', requestId);
+
         try {
             const { userId } = await withAuthUser(req);
 
@@ -169,7 +171,7 @@ export const withValidatedAuthHandler = <T>(
                 },
                 request_id: requestId,
             });
-            res.status(500).json({ error: 'Internal server error', requestId });
+            res.status(500).json({ error: 'Internal server error' });
         } finally {
             await prisma.$disconnect();
         }

@@ -56,14 +56,6 @@ export const useCloudFunction = () => {
       }
 
       try {
-        logFrontendEvent({
-          event_name: `callCloudFunction:${version}-${functionName}`,
-          error_level: 'info',
-          payload:
-            isMultipart || requestPayload instanceof FormData
-              ? { info: '[multipart/form-data]' }
-              : requestPayload,
-        });
 
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -73,20 +65,23 @@ export const useCloudFunction = () => {
             : JSON.stringify(requestPayload),
         });
 
+        const requestId = response.headers.get('x-request-id');
+
         if (!response.ok) {
-          let errorMessage = `Function ${version}-${functionName} failed with status ${response.status}`;
-
-          try {
-            const errorBody = await response.json();
-            if (errorBody?.requestId) {
-              errorMessage += ` (requestId: ${errorBody.requestId})`;
-            }
-          } catch (_) {
-            // JSON parse 失敗時は何もしない（静かにスルー）
-          }
-
+          const errorMessage = `Function ${version}-${functionName} failed with status ${response.status} (requestId: ${requestId})`;
           throw new Error(errorMessage);
         }
+
+        logFrontendEvent({
+          event_name: `callCloudFunction:${version}-${functionName}`,
+          error_level: 'info',
+          payload: {
+            requestPayload: isMultipart || requestPayload instanceof FormData
+              ? '[multipart/form-data]'
+              : requestPayload,
+            requestId,
+          },
+        });
 
         return await response.json();
       } catch (error: any) {

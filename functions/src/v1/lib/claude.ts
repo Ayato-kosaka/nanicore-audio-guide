@@ -1,5 +1,5 @@
 import { env } from './env';
-import { loadStaticMasterWithLog } from './loadStaticMaster';
+import { getStaticMaster } from './getStaticMaster';
 import { callExternalApi } from './backendUtils';
 
 // Claude API のレスポンス型
@@ -69,12 +69,12 @@ export const generateSpotGuideContent = async (
 
     try {
         // 🎯 Static Masterからプロンプトファミリー・バリアントを読み込み
-        const promptFamilies = await loadStaticMasterWithLog('prompt_families', userId, requestId);
+        const promptFamilies = await getStaticMaster('prompt_families');
         const selectedFamily = promptFamilies
             .filter((x) => x.purpose === 'spot_guide_manuscript')
             .sort((a, b) => a.weight - b.weight)[0];
 
-        const promptVariants = await loadStaticMasterWithLog('prompt_variants', userId, requestId);
+        const promptVariants = await getStaticMaster('prompt_variants');
         const selectedVariant = promptVariants
             .filter((x) => x.family_id === selectedFamily.id)
             .sort((a, b) => a.variant_number - b.variant_number)[0];
