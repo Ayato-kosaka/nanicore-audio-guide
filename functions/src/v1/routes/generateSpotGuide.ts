@@ -27,7 +27,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
 
         // 📦 Remote Config より対象バージョン上限を取得
         const maxVersionMajor = parseInt(
-            await getRemoteConfigValue('v1_spot_guides_max_version_major', requestId, userId)
+            await getRemoteConfigValue('v1_spot_guides_max_version_major')
         );
 
         // ✍️ Claude によるコンテンツ生成

@@ -1,96 +1,42 @@
-import * as admin from 'firebase-admin';
-import { logBackendEvent } from './logger';
 import { RemoteConfigValues, remoteConfigSchema } from '../../../../shared/remoteConfig/remoteConfig.schema';
-
-if (!admin.apps.length) {
-    admin.initializeApp();
-}
-
-let cachedConfig: RemoteConfigValues | null = null;
-let lastFetchTime = 0;
-const CACHE_DURATION_MS = 5 * 60 * 1000;
-
-const getConfig = async (requestId: string, userId: string) => {
-    const template = await admin.remoteConfig().getTemplate();
-    const parameters = template.parameters || {};
-
-    const parsedObject: Record<string, unknown> = {};
-    for (const [key, param] of Object.entries(parameters)) {
-        const defaultValue = param.defaultValue;
-        if (defaultValue && 'value' in defaultValue) {
-            parsedObject[key] = defaultValue.value;
-        } else {
-            parsedObject[key] = null;
-        }
-    }
-
-    const config = remoteConfigSchema.safeParse(parsedObject);
-    if (!config.success) {
-        logBackendEvent({
-            event_name: 'remoteConfigInvalidConfig',
-            function_name: 'cacheConfig',
-            payload: {
-                error: config.error.message,
-                zodIssues: config.error.issues.map((issue) => ({
-                    code: issue.code,
-                    message: issue.message,
-                    path: issue.path,
-                })),
-            },
-            request_id: requestId,
-            user_id: userId,
-            error_level: 'error',
-        });
-        throw new Error(`Invalid config: ${config.error}`);
-    }
-
-    lastFetchTime = Date.now();
-    return config.data;
-};
+import { getStaticMaster } from './getStaticMaster';
 
 /**
- * 🔧 Remote Config から指定キーの値を取得するユーティリティ関数。
- * - 最初の呼び出しで全体をキャッシュ（5分間有効）
- * - スキーマ検証済みの安全な構成値を取得
+ * 🔧 Remote Config の静的マスタから指定キーの値を取得する。
  *
- * @param key - 取得対象のRemoteConfigキー
- * @param requestId - ログ用のリクエストID
- * @param userId - 呼び出し元ユーザーID
- * @returns 指定キーに対応する文字列値
- * @throws Error - 未定義キーや型不整合がある場合
+ * - Supabase に定義された `config` テーブルを参照
+ * - 型安全にパースし、不正なキーや構造を検知
+ *
+ * @param key - 取得対象の設定キー
+ * @returns 対応する設定値（string）
+ * @throws 無効な構造や存在しないキーに対しては例外を投げる
  */
 export const getRemoteConfigValue = async (
     key: keyof RemoteConfigValues,
-    requestId: string,
-    userId: string
 ): Promise<string> => {
-    if (cachedConfig === null || Date.now() > lastFetchTime + CACHE_DURATION_MS) {
-        cachedConfig = await getConfig(requestId, userId);
+    // 🔄 静的マスタから設定データを取得
+    const configJson = await getStaticMaster('config');
+    const rawConfig = configJson.reduce((acc, config) => {
+        acc[config.key] = config.value;
+        return acc;
+    }, {} as Record<string, string>);
+
+    // ✅ Zod で型検証＆パース
+    const { success, error, data: parsedConfig } = remoteConfigSchema.safeParse(rawConfig);
+
+    if (!success) {
+        throw new Error(`Remote config validation failed: ${error.message}`);
     }
 
-    if (!(key in cachedConfig)) {
-        logBackendEvent({
-            event_name: 'remoteConfigInvalidKey',
-            function_name: 'getRemoteConfigValue',
-            payload: { key },
-            request_id: requestId,
-            user_id: userId,
-            error_level: 'error',
-        });
-        throw new Error(`Invalid key: ${key}`);
+    // ❓ 対象キーが存在しない場合は明示的にエラー
+    if (!(key in parsedConfig)) {
+        throw new Error(`Remote config key "${key}" is not defined.`);
     }
 
-    const value = cachedConfig[key];
+    const value = parsedConfig[key];
+
     if (typeof value !== 'string') {
-        logBackendEvent({
-            event_name: 'remoteConfigValueTypeMismatch',
-            function_name: 'getRemoteConfigValue',
-            payload: { key, value },
-            request_id: requestId,
-            user_id: userId,
-            error_level: 'error',
-        });
-        throw new Error(`Remote config value for key ${key} is not a string.`);
+        throw new Error(`Remote config value for key "${key}" must be a string.`);
     }
 
     return value;

@@ -17,6 +17,7 @@ const envSchema = z.object({
   FUNCTIONS_CLAUDE_API_KEY: z.string(),
   FUNCTIONS_DEV_GCP_PROJECT_ID: z.string(),
   FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64: z.string(),
+  FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH: z.string(),
 });
 
 /**

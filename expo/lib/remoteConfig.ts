@@ -1,45 +1,24 @@
-import remoteConfig from '@react-native-firebase/remote-config';
-import { $Enums } from '@shared/prisma';
 import { Env } from '../constants/Env';
-import { RemoteConfigValues } from '@shared/remoteConfig/remoteConfig.schema';
-
+import type { RemoteConfigValues } from '@shared/remoteConfig/remoteConfig.schema';
+import { loadStaticMaster } from '@shared/utils/loadStaticMaster';
 // キャッシュ用のローカル変数（初期値は null）
 let cachedValues: RemoteConfigValues | null = null;
 
 /**
- * 🔧 Remote Config の初期化処理。
- *
- * Firebase Remote Config に対して `fetchAndActivate` を行い、
- * アプリ内で使用する値を `cachedValues` にキャッシュする。
- * `v1_min_frontend_log_level` により、ログ記録の閾値を制御できる。
- *
- * @returns 初期化された RemoteConfig の値（内部キャッシュとしても保存される）
+ * 静的マスタから設定データを取得
+ * 
+ * @returns 設定データ
  */
 export const initRemoteConfig = async (): Promise<RemoteConfigValues | null> => {
-  try {
-    await remoteConfig().setDefaults({
-      v1_min_frontend_log_level: 'debug',
-    });
 
-    await remoteConfig().fetchAndActivate();
+  // 🔄 静的マスタから設定データを取得
+  const configJson = await loadStaticMaster(Env.GCS_BUCKET_NAME, Env.GCS_STATIC_MASTER_DIR_PATH, 'config');
+  const config = configJson.reduce((acc, config) => {
+    acc[config.key] = config.value;
+    return acc;
+  }, {} as Record<string, string>);
 
-    cachedValues = {
-      v1_min_frontend_log_level: remoteConfig().getValue('v1_min_frontend_log_level').asString() as $Enums.backend_event_logs_error_level,
-      v1_spot_visits_max_version_major: remoteConfig().getValue('v1_spot_visits_max_version_major').asString(),
-      v1_spot_guides_max_version_major: remoteConfig().getValue('v1_spot_guides_max_version_major').asString(),
-    };
-
-    if (Env.NODE_ENV === "development") {
-      console.log('✅ Remote Config initialized:', cachedValues);
-    }
-
-    return cachedValues;
-  } catch (err: any) {
-    if (Env.NODE_ENV === "development") {
-      console.error('⚠️ Remote Config initialization failed:', err.message);
-    }
-    return null;
-  }
+  return config as RemoteConfigValues;
 };
 
 /**
