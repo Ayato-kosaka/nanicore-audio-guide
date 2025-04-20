@@ -10,7 +10,7 @@ CREATE TABLE external_api_logs (
     status_code SMALLINT,
     error_message TEXT,
     response_time_ms INTEGER,
-    user_id TEXT,
+    user_id UUID,
     created_at TIMESTAMPTZ NOT NULL,
     created_commit_id TEXT NOT NULL
 );

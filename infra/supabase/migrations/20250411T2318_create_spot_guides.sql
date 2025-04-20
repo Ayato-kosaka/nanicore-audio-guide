@@ -12,7 +12,7 @@ CREATE TABLE spot_guides (
     recommendation_weight INTEGER NOT NULL,
     min_version_major INTEGER NOT NULL,
     max_version_major INTEGER NOT NULL,
-    created_by TEXT NOT NULL,
+    created_user UUID NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
     created_request_id TEXT NOT NULL,
     lock_no INTEGER NOT NULL,
@@ -40,7 +40,7 @@ COMMENT ON COLUMN spot_guides.currency IS 'ガイドの通貨コード（ISO 421
 COMMENT ON COLUMN spot_guides.recommendation_weight IS 'レコメンドロジック用の重みスコア';
 COMMENT ON COLUMN spot_guides.min_version_major IS '表示対象となる最小クライアントバージョン';
 COMMENT ON COLUMN spot_guides.max_version_major IS '表示対象となる最大クライアントバージョン';
-COMMENT ON COLUMN spot_guides.created_by IS 'ガイド作成者（デフォルト生成ガイドの場合は usr_id_for_system）';
+COMMENT ON COLUMN spot_guides.created_user IS 'ガイド作成者（デフォルト生成ガイドの場合は usr_id_for_system）';
 COMMENT ON COLUMN spot_guides.created_at IS 'ガイド作成日時';
 COMMENT ON COLUMN spot_guides.created_request_id IS 'このガイドを作成した処理単位のトレースID';
 COMMENT ON COLUMN spot_guides.lock_no IS '楽観ロック用バージョン番号';

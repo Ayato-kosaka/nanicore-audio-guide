@@ -1,7 +1,7 @@
 -- テーブル定義
 CREATE TABLE spot_visits (
     id TEXT PRIMARY KEY,
-    user_id TEXT NOT NULL,
+    user_id UUID NOT NULL,
     spot_id TEXT NOT NULL,
     represent_guide_id TEXT,
     taken_photo_storage_path TEXT,

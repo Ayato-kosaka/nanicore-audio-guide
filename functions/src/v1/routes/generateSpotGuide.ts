@@ -10,7 +10,7 @@ import { getRemoteConfigValue } from '../lib/remoteConfig';
 import { randomUUID } from 'crypto';
 import { convertPrismaToSupabase_SpotGuides } from '../../../../shared/converters/convert_spot_guides';
 
-const DEFAULT_SPOT_GUIDE_CREATED_BY = 'system';
+const DEFAULT_SPOT_GUIDE_CREATED_USER_ID = '00000000-0000-0000-0000-000000000000';
 
 /**
  * 🧠 Claude × TTS を用いて、観光ガイドを生成・保存する Cloud Function。
@@ -82,7 +82,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
                 min_version_major: 1,
                 max_version_major: maxVersionMajor,
                 // 【思想】登録未済のスポットでは、システムがその場で生成・登録する #17
-                created_by: DEFAULT_SPOT_GUIDE_CREATED_BY,
+                created_user: DEFAULT_SPOT_GUIDE_CREATED_USER_ID,
                 created_at: new Date(),
                 created_request_id: requestId,
                 lock_no: 0,
@@ -102,7 +102,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
                 input_data: promptInput,
                 llm_model: llmModel,
                 temperature,
-                generated_by: DEFAULT_SPOT_GUIDE_CREATED_BY,
+                generated_user: DEFAULT_SPOT_GUIDE_CREATED_USER_ID,
                 created_at: new Date(),
             },
         });

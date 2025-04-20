@@ -15,7 +15,7 @@ CREATE TABLE prompt_usages (
     input_data JSONB,
     llm_model TEXT NOT NULL,
     temperature NUMERIC(3,2),
-    generated_by TEXT NOT NULL,
+    generated_user UUID NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
     metadata JSONB
 );
@@ -40,6 +40,6 @@ COMMENT ON COLUMN prompt_usages.used_prompt_text IS '使用されたプロンプ
 COMMENT ON COLUMN prompt_usages.input_data IS '入力値（例：スポット名、ジャンルなど）';
 COMMENT ON COLUMN prompt_usages.llm_model IS '使用したLLM（例：claude-3, gpt-4 など）';
 COMMENT ON COLUMN prompt_usages.temperature IS 'LLM生成時のtemperature設定';
-COMMENT ON COLUMN prompt_usages.generated_by IS '生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）';
+COMMENT ON COLUMN prompt_usages.generated_user IS '生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）';
 COMMENT ON COLUMN prompt_usages.created_at IS '作成日時';
 COMMENT ON COLUMN prompt_usages.metadata IS '将来のA/Bテスト用メタ情報など';

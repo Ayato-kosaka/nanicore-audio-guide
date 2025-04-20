@@ -194,7 +194,7 @@ exports.Prisma.Prompt_usagesScalarFieldEnum = {
   input_data: 'input_data',
   llm_model: 'llm_model',
   temperature: 'temperature',
-  generated_by: 'generated_by',
+  generated_user: 'generated_user',
   created_at: 'created_at',
   metadata: 'metadata'
 };
@@ -233,7 +233,7 @@ exports.Prisma.Spot_guidesScalarFieldEnum = {
   recommendation_weight: 'recommendation_weight',
   min_version_major: 'min_version_major',
   max_version_major: 'max_version_major',
-  created_by: 'created_by',
+  created_user: 'created_user',
   created_at: 'created_at',
   created_request_id: 'created_request_id',
   lock_no: 'lock_no'

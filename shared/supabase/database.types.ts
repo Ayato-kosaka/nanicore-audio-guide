@@ -223,8 +223,8 @@ export type Database = {
         Row: {
           created_at: string
           family_id: string
-          generated_by: string
           generated_text: string
+          generated_user: string
           id: string
           input_data: Json | null
           llm_model: string
@@ -238,8 +238,8 @@ export type Database = {
         Insert: {
           created_at: string
           family_id: string
-          generated_by: string
           generated_text: string
+          generated_user: string
           id: string
           input_data?: Json | null
           llm_model: string
@@ -253,8 +253,8 @@ export type Database = {
         Update: {
           created_at?: string
           family_id?: string
-          generated_by?: string
           generated_text?: string
+          generated_user?: string
           id?: string
           input_data?: Json | null
           llm_model?: string
@@ -342,8 +342,8 @@ export type Database = {
         Row: {
           audio_storage_path: string
           created_at: string
-          created_by: string
           created_request_id: string
+          created_user: string
           currency: string | null
           id: string
           language_tag: string
@@ -360,8 +360,8 @@ export type Database = {
         Insert: {
           audio_storage_path: string
           created_at: string
-          created_by: string
           created_request_id: string
+          created_user: string
           currency?: string | null
           id: string
           language_tag: string
@@ -378,8 +378,8 @@ export type Database = {
         Update: {
           audio_storage_path?: string
           created_at?: string
-          created_by?: string
           created_request_id?: string
+          created_user?: string
           currency?: string | null
           id?: string
           language_tag?: string

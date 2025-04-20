@@ -5,7 +5,7 @@ CREATE TYPE reactions_action_type AS ENUM ('like', 'disLike', 'regenerate');
 -- テーブル定義
 CREATE TABLE reactions (
     id TEXT PRIMARY KEY,
-    user_id TEXT NOT NULL,
+    user_id UUID NOT NULL,
     target_type reactions_target_type NOT NULL,
     target_id TEXT NOT NULL,
     action_type reactions_action_type NOT NULL,

@@ -36,6 +36,7 @@ export type external_api_logs = $Result.DefaultSelection<Prisma.$external_api_lo
 /**
  * Model frontend_event_logs
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type frontend_event_logs = $Result.DefaultSelection<Prisma.$frontend_event_logsPayload>
 /**
@@ -8524,7 +8525,7 @@ export namespace Prisma {
     used_prompt_text: string | null
     llm_model: string | null
     temperature: Decimal | null
-    generated_by: string | null
+    generated_user: string | null
     created_at: Date | null
   }
 
@@ -8538,7 +8539,7 @@ export namespace Prisma {
     used_prompt_text: string | null
     llm_model: string | null
     temperature: Decimal | null
-    generated_by: string | null
+    generated_user: string | null
     created_at: Date | null
   }
 
@@ -8553,7 +8554,7 @@ export namespace Prisma {
     input_data: number
     llm_model: number
     temperature: number
-    generated_by: number
+    generated_user: number
     created_at: number
     metadata: number
     _all: number
@@ -8578,7 +8579,7 @@ export namespace Prisma {
     used_prompt_text?: true
     llm_model?: true
     temperature?: true
-    generated_by?: true
+    generated_user?: true
     created_at?: true
   }
 
@@ -8592,7 +8593,7 @@ export namespace Prisma {
     used_prompt_text?: true
     llm_model?: true
     temperature?: true
-    generated_by?: true
+    generated_user?: true
     created_at?: true
   }
 
@@ -8607,7 +8608,7 @@ export namespace Prisma {
     input_data?: true
     llm_model?: true
     temperature?: true
-    generated_by?: true
+    generated_user?: true
     created_at?: true
     metadata?: true
     _all?: true
@@ -8710,7 +8711,7 @@ export namespace Prisma {
     input_data: JsonValue | null
     llm_model: string
     temperature: Decimal | null
-    generated_by: string
+    generated_user: string
     created_at: Date
     metadata: JsonValue | null
     _count: Prompt_usagesCountAggregateOutputType | null
@@ -8745,7 +8746,7 @@ export namespace Prisma {
     input_data?: boolean
     llm_model?: boolean
     temperature?: boolean
-    generated_by?: boolean
+    generated_user?: boolean
     created_at?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
@@ -8761,7 +8762,7 @@ export namespace Prisma {
     input_data?: boolean
     llm_model?: boolean
     temperature?: boolean
-    generated_by?: boolean
+    generated_user?: boolean
     created_at?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
@@ -8777,7 +8778,7 @@ export namespace Prisma {
     input_data?: boolean
     llm_model?: boolean
     temperature?: boolean
-    generated_by?: boolean
+    generated_user?: boolean
     created_at?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
@@ -8793,12 +8794,12 @@ export namespace Prisma {
     input_data?: boolean
     llm_model?: boolean
     temperature?: boolean
-    generated_by?: boolean
+    generated_user?: boolean
     created_at?: boolean
     metadata?: boolean
   }
 
-  export type prompt_usagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_id" | "target_type" | "target_id" | "generated_text" | "used_prompt_text" | "input_data" | "llm_model" | "temperature" | "generated_by" | "created_at" | "metadata", ExtArgs["result"]["prompt_usages"]>
+  export type prompt_usagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_id" | "target_type" | "target_id" | "generated_text" | "used_prompt_text" | "input_data" | "llm_model" | "temperature" | "generated_user" | "created_at" | "metadata", ExtArgs["result"]["prompt_usages"]>
 
   export type $prompt_usagesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "prompt_usages"
@@ -8814,7 +8815,7 @@ export namespace Prisma {
       input_data: Prisma.JsonValue | null
       llm_model: string
       temperature: Prisma.Decimal | null
-      generated_by: string
+      generated_user: string
       created_at: Date
       metadata: Prisma.JsonValue | null
     }, ExtArgs["result"]["prompt_usages"]>
@@ -9250,7 +9251,7 @@ export namespace Prisma {
     readonly input_data: FieldRef<"prompt_usages", 'Json'>
     readonly llm_model: FieldRef<"prompt_usages", 'String'>
     readonly temperature: FieldRef<"prompt_usages", 'Decimal'>
-    readonly generated_by: FieldRef<"prompt_usages", 'String'>
+    readonly generated_user: FieldRef<"prompt_usages", 'String'>
     readonly created_at: FieldRef<"prompt_usages", 'DateTime'>
     readonly metadata: FieldRef<"prompt_usages", 'Json'>
   }
@@ -11841,7 +11842,7 @@ export namespace Prisma {
     recommendation_weight: number | null
     min_version_major: number | null
     max_version_major: number | null
-    created_by: string | null
+    created_user: string | null
     created_at: Date | null
     created_request_id: string | null
     lock_no: number | null
@@ -11859,7 +11860,7 @@ export namespace Prisma {
     recommendation_weight: number | null
     min_version_major: number | null
     max_version_major: number | null
-    created_by: string | null
+    created_user: string | null
     created_at: Date | null
     created_request_id: string | null
     lock_no: number | null
@@ -11878,7 +11879,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: number
+    created_user: number
     created_at: number
     created_request_id: number
     lock_no: number
@@ -11914,7 +11915,7 @@ export namespace Prisma {
     recommendation_weight?: true
     min_version_major?: true
     max_version_major?: true
-    created_by?: true
+    created_user?: true
     created_at?: true
     created_request_id?: true
     lock_no?: true
@@ -11932,7 +11933,7 @@ export namespace Prisma {
     recommendation_weight?: true
     min_version_major?: true
     max_version_major?: true
-    created_by?: true
+    created_user?: true
     created_at?: true
     created_request_id?: true
     lock_no?: true
@@ -11951,7 +11952,7 @@ export namespace Prisma {
     recommendation_weight?: true
     min_version_major?: true
     max_version_major?: true
-    created_by?: true
+    created_user?: true
     created_at?: true
     created_request_id?: true
     lock_no?: true
@@ -12057,7 +12058,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date
     created_request_id: string
     lock_no: number
@@ -12095,7 +12096,7 @@ export namespace Prisma {
     recommendation_weight?: boolean
     min_version_major?: boolean
     max_version_major?: boolean
-    created_by?: boolean
+    created_user?: boolean
     created_at?: boolean
     created_request_id?: boolean
     lock_no?: boolean
@@ -12117,7 +12118,7 @@ export namespace Prisma {
     recommendation_weight?: boolean
     min_version_major?: boolean
     max_version_major?: boolean
-    created_by?: boolean
+    created_user?: boolean
     created_at?: boolean
     created_request_id?: boolean
     lock_no?: boolean
@@ -12137,7 +12138,7 @@ export namespace Prisma {
     recommendation_weight?: boolean
     min_version_major?: boolean
     max_version_major?: boolean
-    created_by?: boolean
+    created_user?: boolean
     created_at?: boolean
     created_request_id?: boolean
     lock_no?: boolean
@@ -12157,13 +12158,13 @@ export namespace Prisma {
     recommendation_weight?: boolean
     min_version_major?: boolean
     max_version_major?: boolean
-    created_by?: boolean
+    created_user?: boolean
     created_at?: boolean
     created_request_id?: boolean
     lock_no?: boolean
   }
 
-  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "language_tag" | "title" | "manuscript" | "audio_storage_path" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_by" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
+  export type spot_guidesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spot_id" | "language_tag" | "title" | "manuscript" | "audio_storage_path" | "tags" | "price_amount" | "currency" | "recommendation_weight" | "min_version_major" | "max_version_major" | "created_user" | "created_at" | "created_request_id" | "lock_no", ExtArgs["result"]["spot_guides"]>
   export type spot_guidesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ext_spots?: boolean | ext_spotsDefaultArgs<ExtArgs>
     spot_visits?: boolean | spot_guides$spot_visitsArgs<ExtArgs>
@@ -12195,7 +12196,7 @@ export namespace Prisma {
       recommendation_weight: number
       min_version_major: number
       max_version_major: number
-      created_by: string
+      created_user: string
       created_at: Date
       created_request_id: string
       lock_no: number
@@ -12636,7 +12637,7 @@ export namespace Prisma {
     readonly recommendation_weight: FieldRef<"spot_guides", 'Int'>
     readonly min_version_major: FieldRef<"spot_guides", 'Int'>
     readonly max_version_major: FieldRef<"spot_guides", 'Int'>
-    readonly created_by: FieldRef<"spot_guides", 'String'>
+    readonly created_user: FieldRef<"spot_guides", 'String'>
     readonly created_at: FieldRef<"spot_guides", 'DateTime'>
     readonly created_request_id: FieldRef<"spot_guides", 'String'>
     readonly lock_no: FieldRef<"spot_guides", 'Int'>
@@ -14436,7 +14437,7 @@ export namespace Prisma {
     input_data: 'input_data',
     llm_model: 'llm_model',
     temperature: 'temperature',
-    generated_by: 'generated_by',
+    generated_user: 'generated_user',
     created_at: 'created_at',
     metadata: 'metadata'
   };
@@ -14484,7 +14485,7 @@ export namespace Prisma {
     recommendation_weight: 'recommendation_weight',
     min_version_major: 'min_version_major',
     max_version_major: 'max_version_major',
-    created_by: 'created_by',
+    created_user: 'created_user',
     created_at: 'created_at',
     created_request_id: 'created_request_id',
     lock_no: 'lock_no'
@@ -14757,7 +14758,7 @@ export namespace Prisma {
     event_name?: StringNullableFilter<"backend_event_logs"> | string | null
     error_level?: Enumbackend_event_logs_error_levelNullableFilter<"backend_event_logs"> | $Enums.backend_event_logs_error_level | null
     function_name?: StringNullableFilter<"backend_event_logs"> | string | null
-    user_id?: StringNullableFilter<"backend_event_logs"> | string | null
+    user_id?: UuidNullableFilter<"backend_event_logs"> | string | null
     payload?: JsonNullableFilter<"backend_event_logs">
     request_id?: StringNullableFilter<"backend_event_logs"> | string | null
     created_at?: DateTimeFilter<"backend_event_logs"> | Date | string
@@ -14784,7 +14785,7 @@ export namespace Prisma {
     event_name?: StringNullableFilter<"backend_event_logs"> | string | null
     error_level?: Enumbackend_event_logs_error_levelNullableFilter<"backend_event_logs"> | $Enums.backend_event_logs_error_level | null
     function_name?: StringNullableFilter<"backend_event_logs"> | string | null
-    user_id?: StringNullableFilter<"backend_event_logs"> | string | null
+    user_id?: UuidNullableFilter<"backend_event_logs"> | string | null
     payload?: JsonNullableFilter<"backend_event_logs">
     request_id?: StringNullableFilter<"backend_event_logs"> | string | null
     created_at?: DateTimeFilter<"backend_event_logs"> | Date | string
@@ -14814,7 +14815,7 @@ export namespace Prisma {
     event_name?: StringNullableWithAggregatesFilter<"backend_event_logs"> | string | null
     error_level?: Enumbackend_event_logs_error_levelNullableWithAggregatesFilter<"backend_event_logs"> | $Enums.backend_event_logs_error_level | null
     function_name?: StringNullableWithAggregatesFilter<"backend_event_logs"> | string | null
-    user_id?: StringNullableWithAggregatesFilter<"backend_event_logs"> | string | null
+    user_id?: UuidNullableWithAggregatesFilter<"backend_event_logs"> | string | null
     payload?: JsonNullableWithAggregatesFilter<"backend_event_logs">
     request_id?: StringNullableWithAggregatesFilter<"backend_event_logs"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"backend_event_logs"> | Date | string
@@ -14960,7 +14961,7 @@ export namespace Prisma {
     status_code?: IntNullableFilter<"external_api_logs"> | number | null
     error_message?: StringNullableFilter<"external_api_logs"> | string | null
     response_time_ms?: IntNullableFilter<"external_api_logs"> | number | null
-    user_id?: StringNullableFilter<"external_api_logs"> | string | null
+    user_id?: UuidNullableFilter<"external_api_logs"> | string | null
     created_at?: DateTimeFilter<"external_api_logs"> | Date | string
     created_commit_id?: StringFilter<"external_api_logs"> | string
   }
@@ -14995,7 +14996,7 @@ export namespace Prisma {
     status_code?: IntNullableFilter<"external_api_logs"> | number | null
     error_message?: StringNullableFilter<"external_api_logs"> | string | null
     response_time_ms?: IntNullableFilter<"external_api_logs"> | number | null
-    user_id?: StringNullableFilter<"external_api_logs"> | string | null
+    user_id?: UuidNullableFilter<"external_api_logs"> | string | null
     created_at?: DateTimeFilter<"external_api_logs"> | Date | string
     created_commit_id?: StringFilter<"external_api_logs"> | string
   }, "id">
@@ -15035,7 +15036,7 @@ export namespace Prisma {
     status_code?: IntNullableWithAggregatesFilter<"external_api_logs"> | number | null
     error_message?: StringNullableWithAggregatesFilter<"external_api_logs"> | string | null
     response_time_ms?: IntNullableWithAggregatesFilter<"external_api_logs"> | number | null
-    user_id?: StringNullableWithAggregatesFilter<"external_api_logs"> | string | null
+    user_id?: UuidNullableWithAggregatesFilter<"external_api_logs"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"external_api_logs"> | Date | string
     created_commit_id?: StringWithAggregatesFilter<"external_api_logs"> | string
   }
@@ -15045,7 +15046,7 @@ export namespace Prisma {
     OR?: frontend_event_logsWhereInput[]
     NOT?: frontend_event_logsWhereInput | frontend_event_logsWhereInput[]
     id?: StringFilter<"frontend_event_logs"> | string
-    user_id?: StringNullableFilter<"frontend_event_logs"> | string | null
+    user_id?: UuidNullableFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
     path_name?: StringNullableFilter<"frontend_event_logs"> | string | null
@@ -15072,7 +15073,7 @@ export namespace Prisma {
     AND?: frontend_event_logsWhereInput | frontend_event_logsWhereInput[]
     OR?: frontend_event_logsWhereInput[]
     NOT?: frontend_event_logsWhereInput | frontend_event_logsWhereInput[]
-    user_id?: StringNullableFilter<"frontend_event_logs"> | string | null
+    user_id?: UuidNullableFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
     path_name?: StringNullableFilter<"frontend_event_logs"> | string | null
@@ -15102,7 +15103,7 @@ export namespace Prisma {
     OR?: frontend_event_logsScalarWhereWithAggregatesInput[]
     NOT?: frontend_event_logsScalarWhereWithAggregatesInput | frontend_event_logsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"frontend_event_logs"> | string
-    user_id?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
+    user_id?: UuidNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     event_name?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
     error_level?: Enumfrontend_event_logs_error_levelNullableWithAggregatesFilter<"frontend_event_logs"> | $Enums.frontend_event_logs_error_level | null
     path_name?: StringNullableWithAggregatesFilter<"frontend_event_logs"> | string | null
@@ -15183,7 +15184,7 @@ export namespace Prisma {
     input_data?: JsonNullableFilter<"prompt_usages">
     llm_model?: StringFilter<"prompt_usages"> | string
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFilter<"prompt_usages"> | string
+    generated_user?: UuidFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
   }
@@ -15199,7 +15200,7 @@ export namespace Prisma {
     input_data?: SortOrderInput | SortOrder
     llm_model?: SortOrder
     temperature?: SortOrderInput | SortOrder
-    generated_by?: SortOrder
+    generated_user?: SortOrder
     created_at?: SortOrder
     metadata?: SortOrderInput | SortOrder
   }
@@ -15218,7 +15219,7 @@ export namespace Prisma {
     input_data?: JsonNullableFilter<"prompt_usages">
     llm_model?: StringFilter<"prompt_usages"> | string
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFilter<"prompt_usages"> | string
+    generated_user?: UuidFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableFilter<"prompt_usages">
   }, "id">
@@ -15234,7 +15235,7 @@ export namespace Prisma {
     input_data?: SortOrderInput | SortOrder
     llm_model?: SortOrder
     temperature?: SortOrderInput | SortOrder
-    generated_by?: SortOrder
+    generated_user?: SortOrder
     created_at?: SortOrder
     metadata?: SortOrderInput | SortOrder
     _count?: prompt_usagesCountOrderByAggregateInput
@@ -15258,7 +15259,7 @@ export namespace Prisma {
     input_data?: JsonNullableWithAggregatesFilter<"prompt_usages">
     llm_model?: StringWithAggregatesFilter<"prompt_usages"> | string
     temperature?: DecimalNullableWithAggregatesFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringWithAggregatesFilter<"prompt_usages"> | string
+    generated_user?: UuidWithAggregatesFilter<"prompt_usages"> | string
     created_at?: DateTimeWithAggregatesFilter<"prompt_usages"> | Date | string
     metadata?: JsonNullableWithAggregatesFilter<"prompt_usages">
   }
@@ -15336,7 +15337,7 @@ export namespace Prisma {
     OR?: reactionsWhereInput[]
     NOT?: reactionsWhereInput | reactionsWhereInput[]
     id?: StringFilter<"reactions"> | string
-    user_id?: StringFilter<"reactions"> | string
+    user_id?: UuidFilter<"reactions"> | string
     target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
     target_id?: StringFilter<"reactions"> | string
     action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
@@ -15361,7 +15362,7 @@ export namespace Prisma {
     AND?: reactionsWhereInput | reactionsWhereInput[]
     OR?: reactionsWhereInput[]
     NOT?: reactionsWhereInput | reactionsWhereInput[]
-    user_id?: StringFilter<"reactions"> | string
+    user_id?: UuidFilter<"reactions"> | string
     target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
     target_id?: StringFilter<"reactions"> | string
     action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
@@ -15391,7 +15392,7 @@ export namespace Prisma {
     OR?: reactionsScalarWhereWithAggregatesInput[]
     NOT?: reactionsScalarWhereWithAggregatesInput | reactionsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"reactions"> | string
-    user_id?: StringWithAggregatesFilter<"reactions"> | string
+    user_id?: UuidWithAggregatesFilter<"reactions"> | string
     target_type?: Enumreactions_target_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_target_type
     target_id?: StringWithAggregatesFilter<"reactions"> | string
     action_type?: Enumreactions_action_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_action_type
@@ -15416,7 +15417,7 @@ export namespace Prisma {
     recommendation_weight?: IntFilter<"spot_guides"> | number
     min_version_major?: IntFilter<"spot_guides"> | number
     max_version_major?: IntFilter<"spot_guides"> | number
-    created_by?: StringFilter<"spot_guides"> | string
+    created_user?: UuidFilter<"spot_guides"> | string
     created_at?: DateTimeFilter<"spot_guides"> | Date | string
     created_request_id?: StringFilter<"spot_guides"> | string
     lock_no?: IntFilter<"spot_guides"> | number
@@ -15437,7 +15438,7 @@ export namespace Prisma {
     recommendation_weight?: SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
-    created_by?: SortOrder
+    created_user?: SortOrder
     created_at?: SortOrder
     created_request_id?: SortOrder
     lock_no?: SortOrder
@@ -15461,7 +15462,7 @@ export namespace Prisma {
     recommendation_weight?: IntFilter<"spot_guides"> | number
     min_version_major?: IntFilter<"spot_guides"> | number
     max_version_major?: IntFilter<"spot_guides"> | number
-    created_by?: StringFilter<"spot_guides"> | string
+    created_user?: UuidFilter<"spot_guides"> | string
     created_at?: DateTimeFilter<"spot_guides"> | Date | string
     created_request_id?: StringFilter<"spot_guides"> | string
     lock_no?: IntFilter<"spot_guides"> | number
@@ -15482,7 +15483,7 @@ export namespace Prisma {
     recommendation_weight?: SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
-    created_by?: SortOrder
+    created_user?: SortOrder
     created_at?: SortOrder
     created_request_id?: SortOrder
     lock_no?: SortOrder
@@ -15509,7 +15510,7 @@ export namespace Prisma {
     recommendation_weight?: IntWithAggregatesFilter<"spot_guides"> | number
     min_version_major?: IntWithAggregatesFilter<"spot_guides"> | number
     max_version_major?: IntWithAggregatesFilter<"spot_guides"> | number
-    created_by?: StringWithAggregatesFilter<"spot_guides"> | string
+    created_user?: UuidWithAggregatesFilter<"spot_guides"> | string
     created_at?: DateTimeWithAggregatesFilter<"spot_guides"> | Date | string
     created_request_id?: StringWithAggregatesFilter<"spot_guides"> | string
     lock_no?: IntWithAggregatesFilter<"spot_guides"> | number
@@ -15520,7 +15521,7 @@ export namespace Prisma {
     OR?: spot_visitsWhereInput[]
     NOT?: spot_visitsWhereInput | spot_visitsWhereInput[]
     id?: StringFilter<"spot_visits"> | string
-    user_id?: StringFilter<"spot_visits"> | string
+    user_id?: UuidFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
     represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
@@ -15559,7 +15560,7 @@ export namespace Prisma {
     AND?: spot_visitsWhereInput | spot_visitsWhereInput[]
     OR?: spot_visitsWhereInput[]
     NOT?: spot_visitsWhereInput | spot_visitsWhereInput[]
-    user_id?: StringFilter<"spot_visits"> | string
+    user_id?: UuidFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
     represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
@@ -15600,7 +15601,7 @@ export namespace Prisma {
     OR?: spot_visitsScalarWhereWithAggregatesInput[]
     NOT?: spot_visitsScalarWhereWithAggregatesInput | spot_visitsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"spot_visits"> | string
-    user_id?: StringWithAggregatesFilter<"spot_visits"> | string
+    user_id?: UuidWithAggregatesFilter<"spot_visits"> | string
     spot_id?: StringWithAggregatesFilter<"spot_visits"> | string
     represent_guide_id?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableWithAggregatesFilter<"spot_visits"> | string | null
@@ -16102,7 +16103,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
+    generated_user: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16118,7 +16119,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
+    generated_user: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16134,7 +16135,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
+    generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16150,7 +16151,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
+    generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16166,7 +16167,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model: string
     temperature?: Decimal | DecimalJsLike | number | string | null
-    generated_by: string
+    generated_user: string
     created_at: Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16182,7 +16183,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
+    generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16198,7 +16199,7 @@ export namespace Prisma {
     input_data?: NullableJsonNullValueInput | InputJsonValue
     llm_model?: StringFieldUpdateOperationsInput | string
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    generated_by?: StringFieldUpdateOperationsInput | string
+    generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
@@ -16361,7 +16362,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -16382,7 +16383,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -16401,7 +16402,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16422,7 +16423,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16442,7 +16443,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -16460,7 +16461,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16479,7 +16480,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16623,6 +16624,18 @@ export namespace Prisma {
     notIn?: $Enums.backend_event_logs_error_level[] | ListEnumbackend_event_logs_error_levelFieldRefInput<$PrismaModel> | null
     not?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel> | $Enums.backend_event_logs_error_level | null
   }
+
+  export type UuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -16741,6 +16754,21 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel>
     _max?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel>
+  }
+
+  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -17164,6 +17192,18 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type UuidFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidFilter<$PrismaModel> | string
+  }
+
   export type prompt_usagesCountOrderByAggregateInput = {
     id?: SortOrder
     family_id?: SortOrder
@@ -17175,7 +17215,7 @@ export namespace Prisma {
     input_data?: SortOrder
     llm_model?: SortOrder
     temperature?: SortOrder
-    generated_by?: SortOrder
+    generated_user?: SortOrder
     created_at?: SortOrder
     metadata?: SortOrder
   }
@@ -17194,7 +17234,7 @@ export namespace Prisma {
     used_prompt_text?: SortOrder
     llm_model?: SortOrder
     temperature?: SortOrder
-    generated_by?: SortOrder
+    generated_user?: SortOrder
     created_at?: SortOrder
   }
 
@@ -17208,7 +17248,7 @@ export namespace Prisma {
     used_prompt_text?: SortOrder
     llm_model?: SortOrder
     temperature?: SortOrder
-    generated_by?: SortOrder
+    generated_user?: SortOrder
     created_at?: SortOrder
   }
 
@@ -17240,6 +17280,21 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type UuidWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type Prompt_familiesScalarRelationFilter = {
@@ -17400,7 +17455,7 @@ export namespace Prisma {
     recommendation_weight?: SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
-    created_by?: SortOrder
+    created_user?: SortOrder
     created_at?: SortOrder
     created_request_id?: SortOrder
     lock_no?: SortOrder
@@ -17426,7 +17481,7 @@ export namespace Prisma {
     recommendation_weight?: SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
-    created_by?: SortOrder
+    created_user?: SortOrder
     created_at?: SortOrder
     created_request_id?: SortOrder
     lock_no?: SortOrder
@@ -17444,7 +17499,7 @@ export namespace Prisma {
     recommendation_weight?: SortOrder
     min_version_major?: SortOrder
     max_version_major?: SortOrder
-    created_by?: SortOrder
+    created_user?: SortOrder
     created_at?: SortOrder
     created_request_id?: SortOrder
     lock_no?: SortOrder
@@ -17955,6 +18010,17 @@ export namespace Prisma {
     not?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel> | $Enums.backend_event_logs_error_level | null
   }
 
+  export type NestedUuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -18030,6 +18096,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel>
     _max?: NestedEnumbackend_event_logs_error_levelNullableFilter<$PrismaModel>
+  }
+
+  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -18221,6 +18301,17 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type NestedUuidFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidFilter<$PrismaModel> | string
+  }
+
   export type NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
     in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
@@ -18245,6 +18336,20 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedUuidWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedEnumreactions_target_typeFilter<$PrismaModel = never> = {
@@ -18320,7 +18425,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -18339,7 +18444,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -18464,7 +18569,7 @@ export namespace Prisma {
     recommendation_weight?: IntFilter<"spot_guides"> | number
     min_version_major?: IntFilter<"spot_guides"> | number
     max_version_major?: IntFilter<"spot_guides"> | number
-    created_by?: StringFilter<"spot_guides"> | string
+    created_user?: UuidFilter<"spot_guides"> | string
     created_at?: DateTimeFilter<"spot_guides"> | Date | string
     created_request_id?: StringFilter<"spot_guides"> | string
     lock_no?: IntFilter<"spot_guides"> | number
@@ -18491,7 +18596,7 @@ export namespace Prisma {
     OR?: spot_visitsScalarWhereInput[]
     NOT?: spot_visitsScalarWhereInput | spot_visitsScalarWhereInput[]
     id?: StringFilter<"spot_visits"> | string
-    user_id?: StringFilter<"spot_visits"> | string
+    user_id?: UuidFilter<"spot_visits"> | string
     spot_id?: StringFilter<"spot_visits"> | string
     represent_guide_id?: StringNullableFilter<"spot_visits"> | string | null
     taken_photo_storage_path?: StringNullableFilter<"spot_visits"> | string | null
@@ -18796,7 +18901,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -18816,7 +18921,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -18922,7 +19027,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -18942,7 +19047,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -18999,7 +19104,7 @@ export namespace Prisma {
     recommendation_weight: number
     min_version_major: number
     max_version_major: number
-    created_by: string
+    created_user: string
     created_at: Date | string
     created_request_id: string
     lock_no: number
@@ -19045,7 +19150,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -19064,7 +19169,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -19083,7 +19188,7 @@ export namespace Prisma {
     recommendation_weight?: IntFieldUpdateOperationsInput | number
     min_version_major?: IntFieldUpdateOperationsInput | number
     max_version_major?: IntFieldUpdateOperationsInput | number
-    created_by?: StringFieldUpdateOperationsInput | string
+    created_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_request_id?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number

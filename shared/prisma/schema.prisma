@@ -16,7 +16,7 @@ model backend_event_logs {
   event_name        String?
   error_level       backend_event_logs_error_level?
   function_name     String?
-  user_id           String?
+  user_id           String?                         @db.Uuid
   payload           Json?                           @db.Json
   request_id        String?
   created_at        DateTime                        @db.Timestamptz(6)
@@ -69,7 +69,7 @@ model external_api_logs {
   status_code       Int?     @db.SmallInt
   error_message     String?
   response_time_ms  Int?
-  user_id           String?
+  user_id           String?  @db.Uuid
   created_at        DateTime @db.Timestamptz(6)
   created_commit_id String
 
@@ -80,9 +80,10 @@ model external_api_logs {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model frontend_event_logs {
   id                  String                           @id
-  user_id             String?
+  user_id             String?                          @db.Uuid
   event_name          String?
   error_level         frontend_event_logs_error_level?
   path_name           String?
@@ -121,7 +122,7 @@ model prompt_usages {
   input_data       Json?
   llm_model        String
   temperature      Decimal?                  @db.Decimal(3, 2)
-  generated_by     String
+  generated_user   String                    @db.Uuid
   created_at       DateTime                  @db.Timestamptz(6)
   metadata         Json?
 
@@ -152,7 +153,7 @@ model prompt_variants {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model reactions {
   id              String                @id
-  user_id         String
+  user_id         String                @db.Uuid
   target_type     reactions_target_type
   target_id       String
   action_type     reactions_action_type
@@ -178,7 +179,7 @@ model spot_guides {
   recommendation_weight Int
   min_version_major     Int
   max_version_major     Int
-  created_by            String
+  created_user          String        @db.Uuid
   created_at            DateTime      @db.Timestamptz(6)
   created_request_id    String
   lock_no               Int
@@ -194,7 +195,7 @@ model spot_guides {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model spot_visits {
   id                                            String       @id
-  user_id                                       String
+  user_id                                       String       @db.Uuid
   spot_id                                       String
   represent_guide_id                            String?
   taken_photo_storage_path                      String?

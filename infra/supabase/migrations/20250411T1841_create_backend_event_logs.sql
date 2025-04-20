@@ -7,7 +7,7 @@ CREATE TABLE backend_event_logs (
     event_name TEXT,
     error_level backend_event_logs_error_level,
     function_name TEXT,
-    user_id TEXT,
+    user_id UUID,
     payload JSON,
     request_id TEXT,
     created_at TIMESTAMPTZ NOT NULL,
