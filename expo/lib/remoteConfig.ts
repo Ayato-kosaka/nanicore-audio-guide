@@ -18,7 +18,8 @@ export const initRemoteConfig = async (): Promise<RemoteConfigValues | null> => 
     return acc;
   }, {} as Record<string, string>);
 
-  return config as RemoteConfigValues;
+  cachedValues = config as RemoteConfigValues;
+  return cachedValues;
 };
 
 /**

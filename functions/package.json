@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "concurrently \"pnpm:watch\" \"pnpm:emulate\"",
     "watch": "concurrently \"tsc --watch\" \"pnpm run copy:shared\"",
-    "copy:shared": "nodemon --watch ../shared/prisma --exec \"cp -r ../shared/prisma lib/shared/prisma\"",
+    "copy:shared": "nodemon --watch ../shared/prisma --exec \"rm -rf lib/shared/prisma && cp -r ../shared/prisma lib/shared/prisma\"",
     "emulate": "firebase emulators:start --only functions",
     "build": "tsc",
     "build:watch": "tsc --watch",
