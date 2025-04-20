@@ -1,4 +1,4 @@
-import { SupabaseExtSpots } from "@shared/converters/convert_ext_spots";
+import { SupabaseExtSpots } from "../converters/convert_ext_spots";
 
 export type FindOrCreateSpotFromImageResponse = {
     extSpots: SupabaseExtSpots;
