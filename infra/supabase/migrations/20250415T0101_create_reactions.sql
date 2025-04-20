@@ -29,3 +29,22 @@ COMMENT ON COLUMN reactions.action_type IS '実行されたアクションの種
 COMMENT ON COLUMN reactions.created_at IS 'リアクション作成日時';
 COMMENT ON COLUMN reactions.created_version IS '実行時のアプリバージョン（バグ分析用途）';
 COMMENT ON COLUMN reactions.lock_no IS '楽観ロック用バージョン番号';
+
+-- RLS 有効化
+ALTER TABLE frontend_event_logs ENABLE ROW LEVEL SECURITY;
+
+-- 認証ユーザーのみ INSERT を許可（自分のデータのみ）
+CREATE POLICY "Authenticated users can insert their own reactions"
+    ON reactions
+    FOR INSERT
+    TO authenticated
+    WITH CHECK (auth.uid() = user_id);
+
+-- 認証ユーザーのみ DELETE を許可（自分のデータのみ）
+CREATE POLICY "Authenticated users can delete their own reactions"
+    ON reactions
+    FOR DELETE
+    TO authenticated
+    USING (auth.uid() = user_id);
+
+-- 他操作は許可しない（ポリシー定義なし = 拒否）
