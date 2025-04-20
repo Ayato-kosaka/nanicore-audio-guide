@@ -25,7 +25,7 @@ import type { SupabaseSpotVisits } from '@shared/converters/convert_spot_visits'
  * - ガイドを切り替えるときに代表ガイドとして記録
  * - ガイド生成・いいねなどの操作ログを記録
  *
- * @param {ExtSpot} spot - 表示するスポット情報
+ * @param {PrismaExtSpots} spot - 表示するスポット情報
  * @param {SpotGuide[]} initialGuides - 初期ガイドのリスト
  * @param {string} imageUri - 表示する撮影画像のURL
  * @param {string} [takenPhotoStoragePath] - 画像の保存パス（任意）
@@ -303,7 +303,17 @@ export const SpotGuideCard = ({
                 lock_no: 0,
                 updated_at: new Date().toISOString(),
             };
-            supabase.from('spot_visits').insert(visit);
+            // Supabase SDK は遅延評価なので、Promise.resolve で非同期で挿入
+            Promise.resolve().then(async () => {
+                const { error } = await supabase.from('spot_visits').insert(visit);
+                if (error) {
+                    logFrontendEvent({
+                        event_name: 'insertSpotVisitFailedOnInitialize',
+                        error_level: 'error',
+                        payload: { error: error.message ?? 'Failed to insert spot visit on initialize.' },
+                    });
+                }
+            });
         };
 
         withLoading(initialize)();
