@@ -65,6 +65,26 @@ BEGIN
     END LOOP;
 END \$\$;
 
+-- 🔥 5. RLSポリシー削除 & 無効化
+DO \$\$ DECLARE
+    r RECORD;
+    p RECORD;
+BEGIN
+    FOR r IN (
+        SELECT tablename FROM pg_tables WHERE schemaname = '$DB_SCHEMA'
+    ) LOOP
+        FOR p IN (
+            SELECT policyname
+            FROM pg_policies
+            WHERE schemaname = '$DB_SCHEMA'
+              AND tablename = r.tablename
+        ) LOOP
+            EXECUTE format('DROP POLICY IF EXISTS %I ON %I.%I CASCADE', p.policyname, '$DB_SCHEMA', r.tablename);
+        END LOOP;
+        EXECUTE format('ALTER TABLE %I.%I DISABLE ROW LEVEL SECURITY', '$DB_SCHEMA', r.tablename);
+    END LOOP;
+END \$\$;
+
 EOF
 
 echo "✅ Schema $DB_SCHEMA has been reset."
