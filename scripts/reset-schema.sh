@@ -2,7 +2,7 @@
 
 set -e
 set -a
-source functions/.env
+source scripts/.env
 set +a
 
 if [ -z "$DB_SCHEMA" ]; then
@@ -12,10 +12,7 @@ fi
 
 echo "🧨 Dropping Table, FUNCTION, INDEX, ENUM: $DB_SCHEMA"
 
-# 🚫 psql 用に `?pgbouncer=true` を除外
-PSQL_DATABASE_URL=$(echo "$DATABASE_URL" | sed 's/[?&]pgbouncer=true//g')
-
-psql "$PSQL_DATABASE_URL" <<EOF
+psql "$DATABASE_URL" <<EOF
 -- 🔥 1. テーブル（依存も含めて CASCADE）
 DO \$\$ DECLARE
     r RECORD;
