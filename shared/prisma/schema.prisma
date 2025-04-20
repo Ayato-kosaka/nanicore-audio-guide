@@ -29,6 +29,15 @@ model backend_event_logs {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model config {
+  key         String  @id
+  value       String
+  description String?
+
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model ext_spots {
   id                                              String                          @id
   vision_detection_type                           ext_spots_vision_detection_type

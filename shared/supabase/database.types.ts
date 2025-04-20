@@ -51,6 +51,24 @@ export type Database = {
         }
         Relationships: []
       }
+      config: {
+        Row: {
+          description: string | null
+          key: string
+          value: string
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          value: string
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
       ext_spots: {
         Row: {
           created_at: string

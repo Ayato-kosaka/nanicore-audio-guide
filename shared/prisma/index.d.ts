@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type backend_event_logs = $Result.DefaultSelection<Prisma.$backend_event_logsPayload>
 /**
+ * Model config
+ * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ */
+export type config = $Result.DefaultSelection<Prisma.$configPayload>
+/**
  * Model ext_spots
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
  */
@@ -291,6 +296,16 @@ export class PrismaClient<
     * ```
     */
   get backend_event_logs(): Prisma.backend_event_logsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.config`: Exposes CRUD operations for the **config** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Configs
+    * const configs = await prisma.config.findMany()
+    * ```
+    */
+  get config(): Prisma.configDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.ext_spots`: Exposes CRUD operations for the **ext_spots** model.
@@ -822,6 +837,7 @@ export namespace Prisma {
 
   export const ModelName: {
     backend_event_logs: 'backend_event_logs',
+    config: 'config',
     ext_spots: 'ext_spots',
     external_api_logs: 'external_api_logs',
     frontend_event_logs: 'frontend_event_logs',
@@ -849,7 +865,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "backend_event_logs" | "ext_spots" | "external_api_logs" | "frontend_event_logs" | "prompt_families" | "prompt_usages" | "prompt_variants" | "reactions" | "spot_guides" | "spot_visits"
+      modelProps: "backend_event_logs" | "config" | "ext_spots" | "external_api_logs" | "frontend_event_logs" | "prompt_families" | "prompt_usages" | "prompt_variants" | "reactions" | "spot_guides" | "spot_visits"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -924,6 +940,80 @@ export namespace Prisma {
           count: {
             args: Prisma.backend_event_logsCountArgs<ExtArgs>
             result: $Utils.Optional<Backend_event_logsCountAggregateOutputType> | number
+          }
+        }
+      }
+      config: {
+        payload: Prisma.$configPayload<ExtArgs>
+        fields: Prisma.configFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.configFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.configFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          findFirst: {
+            args: Prisma.configFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.configFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          findMany: {
+            args: Prisma.configFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>[]
+          }
+          create: {
+            args: Prisma.configCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          createMany: {
+            args: Prisma.configCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.configCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>[]
+          }
+          delete: {
+            args: Prisma.configDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          update: {
+            args: Prisma.configUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          deleteMany: {
+            args: Prisma.configDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.configUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.configUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>[]
+          }
+          upsert: {
+            args: Prisma.configUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$configPayload>
+          }
+          aggregate: {
+            args: Prisma.ConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConfig>
+          }
+          groupBy: {
+            args: Prisma.configGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.configCountArgs<ExtArgs>
+            result: $Utils.Optional<ConfigCountAggregateOutputType> | number
           }
         }
       }
@@ -1678,6 +1768,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     backend_event_logs?: backend_event_logsOmit
+    config?: configOmit
     ext_spots?: ext_spotsOmit
     external_api_logs?: external_api_logsOmit
     frontend_event_logs?: frontend_event_logsOmit
@@ -2931,6 +3022,975 @@ export namespace Prisma {
      * Omit specific fields from the backend_event_logs
      */
     omit?: backend_event_logsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model config
+   */
+
+  export type AggregateConfig = {
+    _count: ConfigCountAggregateOutputType | null
+    _min: ConfigMinAggregateOutputType | null
+    _max: ConfigMaxAggregateOutputType | null
+  }
+
+  export type ConfigMinAggregateOutputType = {
+    key: string | null
+    value: string | null
+    description: string | null
+  }
+
+  export type ConfigMaxAggregateOutputType = {
+    key: string | null
+    value: string | null
+    description: string | null
+  }
+
+  export type ConfigCountAggregateOutputType = {
+    key: number
+    value: number
+    description: number
+    _all: number
+  }
+
+
+  export type ConfigMinAggregateInputType = {
+    key?: true
+    value?: true
+    description?: true
+  }
+
+  export type ConfigMaxAggregateInputType = {
+    key?: true
+    value?: true
+    description?: true
+  }
+
+  export type ConfigCountAggregateInputType = {
+    key?: true
+    value?: true
+    description?: true
+    _all?: true
+  }
+
+  export type ConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which config to aggregate.
+     */
+    where?: configWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of configs to fetch.
+     */
+    orderBy?: configOrderByWithRelationInput | configOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: configWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned configs
+    **/
+    _count?: true | ConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConfigMaxAggregateInputType
+  }
+
+  export type GetConfigAggregateType<T extends ConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConfig[P]>
+      : GetScalarType<T[P], AggregateConfig[P]>
+  }
+
+
+
+
+  export type configGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: configWhereInput
+    orderBy?: configOrderByWithAggregationInput | configOrderByWithAggregationInput[]
+    by: ConfigScalarFieldEnum[] | ConfigScalarFieldEnum
+    having?: configScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConfigCountAggregateInputType | true
+    _min?: ConfigMinAggregateInputType
+    _max?: ConfigMaxAggregateInputType
+  }
+
+  export type ConfigGroupByOutputType = {
+    key: string
+    value: string
+    description: string | null
+    _count: ConfigCountAggregateOutputType | null
+    _min: ConfigMinAggregateOutputType | null
+    _max: ConfigMaxAggregateOutputType | null
+  }
+
+  type GetConfigGroupByPayload<T extends configGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], ConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type configSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["config"]>
+
+  export type configSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["config"]>
+
+  export type configSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["config"]>
+
+  export type configSelectScalar = {
+    key?: boolean
+    value?: boolean
+    description?: boolean
+  }
+
+  export type configOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"key" | "value" | "description", ExtArgs["result"]["config"]>
+
+  export type $configPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "config"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      key: string
+      value: string
+      description: string | null
+    }, ExtArgs["result"]["config"]>
+    composites: {}
+  }
+
+  type configGetPayload<S extends boolean | null | undefined | configDefaultArgs> = $Result.GetResult<Prisma.$configPayload, S>
+
+  type configCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<configFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConfigCountAggregateInputType | true
+    }
+
+  export interface configDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['config'], meta: { name: 'config' } }
+    /**
+     * Find zero or one Config that matches the filter.
+     * @param {configFindUniqueArgs} args - Arguments to find a Config
+     * @example
+     * // Get one Config
+     * const config = await prisma.config.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends configFindUniqueArgs>(args: SelectSubset<T, configFindUniqueArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Config that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {configFindUniqueOrThrowArgs} args - Arguments to find a Config
+     * @example
+     * // Get one Config
+     * const config = await prisma.config.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends configFindUniqueOrThrowArgs>(args: SelectSubset<T, configFindUniqueOrThrowArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Config that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configFindFirstArgs} args - Arguments to find a Config
+     * @example
+     * // Get one Config
+     * const config = await prisma.config.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends configFindFirstArgs>(args?: SelectSubset<T, configFindFirstArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Config that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configFindFirstOrThrowArgs} args - Arguments to find a Config
+     * @example
+     * // Get one Config
+     * const config = await prisma.config.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends configFindFirstOrThrowArgs>(args?: SelectSubset<T, configFindFirstOrThrowArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Configs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Configs
+     * const configs = await prisma.config.findMany()
+     * 
+     * // Get first 10 Configs
+     * const configs = await prisma.config.findMany({ take: 10 })
+     * 
+     * // Only select the `key`
+     * const configWithKeyOnly = await prisma.config.findMany({ select: { key: true } })
+     * 
+     */
+    findMany<T extends configFindManyArgs>(args?: SelectSubset<T, configFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Config.
+     * @param {configCreateArgs} args - Arguments to create a Config.
+     * @example
+     * // Create one Config
+     * const Config = await prisma.config.create({
+     *   data: {
+     *     // ... data to create a Config
+     *   }
+     * })
+     * 
+     */
+    create<T extends configCreateArgs>(args: SelectSubset<T, configCreateArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Configs.
+     * @param {configCreateManyArgs} args - Arguments to create many Configs.
+     * @example
+     * // Create many Configs
+     * const config = await prisma.config.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends configCreateManyArgs>(args?: SelectSubset<T, configCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Configs and returns the data saved in the database.
+     * @param {configCreateManyAndReturnArgs} args - Arguments to create many Configs.
+     * @example
+     * // Create many Configs
+     * const config = await prisma.config.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Configs and only return the `key`
+     * const configWithKeyOnly = await prisma.config.createManyAndReturn({
+     *   select: { key: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends configCreateManyAndReturnArgs>(args?: SelectSubset<T, configCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Config.
+     * @param {configDeleteArgs} args - Arguments to delete one Config.
+     * @example
+     * // Delete one Config
+     * const Config = await prisma.config.delete({
+     *   where: {
+     *     // ... filter to delete one Config
+     *   }
+     * })
+     * 
+     */
+    delete<T extends configDeleteArgs>(args: SelectSubset<T, configDeleteArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Config.
+     * @param {configUpdateArgs} args - Arguments to update one Config.
+     * @example
+     * // Update one Config
+     * const config = await prisma.config.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends configUpdateArgs>(args: SelectSubset<T, configUpdateArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Configs.
+     * @param {configDeleteManyArgs} args - Arguments to filter Configs to delete.
+     * @example
+     * // Delete a few Configs
+     * const { count } = await prisma.config.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends configDeleteManyArgs>(args?: SelectSubset<T, configDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Configs
+     * const config = await prisma.config.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends configUpdateManyArgs>(args: SelectSubset<T, configUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Configs and returns the data updated in the database.
+     * @param {configUpdateManyAndReturnArgs} args - Arguments to update many Configs.
+     * @example
+     * // Update many Configs
+     * const config = await prisma.config.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Configs and only return the `key`
+     * const configWithKeyOnly = await prisma.config.updateManyAndReturn({
+     *   select: { key: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends configUpdateManyAndReturnArgs>(args: SelectSubset<T, configUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Config.
+     * @param {configUpsertArgs} args - Arguments to update or create a Config.
+     * @example
+     * // Update or create a Config
+     * const config = await prisma.config.upsert({
+     *   create: {
+     *     // ... data to create a Config
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Config we want to update
+     *   }
+     * })
+     */
+    upsert<T extends configUpsertArgs>(args: SelectSubset<T, configUpsertArgs<ExtArgs>>): Prisma__configClient<$Result.GetResult<Prisma.$configPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configCountArgs} args - Arguments to filter Configs to count.
+     * @example
+     * // Count the number of Configs
+     * const count = await prisma.config.count({
+     *   where: {
+     *     // ... the filter for the Configs we want to count
+     *   }
+     * })
+    **/
+    count<T extends configCountArgs>(
+      args?: Subset<T, configCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Config.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConfigAggregateArgs>(args: Subset<T, ConfigAggregateArgs>): Prisma.PrismaPromise<GetConfigAggregateType<T>>
+
+    /**
+     * Group by Config.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {configGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends configGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: configGroupByArgs['orderBy'] }
+        : { orderBy?: configGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, configGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the config model
+   */
+  readonly fields: configFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for config.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__configClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the config model
+   */
+  interface configFieldRefs {
+    readonly key: FieldRef<"config", 'String'>
+    readonly value: FieldRef<"config", 'String'>
+    readonly description: FieldRef<"config", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * config findUnique
+   */
+  export type configFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter, which config to fetch.
+     */
+    where: configWhereUniqueInput
+  }
+
+  /**
+   * config findUniqueOrThrow
+   */
+  export type configFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter, which config to fetch.
+     */
+    where: configWhereUniqueInput
+  }
+
+  /**
+   * config findFirst
+   */
+  export type configFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter, which config to fetch.
+     */
+    where?: configWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of configs to fetch.
+     */
+    orderBy?: configOrderByWithRelationInput | configOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for configs.
+     */
+    cursor?: configWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of configs.
+     */
+    distinct?: ConfigScalarFieldEnum | ConfigScalarFieldEnum[]
+  }
+
+  /**
+   * config findFirstOrThrow
+   */
+  export type configFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter, which config to fetch.
+     */
+    where?: configWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of configs to fetch.
+     */
+    orderBy?: configOrderByWithRelationInput | configOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for configs.
+     */
+    cursor?: configWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of configs.
+     */
+    distinct?: ConfigScalarFieldEnum | ConfigScalarFieldEnum[]
+  }
+
+  /**
+   * config findMany
+   */
+  export type configFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter, which configs to fetch.
+     */
+    where?: configWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of configs to fetch.
+     */
+    orderBy?: configOrderByWithRelationInput | configOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing configs.
+     */
+    cursor?: configWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` configs.
+     */
+    skip?: number
+    distinct?: ConfigScalarFieldEnum | ConfigScalarFieldEnum[]
+  }
+
+  /**
+   * config create
+   */
+  export type configCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * The data needed to create a config.
+     */
+    data: XOR<configCreateInput, configUncheckedCreateInput>
+  }
+
+  /**
+   * config createMany
+   */
+  export type configCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many configs.
+     */
+    data: configCreateManyInput | configCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * config createManyAndReturn
+   */
+  export type configCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * The data used to create many configs.
+     */
+    data: configCreateManyInput | configCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * config update
+   */
+  export type configUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * The data needed to update a config.
+     */
+    data: XOR<configUpdateInput, configUncheckedUpdateInput>
+    /**
+     * Choose, which config to update.
+     */
+    where: configWhereUniqueInput
+  }
+
+  /**
+   * config updateMany
+   */
+  export type configUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update configs.
+     */
+    data: XOR<configUpdateManyMutationInput, configUncheckedUpdateManyInput>
+    /**
+     * Filter which configs to update
+     */
+    where?: configWhereInput
+    /**
+     * Limit how many configs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * config updateManyAndReturn
+   */
+  export type configUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * The data used to update configs.
+     */
+    data: XOR<configUpdateManyMutationInput, configUncheckedUpdateManyInput>
+    /**
+     * Filter which configs to update
+     */
+    where?: configWhereInput
+    /**
+     * Limit how many configs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * config upsert
+   */
+  export type configUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * The filter to search for the config to update in case it exists.
+     */
+    where: configWhereUniqueInput
+    /**
+     * In case the config found by the `where` argument doesn't exist, create a new config with this data.
+     */
+    create: XOR<configCreateInput, configUncheckedCreateInput>
+    /**
+     * In case the config was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<configUpdateInput, configUncheckedUpdateInput>
+  }
+
+  /**
+   * config delete
+   */
+  export type configDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
+    /**
+     * Filter which config to delete.
+     */
+    where: configWhereUniqueInput
+  }
+
+  /**
+   * config deleteMany
+   */
+  export type configDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which configs to delete
+     */
+    where?: configWhereInput
+    /**
+     * Limit how many configs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * config without action
+   */
+  export type configDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the config
+     */
+    select?: configSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the config
+     */
+    omit?: configOmit<ExtArgs> | null
   }
 
 
@@ -13296,6 +14356,15 @@ export namespace Prisma {
   export type Backend_event_logsScalarFieldEnum = (typeof Backend_event_logsScalarFieldEnum)[keyof typeof Backend_event_logsScalarFieldEnum]
 
 
+  export const ConfigScalarFieldEnum: {
+    key: 'key',
+    value: 'value',
+    description: 'description'
+  };
+
+  export type ConfigScalarFieldEnum = (typeof ConfigScalarFieldEnum)[keyof typeof ConfigScalarFieldEnum]
+
+
   export const Ext_spotsScalarFieldEnum: {
     id: 'id',
     vision_detection_type: 'vision_detection_type',
@@ -13750,6 +14819,48 @@ export namespace Prisma {
     request_id?: StringNullableWithAggregatesFilter<"backend_event_logs"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"backend_event_logs"> | Date | string
     created_commit_id?: StringWithAggregatesFilter<"backend_event_logs"> | string
+  }
+
+  export type configWhereInput = {
+    AND?: configWhereInput | configWhereInput[]
+    OR?: configWhereInput[]
+    NOT?: configWhereInput | configWhereInput[]
+    key?: StringFilter<"config"> | string
+    value?: StringFilter<"config"> | string
+    description?: StringNullableFilter<"config"> | string | null
+  }
+
+  export type configOrderByWithRelationInput = {
+    key?: SortOrder
+    value?: SortOrder
+    description?: SortOrderInput | SortOrder
+  }
+
+  export type configWhereUniqueInput = Prisma.AtLeast<{
+    key?: string
+    AND?: configWhereInput | configWhereInput[]
+    OR?: configWhereInput[]
+    NOT?: configWhereInput | configWhereInput[]
+    value?: StringFilter<"config"> | string
+    description?: StringNullableFilter<"config"> | string | null
+  }, "key">
+
+  export type configOrderByWithAggregationInput = {
+    key?: SortOrder
+    value?: SortOrder
+    description?: SortOrderInput | SortOrder
+    _count?: configCountOrderByAggregateInput
+    _max?: configMaxOrderByAggregateInput
+    _min?: configMinOrderByAggregateInput
+  }
+
+  export type configScalarWhereWithAggregatesInput = {
+    AND?: configScalarWhereWithAggregatesInput | configScalarWhereWithAggregatesInput[]
+    OR?: configScalarWhereWithAggregatesInput[]
+    NOT?: configScalarWhereWithAggregatesInput | configScalarWhereWithAggregatesInput[]
+    key?: StringWithAggregatesFilter<"config"> | string
+    value?: StringWithAggregatesFilter<"config"> | string
+    description?: StringNullableWithAggregatesFilter<"config"> | string | null
   }
 
   export type ext_spotsWhereInput = {
@@ -14584,6 +15695,48 @@ export namespace Prisma {
     request_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_commit_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type configCreateInput = {
+    key: string
+    value: string
+    description?: string | null
+  }
+
+  export type configUncheckedCreateInput = {
+    key: string
+    value: string
+    description?: string | null
+  }
+
+  export type configUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type configUncheckedUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type configCreateManyInput = {
+    key: string
+    value: string
+    description?: string | null
+  }
+
+  export type configUpdateManyMutationInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type configUncheckedUpdateManyInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ext_spotsCreateInput = {
@@ -15628,6 +16781,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type configCountOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+    description?: SortOrder
+  }
+
+  export type configMaxOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+    description?: SortOrder
+  }
+
+  export type configMinOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+    description?: SortOrder
   }
 
   export type Enumext_spots_vision_detection_typeFilter<$PrismaModel = never> = {

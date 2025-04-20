@@ -129,6 +129,12 @@ exports.Prisma.Backend_event_logsScalarFieldEnum = {
   created_commit_id: 'created_commit_id'
 };
 
+exports.Prisma.ConfigScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  description: 'description'
+};
+
 exports.Prisma.Ext_spotsScalarFieldEnum = {
   id: 'id',
   vision_detection_type: 'vision_detection_type',
@@ -314,6 +320,7 @@ exports.reactions_action_type = exports.$Enums.reactions_action_type = {
 
 exports.Prisma.ModelName = {
   backend_event_logs: 'backend_event_logs',
+  config: 'config',
   ext_spots: 'ext_spots',
   external_api_logs: 'external_api_logs',
   frontend_event_logs: 'frontend_event_logs',
