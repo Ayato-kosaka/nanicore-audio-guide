@@ -105,15 +105,21 @@ export const withValidatedAuthHandler = <T>(
 
         res.setHeader('x-request-id', requestId);
 
+        let userId: string | null = null;
         try {
-            const { userId } = await withAuthUser(req);
-
+            const auth = await withAuthUser(req);
+            userId = auth.userId;
+        } catch (err) {
+            res.status(401).json({ error: 'Unauthorized' });
+            return;
+        }
+        try {
             let parsed: { fields: Record<string, any>, file?: ParsedFile } = { fields: {} };
             if (isMultipart) {
                 parsed = await parseMultipartForm(req);
 
                 if (options?.fileRequired && !parsed.file) {
-                    res.status(400).json({ error: 'File is required', requestId });
+                    res.status(400).json({ error: 'File is required' });
                     return;
                 }
             }
@@ -163,7 +169,7 @@ export const withValidatedAuthHandler = <T>(
                 event_name: 'unhandledException',
                 error_level: 'error',
                 function_name: functionName,
-                user_id: null,
+                user_id: userId,
                 payload: {
                     message: err.message,
                     stack: err.stack,
