@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Image, StyleSheet, Platform } from 'react-native';
+import { View, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { useLogger } from '@/hooks/useLogger';
@@ -63,37 +63,50 @@ export const SpotRecommendCard = React.memo(function SpotRecommendCard({
     }, [router, spot, locale]);
 
     return (
-        <View style={styles.container}>
-            <Image
-                source={{ uri: imageSrc }}
-                style={styles.image}
-                onError={handleImageError}
-                testID="recommend-image"
-            />
+        <ImageBackground
+            source={{ uri: imageSrc }}
+            style={styles.image}
+            imageStyle={{ borderRadius: 10 }}
+            resizeMode="cover"
+            onError={handleImageError}
+            testID="recommend-image"
+        >
             <Button
                 mode="contained"
                 onPress={handlePress}
                 style={styles.button}
+                contentStyle={styles.buttonContent}
+                buttonColor="white"
+                textColor="rgba(0,0,0,0.6)"
+                labelStyle={styles.buttonLabel}
                 testID="recommend-button"
             >
                 {i18n.t('SpotRecommend.nanicore')}
             </Button>
-        </View>
+        </ImageBackground>
     );
 });
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        alignItems: 'center',
-    },
     image: {
+        flex: 1,
         width: '100%',
-        height: 200,
-        borderRadius: 12,
-        marginBottom: 16,
+        justifyContent: 'flex-end',
+    },
+    buttonContent: {
     },
     button: {
-        alignSelf: 'center',
+        marginBottom: 60,
+        marginHorizontal: 32,
+        borderRadius: 50,
+        borderColor: 'white',
+        shadowColor: '#000',
+        shadowOpacity: 0.95,
+        shadowRadius: 30,
+        shadowOffset: { width: 0, height: 0 },
+    },
+    buttonLabel: {
+        fontSize: 32,
+        lineHeight: 48,
     },
 });
