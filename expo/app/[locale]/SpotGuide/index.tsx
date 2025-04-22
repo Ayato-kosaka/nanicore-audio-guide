@@ -3,7 +3,6 @@ import { View, ActivityIndicator, Share, StyleSheet, Image, Platform, Dimensions
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { IconButton, Text } from 'react-native-paper';
-import { AdMobInterstitial } from 'expo-ads-admob';
 
 import { SpotGuideCard } from './SpotGuideCard';
 import { SpotRecommendCard } from './SpotRecommendCard';
@@ -21,6 +20,7 @@ import i18n from '@/lib/i18n';
 import { getAdMobInterstitialUnitId } from '@/constants/AdMob';
 import { convertSupabaseToPrisma_ExtSpots, PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from '@shared/converters/convert_spot_guides';
+import { useInterstitialAd } from 'react-native-google-mobile-ads';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,6 +40,7 @@ export default function SpotGuideScreen() {
   const serializedParams = useLocalSearchParams<SpotGuideSerializedParams>();
   const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams =
     useMemo(() => deserializeSpotGuideParams(serializedParams), [serializedParams]);
+  const { show, isLoaded } = useInterstitialAd(getAdMobInterstitialUnitId());
 
   const [spotGuides, setSpotGuides] = useState<(PrismaSpotGuides & { audioUrl: string })[]>([]);
   const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
@@ -96,11 +97,9 @@ export default function SpotGuideScreen() {
 
   const maybeShowAd = useCallback(
     async (index: number) => {
-      if (index % 5 === 0 && lastAdShownIndex !== index) {
+      if (index % 5 === 0 && lastAdShownIndex !== index && isLoaded) {
         try {
-          await AdMobInterstitial.setAdUnitID(getAdMobInterstitialUnitId());
-          await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
-          await AdMobInterstitial.showAdAsync();
+          show();
           setLastAdShownIndex(index);
 
           logFrontendEvent({
