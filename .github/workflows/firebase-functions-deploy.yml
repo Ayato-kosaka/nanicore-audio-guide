@@ -61,3 +61,16 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
           FUNCTIONS_DIR: functions
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
+    
+      - name: Make Firebase Functions public
+        run: pnpm --filter functions run make:functions:public
