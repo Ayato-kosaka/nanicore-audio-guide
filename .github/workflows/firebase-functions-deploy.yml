@@ -49,6 +49,9 @@ jobs:
           echo 'FUNCTIONS_DEV_GCP_PROJECT_ID=' >> ./functions/.env
           echo 'FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64=' >> ./functions/.env
 
+      - name: Prepare Prisma schema and pull DB
+        run: pnpm db:pull
+
       - name: Run Lint (predeploy hook)
         run: pnpm --filter functions run lint
 
