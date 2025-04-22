@@ -16,6 +16,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: 'com.nanicore.audio.guide',
     buildNumber: '1',
     supportsTablet: true,
+    infoPlist: {
+      ITSAppUsesNonExemptEncryption: false,
+    },
   },
   android: {
     package: "com.nanicore.audio.guide",
