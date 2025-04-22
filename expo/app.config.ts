@@ -4,7 +4,8 @@ import { ExpoConfig, ConfigContext } from '@expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'nanicore-audio-guide',
-  slug: 'nanicore-audio-guide',
+  slug: 'nanicore',
+  owner: 'nanicore-audio-guide',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -12,9 +13,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   ios: {
+    bundleIdentifier: 'com.nanicore.audio.guide',
+    buildNumber: '1',
     supportsTablet: true,
   },
   android: {
+    package: "com.nanicore.audio.guide",
+    versionCode: 1, // TODO: 毎submitで変更の必要あり
     adaptiveIcon: {
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -101,6 +106,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     typedRoutes: true,
   },
   extra: {
+    eas: {
+      projectId: 'd29cfcb3-535a-4c11-8493-49f7d4c92289',
+    },
     EXPO_PUBLIC_COMMIT_ID: process.env.EXPO_PUBLIC_COMMIT_ID,
     EXPO_PUBLIC_NODE_ENV: process.env.EXPO_PUBLIC_NODE_ENV,
     EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL: process.env.EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL,
