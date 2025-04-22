@@ -1,0 +1,60 @@
+name: Firebase Functions Deploy
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "functions/**"
+  #     - "package.json"
+  #     - "pnpm-lock.yaml"
+  #     - ".github/workflows/deploy-functions.yml"
+
+jobs:
+  deploy-functions:
+    name: Deploy Firebase Functions
+    runs-on: ubuntu-latest
+
+    env:
+      CI: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.8.0
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create .env for functions
+        run: |
+          echo 'FUNCTIONS_NODE_ENV=production' >> ./functions/.env
+          echo 'DATABASE_URL=${{ secrets.PRISMA_DATABASE_URL_PROD }}' >> ./functions/.env
+          echo 'DB_SCHEMA=public' >> ./functions/.env
+          echo 'FUNCTIONS_COMMIT_ID=${{ github.sha }}' >> ./functions/.env
+          echo 'FUNCTIONS_SUPABASE_JWT_SECRET=${{ secrets.FUNCTIONS_SUPABASE_JWT_SECRET }}' >> ./functions/.env
+          echo 'FUNCTIONS_GOOGLE_KG_API_KEY=${{ secrets.FUNCTIONS_GOOGLE_KG_API_KEY_PROD }}' >> ./functions/.env
+          echo 'FUNCTIONS_CLAUDE_API_KEY=${{ secrets.FUNCTIONS_CLAUDE_API_KEY_PROD }}' >> ./functions/.env
+          echo 'FUNCTIONS_GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME_PROD }}' >> ./functions/.env
+          echo 'FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH=${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}' >> ./functions/.env
+
+      - name: Build Functions
+        run: pnpm --filter functions build
+
+      - name: Deploy to Firebase Functions
+        uses: jsryudev/deploy-firebase-functions@v20.0.1
+        with:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT_ID_PROD }}
+          FUNCTIONS_DIR: functions
