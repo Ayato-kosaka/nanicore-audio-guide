@@ -12,7 +12,8 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --ext .js,.ts"
+    "lint": "eslint --ext .js,.ts",
+    "make:functions:public": "bash ./scripts/make-functions-public.sh"
   },
   "engines": {
     "node": "22"

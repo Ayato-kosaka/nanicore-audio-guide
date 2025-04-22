@@ -27,6 +27,13 @@ pnpx prisma db pull --schema "$TARGET"
 echo "🧬 Running prisma generate"
 pnpx prisma generate --schema "$TARGET"
 
+# もしスキーマが "public" の場合はここで終了
+if [ "$DB_SCHEMA" = "public" ]; then
+  echo "✅ Done for public schema (skipping Supabase types and converters)"
+  exit 0
+fi
+
+
 EXPO_ENV="expo/.env"
 
 # EXPO_PUBLIC_SUPABASE_URL を読み込んでプロジェクトID抽出
