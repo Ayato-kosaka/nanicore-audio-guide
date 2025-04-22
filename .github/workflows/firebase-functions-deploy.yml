@@ -47,6 +47,9 @@ jobs:
           echo 'FUNCTIONS_GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME_PROD }}' >> ./functions/.env
           echo 'FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH=${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}' >> ./functions/.env
 
+      - name: Run Lint (predeploy hook)
+        run: pnpm --filter functions run lint
+
       - name: Build Functions
         run: pnpm --filter functions build
 
