@@ -17,10 +17,9 @@ import type { ListSpotGuidesRequest, ListSpotGuidesResponse } from "@shared/api/
 import { SpotGuideParams, SpotGuideSerializedParams } from '@/types/navigation';
 import { deserializeSpotGuideParams } from '@/utils/navigation';
 import i18n from '@/lib/i18n';
-import { getAdMobInterstitialUnitId } from '@/constants/AdMob';
 import { convertSupabaseToPrisma_ExtSpots, PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from '@shared/converters/convert_spot_guides';
-import { useInterstitialAd } from 'react-native-google-mobile-ads';
+import { useSafeInterstitialAd } from '@/hooks/useSafeInterstitialAd';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,7 +39,7 @@ export default function SpotGuideScreen() {
   const serializedParams = useLocalSearchParams<SpotGuideSerializedParams>();
   const { extSpots, imageUri, takenPhotoStoragePath }: SpotGuideParams =
     useMemo(() => deserializeSpotGuideParams(serializedParams), [serializedParams]);
-  const { show, isLoaded } = useInterstitialAd(getAdMobInterstitialUnitId());
+  const { show, isLoaded } = useSafeInterstitialAd();
 
   const [spotGuides, setSpotGuides] = useState<(PrismaSpotGuides & { audioUrl: string })[]>([]);
   const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
