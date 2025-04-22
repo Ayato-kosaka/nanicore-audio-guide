@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-preview-prod:
-    name: EAS Build (Preview： Prod)
+    name: EAS Build (Preview Prod)
     runs-on: ubuntu-latest
 
     defaults:
