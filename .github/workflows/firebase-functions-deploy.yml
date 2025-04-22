@@ -46,6 +46,8 @@ jobs:
           echo 'FUNCTIONS_CLAUDE_API_KEY=${{ secrets.FUNCTIONS_CLAUDE_API_KEY_PROD }}' >> ./functions/.env
           echo 'FUNCTIONS_GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME_PROD }}' >> ./functions/.env
           echo 'FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH=${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}' >> ./functions/.env
+          echo 'FUNCTIONS_DEV_GCP_PROJECT_ID=' >> ./functions/.env
+          echo 'FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64=' >> ./functions/.env
 
       - name: Run Lint (predeploy hook)
         run: pnpm --filter functions run lint
