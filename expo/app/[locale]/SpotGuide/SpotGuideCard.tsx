@@ -33,7 +33,7 @@ import { LinearGradient } from 'expo-linear-gradient';
  * @param {string} [takenPhotoStoragePath] - 画像の保存パス（任意）
  * @returns {JSX.Element} ガイド表示用のUIコンポーネント
  */
-export const SpotGuideCard = ({
+const SpotGuideCard = ({
     spot,
     initialGuides,
     imageUri,
@@ -396,3 +396,5 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 });
+
+export default SpotGuideCard;

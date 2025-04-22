@@ -18,7 +18,7 @@ import { useLocale } from '@/hooks/useLocale';
  * @param {PrismaExtSpots} spot - 表示対象のスポットデータ
  * @returns {JSX.Element} 推薦スポットの表示コンポーネント
  */
-export const SpotRecommendCard = React.memo(function SpotRecommendCard({
+const SpotRecommendCard = React.memo(function SpotRecommendCard({
     spot,
 }: {
     spot: PrismaExtSpots;
@@ -110,3 +110,5 @@ const styles = StyleSheet.create({
         lineHeight: 48,
     },
 });
+
+export default SpotRecommendCard;

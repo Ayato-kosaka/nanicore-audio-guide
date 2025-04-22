@@ -4,8 +4,8 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { IconButton, Text } from 'react-native-paper';
 
-import { SpotGuideCard } from './SpotGuideCard';
-import { SpotRecommendCard } from './SpotRecommendCard';
+import SpotGuideCard from './SpotGuideCard';
+import SpotRecommendCard from './SpotRecommendCard';
 
 import { useLogger } from '@/hooks/useLogger';
 import { useWithLoading } from '@/hooks/useWithLoading';
