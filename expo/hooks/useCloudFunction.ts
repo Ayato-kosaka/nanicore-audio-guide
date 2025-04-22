@@ -66,6 +66,7 @@ export const useCloudFunction = () => {
         });
 
         const requestId = response.headers.get('x-request-id');
+        console.log('requestId', response.headers.keys());
 
         if (!response.ok) {
           const errorMessage = `Function ${version}-${functionName} failed with status ${response.status} (requestId: ${requestId})`;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Image, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
 import { Audio } from 'expo-av';
 import { IconButton } from 'react-native-paper';
 import { useWithLoading } from '@/hooks/useWithLoading';
@@ -16,6 +16,8 @@ import { Env } from '@/constants/Env';
 import type { GenerateSpotGuideRequest, GenerateSpotGuideResponse } from '@shared/api/generateSpotGuide.schema';
 import { useLocale } from '@/hooks/useLocale';
 import type { SupabaseSpotVisits } from '@shared/converters/convert_spot_visits';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 /**
  * 🧭 SpotGuideCard
@@ -25,7 +27,7 @@ import type { SupabaseSpotVisits } from '@shared/converters/convert_spot_visits'
  * - ガイドを切り替えるときに代表ガイドとして記録
  * - ガイド生成・いいねなどの操作ログを記録
  *
- * @param {ExtSpot} spot - 表示するスポット情報
+ * @param {PrismaExtSpots} spot - 表示するスポット情報
  * @param {SpotGuide[]} initialGuides - 初期ガイドのリスト
  * @param {string} imageUri - 表示する撮影画像のURL
  * @param {string} [takenPhotoStoragePath] - 画像の保存パス（任意）
@@ -303,7 +305,17 @@ export const SpotGuideCard = ({
                 lock_no: 0,
                 updated_at: new Date().toISOString(),
             };
-            supabase.from('spot_visits').insert(visit);
+            // Supabase SDK は遅延評価なので、Promise.resolve で非同期で挿入
+            Promise.resolve().then(async () => {
+                const { error } = await supabase.from('spot_visits').insert(visit);
+                if (error) {
+                    logFrontendEvent({
+                        event_name: 'insertSpotVisitFailedOnInitialize',
+                        error_level: 'error',
+                        payload: { error: error.message ?? 'Failed to insert spot visit on initialize.' },
+                    });
+                }
+            });
         };
 
         withLoading(initialize)();
@@ -311,62 +323,76 @@ export const SpotGuideCard = ({
 
     return (
         <View style={styles.container}>
-            <Image
+            <ImageBackground
                 source={{ uri: imageSrc }}
                 style={styles.image}
+                imageStyle={{ borderRadius: 10 }}
+                resizeMode="cover"
                 onError={handleImageError}
                 testID="spot-image"
-            />
-            <Text style={styles.title}>{currentGuide?.title}</Text>
-            <Text style={styles.guideText}>
-                {currentGuide?.manuscript ?? i18n.t('SpotGuide.generating')}
-            </Text>
-            <View style={styles.buttonRow}>
-                <IconButton
-                    icon={isLiked ? 'heart' : 'heart-outline'}
-                    onPress={handleToggleLike}
-                    disabled={!currentGuide}
-                />
-                <IconButton
-                    icon="volume-high"
-                    onPress={handlePlayAudio}
-                    disabled={isPlaying || !currentGuide?.audioUrl}
-                />
-                <IconButton
-                    icon="refresh"
-                    onPress={handleNextGuideSpot}
-                    disabled={isLoading}
-                />
-            </View>
+            >
+                <LinearGradient
+                    colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.6)']}
+                    style={styles.titleContainer}
+                >
+                    <Text style={styles.title}>{currentGuide?.title}</Text>
+                    <Text style={styles.guideText}>
+                        {currentGuide?.manuscript ?? i18n.t('SpotGuide.generating')}
+                    </Text>
+                    <View style={styles.buttonRow}>
+                        <IconButton
+                            icon={isLiked ? 'heart' : 'heart-outline'}
+                            onPress={handleToggleLike}
+                            disabled={!currentGuide}
+                            iconColor='white'
+                        />
+                        <IconButton
+                            icon="volume-high"
+                            onPress={handlePlayAudio}
+                            disabled={isPlaying || !currentGuide?.audioUrl}
+                            iconColor='white'
+                        />
+                        <IconButton
+                            icon="refresh"
+                            onPress={handleNextGuideSpot}
+                            disabled={isLoading}
+                            iconColor='white'
+                        />
+                    </View>
+                </LinearGradient>
+            </ImageBackground>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
-        alignItems: 'center',
+        flex: 1,
     },
     image: {
-        width: '100%',
-        height: 220,
-        borderRadius: 12,
-        marginBottom: 16,
+        height: '100%',
+        justifyContent: 'flex-end',
+    },
+    titleContainer: {
+        justifyContent: 'flex-end',
+        padding: 16,
+        paddingTop: 60,
+        borderRadius: 10
     },
     title: {
         fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 12,
-        textAlign: 'center',
+        color: 'white',
     },
     guideText: {
         fontSize: 16,
-        textAlign: 'center',
         marginBottom: 12,
+        color: 'white',
     },
     buttonRow: {
         flexDirection: 'row',
         gap: 12,
-        alignItems: 'center',
+        color: 'white',
     },
 });

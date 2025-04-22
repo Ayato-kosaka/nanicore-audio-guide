@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { View, ActivityIndicator, Share, Dimensions, Image, Platform } from 'react-native';
+import { View, ActivityIndicator, Share, StyleSheet, Image, Platform, Dimensions } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 import { AdMobInterstitial } from 'expo-ads-admob';
 
 import { SpotGuideCard } from './SpotGuideCard';
@@ -21,6 +21,9 @@ import i18n from '@/lib/i18n';
 import { getAdMobInterstitialUnitId } from '@/constants/AdMob';
 import { convertSupabaseToPrisma_ExtSpots, PrismaExtSpots } from '@shared/converters/convert_ext_spots';
 import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from '@shared/converters/convert_spot_guides';
+
+const { width, height } = Dimensions.get('window');
+
 /**
  * 📍 SpotGuideScreen
  *
@@ -41,10 +44,10 @@ export default function SpotGuideScreen() {
   const [spotGuides, setSpotGuides] = useState<(PrismaSpotGuides & { audioUrl: string })[]>([]);
   const [recommendedSpots, setRecommendedSpots] = useState<PrismaExtSpots[]>([]);
   const [lastAdShownIndex, setLastAdShownIndex] = useState<number | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<ICarouselInstance>(null);
 
   const carouselItems = useMemo(() => [extSpots, ...recommendedSpots], [extSpots, recommendedSpots]);
-  const currentIndex = carouselRef.current?.getCurrentIndex?.() ?? 0;
 
   useEffect(() => {
     if (!extSpots) {
@@ -117,20 +120,10 @@ export default function SpotGuideScreen() {
     [lastAdShownIndex]
   );
 
-  const handleBack = () => {
-    const prevIndex = currentIndex - 1;
-    if (prevIndex >= 0) {
-      carouselRef.current?.scrollTo({ index: prevIndex });
-    }
-  };
-
-  const handleForward = () => {
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < carouselItems.length) {
-      maybeShowAd(nextIndex);
-      carouselRef.current?.scrollTo({ index: nextIndex });
-    }
-  };
+  const handleSnapToItem = useCallback((index: number) => {
+    setCurrentIndex(index);
+    maybeShowAd(index);
+  }, [maybeShowAd]);
 
   const handleReturnToCamera = () => {
     router.replace(`/${locale}/SpotCapture`);
@@ -176,20 +169,35 @@ export default function SpotGuideScreen() {
   const renderItem = useCallback(
     ({ index }: { index: number }) => {
       if (!extSpots) return <></>;
-      if (index === 0) {
-        return (
-          <SpotGuideCard
-            spot={extSpots}
-            initialGuides={spotGuides}
-            imageUri={displayImageUri}
-            takenPhotoStoragePath={takenPhotoStoragePath}
-          />
-        );
-      }
       const recommendedSpot = recommendedSpots[index - 1];
-      return <SpotRecommendCard spot={recommendedSpot} />;
+      return (
+        <View style={styles.cardContainer}>
+          {index === 0 ? (
+            <SpotGuideCard
+              spot={extSpots}
+              initialGuides={spotGuides}
+              imageUri={displayImageUri}
+              takenPhotoStoragePath={takenPhotoStoragePath}
+            />
+          ) : (
+            <SpotRecommendCard spot={recommendedSpot} />
+          )}
+        </View>
+      );
     },
     [spotGuides, recommendedSpots, displayImageUri]
+  );
+
+  const renderControlButton = (icon: string, onPress: (() => void) | undefined, testID: string, rotation = '0deg') => (
+    <IconButton
+      icon={icon}
+      size={32}
+      mode="contained-tonal"
+      containerColor="rgba(255,255,255,0.85)"
+      style={{ ...styles.iconButton, transform: [{ rotate: rotation }] }}
+      onPress={onPress}
+      testID={testID}
+    />
   );
 
   if (!extSpots || isLoading) {
@@ -197,30 +205,100 @@ export default function SpotGuideScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
+      {/* 🔺 広告エリア */}
+      <View style={styles.adArea}>
+        <Text style={styles.adText}>広告エリア</Text>
+      </View>
+
+      {/* 🎯 スポットカード Carousel */}
       <Carousel
         ref={carouselRef}
         loop={false}
-        width={Dimensions.get('window').width}
-        height={Dimensions.get('window').height}
         data={carouselItems}
+        pagingEnabled={true}
+        snapEnabled={true}
+        modeConfig={{
+          parallaxScrollingScale: 0.9,
+          parallaxScrollingOffset: 50,
+        }}
         scrollAnimationDuration={300}
         renderItem={renderItem}
-        onSnapToItem={maybeShowAd}
+        width={width}
+        onSnapToItem={handleSnapToItem}
+        containerStyle={styles.carouselContainer}
         mode="parallax"
       />
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 10 }}>
-        <IconButton icon="arrow-left" onPress={handleReturnToCamera} testID="back-to-camera" />
-        {imageUri && (
-          <IconButton icon="share-variant" onPress={handleShareInstagram} testID="share-button" />
-        )}
-        {currentIndex > 0 && (
-          <IconButton icon="chevron-left" onPress={handleBack} testID="carousel-back" />
-        )}
-        {currentIndex < carouselItems.length - 1 && (
-          <IconButton icon="chevron-right" onPress={handleForward} testID="carousel-forward" />
-        )}
+
+      <View style={styles.buttonContainer}>
+        <View style={styles.button}>
+          {renderControlButton('refresh', handleReturnToCamera, 'back-to-camera-button', '270deg')}
+        </View>
+        <View style={styles.button}>
+          {currentIndex > 0 && renderControlButton('chevron-left', () => carouselRef.current?.prev(), 'left-button')}
+        </View>
+        <View style={styles.button}>
+          {currentIndex < carouselItems.length - 1 && renderControlButton('chevron-right', () => carouselRef.current?.next(), 'right-button')}
+        </View>
+        <View style={styles.button}>
+          {imageUri && renderControlButton('share-variant', handleShareInstagram, 'share-instagram-button')}
+        </View>
       </View>
     </View>
   );
 }
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f1f1f1',
+  },
+  adArea: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
+  adText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  carouselContainer: {
+    flex: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10,
+  },
+  cardContainer: {
+    height: '100%',
+    borderRadius: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 18,
+  },
+  iconButton: {
+    borderRadius: 50,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    backgroundColor: 'white',
+  },
+  button: {
+    width: 60,
+  },
+});

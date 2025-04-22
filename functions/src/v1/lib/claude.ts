@@ -72,6 +72,7 @@ export const generateSpotGuideContent = async (
         const promptFamilies = await getStaticMaster('prompt_families');
         const selectedFamily = promptFamilies
             .filter((x) => x.purpose === 'spot_guide_manuscript')
+            .filter((x) => x.weight > 0)
             .sort((a, b) => a.weight - b.weight)[0];
 
         const promptVariants = await getStaticMaster('prompt_variants');

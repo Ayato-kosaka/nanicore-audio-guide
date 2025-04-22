@@ -1,1 +1,13 @@
-{}
+{
+    "SpotCapture": {
+        "captureButton": "なにこれ",
+        "errorMessage": "撮影に失敗しました。もう一度試してください。"
+    },
+    "SpotGuide": {
+        "shareMessage": "なにこれで撮影した画像です。",
+        "generating": "生成中..."
+    },
+    "SpotRecommend": {
+        "nanicore": "なにこれ"
+    }
+}
