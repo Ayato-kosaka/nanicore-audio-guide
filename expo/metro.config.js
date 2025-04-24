@@ -10,6 +10,7 @@ const config = getDefaultConfig(projectRoot);
 config.resolver.extraNodeModules = {
     "@shared": path.resolve(monorepoRoot, "shared"),
     "@expo": path.resolve(monorepoRoot, "expo"),
+    "expo": path.resolve(monorepoRoot, "expo", "node_modules", "expo"),
 };
 
 // 1. Watch all files within the monorepo

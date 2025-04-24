@@ -50,4 +50,4 @@ jobs:
           EXPO_PUBLIC_GCS_STATIC_MASTER_DIR_PATH: ${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}
           EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID: ${{ secrets.EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID_TEST }}
           EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID: ${{ secrets.EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID_TEST }}
-        run: pnpx eas-cli build --profile preview --platform all --non-interactive --no-wait
+        run: pnpx eas-cli build --profile preview --platform all --non-interactive --no-wait --clear-cache
