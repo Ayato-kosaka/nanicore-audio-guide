@@ -5,9 +5,15 @@ import { withAuthUser } from './auth';
 import { handleInvalidRequest } from './request';
 import { createRequestId } from './backendUtils';
 import * as Busboy from 'busboy';
+import cors from 'cors';
 import type { Request } from 'firebase-functions/v2/https';
 import { Response } from 'express';
 import { prisma } from '../lib/prisma';
+
+
+const corsHandler = cors({
+    origin: ['http://localhost:8081'],
+});
 
 /**
  * ファイルアップロード時の解析結果型
@@ -98,87 +104,89 @@ export const withValidatedAuthHandler = <T>(
     }
 ) =>
     onRequest(async (req, res) => {
-        const requestId = createRequestId();
-        const functionName = fn.name || 'anonymousHandler';
-        const isMultipart = options?.useMultipart;
-        const isBody = Object.keys(req.body).length > 0;
+        corsHandler(req, res, async () => {
+            const requestId = createRequestId();
+            const functionName = fn.name || 'anonymousHandler';
+            const isMultipart = options?.useMultipart;
+            const isBody = Object.keys(req.body).length > 0;
 
-        res.setHeader('x-request-id', requestId);
+            res.setHeader('x-request-id', requestId);
 
-        let userId: string | null = null;
-        try {
-            const auth = await withAuthUser(req);
-            userId = auth.userId;
-        } catch (err) {
-            res.status(401).json({ error: 'Unauthorized' });
-            return;
-        }
-        try {
-            let parsed: { fields: Record<string, any>, file?: ParsedFile } = { fields: {} };
-            if (isMultipart) {
-                parsed = await parseMultipartForm(req);
-
-                if (options?.fileRequired && !parsed.file) {
-                    res.status(400).json({ error: 'File is required' });
-                    return;
-                }
+            let userId: string | null = null;
+            try {
+                const auth = await withAuthUser(req);
+                userId = auth.userId;
+            } catch (err) {
+                res.status(401).json({ error: 'Unauthorized' });
+                return;
             }
+            try {
+                let parsed: { fields: Record<string, any>, file?: ParsedFile } = { fields: {} };
+                if (isMultipart) {
+                    parsed = await parseMultipartForm(req);
 
-            const inputSource = isMultipart ? parsed.fields : (isBody ? req.body : req.query);
-            const result = schema.safeParse(inputSource);
+                    if (options?.fileRequired && !parsed.file) {
+                        res.status(400).json({ error: 'File is required' });
+                        return;
+                    }
+                }
 
-            if (!result.success) {
-                return handleInvalidRequest({
+                const inputSource = isMultipart ? parsed.fields : (isBody ? req.body : req.query);
+                const result = schema.safeParse(inputSource);
+
+                if (!result.success) {
+                    return handleInvalidRequest({
+                        req,
+                        res,
+                        requestId,
+                        functionName,
+                        userId,
+                        zodIssues: result.error.issues,
+                    });
+                }
+
+                // 📘 ログ記録（非同期）
+                logBackendEvent({
+                    request_id: requestId,
+                    function_name: functionName,
+                    event_name: 'FunctionCalled',
+                    user_id: userId,
+                    error_level: 'info',
+                    payload: {
+                        method: req.method,
+                        path: req.path,
+                        source: isMultipart ? 'multipart' : (isBody ? 'body' : 'query'),
+                        hasFile: !!parsed.file,
+                        query: req.query,
+                        body: isMultipart ? 'multipart' : req.body,
+                    },
+                });
+
+                await fn({
                     req,
                     res,
+                    input: result.data,
                     requestId,
-                    functionName,
                     userId,
-                    zodIssues: result.error.issues,
+                    functionName,
+                    file: parsed.file,
                 });
+            } catch (err: any) {
+                logBackendEvent({
+                    event_name: 'unhandledException',
+                    error_level: 'error',
+                    function_name: functionName,
+                    user_id: userId,
+                    payload: {
+                        message: err.message,
+                        stack: err.stack,
+                        payload: isBody ? req.query : req.body,
+                    },
+                    request_id: requestId,
+                });
+                res.status(500).json({ error: 'Internal server error' });
+            } finally {
+                await prisma.$disconnect();
             }
-
-            // 📘 ログ記録（非同期）
-            logBackendEvent({
-                request_id: requestId,
-                function_name: functionName,
-                event_name: 'FunctionCalled',
-                user_id: userId,
-                error_level: 'info',
-                payload: {
-                    method: req.method,
-                    path: req.path,
-                    source: isMultipart ? 'multipart' : (isBody ? 'body' : 'query'),
-                    hasFile: !!parsed.file,
-                    query: req.query,
-                    body: isMultipart ? 'multipart' : req.body,
-                },
-            });
-
-            await fn({
-                req,
-                res,
-                input: result.data,
-                requestId,
-                userId,
-                functionName,
-                file: parsed.file,
-            });
-        } catch (err: any) {
-            logBackendEvent({
-                event_name: 'unhandledException',
-                error_level: 'error',
-                function_name: functionName,
-                user_id: userId,
-                payload: {
-                    message: err.message,
-                    stack: err.stack,
-                    payload: isBody ? req.query : req.body,
-                },
-                request_id: requestId,
-            });
-            res.status(500).json({ error: 'Internal server error' });
-        } finally {
-            await prisma.$disconnect();
-        }
+        })
     });
