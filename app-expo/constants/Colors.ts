@@ -1,26 +1,43 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * 🎨 App-wide color system
+ *
+ * - Used for light/dark theming
+ * - Matches with react-native-paper ThemeProvider
+ * - Extendable for future branding adjustments
  */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const PRIMARY_LIGHT = '#0a7ea4';
+const PRIMARY_DARK = '#0a7ea4'; // Consistent branding
+const BACKGROUND_LIGHT = '#ffffff';
+const BACKGROUND_DARK = '#151718';
+const TEXT_LIGHT = '#11181C';
+const TEXT_DARK = '#ECEDEE';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
+    primary: PRIMARY_LIGHT,
+    background: BACKGROUND_LIGHT,
+    text: TEXT_LIGHT,
     icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    border: '#E0E0E0',
+    surface: '#F8F9FA',
+    error: '#D14343',
+    success: '#28a745',
+    warning: '#F4A261',
+    info: '#2A9D8F',
+    disabled: '#BDBDBD',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
+    primary: PRIMARY_DARK,
+    background: BACKGROUND_DARK,
+    text: TEXT_DARK,
     icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    border: '#333',
+    surface: '#1D1F20',
+    error: '#FF6B6B',
+    success: '#28a745',
+    warning: '#FFB703',
+    info: '#3DA9FC',
+    disabled: '#555',
   },
 };

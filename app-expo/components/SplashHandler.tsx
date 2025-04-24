@@ -5,6 +5,9 @@ import { initRemoteConfig } from '@/lib/remoteConfig';
 import { Env } from '@/constants/Env';
 import { PaperProvider } from 'react-native-paper';
 import { SnackbarProvider } from '@/contexts/SnackbarProvider';
+import { DialogProvider } from '@/contexts/DialogProvider';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { DarkTheme, LightTheme } from '@/constants/PaperTheme';
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -17,6 +20,9 @@ import { SnackbarProvider } from '@/contexts/SnackbarProvider';
  * @returns JSX構造
  */
 export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
+  const scheme = useColorScheme();
+  const theme = scheme === 'dark' ? DarkTheme : LightTheme;
+
   const { loading: isAuthLoading, user } = useAuth();
 
   const [isRemoteConfigReady, setIsRemoteConfigReady] = useState(false);
@@ -74,9 +80,11 @@ export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
   if (!isAppReady) return null;
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <SnackbarProvider>
-        {children}
+        <DialogProvider>
+          {children}
+        </DialogProvider>
       </SnackbarProvider>
     </PaperProvider>
   );
