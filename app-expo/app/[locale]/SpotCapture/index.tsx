@@ -147,32 +147,72 @@ export default function SpotCapture() {
         style={StyleSheet.absoluteFill}
         onCameraReady={() => setIsCameraReady(true)}
       />
-      <View style={styles.buttonContainer}>
-        {isLoading ? (
-          <ActivityIndicator size="large" testID="loading-indicator" />
-        ) : (
-          <Button mode="contained" onPress={handleCapture} testID="capture-button">
-            {i18n.t("SpotCapture.captureButton")}
-          </Button>
-        )}
+      {isLoading ? (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#fff" testID="loading-indicator" />
+        </View>
+      ) : (
+        <Button mode="contained" onPress={handleCapture} testID="capture-button" style={styles.button}>
+          {i18n.t("SpotCapture.captureButton")}
+        </Button>
+      )}
+      <View style={styles.gridOverlay}>
+        {/* 横線 */}
+        <View style={styles.gridLineHorizontal} />
+        <View style={[styles.gridLineHorizontal, { top: '66.6%' }]} />
+        <View style={[styles.gridLineHorizontal, { top: '33.3%' }]} />
+        {/* 縦線 */}
+        <View style={styles.gridLineVertical} />
+        <View style={[styles.gridLineVertical, { left: '66.6%' }]} />
+        <View style={[styles.gridLineVertical, { left: '33.3%' }]} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-  },
   permissionContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonContainer: {
+  container: {
+    flex: 1,
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
+  },
+  button: {
     position: "absolute",
     bottom: 40,
     alignSelf: "center",
+  },
+  gridOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 5,
+  },
+  gridLineHorizontal: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    top: '50%',
+  },
+  gridLineVertical: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    left: '50%',
   },
 });
