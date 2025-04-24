@@ -85,7 +85,10 @@ export const useLogger = () => {
         }
       } catch (err: any) {
         if (Env.NODE_ENV === "development") {
-          console.error(`🚨 Failed to log event [${event_name}] on screen [${path_name}]:`, err.message);
+          console.error(`🚨 Failed to log event [${event_name}] on screen [${path_name}]`, {
+            message: err.message,
+            full: err,
+          });
         }
       }
     },

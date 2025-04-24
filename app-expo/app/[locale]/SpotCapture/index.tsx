@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Button, ActivityIndicator, StyleSheet, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import { useRouter } from "expo-router";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -27,6 +28,14 @@ export default function SpotCapture() {
   const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
+    (async () => {
+      const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
+
+      if (cameraStatus !== 'granted') {
+        showSnackbar(i18n.t("SpotCapture.permissionDeniedMessage"));
+      }
+    })();
+
     logFrontendEvent({
       event_name: "SpotCaptureMounted",
       error_level: "info",
@@ -52,21 +61,27 @@ export default function SpotCapture() {
 
       if (result.canceled || !result.assets?.[0]) return;
 
-      const asset = result.assets[0];
+      const imageManipulatorContext = ImageManipulator.manipulate(result.assets[0].uri);
+      imageManipulatorContext.resize({ width: 800 });
+      const imageRef = await imageManipulatorContext.renderAsync();
+      const asset = await imageRef.saveAsync({
+        format: SaveFormat.JPEG,
+        compress: 0.7,
+      });
 
       const formData = new FormData();
       if (Platform.OS === "web") {
         const response = await fetch(asset.uri);
         const blob = await response.blob();
 
-        formData.append("image", new File([blob], asset.fileName ?? "upload.jpg", {
+        formData.append("image", new File([blob], result.assets[0].fileName ?? "upload.jpg", {
           type: blob.type || "image/jpeg",
         }));
       } else {
         const uri = asset.uri.startsWith("file://") ? asset.uri : `file://${asset.uri}`;
         const file: any = {
           uri,
-          name: asset.fileName ?? "upload.jpg",
+          name: result.assets[0].fileName ?? "upload.jpg",
           type: "image/jpeg",
         };
         formData.append("image", file);
