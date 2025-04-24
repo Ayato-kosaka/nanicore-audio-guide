@@ -13,7 +13,7 @@
     }
   ],
   "hosting": {
-    "public": "expo/dist",
+    "public": "app-expo/dist",
     "ignore": [
       "firebase.json",
       "**/.*",

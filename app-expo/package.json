@@ -1,5 +1,5 @@
 {
-  "name": "nanicore-audio-guide-expo",
+  "name": "app-expo",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {

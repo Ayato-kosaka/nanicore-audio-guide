@@ -1,5 +1,5 @@
 packages:
-  - expo
+  - app-expo
   - functions
   - shared
   - e2e
