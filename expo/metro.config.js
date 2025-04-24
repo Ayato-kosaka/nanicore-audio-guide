@@ -1,18 +1,23 @@
 const { getDefaultConfig } = require("@expo/metro-config");
 const path = require("path");
 
+// Find the project and workspace directories
 const projectRoot = __dirname;
-const workspaceRoot = path.resolve(projectRoot, "..");
+const monorepoRoot = path.resolve(projectRoot, "..");
 
 const config = getDefaultConfig(projectRoot);
 
-config.resolver.alias = {
-    "@shared": path.resolve(workspaceRoot, "shared"),
-    "@expo": path.resolve(workspaceRoot, "expo"),
+config.resolver.extraNodeModules = {
+    "@shared": path.resolve(monorepoRoot, "shared"),
+    "@expo": path.resolve(monorepoRoot, "expo"),
 };
 
-config.watchFolders = [
-    workspaceRoot, // モノレポの上位も監視対象に入れる（必須）
+// 1. Watch all files within the monorepo
+config.watchFolders = [monorepoRoot];
+// 2. Let Metro know where to resolve packages and in what order
+config.resolver.nodeModulesPaths = [
+    path.resolve(projectRoot, 'node_modules'),
+    path.resolve(monorepoRoot, 'node_modules'),
 ];
 
 module.exports = config;
