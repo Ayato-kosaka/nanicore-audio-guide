@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { View, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeIOS } from 'expo-av';
 import { IconButton } from 'react-native-paper';
 import { useWithLoading } from '@/hooks/useWithLoading';
 import { useCloudFunction } from '@/hooks/useCloudFunction';
@@ -320,6 +320,22 @@ const SpotGuideCard = ({
         };
 
         withLoading(initialize)();
+    }, []);
+
+    /**
+     * サイレントモード無視の設定
+     */
+    useEffect(() => {
+        Audio.setAudioModeAsync({
+            playsInSilentModeIOS: true,
+            interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+        }).catch((err) => {
+            logFrontendEvent({
+                event_name: 'audioModeSetupFailed',
+                error_level: 'error',
+                payload: { error: err },
+            });
+        });
     }, []);
 
     return (
