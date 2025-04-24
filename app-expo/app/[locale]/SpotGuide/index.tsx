@@ -269,6 +269,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 10,
+    width,
   },
   cardContainer: {
     height: '100%',
