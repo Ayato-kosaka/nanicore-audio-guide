@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { View, ActivityIndicator, Share, StyleSheet, Image, Platform, Dimensions } from 'react-native';
+import { View, Share, StyleSheet, ActivityIndicator, Image, Platform, Dimensions } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { IconButton, Text } from 'react-native-paper';

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
+import { Image, StyleSheet, Platform, ImageBackground } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { useLogger } from '@/hooks/useLogger';

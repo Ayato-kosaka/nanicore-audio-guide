@@ -7,7 +7,8 @@ import { PaperProvider } from 'react-native-paper';
 import { SnackbarProvider } from '@/contexts/SnackbarProvider';
 import { DialogProvider } from '@/contexts/DialogProvider';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { DarkTheme, LightTheme } from '@/constants/PaperTheme';
+import { getPaperTheme } from '@/constants/PaperTheme';
+import { useLocale } from '@/hooks/useLocale';
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -20,8 +21,10 @@ import { DarkTheme, LightTheme } from '@/constants/PaperTheme';
  * @returns JSX構造
  */
 export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
+  const locale = useLocale();
+
   const scheme = useColorScheme();
-  const theme = scheme === 'dark' ? DarkTheme : LightTheme;
+  const theme = getPaperTheme(scheme, locale);
 
   const { loading: isAuthLoading, user } = useAuth();
 

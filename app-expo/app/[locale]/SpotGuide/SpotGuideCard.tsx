@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
+import { View, Image, StyleSheet, Platform, ImageBackground } from 'react-native';
+import { Text } from 'react-native-paper';
 import { Audio } from 'expo-av';
 import { IconButton } from 'react-native-paper';
 import { useWithLoading } from '@/hooks/useWithLoading';

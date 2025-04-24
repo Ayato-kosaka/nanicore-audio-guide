@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Button, ActivityIndicator, StyleSheet, Platform, Linking, Alert } from "react-native";
+import { View, ActivityIndicator, StyleSheet, Platform, Linking } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { useRouter } from "expo-router";
@@ -14,6 +14,7 @@ import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext
 import i18n from "@/lib/i18n";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import { useDialog } from "@/contexts/DialogProvider";
+import { Button } from "react-native-paper";
 
 /**
  * 📸 SpotCapture 画面
@@ -132,7 +133,9 @@ export default function SpotCapture() {
   if (!permission?.granted) {
     return (
       <View style={styles.permissionContainer}>
-        <Button title={i18n.t("SpotCapture.requestPermission")} onPress={handlePermission} />
+        <Button mode="elevated" onPress={handlePermission}>
+          {i18n.t("SpotCapture.requestPermission")}
+        </Button>
       </View>
     );
   }
@@ -148,7 +151,9 @@ export default function SpotCapture() {
         {isLoading ? (
           <ActivityIndicator size="large" testID="loading-indicator" />
         ) : (
-          <Button title={i18n.t("SpotCapture.captureButton")} onPress={handleCapture} testID="capture-button" />
+          <Button mode="contained" onPress={handleCapture} testID="capture-button">
+            {i18n.t("SpotCapture.captureButton")}
+          </Button>
         )}
       </View>
     </View>

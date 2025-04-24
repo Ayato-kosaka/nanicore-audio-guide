@@ -5,6 +5,7 @@ import { AuthProvider } from '@/contexts/AuthProvider';
 import { useLocale } from '@/hooks/useLocale';
 import i18n, { getResolvedLocale } from '@/lib/i18n';
 import { SplashHandler } from '@/components/SplashHandler';
+import { useLocaleFonts } from '@/hooks/useLocaleFonts';
 
 /**
  * 🌍 BCP 47 言語タグが妥当な形式かを検証するユーティリティ関数。
@@ -30,6 +31,8 @@ export default function LocalLayout() {
   const router = useRouter();
   const locale = useLocale();
 
+  const fontsLoaded = useLocaleFonts(locale);
+
   useEffect(() => {
     const isLocaleSupported = isValidBcp47Tag(locale);
 
@@ -41,6 +44,7 @@ export default function LocalLayout() {
     i18n.locale = getResolvedLocale(locale);
   }, [locale]);
 
+  if (!fontsLoaded) return null;
   return (
     <AuthProvider>
       <SplashHandler>
