@@ -100,7 +100,7 @@ export default function SpotCapture() {
           locale: i18n.locale,
           ...serializeSpotGuideParams({
             extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
-            imageUri: manipulated.uri,
+            imageUri: photo.uri,
             takenPhotoStoragePath,
           }),
         },
