@@ -205,9 +205,6 @@ export default function SpotGuideScreen() {
   return (
     <View style={styles.container}>
       {/* 🔺 広告エリア */}
-      <View style={styles.adArea}>
-        <Text style={styles.adText}>広告エリア</Text>
-      </View>
 
       {/* 🎯 スポットカード Carousel */}
       <Carousel

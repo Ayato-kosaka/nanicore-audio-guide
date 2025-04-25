@@ -36,7 +36,9 @@ export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
       take: RECOMMENDED_SPOT_LIMIT,
     });
 
-    const recommendedSpotIds = visitResults.map((r) => r.spot_id);
+    const recommendedSpotIds = visitResults
+      .map((r) => r.spot_id)
+      .filter((s) => s !== spotId);
 
     // 推薦先スポット情報を取得（is_recommendable = true）
     const spots = await prisma.ext_spots.findMany({

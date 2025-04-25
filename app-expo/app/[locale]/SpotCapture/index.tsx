@@ -147,15 +147,6 @@ export default function SpotCapture() {
         style={StyleSheet.absoluteFill}
         onCameraReady={() => setIsCameraReady(true)}
       />
-      {isLoading ? (
-        <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#fff" testID="loading-indicator" />
-        </View>
-      ) : (
-        <Button mode="contained" onPress={handleCapture} testID="capture-button" style={styles.button}>
-          {i18n.t("SpotCapture.captureButton")}
-        </Button>
-      )}
       <View style={styles.gridOverlay}>
         {/* 横線 */}
         <View style={styles.gridLineHorizontal} />
@@ -166,6 +157,15 @@ export default function SpotCapture() {
         <View style={[styles.gridLineVertical, { left: '66.6%' }]} />
         <View style={[styles.gridLineVertical, { left: '33.3%' }]} />
       </View>
+      {isLoading ? (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#fff" testID="loading-indicator" />
+        </View>
+      ) : (
+        <Button mode="contained" onPress={handleCapture} testID="capture-button" style={styles.button}>
+          {i18n.t("SpotCapture.captureButton")}
+        </Button>
+      )}
     </View>
   );
 }
@@ -194,10 +194,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 40,
     alignSelf: "center",
+    zIndex: 5,
   },
   gridOverlay: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: 5,
   },
   gridLineHorizontal: {
     position: 'absolute',
