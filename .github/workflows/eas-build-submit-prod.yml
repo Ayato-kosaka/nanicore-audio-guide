@@ -41,16 +41,8 @@ jobs:
         env:
           EAS_ACCESS_TOKEN: ${{ secrets.EAS_ACCESS_TOKEN }}
 
+      - name: ✨ Update environment variable
+        run: pnpx eas-cli env:update --variable-name EXPO_PUBLIC_COMMIT_ID --value ${{ github.sha }}  --non-interactive
+
       - name: 🚀 Build and Submit App (production)
-        env:
-          EXPO_PUBLIC_NODE_ENV: production
-          EXPO_PUBLIC_COMMIT_ID: ${{ github.sha }}
-          EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL: ${{ secrets.EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL_PROD }}
-          EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL_PROD }}
-          EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY_PROD }}
-          EXPO_PUBLIC_DB_SCHEMA: public
-          EXPO_PUBLIC_GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME_PROD }}
-          EXPO_PUBLIC_GCS_STATIC_MASTER_DIR_PATH: ${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}
-          EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID: ${{ secrets.EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID_PROD }}
-          EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID: ${{ secrets.EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID_PROD }}
         run: pnpx eas-cli build --profile production --platform all --non-interactive --no-wait --auto-submit
