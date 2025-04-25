@@ -120,11 +120,11 @@ export default function SpotCapture() {
 
     if (!perm.granted && !perm.canAskAgain) {
       showDialog(
-        "カメラのアクセスが拒否されています",
-        "カメラを使うには設定から許可が必要です。",
+        i18n.t("SpotCapture.permissionDialog.title"),
+        i18n.t("SpotCapture.permissionDialog.message"),
         () => Linking.openSettings(),
         {
-          okLabel: "設定を開く"
+          okLabel: i18n.t("SpotCapture.permissionDialog.okLabel")
         }
       );
     }

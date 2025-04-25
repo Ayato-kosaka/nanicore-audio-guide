@@ -1,1 +1,21 @@
-{}
+{
+    "SpotCapture": {
+        "captureButton": "What's this?",
+        "errorMessage": "Failed to capture the photo. Please try again.",
+        "requestPermission": "Camera access is required.",
+        "permissionDialog": {
+            "title": "Camera access denied",
+            "message": "To use the camera, please allow access in your settings.",
+            "okLabel": "Open Settings"
+        }
+    },
+    "SpotGuide": {
+        "shareMessage": "This photo was taken with the 'What's This? Audio Guide' app."
+    },
+    "SpotGuideCard": {
+        "generating": "Generating guide..."
+    },
+    "SpotRecommend": {
+        "nanicore": "Next spot recommendation!"
+    }
+}

@@ -1,13 +1,21 @@
 {
     "SpotCapture": {
         "captureButton": "なにこれ",
-        "errorMessage": "撮影に失敗しました。もう一度試してください。"
+        "errorMessage": "撮影に失敗しました。もう一度お試しください。",
+        "requestPermission": "カメラの使用許可が必要です。",
+        "permissionDialog": {
+            "title": "カメラへのアクセスが拒否されています",
+            "message": "カメラを使用するには、設定からアクセスを許可してください。",
+            "okLabel": "設定を開く"
+        }
     },
     "SpotGuide": {
-        "shareMessage": "なにこれで撮影した画像です。",
-        "generating": "生成中..."
+        "shareMessage": "「なにこれオーディオガイド」で撮影された画像です。"
+    },
+    "SpotGuideCard": {
+        "generating": "ガイドを生成中..."
     },
     "SpotRecommend": {
-        "nanicore": "なにこれ"
+        "nanicore": "次はここがオススメ！"
     }
 }

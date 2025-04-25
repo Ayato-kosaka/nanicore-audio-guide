@@ -354,7 +354,7 @@ const SpotGuideCard = ({
                 >
                     <Text style={styles.title}>{currentGuide?.title}</Text>
                     <Text style={styles.guideText}>
-                        {currentGuide?.manuscript ?? i18n.t('SpotGuide.generating')}
+                        {currentGuide?.manuscript ?? i18n.t('SpotGuideCard.generating')}
                     </Text>
                     <View style={styles.buttonRow}>
                         <IconButton
