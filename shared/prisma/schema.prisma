@@ -193,6 +193,7 @@ model spot_guides {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model spot_visits {
   id                                            String       @id
   user_id                                       String       @db.Uuid

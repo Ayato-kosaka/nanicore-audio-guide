@@ -34,7 +34,7 @@ if [ "$DB_SCHEMA" = "public" ]; then
 fi
 
 
-EXPO_ENV="expo/.env"
+EXPO_ENV="app-expo/.env"
 
 # EXPO_PUBLIC_SUPABASE_URL を読み込んでプロジェクトID抽出
 EXPO_PUBLIC_SUPABASE_URL=$(grep '^EXPO_PUBLIC_SUPABASE_URL=' "$EXPO_ENV" | cut -d '=' -f2-)
