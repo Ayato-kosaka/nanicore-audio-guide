@@ -28,3 +28,7 @@ export const prisma: PrismaClient =
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
+
+(prisma as any).$on('query', (e: any) => {
+  console.log(`[Prisma Duration] ${e.duration}ms`);
+});
