@@ -6,10 +6,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   name: 'nanicore-audio-guide',
   slug: 'nanicore',
   owner: 'nanicore-audio-guide',
+  runtimeVersion: {
+    policy: 'appVersion'
+  },
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
   scheme: 'myapp',
+  updates: {
+    url: 'https://u.expo.dev/d29cfcb3-535a-4c11-8493-49f7d4c92289'
+  },
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   ios: {
