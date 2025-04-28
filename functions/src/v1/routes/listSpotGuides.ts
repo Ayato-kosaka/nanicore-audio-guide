@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import {
     getCurrentVersionMajorFromRequest,
+    shuffleByWeight,
 } from '../lib/backendUtils';
 import { logBackendEvent } from '../lib/logger';
 import { withValidatedAuthHandler } from '../lib/handler';
@@ -10,21 +11,6 @@ import { generateSignedUrl } from '../lib/storage';
 
 /** 最大ガイド件数（乱数取得でも制限） */
 const MAX_GUIDE_COUNT = 20;
-
-/**
- * 🎲 同一weight内でランダムシャッフルしつつ、weight順にソート
- *
- * @param items - ガイドオブジェクト配列
- * @returns {T[]} weight降順かつ同スコア内シャッフルされた配列
- */
-function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
-    return [...items].sort((a, b) => {
-        if (a.weight !== b.weight) {
-            return b.weight - a.weight;
-        }
-        return Math.random() - 0.5;
-    });
-}
 
 /**
  * 🎧 スポットごとの無料ガイド一覧を取得する関数。

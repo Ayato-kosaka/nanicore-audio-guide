@@ -134,3 +134,19 @@ export const getCurrentVersionMajorFromRequest = (req: Request): number => {
 
   return major;
 };
+
+
+/**
+ * 🎲 同一weight内でランダムシャッフルしつつ、weight順にソート
+ *
+ * @param items - ガイドオブジェクト配列
+ * @returns {T[]} weight降順かつ同スコア内シャッフルされた配列
+ */
+export function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    if (a.weight !== b.weight) {
+      return b.weight - a.weight;
+    }
+    return Math.random() - 0.5;
+  });
+}
