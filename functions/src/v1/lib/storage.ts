@@ -12,7 +12,7 @@ const storage = env.FUNCTIONS_NODE_ENV === "production"
   });
 const bucketName = env.FUNCTIONS_GCS_BUCKET_NAME;
 const environment = env.FUNCTIONS_NODE_ENV;
-const bucket = storage.bucket(bucketName);
+export const bucket = storage.bucket(bucketName);
 
 /**
  * 🔖 アップロード時に必要なパラメータ型定義

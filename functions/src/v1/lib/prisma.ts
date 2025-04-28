@@ -30,5 +30,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 (prisma as any).$on('query', (e: any) => {
+  console.log(`[Prisma Parameter] ${e.params}ms`);
   console.log(`[Prisma Duration] ${e.duration}ms`);
 });
