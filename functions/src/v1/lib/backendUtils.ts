@@ -137,10 +137,14 @@ export const getCurrentVersionMajorFromRequest = (req: Request): number => {
 
 
 /**
- * 🎲 同一weight内でランダムシャッフルしつつ、weight順にソート
+ * 🎲 同一 weight 内でランダムにシャッフルしつつ、weight の降順にソートするユーティリティ関数
  *
- * @param items - ガイドオブジェクト配列
- * @returns {T[]} weight降順かつ同スコア内シャッフルされた配列
+ * - weight が高いものほど上に来る
+ * - weight が同じ場合はランダムな順序になる
+ *
+ * @template T - weight プロパティを持つオブジェクト型
+ * @param {T[]} items - ソート対象のオブジェクト配列
+ * @returns {T[]} weight 降順かつ同一 weight 内でランダムシャッフルされた新しい配列
  */
 export function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
   return [...items].sort((a, b) => {
@@ -149,4 +153,27 @@ export function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
     }
     return Math.random() - 0.5;
   });
+}
+
+/**
+ * 🎯 weight に応じた確率で 1 件ランダムに選択するユーティリティ関数
+ *
+ * - weight の合計をもとに、重み付きランダム選択を行う
+ * - weight が高いアイテムほど選ばれやすくなる
+ *
+ * @template T - weight プロパティを持つオブジェクト型
+ * @param {T[]} items - 選択対象のオブジェクト配列
+ * @returns {T | null} 選択されたオブジェクト、選べない場合は null
+ */
+export function pickByWeight<T extends { weight: number }>(items: T[]) {
+  const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+  const random = Math.random() * totalWeight;
+  let cumulative = 0;
+  for (const item of items) {
+    cumulative += item.weight;
+    if (random < cumulative) {
+      return item;
+    }
+  }
+  return null;
 }

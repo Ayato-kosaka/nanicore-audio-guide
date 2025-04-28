@@ -1,6 +1,6 @@
 import { env } from './env';
 import { getStaticMaster } from './getStaticMaster';
-import { callExternalApi, shuffleByWeight } from './backendUtils';
+import { callExternalApi, pickByWeight } from './backendUtils';
 
 // Claude API のレスポンス型
 interface MessageResponse {
@@ -69,12 +69,11 @@ export const generateSpotGuideContent = async (
 
     // 🎯 Static Masterからプロンプトファミリー・バリアントを読み込み
     const promptFamilies = await getStaticMaster('prompt_families');
-    // 🎲 同weight内はランダムシャッフル
-    const selectedFamily = shuffleByWeight(
+    const selectedFamily = pickByWeight(
         promptFamilies
             .filter((x) => x.purpose === 'spot_guide_manuscript')
             .filter((x) => x.weight > 0)
-    )[0];
+    );
     if (!selectedFamily) throw new Error('No eligible prompt families found.');
 
     const promptVariants = await getStaticMaster('prompt_variants');
