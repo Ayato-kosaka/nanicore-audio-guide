@@ -184,7 +184,7 @@ export const withValidatedAuthHandler = <T>(
                     },
                     request_id: requestId,
                 });
-                res.status(500).json({ error: 'Internal server error' });
+                res.status(500).json({ error: err.message ?? 'Internal server error' });
             } finally {
                 await prisma.$disconnect();
             }
