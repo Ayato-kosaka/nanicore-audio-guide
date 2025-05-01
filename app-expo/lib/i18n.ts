@@ -19,6 +19,7 @@ import zh_CN from '../locales/zh-CN.json';
 import ar_SA from '../locales/ar-SA.json';
 import ko_KR from '../locales/ko-KR.json';
 import es_ES from '../locales/es-ES.json';
+import hi_IN from '../locales/hi-IN.json';
 
 // 翻訳辞書をロケール形式で登録
 const TRANSLATIONS: Record<string, object> = {
@@ -56,6 +57,8 @@ const TRANSLATIONS: Record<string, object> = {
   'en-ZA': en_US,
   'en-US': en_US,
   'en': en_US,
+  'hi-IN': hi_IN,
+  'hi': hi_IN,
   'es-AR': es_ES,
   'es-UY': es_ES,
   'es-EC': es_ES,
