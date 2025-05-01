@@ -9,6 +9,7 @@ import { convertPrismaToSupabase_ExtSpots } from '../../../../shared/converters/
 import { withValidatedAuthHandler } from '../lib/handler';
 
 const RECOMMENDED_SPOT_LIMIT = 20;
+const MAX_TIME_GAP_MINUTES = 90;
 
 /**
  * 📍 過去の訪問履歴に基づいて、次におすすめのスポットを取得する。
@@ -28,6 +29,7 @@ export const listRecommendedSpotsByVisitHistory = withValidatedAuthHandler(
       by: ['spot_id'],
       where: {
         prev_spot_id: spotId,
+        time_gap_minutes: { lte: MAX_TIME_GAP_MINUTES },
         min_version_major: { lte: currentVersionMajor },
         max_version_major: { gte: currentVersionMajor },
       },
