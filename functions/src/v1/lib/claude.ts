@@ -1,6 +1,7 @@
 import { env } from './env';
 import { getStaticMaster } from './getStaticMaster';
 import { callExternalApi, pickByWeight } from './backendUtils';
+import { z } from 'zod';
 
 // Claude API のレスポンス型
 interface MessageResponse {
@@ -29,15 +30,18 @@ interface MessageResponse {
         cache_creation_input_tokens?: number;
         cache_read_input_tokens?: number;
     };
-};
+}
+
+// スポットガイド生成レスポンス型のスキーマ
+const SpotGuideManuscriptResponseSchema = z.object({
+    title: z.string(),
+    manuscript: z.string(),
+    tags: z.array(z.string()),
+    ssmlGender: z.enum(["FEMALE", "MALE", "NEUTRAL"]),
+});
 
 // スポットガイド生成レスポンス型
-export type SpotGuideManuscriptResponse = {
-    title: string;
-    manuscript: string;
-    tags: string[];
-    ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
-};
+export type SpotGuideManuscriptResponse = z.infer<typeof SpotGuideManuscriptResponseSchema>;
 
 /**
  * 🧠 Claude APIを使用して観光スポットの音声ガイド情報（原稿、タイトル、タグ、音声性別）を生成する関数。
@@ -132,9 +136,21 @@ Make sure the value of "tags" is a string array (not a string).
         throw new Error(`Claude API failed: Unexpected stop_reason - ${response.stop_reason}`);
     }
 
+    let parsedJson: unknown;
+    try {
+        parsedJson = JSON.parse(response.content[0].text || "{}");
+    } catch (e) {
+        throw new Error(`Claude API failed: Invalid JSON response - ${(e as Error).message}`);
+    }
+
+    const validatedResponse = SpotGuideManuscriptResponseSchema.safeParse(parsedJson);
+    if (!validatedResponse.success) {
+        throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+    }
+
     // 📤 JSONとしてレスポンスをパースし返却
     return {
-        ...JSON.parse(response.content[0].text || '{}') as SpotGuideManuscriptResponse,
+        ...validatedResponse.data,
         familyId: selectedFamily.id,
         variantId: selectedVariant.id,
         promptText: prompt,
