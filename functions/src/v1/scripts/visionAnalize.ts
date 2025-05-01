@@ -1,5 +1,4 @@
-import { prisma } from '../lib/prisma';
-import { outputJson } from './utils';
+import { importJson, outputJson } from './utils';
 import { VisionTuningResult } from "./visionTuning";
 
 type VisionAnalysisResult = {
@@ -36,20 +35,11 @@ export const visionAnalize = (rawResults: VisionTuningResult[]): VisionAnalysisR
 };
 
 async function main() {
-    // const rawResults = await importJson("vision-tuning-results.json");
+    const rawResults = await importJson("vision-tuning-results.json");
 
-    // const analysis = visionAnalize(rawResults);
+    const analysis = visionAnalize(rawResults);
 
-    // await outputJson(analysis, 'vision-analize-results.json');
-
-
-    const backendEventLogs = await prisma.external_api_logs.findMany({
-        where: { user_id: "fffc4174-dd3b-49c7-a0a6-567994034205" },
-        orderBy: { created_at: 'desc' }
-    });
-
-    await outputJson
-        (backendEventLogs, 'outputJson.json');
+    await outputJson(analysis, 'vision-analize-results.json');
 
 }
 
