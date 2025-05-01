@@ -96,6 +96,7 @@ The tourist spot is "${spotTitle}".
 Output the guide in ${languageTag}.
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\\\n.
 
 {
   title: string;
