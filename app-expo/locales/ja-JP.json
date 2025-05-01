@@ -10,7 +10,8 @@
         }
     },
     "SpotGuide": {
-        "shareMessage": "「なにこれオーディオガイド」で撮影された画像です。"
+        "shareMessage": "「なにこれオーディオガイド」で撮影された画像です。",
+        "generateSpotGuideErrorMessage": "ガイドの生成に失敗しました。もう一度お試しください。"
     },
     "SpotGuideCard": {
         "generating": "ガイドを生成中..."

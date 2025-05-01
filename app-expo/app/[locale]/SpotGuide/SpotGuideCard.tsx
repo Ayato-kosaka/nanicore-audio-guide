@@ -18,6 +18,8 @@ import type { GenerateSpotGuideRequest, GenerateSpotGuideResponse } from '@share
 import { useLocale } from '@/hooks/useLocale';
 import type { SupabaseSpotVisits } from '@shared/converters/convert_spot_visits';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import { useSnackbar } from '@/contexts/SnackbarProvider';
 
 
 /**
@@ -49,6 +51,8 @@ const SpotGuideCard = ({
     const { isLoading, withLoading } = useWithLoading();
     const { logFrontendEvent } = useLogger();
     const { callCloudFunction } = useCloudFunction();
+    const { showSnackbar } = useSnackbar();
+    const router = useRouter();
     const locale = useLocale();
 
     const [spotGuideList, setSpotGuideList] = useState(initialGuides);
@@ -196,11 +200,14 @@ const SpotGuideCard = ({
             });
             return newGuide;
         } catch (err: any) {
+            showSnackbar(i18n.t("SpotGuideCard.generateSpotGuideErrorMessage"));
+            router.replace(`/${locale}/SpotCapture`);
             logFrontendEvent({
                 event_name: 'generateSpotGuideFailed',
                 error_level: 'error',
                 payload: {
                     error: err.message ?? 'Failed to generate new guide.',
+                    stack: err.stack,
                 },
             });
         }

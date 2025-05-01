@@ -10,7 +10,8 @@
         }
     },
     "SpotGuide": {
-        "shareMessage": "这是一张通过“这是什么？语音导览”应用拍摄的图片。"
+        "shareMessage": "这是一张通过“这是什么？语音导览”应用拍摄的图片。",
+        "generateSpotGuideErrorMessage": "很抱歉，导览生成失败，请稍后再试。"
     },
     "SpotGuideCard": {
         "generating": "正在生成导览..."

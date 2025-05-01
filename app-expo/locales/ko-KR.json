@@ -10,7 +10,8 @@
         }
     },
     "SpotGuide": {
-        "shareMessage": "‘이게 뭐야? 오디오 가이드’ 앱으로 촬영한 사진입니다."
+        "shareMessage": "‘이게 뭐야? 오디오 가이드’ 앱으로 촬영한 사진입니다.",
+        "generateSpotGuideErrorMessage": "가이드 생성에 실패했어요. 다시 시도해 주세요."
     },
     "SpotGuideCard": {
         "generating": "가이드를 생성 중..."

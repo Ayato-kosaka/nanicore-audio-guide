@@ -10,7 +10,8 @@
         }
     },
     "SpotGuide": {
-        "shareMessage": "Photo prise avec l'application \"C'est quoi ? Guide audio\"."
+        "shareMessage": "Photo prise avec l'application \"C'est quoi ? Guide audio\".",
+        "generateSpotGuideErrorMessage": "Échec de la génération du guide audio. Veuillez réessayer."
     },
     "SpotGuideCard": {
         "generating": "Génération du guide en cours..."
