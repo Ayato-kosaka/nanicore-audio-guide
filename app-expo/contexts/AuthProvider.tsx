@@ -45,22 +45,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const initializeAuth = async () => {
       try {
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
         const restoredSession = sessionData?.session;
 
-        if (!restoredSession) {
-          const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously();
-
-          logFrontendEvent({
-            event_name: anonError ? 'signInFailed' : 'signInAnonymously',
-            error_level: anonError ? 'error' : 'info',
-            payload: anonError ? { message: anonError.message } : {},
+        if (restoredSession) {
+          await supabase.auth.setSession({
+            access_token: restoredSession.access_token,
+            refresh_token: restoredSession.refresh_token,
           });
-
-          if (anonData?.session) {
-            setSession(anonData.session);
-            setUser(anonData.session.user);
-          }
-        } else {
+          
           logFrontendEvent({
             event_name: 'sessionRestored',
             error_level: 'info',
@@ -69,6 +62,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
           setSession(restoredSession);
           setUser(restoredSession.user);
+        } else {
+          const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously();
+          if (anonError) throw anonError;
+
+          logFrontendEvent({
+            event_name: 'signInAnonymously',
+            error_level: 'info',
+            payload: { user_id: anonData.session?.user.id },
+          });
+
+          if (anonData?.session) {
+            setSession(anonData.session);
+            setUser(anonData.session.user);
+          }
         }
       } catch (err: any) {
         logFrontendEvent({
@@ -87,28 +94,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
      * 👀 認証状態のリアルタイム監視。
      * - ログイン/ログアウトなどのイベントを自動検出
      */
-    let prevUserId: string | null = null;
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         const newUserId = session?.user?.id ?? null;
-        // if (event === 'SIGNED_IN' && session) {
-        //   setUser(session.user);
-        //   setSession(session);
-        //   router.replace('/');
-        // } else if (event === 'SIGNED_OUT') {
-        //   setUser(null);
-        //   setSession(null);
-        //   router.replace('/login');
-        // }
-        if (newUserId !== prevUserId) {
-          setUser(session?.user ?? null);
+        logFrontendEvent({
+          event_name: `onAuthStateChange:${event}`,
+          error_level: 'debug',
+          payload: { user_id: newUserId, event },
+        });
 
-          logFrontendEvent({
-            event_name: `onAuthStateChange:${event}`,
-            error_level: 'debug',
-            payload: { user_id: session?.user.id, event },
-          });
-          prevUserId = newUserId;
+        if (event === 'INITIAL_SESSION') {
+          // initializeAuth で処理済
+        } else if (event === 'SIGNED_IN') {
+          if(!session) return;
+          // setUser(session.user);
+          // setSession(session);
+          // router.replace('/');
+        } else if (event === 'SIGNED_OUT') {
+            // setUser(null);
+            // setSession(null);
+            // router.replace('/login');
+        } else if (event === 'PASSWORD_RECOVERY') {
+          // パスワード制のログイン機能を持たせる予定がないなら不要
+        } else if (event === 'TOKEN_REFRESHED') {
+          if (!session) return;
+          setUser(session.user);
+          setSession(session);
+        } else if (event === 'USER_UPDATED') {
+          // setUser(session.user);
+          // setSession(session);
         }
       }
     );
@@ -132,7 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    * @throws エラーが発生した場合は呼び出し元でキャッチする
    */
   const signUpWithEmail = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
   };
 
@@ -150,6 +164,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
   const value: AuthContextType = {
