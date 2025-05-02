@@ -9,13 +9,20 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
-) {
+): string {
   const theme = useColorScheme() ?? 'light';
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
     return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
   }
+
+  const color = Colors[theme][colorName];
+
+  if (typeof color === 'string') {
+    return color;
+  }
+
+  console.warn(`Color "${colorName}" is not a string. Got:`, color);
+  return '#000'; // fallback color
 }
