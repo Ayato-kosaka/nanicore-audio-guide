@@ -29,7 +29,7 @@ export const findOrCreateSpotFromId = async (
     const existingSpot = await prisma.ext_spots.findUnique({ where: { id: spotId } });
     if (existingSpot) return existingSpot;
 
-    if (!imageUrl && !spotTitle) {
+    if (!imageUrl || !spotTitle) {
         try {
             // 📚 Wikipedia からタイトル/画像を取得
             const { imageUrl: wikiImageUrl, title } = await getWikipediaImageFromKgid(spotId, requestId, userId);
