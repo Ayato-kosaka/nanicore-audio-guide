@@ -22,6 +22,8 @@ CREATE INDEX idx_spot_visits_user_id ON spot_visits(user_id);
 CREATE INDEX idx_spot_visits_spot_id ON spot_visits(spot_id);
 CREATE INDEX idx_spot_visits_represent_guide_id ON spot_visits(represent_guide_id);
 CREATE INDEX idx_spot_visits_prev_spot_id ON spot_visits(prev_spot_id);
+CREATE INDEX idx_spot_visits_min_version_major ON spot_visits(min_version_major);
+CREATE INDEX idx_spot_visits_max_version_major ON spot_visits(max_version_major);
 
 -- テーブルコメント
 COMMENT ON TABLE spot_visits IS 'ユーザーによるスポット訪問ログを記録するテーブル';
