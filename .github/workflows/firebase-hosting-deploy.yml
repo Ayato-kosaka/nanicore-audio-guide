@@ -19,7 +19,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: expo-app
+        working-directory: app-expo
 
     steps:
       - name: ⏬ Checkout repository
