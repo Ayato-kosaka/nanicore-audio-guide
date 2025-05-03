@@ -51,7 +51,7 @@ jobs:
         run: pnpx eas-cli env:pull ${{ github.event.inputs.target }} --non-interactive
 
       - name: 🏗️ Build Web App
-        run: pnpm build  --filter=app-expo
+        run: pnpm --filter app-expo build
 
       - name: 🚀 Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
