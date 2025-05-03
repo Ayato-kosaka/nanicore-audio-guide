@@ -3,22 +3,22 @@ import { env } from './env';
 
 /**
  * 🌐 Google Knowledge Graph API + Wikipedia API を用いて、
- * MID（KGエンティティID）から Wikipedia 記事の画像とタイトルを取得する。
+ * KGID（KGエンティティID）から Wikipedia 記事の画像とタイトルを取得する。
  *
- * @param mid - Google Knowledge Graph の MID（例: /m/012345）
+ * @param kgid - Google Knowledge Graph の ID （例: /m/012345）
  * @param requestId - トレース用のリクエストID
  * @param userId - 認証済みユーザーのID（ログ用）
  * @returns サムネイル画像URLと Wikipedia タイトル（どちらも null の可能性あり）
  */
-export const getWikipediaImageFromMid = async (
-    mid: string,
+export const getWikipediaImageFromKgid = async (
+    kgid: string,
     requestId: string,
     userId: string
 ): Promise<{ imageUrl: string | null; title: string | null }> => {
     // Google Knowledge Graph Search API から Wikipedia URL を取得
     // @see https://developers.google.com/knowledge-graph/reference/rest/v1?hl=en
     const kgUrl = `https://kgsearch.googleapis.com/v1/entities:search?ids=${encodeURIComponent(
-        mid
+        kgid
     )}&languages=en&key=${env.FUNCTIONS_GOOGLE_KG_API_KEY}&limit=1&indent=false`;
 
     const kgResponse = await callExternalApi<{
@@ -29,7 +29,7 @@ export const getWikipediaImageFromMid = async (
         }[];
     }>({
         requestId,
-        functionName: 'getWikipediaImageFromMid',
+        functionName: 'getWikipediaImageFromKgid',
         apiName: 'GoogleKnowledgeGraphAPI',
         endpoint: kgUrl,
         method: 'GET',
@@ -61,7 +61,7 @@ export const getWikipediaImageFromMid = async (
         };
     }>({
         requestId,
-        functionName: 'getWikipediaImageFromMid',
+        functionName: 'getWikipediaImageFromKgid',
         apiName: 'WikipediaAPI',
         endpoint: wikiApiUrl,
         method: 'GET',

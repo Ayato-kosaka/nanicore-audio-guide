@@ -9,7 +9,7 @@ import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
  */
 export type SpotGuideParams = {
   extSpots?: PrismaExtSpots;
-  imageUri?: string;
+  imageUri?: string | null;
   takenPhotoStoragePath?: string | null;
 };
 
@@ -24,6 +24,12 @@ export type SpotGuideSerializedParams = {
 };
 
 /**
+ *  SpotSearch  画面に渡されるパラメータ
+ * - id: 検索結果のID
+ */
+export type SpotSearchParams = { id: string }
+
+/**
  * 🚦 アプリ内ルーティングで使用されるパラメータ一覧。
  *
  * - `react-navigation` や `expo-router` の型安全な navigation 用
@@ -32,4 +38,5 @@ export type SpotGuideSerializedParams = {
 export type RootStackParamList = {
   SpotCapture: {}; // 撮影画面（パラメータなし）
   SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
+  SpotSearch: SpotSearchParams; // SpotSearch画面
 };

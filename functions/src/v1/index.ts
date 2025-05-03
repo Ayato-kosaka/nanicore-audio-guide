@@ -1,3 +1,4 @@
+export { findOrCreateSpotFromId } from './routes/findOrCreateSpotFromId';
 export { findOrCreateSpotFromImage } from './routes/findOrCreateSpotFromImage';
 export { generateSpotGuide } from './routes/generateSpotGuide';
 export { listRecommendedSpotsByVisitHistory } from './routes/listRecommendedSpotsByVisitHistory';

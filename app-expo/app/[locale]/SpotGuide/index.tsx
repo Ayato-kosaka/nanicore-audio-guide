@@ -137,6 +137,7 @@ export default function SpotGuideScreen() {
     const resolvedAsset = Platform.OS === 'web'
       ? placeholderImage
       : Image.resolveAssetSource(placeholderImage);
+    console.log({imageUri, extSpots, resolvedAsset});
     return imageUri
       ?? extSpots?.image_url
       ?? resolvedAsset.uri;
