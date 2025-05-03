@@ -216,7 +216,16 @@ export default function SpotCapture() {
           <ActivityIndicator size="large" color="#fff" testID="loading-indicator" />
         </View>
       ) : (
-        <Button mode="contained" onPress={handleCapture} testID="capture-button" style={styles.button}>
+        <Button
+          mode="contained"
+          onPress={handleCapture}
+          style={styles.button}
+          contentStyle={styles.buttonContent}
+          buttonColor="white"
+          textColor="rgba(0,0,0,0.6)"
+          labelStyle={styles.buttonLabel}
+          testID="capture-button"
+        > 
           {i18n.t("SpotCapture.captureButton")}
         </Button>
       )}
@@ -244,11 +253,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 10,
   },
+  buttonContent: {
+  },
   button: {
-    position: "absolute",
-    bottom: 40,
-    alignSelf: "center",
-    zIndex: 5,
+      position: "absolute",
+      alignSelf: 'center',
+      bottom: 100,
+      marginHorizontal: 32,
+      borderRadius: 50,
+      borderColor: 'white',
+      shadowColor: '#000',
+      shadowOpacity: 0.95,
+      shadowRadius: 30,
+      shadowOffset: { width: 0, height: 0 },
+  },
+  buttonLabel: {
+      fontSize: 32,
+      lineHeight: 48,
   },
   controls: {
     position: 'absolute',
