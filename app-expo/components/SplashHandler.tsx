@@ -9,6 +9,7 @@ import { DialogProvider } from '@/contexts/DialogProvider';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { getPaperTheme } from '@/constants/PaperTheme';
 import { useLocale } from '@/hooks/useLocale';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -84,11 +85,13 @@ export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <PaperProvider theme={theme}>
-      <SnackbarProvider>
-        <DialogProvider>
-          {children}
-        </DialogProvider>
-      </SnackbarProvider>
+      <GestureHandlerRootView>
+        <SnackbarProvider>
+          <DialogProvider>
+            {children}
+          </DialogProvider>
+        </SnackbarProvider>
+      </GestureHandlerRootView>
     </PaperProvider>
   );
 };

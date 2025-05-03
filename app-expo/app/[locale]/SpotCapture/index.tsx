@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, ActivityIndicator, StyleSheet, Platform, Linking } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import { View, ActivityIndicator, StyleSheet, Platform, Linking, TouchableOpacity } from "react-native";
+import { CameraType, CameraView, FlashMode, useCameraPermissions } from "expo-camera";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { useRouter } from "expo-router";
 
@@ -15,6 +15,11 @@ import i18n from "@/lib/i18n";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import { useDialog } from "@/contexts/DialogProvider";
 import { Button } from "react-native-paper";
+import { GestureEvent, PinchGestureHandler, PinchGestureHandlerEventPayload, State } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
+
+const MAX_ZOOM = 1 // expo-camera zoom is between 0 - 1
+const MIN_ZOOM = 0
 
 /**
  * 📸 SpotCapture 画面
@@ -27,6 +32,10 @@ export default function SpotCapture() {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [flash, setFlash] = useState<FlashMode>('off');
+  const [zoom, setZoom] = useState(0.01);
+  const startZoomRef = useRef(0);
 
   const { logFrontendEvent } = useLogger();
   const { isLoading, withLoading } = useWithLoading();
@@ -115,6 +124,33 @@ export default function SpotCapture() {
     }
   });
 
+  const onPinchGestureEvent = (event: GestureEvent<PinchGestureHandlerEventPayload>) => {
+    const { scale, state } = event.nativeEvent
+  
+    if (state === State.BEGAN || state === State.ACTIVE) {
+      const SENSITIVITY = 0.2 // 拡大スピード係数
+  
+      // 差分に基づいたリニア補間
+      let delta = (scale - 1) * SENSITIVITY
+      let newZoom = startZoomRef.current + delta
+  
+  
+      // クランプして範囲内に制限
+      newZoom = Math.min(Math.max(newZoom, MIN_ZOOM), MAX_ZOOM)
+      setZoom(newZoom)
+    }
+  
+    if (state === State.END || state === State.CANCELLED || state === State.FAILED) {
+      startZoomRef.current = zoom
+    }
+  }
+  
+  const onPinchHandlerStateChange = ({ nativeEvent }: GestureEvent<PinchGestureHandlerEventPayload>) => {
+    if (nativeEvent.state === State.BEGAN) {
+      startZoomRef.current = zoom
+    }
+  }
+
   const handlePermission = async () => {
     const perm = await requestPermission();
 
@@ -142,11 +178,29 @@ export default function SpotCapture() {
 
   return (
     <View style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        style={StyleSheet.absoluteFill}
-        onCameraReady={() => setIsCameraReady(true)}
-      />
+      <PinchGestureHandler
+        onGestureEvent={onPinchGestureEvent}
+        onHandlerStateChange={onPinchHandlerStateChange}
+      >
+        <CameraView
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          onCameraReady={() => setIsCameraReady(true)}
+          autofocus={'on'}
+          facing={facing}
+          zoom={zoom}
+          flash={flash}
+        />
+      </PinchGestureHandler>
+      <View style={styles.controls}>
+        <TouchableOpacity onPress={() => setFacing(facing === 'back' ? 'front' : 'back')} style={styles.iconButton}>
+          <Ionicons name="camera-reverse" size={24} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setFlash(flash === 'off' ? 'on' : 'off')} style={styles.iconButton}>
+          <Ionicons name={flash === 'on' ? 'flash' : 'flash-off'} size={24} color="white" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.gridOverlay}>
         {/* 横線 */}
         <View style={styles.gridLineHorizontal} />
@@ -195,6 +249,20 @@ const styles = StyleSheet.create({
     bottom: 40,
     alignSelf: "center",
     zIndex: 5,
+  },
+  controls: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    flexDirection: 'column',
+    gap: 16,
+  },
+  iconButton: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   gridOverlay: {
     ...StyleSheet.absoluteFillObject,
