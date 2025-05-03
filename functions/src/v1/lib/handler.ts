@@ -12,7 +12,7 @@ import { prisma } from '../lib/prisma';
 
 
 const corsHandler = cors({
-    origin: ['http://localhost:8081'],
+    origin: ['http://localhost:8081', 'https://nanicore-audio-guide.web.app/'],
 });
 
 /**
