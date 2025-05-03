@@ -4,7 +4,7 @@ CREATE TYPE ext_spots_vision_detection_type AS ENUM ('LANDMARK_DETECTION', 'WEB_
 -- テーブル定義
 CREATE TABLE ext_spots (
     id TEXT PRIMARY KEY,
-    vision_detection_type ext_spots_vision_detection_type NOT NULL,
+    vision_detection_type ext_spots_vision_detection_type,
     title TEXT NOT NULL,
     image_url TEXT,
     landmark_latitude DOUBLE PRECISION,

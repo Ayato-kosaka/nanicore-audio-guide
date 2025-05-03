@@ -39,18 +39,18 @@ model config {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model ext_spots {
-  id                                              String                          @id
-  vision_detection_type                           ext_spots_vision_detection_type
+  id                                              String                           @id
+  vision_detection_type                           ext_spots_vision_detection_type?
   title                                           String
   image_url                                       String?
   landmark_latitude                               Float?
   landmark_longitude                              Float?
   is_recommendable                                Boolean
-  created_at                                      DateTime                        @db.Timestamptz(6)
+  created_at                                      DateTime                         @db.Timestamptz(6)
   lock_no                                         Int
   spot_guides                                     spot_guides[]
-  spot_visits_spot_visits_prev_spot_idToext_spots spot_visits[]                   @relation("spot_visits_prev_spot_idToext_spots")
-  spot_visits_spot_visits_spot_idToext_spots      spot_visits[]                   @relation("spot_visits_spot_idToext_spots")
+  spot_visits_spot_visits_prev_spot_idToext_spots spot_visits[]                    @relation("spot_visits_prev_spot_idToext_spots")
+  spot_visits_spot_visits_spot_idToext_spots      spot_visits[]                    @relation("spot_visits_spot_idToext_spots")
 
   @@index([landmark_latitude], map: "idx_ext_spots_landmark_latitude")
   @@index([landmark_longitude], map: "idx_ext_spots_landmark_longitude")

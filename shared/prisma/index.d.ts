@@ -456,8 +456,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.7.0
+   * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
    */
   export type PrismaVersion = {
     client: string
@@ -4195,7 +4195,7 @@ export namespace Prisma {
 
   export type Ext_spotsGroupByOutputType = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url: string | null
     landmark_latitude: number | null
@@ -4295,7 +4295,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      vision_detection_type: $Enums.ext_spots_vision_detection_type
+      vision_detection_type: $Enums.ext_spots_vision_detection_type | null
       title: string
       image_url: string | null
       landmark_latitude: number | null
@@ -14870,7 +14870,7 @@ export namespace Prisma {
     OR?: ext_spotsWhereInput[]
     NOT?: ext_spotsWhereInput | ext_spotsWhereInput[]
     id?: StringFilter<"ext_spots"> | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: Enumext_spots_vision_detection_typeNullableFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type | null
     title?: StringFilter<"ext_spots"> | string
     image_url?: StringNullableFilter<"ext_spots"> | string | null
     landmark_latitude?: FloatNullableFilter<"ext_spots"> | number | null
@@ -14885,7 +14885,7 @@ export namespace Prisma {
 
   export type ext_spotsOrderByWithRelationInput = {
     id?: SortOrder
-    vision_detection_type?: SortOrder
+    vision_detection_type?: SortOrderInput | SortOrder
     title?: SortOrder
     image_url?: SortOrderInput | SortOrder
     landmark_latitude?: SortOrderInput | SortOrder
@@ -14903,7 +14903,7 @@ export namespace Prisma {
     AND?: ext_spotsWhereInput | ext_spotsWhereInput[]
     OR?: ext_spotsWhereInput[]
     NOT?: ext_spotsWhereInput | ext_spotsWhereInput[]
-    vision_detection_type?: Enumext_spots_vision_detection_typeFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: Enumext_spots_vision_detection_typeNullableFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type | null
     title?: StringFilter<"ext_spots"> | string
     image_url?: StringNullableFilter<"ext_spots"> | string | null
     landmark_latitude?: FloatNullableFilter<"ext_spots"> | number | null
@@ -14918,7 +14918,7 @@ export namespace Prisma {
 
   export type ext_spotsOrderByWithAggregationInput = {
     id?: SortOrder
-    vision_detection_type?: SortOrder
+    vision_detection_type?: SortOrderInput | SortOrder
     title?: SortOrder
     image_url?: SortOrderInput | SortOrder
     landmark_latitude?: SortOrderInput | SortOrder
@@ -14938,7 +14938,7 @@ export namespace Prisma {
     OR?: ext_spotsScalarWhereWithAggregatesInput[]
     NOT?: ext_spotsScalarWhereWithAggregatesInput | ext_spotsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ext_spots"> | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeWithAggregatesFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: Enumext_spots_vision_detection_typeNullableWithAggregatesFilter<"ext_spots"> | $Enums.ext_spots_vision_detection_type | null
     title?: StringWithAggregatesFilter<"ext_spots"> | string
     image_url?: StringNullableWithAggregatesFilter<"ext_spots"> | string | null
     landmark_latitude?: FloatNullableWithAggregatesFilter<"ext_spots"> | number | null
@@ -15743,7 +15743,7 @@ export namespace Prisma {
 
   export type ext_spotsCreateInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -15758,7 +15758,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedCreateInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -15773,7 +15773,7 @@ export namespace Prisma {
 
   export type ext_spotsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -15788,7 +15788,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -15803,7 +15803,7 @@ export namespace Prisma {
 
   export type ext_spotsCreateManyInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -15815,7 +15815,7 @@ export namespace Prisma {
 
   export type ext_spotsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -15827,7 +15827,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -16830,11 +16830,11 @@ export namespace Prisma {
     description?: SortOrder
   }
 
-  export type Enumext_spots_vision_detection_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type
+  export type Enumext_spots_vision_detection_typeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type | null
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -16932,14 +16932,14 @@ export namespace Prisma {
     lock_no?: SortOrder
   }
 
-  export type Enumext_spots_vision_detection_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumext_spots_vision_detection_typeWithAggregatesFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel>
-    _max?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel>
+  export type Enumext_spots_vision_detection_typeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumext_spots_vision_detection_typeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel>
+    _max?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17657,8 +17657,8 @@ export namespace Prisma {
     connect?: spot_visitsWhereUniqueInput | spot_visitsWhereUniqueInput[]
   }
 
-  export type Enumext_spots_vision_detection_typeFieldUpdateOperationsInput = {
-    set?: $Enums.ext_spots_vision_detection_type
+  export type NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput = {
+    set?: $Enums.ext_spots_vision_detection_type | null
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -18150,11 +18150,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type
+  export type NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type | null
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -18173,14 +18173,14 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedEnumext_spots_vision_detection_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumext_spots_vision_detection_typeWithAggregatesFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel>
-    _max?: NestedEnumext_spots_vision_detection_typeFilter<$PrismaModel>
+  export type NestedEnumext_spots_vision_detection_typeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ext_spots_vision_detection_type | Enumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ext_spots_vision_detection_type[] | ListEnumext_spots_vision_detection_typeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumext_spots_vision_detection_typeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ext_spots_vision_detection_type | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel>
+    _max?: NestedEnumext_spots_vision_detection_typeNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18733,7 +18733,7 @@ export namespace Prisma {
 
   export type ext_spotsCreateWithoutSpot_guidesInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18747,7 +18747,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedCreateWithoutSpot_guidesInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18815,7 +18815,7 @@ export namespace Prisma {
 
   export type ext_spotsUpdateWithoutSpot_guidesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -18829,7 +18829,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedUpdateWithoutSpot_guidesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -18859,7 +18859,7 @@ export namespace Prisma {
 
   export type ext_spotsCreateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18873,7 +18873,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedCreateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18935,7 +18935,7 @@ export namespace Prisma {
 
   export type ext_spotsCreateWithoutSpot_visits_spot_visits_spot_idToext_spotsInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18949,7 +18949,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedCreateWithoutSpot_visits_spot_visits_spot_idToext_spotsInput = {
     id: string
-    vision_detection_type: $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: $Enums.ext_spots_vision_detection_type | null
     title: string
     image_url?: string | null
     landmark_latitude?: number | null
@@ -18979,7 +18979,7 @@ export namespace Prisma {
 
   export type ext_spotsUpdateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -18993,7 +18993,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedUpdateWithoutSpot_visits_spot_visits_prev_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -19067,7 +19067,7 @@ export namespace Prisma {
 
   export type ext_spotsUpdateWithoutSpot_visits_spot_visits_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -19081,7 +19081,7 @@ export namespace Prisma {
 
   export type ext_spotsUncheckedUpdateWithoutSpot_visits_spot_visits_spot_idToext_spotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    vision_detection_type?: Enumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type
+    vision_detection_type?: NullableEnumext_spots_vision_detection_typeFieldUpdateOperationsInput | $Enums.ext_spots_vision_detection_type | null
     title?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     landmark_latitude?: NullableFloatFieldUpdateOperationsInput | number | null

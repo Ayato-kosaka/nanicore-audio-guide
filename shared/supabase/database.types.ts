@@ -79,7 +79,9 @@ export type Database = {
           landmark_longitude: number | null
           lock_no: number
           title: string
-          vision_detection_type: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+          vision_detection_type:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Insert: {
           created_at: string
@@ -90,7 +92,9 @@ export type Database = {
           landmark_longitude?: number | null
           lock_no: number
           title: string
-          vision_detection_type: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+          vision_detection_type?:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Update: {
           created_at?: string
@@ -101,7 +105,9 @@ export type Database = {
           landmark_longitude?: number | null
           lock_no?: number
           title?: string
-          vision_detection_type?: Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+          vision_detection_type?:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Relationships: []
       }
