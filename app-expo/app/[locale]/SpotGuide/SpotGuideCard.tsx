@@ -60,6 +60,8 @@ const SpotGuideCard = ({
 	const [isLiked, setIsLiked] = useState(false);
 	const [sound, setSound] = useState<Audio.Sound | null>(null);
 	const [imageSrc, setImageSrc] = useState(imageUri);
+	const [showLikeButton, setShowLikeButton] = useState(false);
+	const [showNextButton, setShowNextButton] = useState(false);
 
 	const visitIdRef = useRef<string>(uuidv4());
 	const currentGuide = spotGuideIndex < spotGuideList.length ? spotGuideList[spotGuideIndex] : null;
@@ -270,6 +272,10 @@ const SpotGuideCard = ({
 			if (!user?.id) return;
 
 			const remoteConfig = getRemoteConfig();
+			const like = await remoteConfig?.v1_show_like_button;
+			const next = await remoteConfig?.v1_show_next_button;
+			setShowLikeButton(like === "true");
+			setShowNextButton(next === "true");
 			if (!remoteConfig?.v1_spot_visits_max_version_major) return;
 
 			let newGuide: typeof currentGuide | undefined;
@@ -349,19 +355,31 @@ const SpotGuideCard = ({
 					<Text style={styles.title}>{currentGuide?.title}</Text>
 					<Text style={styles.guideText}>{currentGuide?.manuscript ?? i18n.t("SpotGuideCard.generating")}</Text>
 					<View style={styles.buttonRow}>
-						<IconButton
-							icon={isLiked ? "heart" : "heart-outline"}
-							onPress={handleToggleLike}
-							disabled={!currentGuide}
-							iconColor="white"
-						/>
+						{showLikeButton && (
+							<IconButton
+								icon={isLiked ? "heart" : "heart-outline"}
+								onPress={handleToggleLike}
+								disabled={!currentGuide}
+								iconColor="white"
+								testID="like-button"
+							/>
+						)}
 						<IconButton
 							icon="volume-high"
 							onPress={handlePlayAudio}
 							disabled={isPlaying || !currentGuide?.audioUrl}
 							iconColor="white"
+							testID="play-audio-button"
 						/>
-						<IconButton icon="refresh" onPress={handleNextGuideSpot} disabled={isLoading} iconColor="white" />
+						{showNextButton && (
+							<IconButton
+								icon="refresh"
+								onPress={handleNextGuideSpot}
+								disabled={isLoading}
+								iconColor="white"
+								testID="next-guide-button"
+							/>
+						)}
 					</View>
 				</LinearGradient>
 			</ImageBackground>
