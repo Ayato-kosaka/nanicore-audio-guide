@@ -23,6 +23,7 @@ import i18n from "@/lib/i18n";
 import { convertSupabaseToPrisma_ExtSpots, PrismaExtSpots } from "@shared/converters/convert_ext_spots";
 import { convertSupabaseToPrisma_SpotGuides, PrismaSpotGuides } from "@shared/converters/convert_spot_guides";
 import { useSafeInterstitialAd } from "@/hooks/useSafeInterstitialAd";
+import { BannerAdView } from "@/components/BannerAdView";
 
 const { width, height } = Dimensions.get("window");
 
@@ -213,6 +214,7 @@ export default function SpotGuideScreen() {
 	return (
 		<View style={styles.container}>
 			{/* 🔺 広告エリア */}
+			<BannerAdView />
 
 			{/* 🎯 スポットカード Carousel */}
 			<Carousel
