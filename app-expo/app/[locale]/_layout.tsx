@@ -1,11 +1,11 @@
-import 'react-native-get-random-values';
-import React, { useEffect } from 'react';
-import { Stack, useRouter } from 'expo-router';
-import { AuthProvider } from '@/contexts/AuthProvider';
-import { useLocale } from '@/hooks/useLocale';
-import i18n, { getResolvedLocale } from '@/lib/i18n';
-import { SplashHandler } from '@/components/SplashHandler';
-import { useLocaleFonts } from '@/hooks/useLocaleFonts';
+import "react-native-get-random-values";
+import React, { useEffect } from "react";
+import { Stack, useRouter } from "expo-router";
+import { AuthProvider } from "@/contexts/AuthProvider";
+import { useLocale } from "@/hooks/useLocale";
+import i18n, { getResolvedLocale } from "@/lib/i18n";
+import { SplashHandler } from "@/components/SplashHandler";
+import { useLocaleFonts } from "@/hooks/useLocaleFonts";
 
 /**
  * 🌍 BCP 47 言語タグが妥当な形式かを検証するユーティリティ関数。
@@ -14,8 +14,8 @@ import { useLocaleFonts } from '@/hooks/useLocaleFonts';
  * @returns 正常な言語タグであれば true、不正な形式なら false
  */
 const isValidBcp47Tag = (tag: string): boolean => {
-  const bcp47Pattern = /^[a-zA-Z]{2,3}(-[a-zA-Z0-9]{2,8})*$/;
-  return bcp47Pattern.test(tag);
+	const bcp47Pattern = /^[a-zA-Z]{2,3}(-[a-zA-Z0-9]{2,8})*$/;
+	return bcp47Pattern.test(tag);
 };
 
 /**
@@ -28,31 +28,28 @@ const isValidBcp47Tag = (tag: string): boolean => {
  * @returns 言語判定とバリデーションを行ったレイアウト付きスタック構造
  */
 export default function LocalLayout() {
-  const router = useRouter();
-  const locale = useLocale();
+	const router = useRouter();
+	const locale = useLocale();
 
-  const fontsLoaded = useLocaleFonts(locale);
+	const fontsLoaded = useLocaleFonts(locale);
 
-  useEffect(() => {
-    const isLocaleSupported = isValidBcp47Tag(locale);
+	useEffect(() => {
+		const isLocaleSupported = isValidBcp47Tag(locale);
 
-    if (!isLocaleSupported) {
-      router.replace('/');
-      return;
-    }
+		if (!isLocaleSupported) {
+			router.replace("/");
+			return;
+		}
 
-    i18n.locale = getResolvedLocale(locale);
-  }, [locale]);
+		i18n.locale = getResolvedLocale(locale);
+	}, [locale]);
 
-  if (!fontsLoaded) return null;
-  return (
-    <AuthProvider>
-      <SplashHandler>
-        <Stack
-          initialRouteName="SpotCapture/index"
-          screenOptions={{ headerShown: false }}
-        />
-      </SplashHandler>
-    </AuthProvider>
-  );
+	if (!fontsLoaded) return null;
+	return (
+		<AuthProvider>
+			<SplashHandler>
+				<Stack initialRouteName="SpotCapture/index" screenOptions={{ headerShown: false }} />
+			</SplashHandler>
+		</AuthProvider>
+	);
 }

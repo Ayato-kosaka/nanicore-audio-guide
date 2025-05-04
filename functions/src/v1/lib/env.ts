@@ -1,5 +1,5 @@
-import * as dotenv from 'dotenv';
-import { z } from 'zod';
+import * as dotenv from "dotenv";
+import { z } from "zod";
 
 // .env ファイルから環境変数を読み込む
 dotenv.config();
@@ -9,15 +9,15 @@ dotenv.config();
  * すべての必須変数を型安全に定義し、起動時にチェックできるようにする。
  */
 const envSchema = z.object({
-  FUNCTIONS_COMMIT_ID: z.string(),
-  FUNCTIONS_GCS_BUCKET_NAME: z.string(),
-  FUNCTIONS_NODE_ENV: z.string(),
-  FUNCTIONS_SUPABASE_JWT_SECRET: z.string(),
-  FUNCTIONS_GOOGLE_KG_API_KEY: z.string(),
-  FUNCTIONS_CLAUDE_API_KEY: z.string(),
-  FUNCTIONS_DEV_GCP_PROJECT_ID: z.string(),
-  FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64: z.string(),
-  FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH: z.string(),
+	FUNCTIONS_COMMIT_ID: z.string(),
+	FUNCTIONS_GCS_BUCKET_NAME: z.string(),
+	FUNCTIONS_NODE_ENV: z.string(),
+	FUNCTIONS_SUPABASE_JWT_SECRET: z.string(),
+	FUNCTIONS_GOOGLE_KG_API_KEY: z.string(),
+	FUNCTIONS_CLAUDE_API_KEY: z.string(),
+	FUNCTIONS_DEV_GCP_PROJECT_ID: z.string(),
+	FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64: z.string(),
+	FUNCTIONS_GCS_STATIC_MASTER_DIR_PATH: z.string(),
 });
 
 /**
@@ -27,15 +27,15 @@ const envSchema = z.object({
  * @returns {z.infer<typeof envSchema>} 検証済みの環境変数オブジェクト
  */
 function loadValidatedEnv(): z.infer<typeof envSchema> {
-  const parsedEnv = envSchema.safeParse(process.env);
+	const parsedEnv = envSchema.safeParse(process.env);
 
-  if (!parsedEnv.success) {
-    console.error('❌ Failed to validate environment variables:');
-    console.table(parsedEnv.error.flatten().fieldErrors);
-    throw new Error('Invalid environment variables. Please check your .env file or runtime environment.');
-  }
+	if (!parsedEnv.success) {
+		console.error("❌ Failed to validate environment variables:");
+		console.table(parsedEnv.error.flatten().fieldErrors);
+		throw new Error("Invalid environment variables. Please check your .env file or runtime environment.");
+	}
 
-  return parsedEnv.data;
+	return parsedEnv.data;
 }
 
 /**

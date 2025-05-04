@@ -1,5 +1,6 @@
 # なにこれオーディオガイド
-*ワンショットで観光地や絵画がわかる、音声ガイド付きカメラアプリ*
+
+_ワンショットで観光地や絵画がわかる、音声ガイド付きカメラアプリ_
 
 [App Store](#) | [Google Play](#) | [Web版はこちら](#)
 
@@ -74,11 +75,11 @@ Then place it in the project root:
 pnpm dev
 ```
 
-| Workspace | Description |
-|-----------|-------------|
-| `expo/` | Launches the Expo Dev Server |
-| `functions/` | Starts Firebase Emulator and watch mode |
-| `e2e/` | Not included by default (run manually or in CI) |
+| Workspace    | Description                                     |
+| ------------ | ----------------------------------------------- |
+| `expo/`      | Launches the Expo Dev Server                    |
+| `functions/` | Starts Firebase Emulator and watch mode         |
+| `e2e/`       | Not included by default (run manually or in CI) |
 
 ---
 
@@ -86,7 +87,8 @@ pnpm dev
 
 Q. `psql: コマンドが見つかりません`
 
-A. 
+A.
+
 ```bash
 apt update
 apt install postgresql-client
@@ -100,12 +102,12 @@ A. `pnpx supabase login`
 
 ## 🔧 Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development servers |
-| `pnpm lint` | Run ESLint across all packages |
+| Command          | Description                               |
+| ---------------- | ----------------------------------------- |
+| `pnpm dev`       | Start development servers                 |
+| `pnpm lint`      | Run ESLint across all packages            |
 | `pnpm typecheck` | Run TypeScript checks across all packages |
-| `pnpm build` | Build all packages for production |
+| `pnpm build`     | Build all packages for production         |
 
 ---
 
@@ -118,4 +120,3 @@ MIT
 ## お問い合わせ
 
 不具合報告や提案などは [Issues](https://github.com/Ayato-kosaka/nanicore-audio-guide/issues) よりお願いします。
-

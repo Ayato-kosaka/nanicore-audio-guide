@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import { env } from './env';
-import { Request } from 'firebase-functions/v2/https';
+import jwt from "jsonwebtoken";
+import { env } from "./env";
+import { Request } from "firebase-functions/v2/https";
 
 /**
  * 🔐 SupabaseのJWTトークンからユーザーIDを検証・抽出する。
@@ -13,18 +13,18 @@ import { Request } from 'firebase-functions/v2/https';
  * @throws {Error} 認証情報が無効・不在・期限切れなどの場合
  */
 export const withAuthUser = async (req: Request): Promise<{ userId: string }> => {
-    const authHeader = req.headers.authorization;
+	const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        throw new Error('Missing or malformed Authorization header');
-    }
+	if (!authHeader || !authHeader.startsWith("Bearer ")) {
+		throw new Error("Missing or malformed Authorization header");
+	}
 
-    const token = authHeader.replace('Bearer ', '').trim();
+	const token = authHeader.replace("Bearer ", "").trim();
 
-    try {
-        const decoded = jwt.verify(token, env.FUNCTIONS_SUPABASE_JWT_SECRET) as { sub: string };
-        return { userId: decoded.sub };
-    } catch (error: any) {
-        throw new Error(`Invalid Supabase JWT: ${error.message}`);
-    }
+	try {
+		const decoded = jwt.verify(token, env.FUNCTIONS_SUPABASE_JWT_SECRET) as { sub: string };
+		return { userId: decoded.sub };
+	} catch (error: any) {
+		throw new Error(`Invalid Supabase JWT: ${error.message}`);
+	}
 };

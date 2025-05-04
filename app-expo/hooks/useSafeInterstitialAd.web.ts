@@ -1,6 +1,6 @@
 export function useSafeInterstitialAd() {
-    return {
-        show: () => { },
-        isLoaded: true,
-    };
+	return {
+		show: () => {},
+		isLoaded: true,
+	};
 }

@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as SplashScreen from 'expo-splash-screen';
-import { useAuth } from '@/contexts/AuthProvider';
-import { initRemoteConfig } from '@/lib/remoteConfig';
-import { Env } from '@/constants/Env';
-import { PaperProvider } from 'react-native-paper';
-import { SnackbarProvider } from '@/contexts/SnackbarProvider';
-import { DialogProvider } from '@/contexts/DialogProvider';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { getPaperTheme } from '@/constants/PaperTheme';
-import { useLocale } from '@/hooks/useLocale';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { useAuth } from "@/contexts/AuthProvider";
+import { initRemoteConfig } from "@/lib/remoteConfig";
+import { Env } from "@/constants/Env";
+import { PaperProvider } from "react-native-paper";
+import { SnackbarProvider } from "@/contexts/SnackbarProvider";
+import { DialogProvider } from "@/contexts/DialogProvider";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { getPaperTheme } from "@/constants/PaperTheme";
+import { useLocale } from "@/hooks/useLocale";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -22,76 +22,74 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
  * @returns JSX構造
  */
 export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
-  const locale = useLocale();
+	const locale = useLocale();
 
-  const scheme = useColorScheme();
-  const theme = getPaperTheme(scheme, locale);
+	const scheme = useColorScheme();
+	const theme = getPaperTheme(scheme, locale);
 
-  const { loading: isAuthLoading, user } = useAuth();
+	const { loading: isAuthLoading, user } = useAuth();
 
-  const [isRemoteConfigReady, setIsRemoteConfigReady] = useState(false);
-  const hasSplashBeenHiddenRef = useRef(false);
+	const [isRemoteConfigReady, setIsRemoteConfigReady] = useState(false);
+	const hasSplashBeenHiddenRef = useRef(false);
 
-  /**
-   * 🔧 Remote Config の初期化処理
-   */
-  const initializeRemoteConfig = useCallback(async () => {
-    try {
-      await initRemoteConfig();
-    } catch (err: any) {
-      if (Env.NODE_ENV === 'development') {
-        console.error('[SplashHandler] RemoteConfig initialization failed:', err.message);
-      }
-    } finally {
-      setIsRemoteConfigReady(true);
-    }
-  }, []);
+	/**
+	 * 🔧 Remote Config の初期化処理
+	 */
+	const initializeRemoteConfig = useCallback(async () => {
+		try {
+			await initRemoteConfig();
+		} catch (err: any) {
+			if (Env.NODE_ENV === "development") {
+				console.error("[SplashHandler] RemoteConfig initialization failed:", err.message);
+			}
+		} finally {
+			setIsRemoteConfigReady(true);
+		}
+	}, []);
 
-  /**
-   * 🎬 Splash 非表示ロジック
-   * - 一度だけ実行されるようフラグで制御
-   */
-  const hideSplashScreenIfReady = useCallback(async () => {
-    if (!isAuthLoading && user && !hasSplashBeenHiddenRef.current) {
-      try {
-        await SplashScreen.hideAsync();
-        hasSplashBeenHiddenRef.current = true;
-      } catch (err: any) {
-        if (Env.NODE_ENV === 'development') {
-          console.warn('[SplashHandler] Failed to hide splash screen:', err.message);
-        }
-      }
-    }
-  }, [isAuthLoading, user]);
+	/**
+	 * 🎬 Splash 非表示ロジック
+	 * - 一度だけ実行されるようフラグで制御
+	 */
+	const hideSplashScreenIfReady = useCallback(async () => {
+		if (!isAuthLoading && user && !hasSplashBeenHiddenRef.current) {
+			try {
+				await SplashScreen.hideAsync();
+				hasSplashBeenHiddenRef.current = true;
+			} catch (err: any) {
+				if (Env.NODE_ENV === "development") {
+					console.warn("[SplashHandler] Failed to hide splash screen:", err.message);
+				}
+			}
+		}
+	}, [isAuthLoading, user]);
 
-  // 初期化実行（on mount）
-  useEffect(() => {
-    initializeRemoteConfig();
-  }, [initializeRemoteConfig]);
+	// 初期化実行（on mount）
+	useEffect(() => {
+		initializeRemoteConfig();
+	}, [initializeRemoteConfig]);
 
-  // Splash 非表示条件を監視して実行
-  useEffect(() => {
-    hideSplashScreenIfReady();
-  }, [isAuthLoading, user, hideSplashScreenIfReady]);
+	// Splash 非表示条件を監視して実行
+	useEffect(() => {
+		hideSplashScreenIfReady();
+	}, [isAuthLoading, user, hideSplashScreenIfReady]);
 
-  /**
-   * 📌 アプリ起動に必要な要件がすべて満たされているか
-   */
-  const isAppReady = useMemo(() => {
-    return isRemoteConfigReady && !isAuthLoading && !!user;
-  }, [isRemoteConfigReady, isAuthLoading, user]);
+	/**
+	 * 📌 アプリ起動に必要な要件がすべて満たされているか
+	 */
+	const isAppReady = useMemo(() => {
+		return isRemoteConfigReady && !isAuthLoading && !!user;
+	}, [isRemoteConfigReady, isAuthLoading, user]);
 
-  if (!isAppReady) return null;
+	if (!isAppReady) return null;
 
-  return (
-    <PaperProvider theme={theme}>
-      <GestureHandlerRootView>
-        <SnackbarProvider>
-          <DialogProvider>
-            {children}
-          </DialogProvider>
-        </SnackbarProvider>
-      </GestureHandlerRootView>
-    </PaperProvider>
-  );
+	return (
+		<PaperProvider theme={theme}>
+			<GestureHandlerRootView>
+				<SnackbarProvider>
+					<DialogProvider>{children}</DialogProvider>
+				</SnackbarProvider>
+			</GestureHandlerRootView>
+		</PaperProvider>
+	);
 };

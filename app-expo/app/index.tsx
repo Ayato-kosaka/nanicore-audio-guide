@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import type { ExternalPathString } from 'expo-router';
-import * as Localization from 'expo-localization';
-import * as SplashScreen from 'expo-splash-screen';
-import { Env } from '@/constants/Env';
-import { getResolvedLocale } from '@/lib/i18n';
+import { useEffect } from "react";
+import { useRouter } from "expo-router";
+import type { ExternalPathString } from "expo-router";
+import * as Localization from "expo-localization";
+import * as SplashScreen from "expo-splash-screen";
+import { Env } from "@/constants/Env";
+import { getResolvedLocale } from "@/lib/i18n";
 
 // 初回表示中はスプラッシュ画面を保持（明示的に後で解除するまで表示）
 SplashScreen.preventAutoHideAsync();
@@ -17,21 +17,21 @@ SplashScreen.preventAutoHideAsync();
  * @returns 画面表示を行わず、ルートリダイレクトのみを行う
  */
 export default function App() {
-  const router = useRouter();
+	const router = useRouter();
 
-  useEffect(() => {
-    const resolvedLocale = getResolvedLocale(Localization.getLocales?.()[0]?.languageTag);
+	useEffect(() => {
+		const resolvedLocale = getResolvedLocale(Localization.getLocales?.()[0]?.languageTag);
 
-    if (Env.NODE_ENV === "development") {
-      console.log(`[LocaleRedirect] Detected locale: ${resolvedLocale}`);
-    }
+		if (Env.NODE_ENV === "development") {
+			console.log(`[LocaleRedirect] Detected locale: ${resolvedLocale}`);
+		}
 
-    const timer = setTimeout(() => {
-      // 対応するロケールにリダイレクト
-      router.replace(`/${resolvedLocale}` as ExternalPathString);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
+		const timer = setTimeout(() => {
+			// 対応するロケールにリダイレクト
+			router.replace(`/${resolvedLocale}` as ExternalPathString);
+		}, 0);
+		return () => clearTimeout(timer);
+	}, []);
 
-  return null;
+	return null;
 }

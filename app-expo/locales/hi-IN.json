@@ -1,22 +1,22 @@
 {
-    "SpotCapture": {
-        "captureButton": "यह क्या है",
-        "errorMessage": "कैप्चर करने में विफल। कृपया दोबारा प्रयास करें।",
-        "requestPermission": "कैमरा उपयोग की अनुमति आवश्यक है।",
-        "permissionDialog": {
-            "title": "कैमरा एक्सेस अस्वीकृत",
-            "message": "कैमरा उपयोग के लिए, सेटिंग्स में जाकर अनुमति दें।",
-            "okLabel": "सेटिंग्स खोलें"
-        }
-    },
-    "SpotGuide": {
-        "shareMessage": "यह 'यह क्या है ऑडियो गाइड' से ली गई तस्वीर है।",
-        "generateSpotGuideErrorMessage": "गाइड जनरेट करने में विफल। कृपया फिर से प्रयास करें।"
-    },
-    "SpotGuideCard": {
-        "generating": "गाइड जनरेट किया जा रहा है..."
-    },
-    "SpotRecommend": {
-        "nanicore": "यह क्या है"
-    }
+	"SpotCapture": {
+		"captureButton": "यह क्या है",
+		"errorMessage": "कैप्चर करने में विफल। कृपया दोबारा प्रयास करें।",
+		"requestPermission": "कैमरा उपयोग की अनुमति आवश्यक है।",
+		"permissionDialog": {
+			"title": "कैमरा एक्सेस अस्वीकृत",
+			"message": "कैमरा उपयोग के लिए, सेटिंग्स में जाकर अनुमति दें।",
+			"okLabel": "सेटिंग्स खोलें"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "यह 'यह क्या है ऑडियो गाइड' से ली गई तस्वीर है।",
+		"generateSpotGuideErrorMessage": "गाइड जनरेट करने में विफल। कृपया फिर से प्रयास करें।"
+	},
+	"SpotGuideCard": {
+		"generating": "गाइड जनरेट किया जा रहा है..."
+	},
+	"SpotRecommend": {
+		"nanicore": "यह क्या है"
+	}
 }

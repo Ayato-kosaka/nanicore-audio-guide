@@ -1,22 +1,16 @@
-import React, {
-    createContext,
-    useContext,
-    useState,
-    ReactNode,
-    useCallback,
-} from 'react';
-import { Snackbar } from 'react-native-paper';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
+import { Snackbar } from "react-native-paper";
 
 /**
  * Snackbar の表示制御用 Context の型定義。
  */
 type SnackbarContextType = {
-    /**
-     * 指定したメッセージを一時的に表示する。
-     *
-     * @param message - 表示するメッセージ文字列
-     */
-    showSnackbar: (message: string) => void;
+	/**
+	 * 指定したメッセージを一時的に表示する。
+	 *
+	 * @param message - 表示するメッセージ文字列
+	 */
+	showSnackbar: (message: string) => void;
 };
 
 const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
@@ -32,33 +26,32 @@ const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined
  * @returns プロバイダー付きのコンポーネントラップ
  */
 export const SnackbarProvider = ({ children }: { children: ReactNode }) => {
-    const [visible, setVisible] = useState(false);
-    const [message, setMessage] = useState('');
+	const [visible, setVisible] = useState(false);
+	const [message, setMessage] = useState("");
 
-    /**
-     * スナックバーを表示する。
-     *
-     * @param message - 表示するテキスト
-     */
-    const showSnackbar = useCallback((message: string) => {
-        setMessage(message);
-        setVisible(true);
-    }, []);
+	/**
+	 * スナックバーを表示する。
+	 *
+	 * @param message - 表示するテキスト
+	 */
+	const showSnackbar = useCallback((message: string) => {
+		setMessage(message);
+		setVisible(true);
+	}, []);
 
-    return (
-        <SnackbarContext.Provider value={{ showSnackbar }}>
-            {children}
-            <Snackbar
-                visible={visible}
-                onDismiss={() => setVisible(false)}
-                duration={4000}
-                style={{ position: 'absolute', bottom: 16, left: 16, right: 16 }}
-                testID="global-snackbar"
-            >
-                {message}
-            </Snackbar>
-        </SnackbarContext.Provider>
-    );
+	return (
+		<SnackbarContext.Provider value={{ showSnackbar }}>
+			{children}
+			<Snackbar
+				visible={visible}
+				onDismiss={() => setVisible(false)}
+				duration={4000}
+				style={{ position: "absolute", bottom: 16, left: 16, right: 16 }}
+				testID="global-snackbar">
+				{message}
+			</Snackbar>
+		</SnackbarContext.Provider>
+	);
 };
 
 /**
@@ -71,11 +64,9 @@ export const SnackbarProvider = ({ children }: { children: ReactNode }) => {
  * @returns Snackbar 操作関数
  */
 export const useSnackbar = (): SnackbarContextType => {
-    const context = useContext(SnackbarContext);
-    if (!context) {
-        throw new Error(
-            '[useSnackbar] This hook must be used within a <SnackbarProvider>.'
-        );
-    }
-    return context;
+	const context = useContext(SnackbarContext);
+	if (!context) {
+		throw new Error("[useSnackbar] This hook must be used within a <SnackbarProvider>.");
+	}
+	return context;
 };

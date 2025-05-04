@@ -1,5 +1,5 @@
-import { RemoteConfigValues, remoteConfigSchema } from '../../../../shared/remoteConfig/remoteConfig.schema';
-import { getStaticMaster } from './getStaticMaster';
+import { RemoteConfigValues, remoteConfigSchema } from "../../../../shared/remoteConfig/remoteConfig.schema";
+import { getStaticMaster } from "./getStaticMaster";
 
 /**
  * 🔧 Remote Config の静的マスタから指定キーの値を取得する。
@@ -11,33 +11,34 @@ import { getStaticMaster } from './getStaticMaster';
  * @returns 対応する設定値（string）
  * @throws 無効な構造や存在しないキーに対しては例外を投げる
  */
-export const getRemoteConfigValue = async (
-    key: keyof RemoteConfigValues,
-): Promise<string> => {
-    // 🔄 静的マスタから設定データを取得
-    const configJson = await getStaticMaster('config');
-    const rawConfig = configJson.reduce((acc, config) => {
-        acc[config.key] = config.value;
-        return acc;
-    }, {} as Record<string, string>);
+export const getRemoteConfigValue = async (key: keyof RemoteConfigValues): Promise<string> => {
+	// 🔄 静的マスタから設定データを取得
+	const configJson = await getStaticMaster("config");
+	const rawConfig = configJson.reduce(
+		(acc, config) => {
+			acc[config.key] = config.value;
+			return acc;
+		},
+		{} as Record<string, string>,
+	);
 
-    // ✅ Zod で型検証＆パース
-    const { success, error, data: parsedConfig } = remoteConfigSchema.safeParse(rawConfig);
+	// ✅ Zod で型検証＆パース
+	const { success, error, data: parsedConfig } = remoteConfigSchema.safeParse(rawConfig);
 
-    if (!success) {
-        throw new Error(`Remote config validation failed: ${error.message}`);
-    }
+	if (!success) {
+		throw new Error(`Remote config validation failed: ${error.message}`);
+	}
 
-    // ❓ 対象キーが存在しない場合は明示的にエラー
-    if (!(key in parsedConfig)) {
-        throw new Error(`Remote config key "${key}" is not defined.`);
-    }
+	// ❓ 対象キーが存在しない場合は明示的にエラー
+	if (!(key in parsedConfig)) {
+		throw new Error(`Remote config key "${key}" is not defined.`);
+	}
 
-    const value = parsedConfig[key];
+	const value = parsedConfig[key];
 
-    if (typeof value !== 'string') {
-        throw new Error(`Remote config value for key "${key}" must be a string.`);
-    }
+	if (typeof value !== "string") {
+		throw new Error(`Remote config value for key "${key}" must be a string.`);
+	}
 
-    return value;
+	return value;
 };

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { SupabaseSpotGuides } from '../converters/convert_spot_guides';
+import { z } from "zod";
+import type { SupabaseSpotGuides } from "../converters/convert_spot_guides";
 
 /**
  * 📝 listSpotGuides のリクエストスキーマ
@@ -7,8 +7,8 @@ import type { SupabaseSpotGuides } from '../converters/convert_spot_guides';
  * - 指定されたスポット ID と言語タグをもとに、スポットガイドを取得
  */
 export const listSpotGuidesRequestSchema = z.object({
-    spotId: z.string().min(1, 'spotId is required'),
-    languageTag: z.string().min(1, 'languageTag is required'),
+	spotId: z.string().min(1, "spotId is required"),
+	languageTag: z.string().min(1, "languageTag is required"),
 });
 
 /**
@@ -23,5 +23,5 @@ export type ListSpotGuidesRequest = z.infer<typeof listSpotGuidesRequestSchema>;
  * - `audioUrl` は音声ファイルのURL
  */
 export type ListSpotGuidesResponse = {
-    spotGuides: (SupabaseSpotGuides & { audioUrl: string })[];
+	spotGuides: (SupabaseSpotGuides & { audioUrl: string })[];
 };

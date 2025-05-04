@@ -1,27 +1,27 @@
-import fs from 'fs';
-import path from 'path';
-import { fetchTColumnsFromApi, TColumn } from './fetchFromGAS';
+import fs from "fs";
+import path from "path";
+import { fetchTColumnsFromApi, TColumn } from "./fetchFromGAS";
 
 /**
  * 日付型に分類される PostgreSQL データ型の一覧
  */
 const DATE_TYPES = [
-  'date',
-  'timestamp',
-  'timestamp without time zone',
-  'timestamp with time zone',
-  'timestamptz',
-  'time',
-  'time without time zone',
-  'time with time zone',
-  'timetz',
-  'interval',
+	"date",
+	"timestamp",
+	"timestamp without time zone",
+	"timestamp with time zone",
+	"timestamptz",
+	"time",
+	"time without time zone",
+	"time with time zone",
+	"timetz",
+	"interval",
 ];
 
 /**
  * 数値型（高精度）のデータ型一覧
  */
-const DECIMAL_TYPES = ['numeric', 'decimal', 'numeric(', 'decimal('];
+const DECIMAL_TYPES = ["numeric", "decimal", "numeric(", "decimal("];
 
 /**
  * 文字列の先頭を大文字に変換
@@ -29,7 +29,7 @@ const DECIMAL_TYPES = ['numeric', 'decimal', 'numeric(', 'decimal('];
  * @returns 先頭大文字に変換した文字列
  */
 function capitalizeFirstLetter(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 /**
@@ -38,7 +38,7 @@ function capitalizeFirstLetter(str: string): string {
  * @returns PascalCase 形式の文字列
  */
 function toPascalCase(str: string): string {
-  return str.replace(/(^|_)(\w)/g, (_, __, c) => c.toUpperCase());
+	return str.replace(/(^|_)(\w)/g, (_, __, c) => c.toUpperCase());
 }
 
 /**
@@ -47,7 +47,7 @@ function toPascalCase(str: string): string {
  * @returns 日付型であれば true
  */
 function isDateColumn(columnType: string): boolean {
-  return DATE_TYPES.some(type => columnType.toLowerCase().startsWith(type));
+	return DATE_TYPES.some((type) => columnType.toLowerCase().startsWith(type));
 }
 
 /**
@@ -56,7 +56,7 @@ function isDateColumn(columnType: string): boolean {
  * @returns Decimal 型であれば true
  */
 function isDecimalColumn(columnType: string): boolean {
-  return DECIMAL_TYPES.some(type => columnType.toLowerCase().startsWith(type));
+	return DECIMAL_TYPES.some((type) => columnType.toLowerCase().startsWith(type));
 }
 
 /**
@@ -65,7 +65,7 @@ function isDecimalColumn(columnType: string): boolean {
  * @returns 配列型であれば true
  */
 function isArrayColumn(columnType: string): boolean {
-  return /\[\s*\]$/.test(columnType.trim());
+	return /\[\s*\]$/.test(columnType.trim());
 }
 
 /**
@@ -74,7 +74,10 @@ function isArrayColumn(columnType: string): boolean {
  * @returns ベース型名（小文字）
  */
 function getBaseType(columnType: string): string {
-  return columnType.replace(/\[\s*\]$/, '').trim().toLowerCase();
+	return columnType
+		.replace(/\[\s*\]$/, "")
+		.trim()
+		.toLowerCase();
 }
 
 /**
@@ -84,56 +87,60 @@ function getBaseType(columnType: string): string {
  * @returns TypeScript の変換関数コード文字列
  */
 function generateConverter(tableName: string, columns: TColumn[]): string {
-  const tablePascal = toPascalCase(tableName);
-  const prismaTypeName = `${capitalizeFirstLetter(tableName)}GroupByOutputType`;
+	const tablePascal = toPascalCase(tableName);
+	const prismaTypeName = `${capitalizeFirstLetter(tableName)}GroupByOutputType`;
 
-  // Supabase → Prisma 変換本体
-  const toPrismaBody = columns
-    .map(({ c_name, c_datatype, c_not_null }) => {
-      const isArray = isArrayColumn(c_datatype);
-      const baseType = getBaseType(c_datatype);
+	// Supabase → Prisma 変換本体
+	const toPrismaBody = columns
+		.map(({ c_name, c_datatype, c_not_null }) => {
+			const isArray = isArrayColumn(c_datatype);
+			const baseType = getBaseType(c_datatype);
 
-      if (isArray) {
-        if (isDateColumn(baseType)) return c_not_null
-          ? `    ${c_name}: supabase.${c_name}.map((v) => new Date(v)),`
-          : `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Date(v)) : null,`;
-        if (isDecimalColumn(baseType)) return c_not_null
-          ? `    ${c_name}: supabase.${c_name}.map((v) => new Prisma.Decimal(v)),`
-          : `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Prisma.Decimal(v)) : null,`;
-        return `    ${c_name}: supabase.${c_name},`;
-      }
+			if (isArray) {
+				if (isDateColumn(baseType))
+					return c_not_null
+						? `    ${c_name}: supabase.${c_name}.map((v) => new Date(v)),`
+						: `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Date(v)) : null,`;
+				if (isDecimalColumn(baseType))
+					return c_not_null
+						? `    ${c_name}: supabase.${c_name}.map((v) => new Prisma.Decimal(v)),`
+						: `    ${c_name}: supabase.${c_name} !== null ? supabase.${c_name}.map((v) => new Prisma.Decimal(v)) : null,`;
+				return `    ${c_name}: supabase.${c_name},`;
+			}
 
-      if (isDateColumn(baseType)) return c_not_null
-        ? `    ${c_name}: new Date(supabase.${c_name}),`
-        : `    ${c_name}: supabase.${c_name} !== null ? new Date(supabase.${c_name}) : null,`;
-      if (isDecimalColumn(baseType)) return c_not_null
-        ? `    ${c_name}: new Prisma.Decimal(supabase.${c_name}),`
-        : `    ${c_name}: supabase.${c_name} !== null ? new Prisma.Decimal(supabase.${c_name}) : null,`;
-      return `    ${c_name}: supabase.${c_name},`;
-    })
-    .join('\n');
+			if (isDateColumn(baseType))
+				return c_not_null
+					? `    ${c_name}: new Date(supabase.${c_name}),`
+					: `    ${c_name}: supabase.${c_name} !== null ? new Date(supabase.${c_name}) : null,`;
+			if (isDecimalColumn(baseType))
+				return c_not_null
+					? `    ${c_name}: new Prisma.Decimal(supabase.${c_name}),`
+					: `    ${c_name}: supabase.${c_name} !== null ? new Prisma.Decimal(supabase.${c_name}) : null,`;
+			return `    ${c_name}: supabase.${c_name},`;
+		})
+		.join("\n");
 
-  // Prisma → Supabase 変換本体
-  const toSupabaseBody = columns
-    .map(({ c_name, c_datatype }) => {
-      const isArray = isArrayColumn(c_datatype);
-      const baseType = getBaseType(c_datatype);
+	// Prisma → Supabase 変換本体
+	const toSupabaseBody = columns
+		.map(({ c_name, c_datatype }) => {
+			const isArray = isArrayColumn(c_datatype);
+			const baseType = getBaseType(c_datatype);
 
-      if (isArray) {
-        if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toISOString()) ?? null,`;
-        if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toNumber()) ?? null,`;
-        return `    ${c_name}: prisma.${c_name},`;
-      }
+			if (isArray) {
+				if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toISOString()) ?? null,`;
+				if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.map((v) => v.toNumber()) ?? null,`;
+				return `    ${c_name}: prisma.${c_name},`;
+			}
 
-      if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toISOString() ?? null,`;
-      if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toNumber() ?? null,`;
-      return `    ${c_name}: prisma.${c_name},`;
-    })
-    .join('\n');
+			if (isDateColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toISOString() ?? null,`;
+			if (isDecimalColumn(baseType)) return `    ${c_name}: prisma.${c_name}?.toNumber() ?? null,`;
+			return `    ${c_name}: prisma.${c_name},`;
+		})
+		.join("\n");
 
-  const imports = `import { TableRow } from '../utils/devDB.types';\nimport { Prisma } from '../prisma';\n\n`;
+	const imports = `import { TableRow } from '../utils/devDB.types';\nimport { Prisma } from '../prisma';\n\n`;
 
-  return `${imports}
+	return `${imports}
 export type Prisma${tablePascal} = Omit<Prisma.${prismaTypeName}, '_count' | '_avg' | '_sum' | '_min' | '_max'>;
 
 export type Supabase${tablePascal} = TableRow<'${tableName}'>;
@@ -167,36 +174,36 @@ ${toSupabaseBody}
  * @param allColumns 全テーブルのカラム情報リスト
  */
 export function generateConvertersOnly(allColumns: TColumn[]) {
-  const columnsByTable = allColumns.reduce<Record<string, TColumn[]>>((acc, column) => {
-    if (!acc[column.t_name]) acc[column.t_name] = [];
-    acc[column.t_name].push(column);
-    return acc;
-  }, {});
+	const columnsByTable = allColumns.reduce<Record<string, TColumn[]>>((acc, column) => {
+		if (!acc[column.t_name]) acc[column.t_name] = [];
+		acc[column.t_name].push(column);
+		return acc;
+	}, {});
 
-  for (const [tableName, columnsForTable] of Object.entries(columnsByTable)) {
-    try {
-      const converterCode = generateConverter(tableName, columnsForTable);
-      const outputDirectory = path.resolve(__dirname, `../converters`);
-      fs.mkdirSync(outputDirectory, { recursive: true });
+	for (const [tableName, columnsForTable] of Object.entries(columnsByTable)) {
+		try {
+			const converterCode = generateConverter(tableName, columnsForTable);
+			const outputDirectory = path.resolve(__dirname, `../converters`);
+			fs.mkdirSync(outputDirectory, { recursive: true });
 
-      const outputPath = path.join(outputDirectory, `convert_${tableName}.ts`);
-      fs.writeFileSync(outputPath, converterCode, 'utf-8');
-      console.log(`✅ Generated: ${outputPath}`);
-    } catch (error) {
-      console.error(`❌ Failed to generate converter for table "${tableName}":`, error);
-    }
-  }
+			const outputPath = path.join(outputDirectory, `convert_${tableName}.ts`);
+			fs.writeFileSync(outputPath, converterCode, "utf-8");
+			console.log(`✅ Generated: ${outputPath}`);
+		} catch (error) {
+			console.error(`❌ Failed to generate converter for table "${tableName}":`, error);
+		}
+	}
 }
 
 /**
  * API 経由でスプレッドシートからカラム情報を取得し、変換コードを自動生成
  */
 (async () => {
-  try {
-    const fetchedColumns = await fetchTColumnsFromApi();
-    console.log(`🧩 Columns fetched: ${fetchedColumns.length}`);
-    generateConvertersOnly(fetchedColumns);
-  } catch (error) {
-    console.error('❌ Failed to fetch column definitions from API:', error);
-  }
+	try {
+		const fetchedColumns = await fetchTColumnsFromApi();
+		console.log(`🧩 Columns fetched: ${fetchedColumns.length}`);
+		generateConvertersOnly(fetchedColumns);
+	} catch (error) {
+		console.error("❌ Failed to fetch column definitions from API:", error);
+	}
 })();

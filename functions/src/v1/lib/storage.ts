@@ -1,15 +1,16 @@
-import { Storage } from '@google-cloud/storage';
-import { env } from './env';
+import { Storage } from "@google-cloud/storage";
+import { env } from "./env";
 
 /**
  * 📁 Cloud Storage クライアントとバケット初期化
  */
-const storage = env.FUNCTIONS_NODE_ENV === "production"
-  ? new Storage()
-  : new Storage({
-    projectId: env.FUNCTIONS_DEV_GCP_PROJECT_ID,
-    credentials: JSON.parse(Buffer.from(env.FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf-8'))
-  });
+const storage =
+	env.FUNCTIONS_NODE_ENV === "production"
+		? new Storage()
+		: new Storage({
+				projectId: env.FUNCTIONS_DEV_GCP_PROJECT_ID,
+				credentials: JSON.parse(Buffer.from(env.FUNCTIONS_DEV_GCP_SERVICE_ACCOUNT_BASE64, "base64").toString("utf-8")),
+			});
 const bucketName = env.FUNCTIONS_GCS_BUCKET_NAME;
 const environment = env.FUNCTIONS_NODE_ENV;
 export const bucket = storage.bucket(bucketName);
@@ -18,15 +19,15 @@ export const bucket = storage.bucket(bucketName);
  * 🔖 アップロード時に必要なパラメータ型定義
  */
 type UploadFileParams = {
-  buffer: Buffer;
-  mimeType: string;
-  resourceType: string; // e.g., 'user-uploads', 'system-generated'
-  usageType: string;    // e.g., 'photos', 'audio-guides'
-  identifier: string;   // e.g., userId, spotId
-  fileName?: string;
-  requestId: string;
-  createdVersion: string;
-  expiresInSeconds?: number;
+	buffer: Buffer;
+	mimeType: string;
+	resourceType: string; // e.g., 'user-uploads', 'system-generated'
+	usageType: string; // e.g., 'photos', 'audio-guides'
+	identifier: string; // e.g., userId, spotId
+	fileName?: string;
+	requestId: string;
+	createdVersion: string;
+	expiresInSeconds?: number;
 };
 
 /**
@@ -36,13 +37,18 @@ type UploadFileParams = {
  * @returns {string} 拡張子（例: 'jpg', 'mp3'）
  */
 const getExtensionFromMime = (mime: string): string => {
-  switch (mime) {
-    case 'image/jpeg': return 'jpg';
-    case 'image/png': return 'png';
-    case 'image/webp': return 'webp';
-    case 'audio/mpeg': return 'mp3';
-    default: return 'bin';
-  }
+	switch (mime) {
+		case "image/jpeg":
+			return "jpg";
+		case "image/png":
+			return "png";
+		case "image/webp":
+			return "webp";
+		case "audio/mpeg":
+			return "mp3";
+		default:
+			return "bin";
+	}
 };
 
 /**
@@ -52,50 +58,48 @@ const getExtensionFromMime = (mime: string): string => {
  * @returns {Promise<{ path: string, signedUrl: string }>} アップロードパスと署名付きURL
  */
 export const uploadFile = async ({
-  buffer,
-  mimeType,
-  resourceType,
-  usageType,
-  identifier,
-  fileName,
-  requestId,
-  createdVersion,
-  expiresInSeconds = 24 * 60 * 60,
+	buffer,
+	mimeType,
+	resourceType,
+	usageType,
+	identifier,
+	fileName,
+	requestId,
+	createdVersion,
+	expiresInSeconds = 24 * 60 * 60,
 }: UploadFileParams): Promise<{ path: string; signedUrl: string }> => {
-  const timestamp = Date.now();
-  const extension = getExtensionFromMime(mimeType);
-  const finalFileName = fileName
-    ? `${timestamp}_${fileName}.${extension}`
-    : `${timestamp}.${extension}`;
+	const timestamp = Date.now();
+	const extension = getExtensionFromMime(mimeType);
+	const finalFileName = fileName ? `${timestamp}_${fileName}.${extension}` : `${timestamp}.${extension}`;
 
-  const fullPath = `${environment}/${resourceType}/${usageType}/${identifier}/${finalFileName}`;
-  const file = bucket.file(fullPath);
-  const nowIso = new Date().toISOString();
+	const fullPath = `${environment}/${resourceType}/${usageType}/${identifier}/${finalFileName}`;
+	const file = bucket.file(fullPath);
+	const nowIso = new Date().toISOString();
 
-  try {
-    await file.save(buffer, {
-      metadata: {
-        contentType: mimeType,
-        metadata: {
-          request_id: requestId,
-          created_version: createdVersion,
-          created_at: nowIso,
-          updated_at: nowIso,
-        },
-      },
-      resumable: false,
-    });
-  } catch (error: any) {
-    console.error('❌ Failed to upload file to Cloud Storage:', error.message);
-    throw new Error('Upload to Cloud Storage failed');
-  }
+	try {
+		await file.save(buffer, {
+			metadata: {
+				contentType: mimeType,
+				metadata: {
+					request_id: requestId,
+					created_version: createdVersion,
+					created_at: nowIso,
+					updated_at: nowIso,
+				},
+			},
+			resumable: false,
+		});
+	} catch (error: any) {
+		console.error("❌ Failed to upload file to Cloud Storage:", error.message);
+		throw new Error("Upload to Cloud Storage failed");
+	}
 
-  const signedUrl = await generateSignedUrl(fullPath, expiresInSeconds);
+	const signedUrl = await generateSignedUrl(fullPath, expiresInSeconds);
 
-  return {
-    path: fullPath,
-    signedUrl,
-  };
+	return {
+		path: fullPath,
+		signedUrl,
+	};
 };
 
 /**
@@ -105,22 +109,19 @@ export const uploadFile = async ({
  * @param expiresInSeconds - URLの有効期限（秒）
  * @returns {Promise<string>} 署名付きURL
  */
-export const generateSignedUrl = async (
-  path: string,
-  expiresInSeconds = 24 * 60 * 60
-): Promise<string> => {
-  const file = bucket.file(path);
+export const generateSignedUrl = async (path: string, expiresInSeconds = 24 * 60 * 60): Promise<string> => {
+	const file = bucket.file(path);
 
-  try {
-    const [url] = await file.getSignedUrl({
-      action: 'read',
-      expires: Date.now() + expiresInSeconds * 1000,
-    });
-    return url;
-  } catch (error: any) {
-    console.error('❌ Failed to generate signed URL:', error.message);
-    throw new Error('Signed URL generation failed');
-  }
+	try {
+		const [url] = await file.getSignedUrl({
+			action: "read",
+			expires: Date.now() + expiresInSeconds * 1000,
+		});
+		return url;
+	} catch (error: any) {
+		console.error("❌ Failed to generate signed URL:", error.message);
+		throw new Error("Signed URL generation failed");
+	}
 };
 
 /**
@@ -130,11 +131,11 @@ export const generateSignedUrl = async (
  * @returns {Promise<void>} 削除処理の完了通知
  */
 export const deleteFile = async (path: string): Promise<void> => {
-  const file = bucket.file(path);
-  try {
-    await file.delete();
-  } catch (error: any) {
-    console.error('❌ Failed to delete file from Cloud Storage:', error.message);
-    throw new Error('File deletion failed');
-  }
+	const file = bucket.file(path);
+	try {
+		await file.delete();
+	} catch (error: any) {
+		console.error("❌ Failed to delete file from Cloud Storage:", error.message);
+		throw new Error("File deletion failed");
+	}
 };

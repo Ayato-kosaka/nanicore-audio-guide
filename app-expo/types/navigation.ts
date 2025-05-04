@@ -1,4 +1,4 @@
-import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
+import { PrismaExtSpots } from "@shared/converters/convert_ext_spots";
 
 /**
  * 🎯 SpotGuide 画面に渡されるパラメータ（非シリアライズ形式）。
@@ -8,9 +8,9 @@ import { PrismaExtSpots } from '@shared/converters/convert_ext_spots';
  * - takenPhotoStoragePath：画像が保存された Cloud Storage パス
  */
 export type SpotGuideParams = {
-  extSpots?: PrismaExtSpots;
-  imageUri?: string | null;
-  takenPhotoStoragePath?: string | null;
+	extSpots?: PrismaExtSpots;
+	imageUri?: string | null;
+	takenPhotoStoragePath?: string | null;
 };
 
 /**
@@ -20,14 +20,14 @@ export type SpotGuideParams = {
  * - DeepLinkや`expo-router`の query param 用などに利用可能
  */
 export type SpotGuideSerializedParams = {
-  [K in keyof SpotGuideParams]?: string;
+	[K in keyof SpotGuideParams]?: string;
 };
 
 /**
  *  SpotSearch  画面に渡されるパラメータ
  * - id: 検索結果のID
  */
-export type SpotSearchParams = { id: string }
+export type SpotSearchParams = { id: string };
 
 /**
  * 🚦 アプリ内ルーティングで使用されるパラメータ一覧。
@@ -36,7 +36,7 @@ export type SpotSearchParams = { id: string }
  * - 各画面に渡すパラメータ構造を明示することで補完・型検査が強化される
  */
 export type RootStackParamList = {
-  SpotCapture: {}; // 撮影画面（パラメータなし）
-  SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
-  SpotSearch: SpotSearchParams; // SpotSearch画面
+	SpotCapture: {}; // 撮影画面（パラメータなし）
+	SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
+	SpotSearch: SpotSearchParams; // SpotSearch画面
 };

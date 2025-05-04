@@ -11,25 +11,24 @@ import { PrismaClient } from "../../../../shared/prisma";
  * @returns {PrismaClient} Prismaのクライアントインスタンス
  */
 
-
 // eslint-disable-next-line no-var
 declare global {
-  var prisma: PrismaClient | undefined;
+	var prisma: PrismaClient | undefined;
 }
 
 // シングルトンインスタンスを生成（ローカル開発ではグローバル再利用）
 export const prisma: PrismaClient =
-  global.prisma ??
-  new PrismaClient({
-    log: ['query', 'error', 'warn'],
-  });
+	global.prisma ??
+	new PrismaClient({
+		log: ["query", "error", "warn"],
+	});
 
 // 本番以外ではグローバルに保持（開発時の再生成を防止）
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+if (process.env.NODE_ENV !== "production") {
+	global.prisma = prisma;
 }
 
-(prisma as any).$on('query', (e: any) => {
-  console.log(`[Prisma Parameter] ${e.params}ms`);
-  console.log(`[Prisma Duration] ${e.duration}ms`);
+(prisma as any).$on("query", (e: any) => {
+	console.log(`[Prisma Parameter] ${e.params}ms`);
+	console.log(`[Prisma Duration] ${e.duration}ms`);
 });

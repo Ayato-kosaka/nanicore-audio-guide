@@ -1,14 +1,14 @@
-import { logExternalApi } from './logger';
-import { Request } from 'firebase-functions/v2/https';
-import { randomUUID } from 'crypto';
+import { logExternalApi } from "./logger";
+import { Request } from "firebase-functions/v2/https";
+import { randomUUID } from "crypto";
 
 /**
  * 🆔 リクエストIDを生成（API呼び出し間のトレースに使用）
- * 
+ *
  * @returns {string} トレース用のユニークなID（randomUUID）
  */
 export const createRequestId = (): string => {
-  return randomUUID();
+	return randomUUID();
 };
 
 /**
@@ -26,115 +26,113 @@ export const createRequestId = (): string => {
  * @throws 外部API呼び出し時のネットワーク・パースエラー
  */
 export const callExternalApi = async <T>({
-  requestId,
-  functionName,
-  apiName,
-  endpoint,
-  customHeaders = {},
-  method,
-  requestPayload,
-  userId,
+	requestId,
+	functionName,
+	apiName,
+	endpoint,
+	customHeaders = {},
+	method,
+	requestPayload,
+	userId,
 }: {
-  requestId: string;
-  functionName: string;
-  apiName: string;
-  endpoint: string;
-  customHeaders?: Record<string, string>;
-  method: 'GET' | 'POST';
-  requestPayload?: any;
-  userId: string;
+	requestId: string;
+	functionName: string;
+	apiName: string;
+	endpoint: string;
+	customHeaders?: Record<string, string>;
+	method: "GET" | "POST";
+	requestPayload?: any;
+	userId: string;
 }): Promise<T> => {
-  const start = Date.now();
-  let status_code = 0;
-  let response_payload: any = null;
-  let error_message: string | null = null;
+	const start = Date.now();
+	let status_code = 0;
+	let response_payload: any = null;
+	let error_message: string | null = null;
 
-  try {
-    const apiResponse = await fetch(endpoint, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...customHeaders,
-      },
-      body: method === 'POST' ? JSON.stringify(requestPayload) : undefined,
-    });
+	try {
+		const apiResponse = await fetch(endpoint, {
+			method,
+			headers: {
+				"Content-Type": "application/json",
+				...customHeaders,
+			},
+			body: method === "POST" ? JSON.stringify(requestPayload) : undefined,
+		});
 
-    status_code = apiResponse.status;
+		status_code = apiResponse.status;
 
-    try {
-      response_payload = await apiResponse.json();
-    } catch (parseError: any) {
-      error_message = `Failed to parse JSON response: ${parseError.message}`;
-      throw new Error(error_message);
-    }
+		try {
+			response_payload = await apiResponse.json();
+		} catch (parseError: any) {
+			error_message = `Failed to parse JSON response: ${parseError.message}`;
+			throw new Error(error_message);
+		}
 
-    return response_payload;
-  } catch (error: any) {
-    error_message = error.message || 'Unknown error during API call';
-    throw error;
-  } finally {
-    const response_time_ms = Date.now() - start;
+		return response_payload;
+	} catch (error: any) {
+		error_message = error.message || "Unknown error during API call";
+		throw error;
+	} finally {
+		const response_time_ms = Date.now() - start;
 
-    logExternalApi({
-      request_id: requestId,
-      function_name: functionName,
-      api_name: apiName,
-      endpoint,
-      request_payload: requestPayload,
-      response_payload,
-      status_code,
-      error_message,
-      response_time_ms,
-      user_id: userId,
-    });
-  }
+		logExternalApi({
+			request_id: requestId,
+			function_name: functionName,
+			api_name: apiName,
+			endpoint,
+			request_payload: requestPayload,
+			response_payload,
+			status_code,
+			error_message,
+			response_time_ms,
+			user_id: userId,
+		});
+	}
 };
 
 /**
  * 📱 リクエストヘッダーからアプリのバージョン（文字列）を抽出する。
- * 
+ *
  * - ヘッダー名: `x-app-version`
  * - 正常例: '1.2.3' → '1.2.3'
  * - 異常例（未指定 / 不正）→ 例外をスロー
- * 
+ *
  * @param req - Firebase Functionsのリクエストオブジェクト
  * @returns {string} アプリのバージョン（文字列）
  * @throws {Error} バージョン形式が不正または未指定の場合
  */
 export const getCurrentVersionFromRequest = (req: Request): string => {
-  const rawVersion: string | undefined =
-    req.headers['x-app-version'] || req.query?.version || req.body?.version;
+	const rawVersion: string | undefined = req.headers["x-app-version"] || req.query?.version || req.body?.version;
 
-  if (typeof rawVersion !== 'string') {
-    throw new Error('Missing or invalid x-app-version header');
-  }
+	if (typeof rawVersion !== "string") {
+		throw new Error("Missing or invalid x-app-version header");
+	}
 
-  return rawVersion;
+	return rawVersion;
 };
 
 /**
  * 📱 リクエストヘッダーからアプリのメジャーバージョン（整数）を抽出する。
- * 
+ *
  * - ヘッダー名: `x-app-version`
  * - 正常例: '1.2.3' → 1
  * - 異常例（未指定 / 不正）→ 例外をスロー
- * 
+ *
  * @param req - Firebase Functionsのリクエストオブジェクト
  * @returns {number} メジャーバージョン（整数）
  * @throws {Error} バージョン形式が不正または未指定の場合
  */
 export const getCurrentVersionMajorFromRequest = (req: Request): number => {
-  const version = getCurrentVersionFromRequest(req);
-  const majorStr = version.split('.')[0];
-  const major = parseInt(majorStr, 10);
+	const version = getCurrentVersionFromRequest(req);
+	const majorStr = version.split(".")[0];
+	const major = parseInt(majorStr, 10);
 
-  if (Number.isNaN(major) || major < 0) {
-    throw new Error(`Invalid version format: ${version}`);
-  }
+	if (Number.isNaN(major) || major < 0) {
+		throw new Error(`Invalid version format: ${version}`);
+	}
 
-  return major;
+	return major;
 };
-
 
 /**
  * 🎲 同一 weight 内でランダムにシャッフルしつつ、weight の降順にソートするユーティリティ関数
@@ -147,12 +145,12 @@ export const getCurrentVersionMajorFromRequest = (req: Request): number => {
  * @returns {T[]} weight 降順かつ同一 weight 内でランダムシャッフルされた新しい配列
  */
 export function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
-  return [...items].sort((a, b) => {
-    if (a.weight !== b.weight) {
-      return b.weight - a.weight;
-    }
-    return Math.random() - 0.5;
-  });
+	return [...items].sort((a, b) => {
+		if (a.weight !== b.weight) {
+			return b.weight - a.weight;
+		}
+		return Math.random() - 0.5;
+	});
 }
 
 /**
@@ -166,14 +164,14 @@ export function shuffleByWeight<T extends { weight: number }>(items: T[]): T[] {
  * @returns {T | null} 選択されたオブジェクト、選べない場合は null
  */
 export function pickByWeight<T extends { weight: number }>(items: T[]) {
-  const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
-  const random = Math.random() * totalWeight;
-  let cumulative = 0;
-  for (const item of items) {
-    cumulative += item.weight;
-    if (random < cumulative) {
-      return item;
-    }
-  }
-  return null;
+	const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+	const random = Math.random() * totalWeight;
+	let cumulative = 0;
+	for (const item of items) {
+		cumulative += item.weight;
+		if (random < cumulative) {
+			return item;
+		}
+	}
+	return null;
 }
