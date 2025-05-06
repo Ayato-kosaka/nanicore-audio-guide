@@ -1,4 +1,12 @@
 {
+	"Common": {
+		"cancel": "Cancel",
+		"goStore": "Open App Store"
+	},
+	"Error": {
+		"maintenanceMessage": "We are currently undergoing maintenance.",
+		"unsupportedVersion": "This version is no longer supported."
+	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
 		"errorMessage": "Failed to capture the photo. Please try again.",

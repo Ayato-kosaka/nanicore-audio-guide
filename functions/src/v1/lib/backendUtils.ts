@@ -135,6 +135,27 @@ export const getCurrentVersionMajorFromRequest = (req: Request): number => {
 };
 
 /**
+ * バージョン番号を比較し、currentVersion が minimumVersion 以上かを判定する
+ *
+ * @param currentVersion - 現在のアプリバージョン (例: "1.2.3")
+ * @param minimumVersion - 最低サポートバージョン (例: "1.0.0")
+ * @returns 現在のバージョンが最低バージョン以上なら true、それ以外は false
+ */
+export const isVersionGreaterOrEqual = (currentVersion: string, minimumVersion: string): boolean => {
+	const toTuple = (ver: string) => ver.split(".").map(Number);
+	const [cMajor = 0, cMinor = 0, cPatch = 0] = toTuple(currentVersion);
+	const [mMajor = 0, mMinor = 0, mPatch = 0] = toTuple(minimumVersion);
+
+	if (cMajor > mMajor) return true;
+	if (cMajor < mMajor) return false;
+
+	if (cMinor > mMinor) return true;
+	if (cMinor < mMinor) return false;
+
+	return cPatch >= mPatch;
+};
+
+/**
  * 🎲 同一 weight 内でランダムにシャッフルしつつ、weight の降順にソートするユーティリティ関数
  *
  * - weight が高いものほど上に来る

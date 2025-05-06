@@ -6,6 +6,12 @@ import { useLocale } from "@/hooks/useLocale";
 import i18n, { getResolvedLocale } from "@/lib/i18n";
 import { SplashHandler } from "@/components/SplashHandler";
 import { useLocaleFonts } from "@/hooks/useLocaleFonts";
+import { PaperProvider } from "react-native-paper";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SnackbarProvider } from "@/contexts/SnackbarProvider";
+import { useColorScheme } from "react-native";
+import { getPaperTheme } from "@/constants/PaperTheme";
+import { DialogProvider } from "@/contexts/DialogProvider";
 
 /**
  * 🌍 BCP 47 言語タグが妥当な形式かを検証するユーティリティ関数。
@@ -30,6 +36,8 @@ const isValidBcp47Tag = (tag: string): boolean => {
 export default function LocalLayout() {
 	const router = useRouter();
 	const locale = useLocale();
+	const scheme = useColorScheme();
+	const theme = getPaperTheme(scheme, locale);
 
 	const fontsLoaded = useLocaleFonts(locale);
 
@@ -46,10 +54,18 @@ export default function LocalLayout() {
 
 	if (!fontsLoaded) return null;
 	return (
-		<AuthProvider>
-			<SplashHandler>
-				<Stack initialRouteName="SpotCapture/index" screenOptions={{ headerShown: false }} />
-			</SplashHandler>
-		</AuthProvider>
+		<PaperProvider theme={theme}>
+			<GestureHandlerRootView>
+				<SnackbarProvider>
+					<DialogProvider>
+						<AuthProvider>
+							<SplashHandler>
+								<Stack initialRouteName="SpotCapture/index" screenOptions={{ headerShown: false }} />
+							</SplashHandler>
+						</AuthProvider>
+					</DialogProvider>
+				</SnackbarProvider>
+			</GestureHandlerRootView>
+		</PaperProvider>
 	);
 }

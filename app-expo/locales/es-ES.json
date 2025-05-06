@@ -1,4 +1,12 @@
 {
+	"Common": {
+		"cancel": "Cancelar",
+		"goStore": "Abrir App Store"
+	},
+	"Error": {
+		"maintenanceMessage": "Actualmente estamos en mantenimiento.",
+		"unsupportedVersion": "Esta versión ya no es compatible."
+	},
 	"SpotCapture": {
 		"captureButton": "¿Qué es esto?",
 		"errorMessage": "No se pudo tomar la foto. Por favor, inténtalo de nuevo.",

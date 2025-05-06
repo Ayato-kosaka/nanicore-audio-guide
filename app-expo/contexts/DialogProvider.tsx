@@ -1,3 +1,4 @@
+import i18n from "@/lib/i18n";
 import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
 import { Portal, Dialog, Button, Paragraph } from "react-native-paper";
 
@@ -8,16 +9,15 @@ type DialogContextType = {
 	/**
 	 * 任意のメッセージとボタンでダイアログを表示する。
 	 *
-	 * @param title - タイトル文字列
 	 * @param message - 本文メッセージ
-	 * @param onConfirm - 確定アクション
+	 * @param options - オプション
 	 */
 	showDialog: (
-		title: string,
 		message: string,
-		onConfirm?: () => void,
 		options?: {
+			title?: string;
 			okLabel?: string;
+			onConfirm?: () => void;
 			cancelLabel?: string;
 		},
 	) => void;
@@ -43,23 +43,23 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
 	const [message, setMessage] = useState("");
 	const [onConfirm, setOnConfirm] = useState<(() => void) | undefined>();
 	const [okLabel, setOkLabel] = useState<string>("OK");
-	const [cancelLabel, setCancelLabel] = useState<string>("キャンセル");
+	const [cancelLabel, setCancelLabel] = useState<string>(i18n.t("Common.cancel"));
 
 	const showDialog = useCallback(
 		(
-			title: string,
 			message: string,
-			onConfirm?: () => void,
 			options?: {
+				onConfirm?: () => void;
+				title?: string;
 				okLabel?: string;
 				cancelLabel?: string;
 			},
 		) => {
-			setTitle(title);
+			setTitle(options?.title ?? "");
 			setMessage(message);
-			setOnConfirm(() => onConfirm);
+			setOnConfirm(() => options?.onConfirm);
 			setOkLabel(options?.okLabel ?? "OK");
-			setCancelLabel(options?.cancelLabel ?? "キャンセル");
+			setCancelLabel(options?.cancelLabel ?? i18n.t("Common.cancel"));
 			setVisible(true);
 		},
 		[],
@@ -82,7 +82,7 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
 			{children}
 			<Portal>
 				<Dialog visible={visible} onDismiss={hideDialog}>
-					<Dialog.Title>{title}</Dialog.Title>
+					{title !== "" && <Dialog.Title>{title}</Dialog.Title>}
 					<Dialog.Content>
 						<Paragraph>{message}</Paragraph>
 					</Dialog.Content>

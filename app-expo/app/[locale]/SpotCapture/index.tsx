@@ -158,14 +158,11 @@ export default function SpotCapture() {
 		const perm = await requestPermission();
 
 		if (!perm.granted && !perm.canAskAgain) {
-			showDialog(
-				i18n.t("SpotCapture.permissionDialog.title"),
-				i18n.t("SpotCapture.permissionDialog.message"),
-				() => Linking.openSettings(),
-				{
-					okLabel: i18n.t("SpotCapture.permissionDialog.okLabel"),
-				},
-			);
+			showDialog(i18n.t("SpotCapture.permissionDialog.message"), {
+				title: i18n.t("SpotCapture.permissionDialog.title"),
+				onConfirm: () => Linking.openSettings(),
+				okLabel: i18n.t("SpotCapture.permissionDialog.okLabel"),
+			});
 		}
 	};
 

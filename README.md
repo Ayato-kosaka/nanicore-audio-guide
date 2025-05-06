@@ -2,7 +2,7 @@
 
 _ワンショットで観光地や絵画がわかる、音声ガイド付きカメラアプリ_
 
-[App Store](#) | [Google Play](#) | [Web版はこちら](#)
+[App Store](https://apps.apple.com/app/id6745103291) | [Google Play](https://play.google.com/store/apps/details?id=com.nanicore.audio.guide) | Web版はこちら
 
 ---
 

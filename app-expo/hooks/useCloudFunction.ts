@@ -2,6 +2,9 @@ import { useCallback } from "react";
 import { Env } from "@/constants/Env";
 import { useLogger } from "./useLogger";
 import { useAuth } from "@/contexts/AuthProvider";
+import i18n from "@/lib/i18n";
+import { useDialog } from "@/contexts/DialogProvider";
+import { Linking, Platform } from "react-native";
 
 type APIVersion = "v1" | "v2";
 
@@ -17,6 +20,7 @@ type APIVersion = "v1" | "v2";
  */
 export const useCloudFunction = () => {
 	const { logFrontendEvent } = useLogger();
+	const { showDialog } = useDialog();
 	const { session } = useAuth();
 
 	/**
@@ -50,40 +54,84 @@ export const useCloudFunction = () => {
 				"x-app-version": appVersion,
 				Authorization: `Bearer ${accessToken}`,
 			};
-
 			if (!isMultipart) {
 				headers["Content-Type"] = "application/json";
 			}
 
-			try {
-				const response = await fetch(endpoint, {
-					method: "POST",
-					headers,
-					body: isMultipart ? (requestPayload as FormData) : JSON.stringify(requestPayload),
-				});
+			// 🌐 API 呼び出し
+			const response = await fetch(endpoint, {
+				method: "POST",
+				headers,
+				body: isMultipart ? (requestPayload as FormData) : JSON.stringify(requestPayload),
+			});
 
-				const requestId = response.headers.get("x-request-id");
-				console.log("requestId", response.headers.keys());
+			const requestId = response.headers.get("x-request-id");
 
-				if (!response.ok) {
-					const errorMessage = `Function ${version}-${functionName} failed with status ${response.status} (requestId: ${requestId})`;
-					throw new Error(errorMessage);
+			// ❌ エラー処理
+			if (!response.ok) {
+				const errorMessage = `Function ${version}-${functionName} failed with status ${response.status} (requestId: ${requestId})`;
+
+				let errorPayload: { error?: string; message?: string } = {};
+				try {
+					errorPayload = await response.json();
+				} catch {
+					// レスポンスボディがJSONでない場合はスキップ
 				}
 
-				logFrontendEvent({
-					event_name: `callCloudFunction:${version}-${functionName}`,
-					error_level: "info",
-					payload: {
-						requestPayload:
-							isMultipart || requestPayload instanceof FormData ? "[multipart/form-data]" : requestPayload,
-						requestId,
-					},
-				});
 
-				return await response.json();
-			} catch (error: any) {
-				throw error;
+				// 特定エラーコードによる分岐
+				if (response.status === 403) {
+					switch (errorPayload.error) {
+						case "Service maintenance":
+							showDialog(i18n.t("Error.maintenanceMessage"));// 🧃 表示のみ（アプリ全体は操作制限済み想定）
+							throw {
+								code: "maintenance_mode",
+								message: errorPayload.message || errorMessage,
+								requestId,
+							};
+						case "Unsupported version":
+							const storeUrl = Platform.select({
+								ios: Env.APP_STORE_URL, // iOS の App Store URL
+								android: Env.PLAY_STORE_URL, // Android の Play Store URL
+							});
+							showDialog(i18n.t("Error.unsupportedVersion"), { // 🧃 表示のみ（アプリ全体は操作制限済み想定）
+								okLabel: i18n.t("Common.goStore"),
+								onConfirm: () => storeUrl && Linking.openURL(storeUrl),
+							});
+							throw {
+								code: "unsupported_version",
+								message: errorPayload.message || errorMessage,
+								requestId,
+							};
+						default:
+							throw {
+								code: "forbidden",
+								message: errorPayload.message || errorMessage,
+								requestId,
+							};
+					}
+				}
+
+				// その他の HTTP エラー
+				throw {
+					code: "http_error",
+					status: response.status,
+					message: `Function ${version}-${functionName} failed with status ${response.status}`,
+					requestId,
+				};
 			}
+
+			logFrontendEvent({
+				event_name: `callCloudFunction:${version}-${functionName}`,
+				error_level: "info",
+				payload: {
+					requestPayload:
+						isMultipart || requestPayload instanceof FormData ? "[multipart/form-data]" : requestPayload,
+					requestId,
+				},
+			});
+
+			return await response.json();
 		},
 		[logFrontendEvent, session],
 	);

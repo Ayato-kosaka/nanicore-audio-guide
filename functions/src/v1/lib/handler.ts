@@ -3,12 +3,13 @@ import { ZodSchema } from "zod";
 import { logBackendEvent } from "./logger";
 import { withAuthUser } from "./auth";
 import { handleInvalidRequest } from "./request";
-import { createRequestId } from "./backendUtils";
+import { createRequestId, getCurrentVersionFromRequest, isVersionGreaterOrEqual } from "./backendUtils";
 import * as Busboy from "busboy";
 import cors from "cors";
 import type { Request } from "firebase-functions/v2/https";
 import { Response } from "express";
 import { prisma } from "../lib/prisma";
+import { getRemoteConfigValue } from "./remoteConfig";
 
 const corsHandler = cors({
 	origin: ["http://localhost:8081", "https://nanicore-audio-guide.web.app"],
@@ -108,14 +109,17 @@ export const withValidatedAuthHandler = <T>(
 	},
 ) =>
 	onRequest(async (req, res) => {
+		// 🌐 CORS対応（事前フック）
 		corsHandler(req, res, async () => {
 			const requestId = createRequestId();
 			const functionName = fn.name || "anonymousHandler";
 			const isMultipart = options?.useMultipart;
 			const isBody = Object.keys(req.body).length > 0;
 
+			// 📎 各レスポンスに一意のリクエストIDを付与（クライアント側ログ連携用）
 			res.setHeader("x-request-id", requestId);
 
+			// 🔒 ユーザー認証
 			let userId: string | null = null;
 			try {
 				const auth = await withAuthUser(req);
@@ -124,20 +128,40 @@ export const withValidatedAuthHandler = <T>(
 				res.status(401).json({ error: "Unauthorized" });
 				return;
 			}
+
+			// 🛠️ メンテナンスモード判定
+			const isMaintenance = await getRemoteConfigValue("is_maintenance");
+			if (isMaintenance === "true") {
+				res.status(403).json({ error: "Service maintenance" });
+				return;
+			}
+
+			// ⛔ 強制アップデート判定（バージョンが古い場合は拒否）
+			const appVersion = getCurrentVersionFromRequest(req);
+			const minimumSupportedVersion = await getRemoteConfigValue("minimum_supported_version");
+			if (!isVersionGreaterOrEqual(appVersion, minimumSupportedVersion)) {
+				res.status(403).json({ error: "Unsupported version" });
+				return;
+			}
+
 			try {
+				// 📦 マルチパート対応（ファイルありPOST用）
 				let parsed: { fields: Record<string, any>; file?: ParsedFile } = { fields: {} };
 				if (isMultipart) {
 					parsed = await parseMultipartForm(req);
 
+					// 📁 ファイル必須フラグが有効で、ファイルが未添付の場合
 					if (options?.fileRequired && !parsed.file) {
 						res.status(400).json({ error: "File is required" });
 						return;
 					}
 				}
 
+				// 🔎 バリデーション対象の入力元を特定（multipart > body > query）
 				const inputSource = isMultipart ? parsed.fields : isBody ? req.body : req.query;
-				const result = schema.safeParse(inputSource);
 
+				// 🧪 Zodスキーマによる入力検証
+				const result = schema.safeParse(inputSource);
 				if (!result.success) {
 					return handleInvalidRequest({
 						req,
@@ -149,7 +173,7 @@ export const withValidatedAuthHandler = <T>(
 					});
 				}
 
-				// 📘 ログ記録（非同期）
+				// 🪵 イベントログ（非同期・監査用）
 				logBackendEvent({
 					request_id: requestId,
 					function_name: functionName,
@@ -166,6 +190,7 @@ export const withValidatedAuthHandler = <T>(
 					},
 				});
 
+				// ✅ ビジネスロジックを呼び出し
 				await fn({
 					req,
 					res,

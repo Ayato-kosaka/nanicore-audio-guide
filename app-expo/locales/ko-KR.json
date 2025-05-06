@@ -1,4 +1,12 @@
 {
+	"Common": {
+		"cancel": "취소",
+		"goStore": "앱 스토어 열기"
+	},
+	"Error": {
+		"maintenanceMessage": "현재 점검 중입니다.",
+		"unsupportedVersion": "이 버전은 더 이상 지원되지 않습니다."
+	},
 	"SpotCapture": {
 		"captureButton": "이게 뭐야?",
 		"errorMessage": "촬영에 실패했어요. 다시 시도해 주세요.",

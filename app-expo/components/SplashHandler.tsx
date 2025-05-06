@@ -3,13 +3,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useAuth } from "@/contexts/AuthProvider";
 import { initRemoteConfig } from "@/lib/remoteConfig";
 import { Env } from "@/constants/Env";
-import { PaperProvider } from "react-native-paper";
-import { SnackbarProvider } from "@/contexts/SnackbarProvider";
-import { DialogProvider } from "@/contexts/DialogProvider";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { getPaperTheme } from "@/constants/PaperTheme";
-import { useLocale } from "@/hooks/useLocale";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 /**
  * 🧯 アプリ起動時の Splash 画面を制御するコンポーネント。
@@ -22,11 +15,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
  * @returns JSX構造
  */
 export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
-	const locale = useLocale();
-
-	const scheme = useColorScheme();
-	const theme = getPaperTheme(scheme, locale);
-
 	const { loading: isAuthLoading, user } = useAuth();
 
 	const [isRemoteConfigReady, setIsRemoteConfigReady] = useState(false);
@@ -83,13 +71,5 @@ export const SplashHandler = ({ children }: { children: React.ReactNode }) => {
 
 	if (!isAppReady) return null;
 
-	return (
-		<PaperProvider theme={theme}>
-			<GestureHandlerRootView>
-				<SnackbarProvider>
-					<DialogProvider>{children}</DialogProvider>
-				</SnackbarProvider>
-			</GestureHandlerRootView>
-		</PaperProvider>
-	);
+	return <>{children}</>;
 };

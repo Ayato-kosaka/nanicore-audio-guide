@@ -1,4 +1,12 @@
 {
+	"Common": {
+		"cancel": "रद्द करें",
+		"goStore": "ऐप स्टोर खोलें"
+	},
+	"Error": {
+		"maintenanceMessage": "हम वर्तमान में रखरखाव कर रहे हैं।",
+		"unsupportedVersion": "यह संस्करण अब समर्थित नहीं है।"
+	},
 	"SpotCapture": {
 		"captureButton": "यह क्या है",
 		"errorMessage": "कैप्चर करने में विफल। कृपया दोबारा प्रयास करें।",
