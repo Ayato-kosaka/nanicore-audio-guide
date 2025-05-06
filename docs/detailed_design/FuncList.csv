@@ -1,0 +1,26 @@
+"Delete","ServiceName","ServiceID","FuncType","FuncTypeID","FuncName","Memo"
+"","Guid","G","BusinessLogic","BL","findOrCreateSpotFromImage","画像（FormData）からスポットを推定し、該当スポットを検索または登録する。"
+"","Guid","G","BusinessLogic","BL","findSpot","スポットID から該当スポットを検索する。"
+"","Guid","G","BusinessLogic","BL","listSpotGuides","指定されたスポットIDと言語に基づいて、関連ガイド情報を取得する。"
+"","Guid","G","BusinessLogic","BL","generateSpotGuide","外部APIを使用して、スポットに関連するガイド情報を生成・登録する。"
+"","Guid","G","BusinessLogic","BL","listRecommendedSpotsByVisitHistory","指定された spot_id に基づき、spot_visits の履歴から次に訪れられる傾向のあるスポットを集計し、対応する m_spots を取得する"
+"","Guid","G","Page","PA","SpotCapture","カメラによる写真撮影、および撮影画像を用いたスポット情報の解析。解析結果として m_spot（メタ情報）取得し、遷移先に渡す責務を持つ。"
+"","Guid","G","Page","PA","SpotGuide","遷移元から受け取った spot オブジェクトおよび imageUri をもとに、観光スポットの詳細情報（名称・解説テキストなど）の表示、TTS再生、関連スポットのリコメンド表示など、スポットガイド全般の体験を提供する。"
+"","Guid","G","Page","PA","SpotGuideFromImageUri","パラメータで受け取った画像を用いたスポット情報の解析。解析結果として m_spot（メタ情報）取得し、遷移先に渡す責務を持つ。
+導線はないので、E2Eテストなど、試験で利用する。"
+"","Guid","G","Page","PA","SpotGuideFromSpotId","パラメータで受け取ったスポットIDを用いて m_spot を検索し、遷移先に渡す責務を持つ。
+導線はないので、E2Eテストなど、試験で利用する。"
+"","Guid","G","DataBase","DB","ext_spots","外部API経由で登録される、観光地・絵画等そのもののマスタ"
+"","Guid","G","DataBase","DB","spot_guides","各スポットに対する多言語対応の音声ガイド情報を格納するテーブル"
+"","Guid","G","DataBase","DB","spot_visits","ユーザーによるスポット訪問ログを記録するテーブル"
+"","Common","C","DataBase","DB","reactions","ユーザーによるリアクション（例：いいね、やり直しなど）を記録するテーブル"
+"","Common","C","DataBase","DB","prompt_families","プロンプト育成における思想・トーン・目的ごとのファミリー定義を管理するテーブル
+※JSON 形式で DBRO とする"
+"","Common","C","DataBase","DB","prompt_variants","プロンプトファミリーごとの改善・育成履歴を管理するバリエーションテーブル
+※JSON 形式で DBRO とする"
+"","Common","C","DataBase","DB","prompt_usages","プロンプトファミリー・バリエーションによる実際の生成結果と使用ログを記録するテーブル"
+"","Common","C","DataBase","DB","frontend_event_logs","フロントエンドで発生したユーザー操作・画面表示イベントなどを記録するログテーブル"
+"","Common","C","DataBase","DB","external_api_logs","外部APIを Cloud Functions から呼び出す際のログ情報を記録するテーブル。
+主にトラブルシュート／使用状況の可視化／パフォーマンス監視を目的とする。"
+"","Common","C","DataBase","DB","backend_event_logs","Cloud Functions 側での「アクションログ」や「内部イベントログ」を保存"
+"","Common","C","DataBase","DB","config","アプリの動作に関わる設定値を保持するテーブル"

@@ -1,4 +1,7 @@
 import fetch from "node-fetch";
+import fs from "fs";
+import path from "path";
+import { Parser as Json2CsvParser } from "json2csv";
 import "dotenv/config";
 
 // スプレッドシートの列情報の型
@@ -38,7 +41,26 @@ export async function fetchTColumnsFromApi(): Promise<TColumn[]> {
 			throw new Error("Invalid response format: Missing or malformed T_COLUMNS");
 		}
 
-		return json.T_COLUMNS.filter((row) => !!row.t_name);
+		Object.keys(json).forEach((key) => {
+			// @ts-ignore
+			json[key] = json[key].filter((row) => Object.values(row).some((value) => !!value));
+		});
+
+		// === 出力処理 ===
+		const outputDir = path.resolve(__dirname, "../../docs/detailed_design");
+		fs.rmSync(outputDir, { recursive: true, force: true });
+		fs.mkdirSync(outputDir, { recursive: true });
+		await Object.keys(json).forEach(async (key) => {
+			// @ts-ignore
+			const obj: Record<string, unknown>[] = json[key];
+			const keys = Object.keys(obj[0]);
+			const parser = new Json2CsvParser({ fields: keys, defaultValue: "" });
+			const csv = parser.parse(obj);
+			const outputPath = path.resolve(outputDir, `${key}.csv`);
+			fs.writeFileSync(outputPath, csv, { encoding: "utf-8" });
+		});
+
+		return json.T_COLUMNS;
 	} catch (error) {
 		console.error("🔥 Error fetching T_COLUMNS from GAS:", error);
 		throw error;
