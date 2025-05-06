@@ -147,7 +147,6 @@ export default function SpotGuideScreen() {
 	const displayImageUri = useMemo(() => {
 		const placeholderImage = require("@/assets/images/no_image_logo.png");
 		const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
-		console.log({ imageUri, extSpots, resolvedAsset });
 		return imageUri ?? extSpots?.image_url ?? resolvedAsset.uri;
 	}, [imageUri, extSpots?.image_url]);
 
