@@ -221,6 +221,7 @@ export default function SpotCapture() {
 					buttonColor="white"
 					textColor="rgba(0,0,0,0.6)"
 					labelStyle={styles.buttonLabel}
+					icon={"camera"}
 					testID="capture-button">
 					{i18n.t("SpotCapture.captureButton")}
 				</Button>
