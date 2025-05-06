@@ -43,3 +43,6 @@ COMMENT ON COLUMN prompt_usages.temperature IS 'LLM生成時のtemperature設定
 COMMENT ON COLUMN prompt_usages.generated_user IS '生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）';
 COMMENT ON COLUMN prompt_usages.created_at IS '作成日時';
 COMMENT ON COLUMN prompt_usages.metadata IS '将来のA/Bテスト用メタ情報など';
+
+-- RLS 有効化
+ALTER TABLE prompt_usages ENABLE ROW LEVEL SECURITY;

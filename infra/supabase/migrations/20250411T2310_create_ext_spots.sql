@@ -31,3 +31,6 @@ COMMENT ON COLUMN ext_spots.landmark_longitude IS 'スポットの経度（Googl
 COMMENT ON COLUMN ext_spots.is_recommendable IS 'レコメンド対象とするかのフラグ';
 COMMENT ON COLUMN ext_spots.created_at IS 'スポットの作成日時';
 COMMENT ON COLUMN ext_spots.lock_no IS '楽観ロック用バージョン番号';
+
+-- RLS 有効化
+ALTER TABLE ext_spots ENABLE ROW LEVEL SECURITY;

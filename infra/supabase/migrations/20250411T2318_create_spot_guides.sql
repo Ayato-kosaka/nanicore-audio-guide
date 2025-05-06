@@ -44,3 +44,6 @@ COMMENT ON COLUMN spot_guides.created_user IS 'ガイド作成者（デフォル
 COMMENT ON COLUMN spot_guides.created_at IS 'ガイド作成日時';
 COMMENT ON COLUMN spot_guides.created_request_id IS 'このガイドを作成した処理単位のトレースID';
 COMMENT ON COLUMN spot_guides.lock_no IS '楽観ロック用バージョン番号';
+
+-- RLS 有効化
+ALTER TABLE spot_guides ENABLE ROW LEVEL SECURITY;

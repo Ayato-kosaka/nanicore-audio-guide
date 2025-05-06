@@ -27,3 +27,6 @@ COMMENT ON COLUMN prompt_variants.prompt_text IS '実際にLLMに渡すプロン
 COMMENT ON COLUMN prompt_variants.improvement_note IS '改善ポイントやコメント';
 COMMENT ON COLUMN prompt_variants.created_by IS '作成者';
 COMMENT ON COLUMN prompt_variants.metadata IS '将来の柔軟性を確保するための拡張フィールド';
+
+-- RLS 有効化
+ALTER TABLE prompt_variants ENABLE ROW LEVEL SECURITY;
