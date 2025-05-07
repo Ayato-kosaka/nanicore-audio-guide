@@ -1,0 +1,30 @@
+{
+	"Common": {
+		"cancel": "Cancel",
+		"goStore": "Open App Store"
+	},
+	"Error": {
+		"maintenanceMessage": "We are currently undergoing maintenance.",
+		"unsupportedVersion": "This version is no longer supported."
+	},
+	"SpotCapture": {
+		"captureButton": "What's this?",
+		"errorMessage": "Failed to capture the photo. Please try again.",
+		"requestPermission": "Camera access is required.",
+		"permissionDialog": {
+			"title": "Camera access denied",
+			"message": "To use the camera, please allow access in your settings.",
+			"okLabel": "Open Settings"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "This photo was taken with the 'What's This? Audio Guide' app.",
+		"generateSpotGuideErrorMessage": "Sorry, we couldn't generate the guide. Please try again."
+	},
+	"SpotGuideCard": {
+		"generating": "Generating guide..."
+	},
+	"SpotRecommend": {
+		"nanicore": "What's this?"
+	}
+}

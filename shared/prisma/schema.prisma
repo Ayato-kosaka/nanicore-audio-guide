@@ -1,0 +1,284 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../shared/prisma"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["dev"]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model backend_event_logs {
+  id                String                          @id
+  event_name        String?
+  error_level       backend_event_logs_error_level?
+  function_name     String?
+  user_id           String?                         @db.Uuid
+  payload           Json?                           @db.Json
+  request_id        String?
+  created_at        DateTime                        @db.Timestamptz(6)
+  created_commit_id String
+
+  @@index([created_at], map: "idx_backend_event_logs_created_at")
+  @@index([error_level], map: "idx_backend_event_logs_error_level")
+  @@index([request_id], map: "idx_backend_event_logs_request_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model config {
+  key         String  @id
+  value       String
+  description String?
+
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ext_spots {
+  id                                              String                           @id
+  vision_detection_type                           ext_spots_vision_detection_type?
+  title                                           String
+  image_url                                       String?
+  landmark_latitude                               Float?
+  landmark_longitude                              Float?
+  is_recommendable                                Boolean
+  created_at                                      DateTime                         @db.Timestamptz(6)
+  lock_no                                         Int
+  spot_guides                                     spot_guides[]
+  spot_visits_spot_visits_prev_spot_idToext_spots spot_visits[]                    @relation("spot_visits_prev_spot_idToext_spots")
+  spot_visits_spot_visits_spot_idToext_spots      spot_visits[]                    @relation("spot_visits_spot_idToext_spots")
+
+  @@index([landmark_latitude], map: "idx_ext_spots_landmark_latitude")
+  @@index([landmark_longitude], map: "idx_ext_spots_landmark_longitude")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model external_api_logs {
+  id                String   @id
+  request_id        String?
+  function_name     String?
+  api_name          String?
+  endpoint          String?
+  request_payload   Json?    @db.Json
+  response_payload  Json?    @db.Json
+  status_code       Int?     @db.SmallInt
+  error_message     String?
+  response_time_ms  Int?
+  user_id           String?  @db.Uuid
+  created_at        DateTime @db.Timestamptz(6)
+  created_commit_id String
+
+  @@index([created_at], map: "idx_external_api_logs_created_at")
+  @@index([request_id], map: "idx_external_api_logs_request_id")
+  @@index([status_code], map: "idx_external_api_logs_status_code")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model frontend_event_logs {
+  id                  String                           @id
+  user_id             String?                          @db.Uuid
+  event_name          String?
+  error_level         frontend_event_logs_error_level?
+  path_name           String?
+  payload             String?
+  created_at          DateTime                         @db.Timestamptz(6)
+  created_app_version String
+  created_commit_id   String
+
+  @@index([created_at], map: "idx_frontend_event_logs_created_at")
+  @@index([error_level], map: "idx_frontend_event_logs_error_level")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model prompt_families {
+  id              String                  @id
+  name            String
+  description     String
+  purpose         prompt_families_purpose
+  weight          Int
+  prompt_variants prompt_variants[]
+
+  @@index([weight], map: "idx_prompt_families_weight")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model prompt_usages {
+  id                 String                    @id
+  family_id          String
+  variant_id         String
+  target_type        prompt_usages_target_type
+  target_id          String
+  generated_text     String
+  used_prompt_text   String
+  input_data         Json?
+  llm_model          String
+  temperature        Decimal?                  @db.Decimal(3, 2)
+  generated_user     String                    @db.Uuid
+  created_at         DateTime                  @db.Timestamptz(6)
+  created_request_id String
+  metadata           Json?
+
+  @@index([family_id], map: "idx_prompt_usages_family_id")
+  @@index([target_id], map: "idx_prompt_usages_target_id")
+  @@index([target_type], map: "idx_prompt_usages_target_type")
+  @@index([variant_id], map: "idx_prompt_usages_variant_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model prompt_variants {
+  id               String          @id
+  family_id        String
+  variant_number   Int
+  prompt_text      String
+  improvement_note String?
+  created_by       String
+  metadata         Json?
+  prompt_families  prompt_families @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([family_id, variant_number])
+  @@index([family_id], map: "idx_prompt_variants_family_id")
+  @@index([variant_number], map: "idx_prompt_variants_variant_number")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model reactions {
+  id              String                @id
+  user_id         String                @db.Uuid
+  target_type     reactions_target_type
+  target_id       String
+  action_type     reactions_action_type
+  created_at      DateTime              @db.Timestamptz(6)
+  created_version String
+  lock_no         Int
+
+  @@index([target_id], map: "idx_reactions_target_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model spot_guides {
+  id                    String        @id
+  spot_id               String
+  language_tag          String
+  title                 String
+  manuscript            String
+  audio_storage_path    String
+  tags                  String[]
+  price_amount          Decimal       @db.Decimal(10, 2)
+  currency              String?
+  recommendation_weight Int
+  min_version_major     Int
+  max_version_major     Int
+  created_user          String        @db.Uuid
+  created_at            DateTime      @db.Timestamptz(6)
+  created_request_id    String
+  lock_no               Int
+  ext_spots             ext_spots     @relation(fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spot_visits           spot_visits[]
+
+  @@index([language_tag], map: "idx_spot_guides_language_tag")
+  @@index([recommendation_weight], map: "idx_spot_guides_recommendation_weight")
+  @@index([spot_id], map: "idx_spot_guides_spot_id")
+  @@schema("dev")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model spot_visits {
+  id                                            String       @id
+  user_id                                       String       @db.Uuid
+  spot_id                                       String
+  represent_guide_id                            String?
+  taken_photo_storage_path                      String?
+  prev_spot_id                                  String?
+  time_gap_minutes                              Int?
+  min_version_major                             Int
+  max_version_major                             Int
+  created_at                                    DateTime     @db.Timestamptz(6)
+  updated_at                                    DateTime     @db.Timestamptz(6)
+  lock_no                                       Int
+  ext_spots_spot_visits_prev_spot_idToext_spots ext_spots?   @relation("spot_visits_prev_spot_idToext_spots", fields: [prev_spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spot_guides                                   spot_guides? @relation(fields: [represent_guide_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ext_spots_spot_visits_spot_idToext_spots      ext_spots    @relation("spot_visits_spot_idToext_spots", fields: [spot_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([max_version_major], map: "idx_spot_visits_max_version_major")
+  @@index([min_version_major], map: "idx_spot_visits_min_version_major")
+  @@index([prev_spot_id], map: "idx_spot_visits_prev_spot_id")
+  @@index([represent_guide_id], map: "idx_spot_visits_represent_guide_id")
+  @@index([spot_id], map: "idx_spot_visits_spot_id")
+  @@index([user_id], map: "idx_spot_visits_user_id")
+  @@schema("dev")
+}
+
+enum backend_event_logs_error_level {
+  trace
+  debug
+  info
+  warn
+  error
+
+  @@schema("dev")
+}
+
+enum ext_spots_vision_detection_type {
+  LANDMARK_DETECTION
+  WEB_DETECTION
+
+  @@schema("dev")
+}
+
+enum frontend_event_logs_error_level {
+  trace
+  debug
+  info
+  warn
+  error
+
+  @@schema("dev")
+}
+
+enum prompt_families_purpose {
+  spot_guide_manuscript
+
+  @@schema("dev")
+}
+
+enum prompt_usages_target_type {
+  spot_guides
+
+  @@schema("dev")
+}
+
+enum reactions_action_type {
+  like
+  disLike
+  regenerate
+
+  @@schema("dev")
+}
+
+enum reactions_target_type {
+  spot_guides
+
+  @@schema("dev")
+}

@@ -1,25 +1,17 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "ES2021",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "rootDir": "src",
-    "resolveJsonModule": true,
-    "types": [
-      "node"
-    ],
-    "allowSyntheticDefaultImports": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib",
-    "**/*.test.ts"
-  ]
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"target": "ES2021",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"noUnusedLocals": true,
+		"outDir": "lib",
+		"sourceMap": true,
+		"rootDir": "../",
+		"resolveJsonModule": true,
+		"types": ["node"],
+		"allowSyntheticDefaultImports": true
+	},
+	"include": ["src", "../shared/**/*"],
+	"exclude": ["node_modules", "lib", "**/*.test.ts"]
 }

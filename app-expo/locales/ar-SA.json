@@ -1,0 +1,30 @@
+{
+	"Common": {
+		"cancel": "إلغاء",
+		"goStore": "افتح متجر التطبيقات"
+	},
+	"Error": {
+		"maintenanceMessage": "نحن حالياً نقوم بأعمال صيانة.",
+		"unsupportedVersion": "لا يمكن استخدام هذا الإصدار القديم."
+	},
+	"SpotCapture": {
+		"captureButton": "ما هذا؟",
+		"errorMessage": "فشل في التقاط الصورة. الرجاء المحاولة مرة أخرى.",
+		"requestPermission": "يتطلب إذن لاستخدام الكاميرا.",
+		"permissionDialog": {
+			"title": "تم رفض الوصول إلى الكاميرا",
+			"message": "لتمكين استخدام الكاميرا، يرجى السماح بذلك من الإعدادات.",
+			"okLabel": "افتح الإعدادات"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "هذه صورة تم التقاطها باستخدام تطبيق \"ما هذا؟ الدليل الصوتي\".",
+		"generateSpotGuideErrorMessage": "نأسف، لم نتمكن من إنشاء الدليل. الرجاء المحاولة مرة أخرى."
+	},
+	"SpotGuideCard": {
+		"generating": "جارٍ إنشاء الدليل..."
+	},
+	"SpotRecommend": {
+		"nanicore": "ما هذا؟"
+	}
+}

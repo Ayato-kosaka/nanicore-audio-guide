@@ -1,16 +1,14 @@
 {
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
-  },
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "typescriptreact"
-  ],
-  "prettier.requireConfig": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "path-intellisense.mappings": {
-    "@": "${workspaceRoot}/shared"
-  }
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "always",
+		"source.fixAll.eslint": "always"
+	},
+	"eslint.validate": ["javascript", "typescript", "typescriptreact"],
+	"prettier.requireConfig": true,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"path-intellisense.mappings": {
+		"@": "${workspaceRoot}/shared"
+	}
 }

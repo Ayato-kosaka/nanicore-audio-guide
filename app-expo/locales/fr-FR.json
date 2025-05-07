@@ -1,0 +1,30 @@
+{
+	"Common": {
+		"cancel": "Annuler",
+		"goStore": "Ouvrir l’App Store"
+	},
+	"Error": {
+		"maintenanceMessage": "Nous sommes actuellement en maintenance.",
+		"unsupportedVersion": "Cette version n'est plus prise en charge."
+	},
+	"SpotCapture": {
+		"captureButton": "C'est quoi ?",
+		"errorMessage": "Échec de la capture. Veuillez réessayer.",
+		"requestPermission": "L'accès à la caméra est requis.",
+		"permissionDialog": {
+			"title": "Accès à la caméra refusé",
+			"message": "Pour utiliser la caméra, veuillez autoriser l'accès dans les paramètres.",
+			"okLabel": "Ouvrir les paramètres"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "Photo prise avec l'application \"C'est quoi ? Guide audio\".",
+		"generateSpotGuideErrorMessage": "Échec de la génération du guide audio. Veuillez réessayer."
+	},
+	"SpotGuideCard": {
+		"generating": "Génération du guide en cours..."
+	},
+	"SpotRecommend": {
+		"nanicore": "C'est quoi ?"
+	}
+}

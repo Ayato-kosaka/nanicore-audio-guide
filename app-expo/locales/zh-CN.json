@@ -1,0 +1,30 @@
+{
+	"Common": {
+		"cancel": "取消",
+		"goStore": "打开应用商店"
+	},
+	"Error": {
+		"maintenanceMessage": "当前正在维护中。",
+		"unsupportedVersion": "此版本已不再受支持。"
+	},
+	"SpotCapture": {
+		"captureButton": "这是什么？",
+		"errorMessage": "拍摄失败，请重试。",
+		"requestPermission": "需要获取摄像头权限。",
+		"permissionDialog": {
+			"title": "摄像头访问被拒绝",
+			"message": "请在设置中开启摄像头权限以继续使用。",
+			"okLabel": "打开设置"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "这是一张通过“这是什么？语音导览”应用拍摄的图片。",
+		"generateSpotGuideErrorMessage": "很抱歉，导览生成失败，请稍后再试。"
+	},
+	"SpotGuideCard": {
+		"generating": "正在生成导览..."
+	},
+	"SpotRecommend": {
+		"nanicore": "这是什么？"
+	}
+}

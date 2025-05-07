@@ -19,7 +19,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: app-web
+        working-directory: app-expo
 
     steps:
       - name: ⏬ Checkout repository
@@ -33,16 +33,29 @@ jobs:
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: 🏗 Setup Expo & EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+        env:
+          EAS_ACCESS_TOKEN: ${{ secrets.EAS_ACCESS_TOKEN }}
+
+      - name: ✨ Update environment variable
+        run: pnpx eas-cli env:update --variable-name EXPO_PUBLIC_COMMIT_ID --value ${{ github.sha }}  --non-interactive
+
       - name: 🛠️ Sync environment variables from EAS CLI
         run: pnpx eas-cli env:pull ${{ github.event.inputs.target }} --non-interactive
 
-      
+      - name: 🏗️ Build Web App
+        run: pnpm --filter app-expo build:web
+
       - name: 🚀 Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:

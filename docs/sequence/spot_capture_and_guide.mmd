@@ -1,0 +1,124 @@
+sequenceDiagram
+    actor User
+    participant PA as React Native App
+    participant BL as Backend
+    participant DB as Database
+    participant API as 外部API
+    participant Storage as Cloud Storage
+
+    %% App起動時の処理
+    Note over User,PA: App 起動処理
+    PA ->> PA: signInAnonymously()
+
+    %% SpotCapture 処理
+    Note over User,PA: SpotCapture（撮影 → スポット抽出）
+    User ->> PA: 撮影ボタンをタップ（onPressCapture）
+    PA ->> PA: showLoading()
+    PA ->> PA: 画像圧縮（1024px / JPEG 70%）
+
+    PA ->> BL: POST /findOrCreateSpotFromImage(FormData)
+    BL ->> Storage: 画像ファイルアップロード
+    Storage -->> BL: imageUri
+
+    BL ->> API: Google Cloud Vision API(imageUri)
+    API -->> BL: [{ salogate_key, source_type, score, fullMatchingImages, description }]
+
+    alt source_type == LANDMARK_DETECTION
+        BL ->> API: Google Knowledge Graph API
+        API -->> BL: Wikipedia URL
+
+        BL ->> API: Wikipedia API
+        API -->> BL: スポット画像・title
+    end
+
+    BL ->> DB: SELECT ext_spots WHERE salogate_key
+    DB -->> BL: ext_spots
+
+    alt ext_spots 未取得
+        BL ->> DB: INSERT INTO ext_spots
+    end
+
+    BL -->> PA: { ext_spots, uploadedUri, takenPhotoStoragePath }
+
+    PA ->> PA: hideLoading()
+    PA ->> PA: push("SpotGuide", { ext_spots, uploadedUri, takenPhotoStoragePath })
+
+    %% SpotGuide 初期表示
+    Note over User,PA: SpotGuide 初期表示
+    PA ->> PA: showLoading()
+    PA ->> BL: GET /listSpotGuides(spotId, languageTag)
+    BL ->> DB: SELECT spot_guides WHERE spot_id
+    DB -->> BL: spot_guides[]
+    BL -->> PA: spot_guides[]
+
+    PA ->> BL: GET /listRecommendedSpotsByVisitHistory(spotId)
+    BL ->> DB: SELECT spot_visits WHERE spot_id
+    DB -->> BL: spot_id[]
+    BL ->> DB: SELECT ext_spots WHERE spot_id[]
+    DB -->> BL: ext_spots[]
+    BL -->> PA: ext_spots[]
+
+    PA ->> PA: hideLoading()
+
+    %% SpotGuide UI操作
+    User ->> PA: スワイプ（前後のリコメンド切替）
+    PA ->> PA: increment / decrement(spotIndex)
+    alt spotIndex % 5 == 0
+        PA ->> PA: showInterstitialAd()
+    end
+
+    User ->> PA: 🔗 インスタにリンク
+    PA ->> PA: shareInstagram(imageUri)
+
+    User ->> PA: 🔙 カメラに戻る
+    PA ->> PA: routerBack("SpotCapture")
+
+    %% SpotGuideCard 処理
+    Note over User,PA: SpotGuideCard 表示処理
+    PA ->> PA: showLoading()
+    alt spotIndex または spotGuides.isEmpty
+        PA ->> PA: generateSpotGuide()
+    end
+    PA ->> PA: hideLoading()
+
+    PA ->> PA: 音声再生（playAudioFromStorage）
+
+    PA ->> DB: SELECT spot_visits ORDER BY created_at DESC LIMIT 1
+    DB -->> PA: prev_spot_id
+    PA -) DB: INSERT INTO spot_visits
+
+    %% SpotGuideCard インタラクション
+    User ->> PA: 音声再生ボタン
+    PA ->> PA: playAudioFromStorage()
+
+    User ->> PA: ❤️ ボタン（いいね）
+    PA ->> DB: INSERT / DELETE reactions(like)
+
+    User ->> PA: 🔁 ボタン（次のガイドスポット）
+    PA ->> PA: showLoading()
+    PA ->> DB: UPSERT reactions(dislike)
+    PA ->> PA: increment(spotGuideIndex)
+
+    alt 最後のspotGuide
+        PA ->> BL: POST /generateSpotGuide(spot, lang_code)
+        BL ->> API: Claude → タイトル・原稿・タグ生成
+        API -->> BL: guide data
+
+        BL ->> API: Google Cloud Text-to-Speech
+        API -->> BL: 音声ファイル(audio_file)
+
+        BL ->> Storage: 音声ファイルアップロード
+        Storage -->> BL: audioUri
+
+        BL ->> DB: INSERT INTO spot_guides
+        BL -->> PA: spot_guides
+    end
+
+    PA ->> PA: hideLoading()
+    PA ->> PA: playAudioFromStorage()
+    PA -) DB: UPDATE spot_visits SET represent_guide_id
+
+    %% SpotRecommendCard 操作
+    Note over User,PA: SpotRecommendCard「なにこれ」操作
+    User ->> PA: 「なにこれ」ボタン押下
+    PA ->> PA: replace("SpotGuide", { imageUri, ext_spots })

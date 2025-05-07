@@ -10,7 +10,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: expo
+        working-directory: app-expo
 
     steps:
       - name: ⏬ Checkout repository
@@ -24,8 +24,8 @@ jobs:
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "18"
+          cache: "pnpm"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
@@ -47,9 +47,6 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
         env:
           EAS_ACCESS_TOKEN: ${{ secrets.EAS_ACCESS_TOKEN }}
-          APPLE_ID: ${{ secrets.EXPO_APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.EXPO_APPLE_TEAM_ID }}
-          ASC_APP_ID: ${{ secrets.EXPO_ASC_APP_ID }}
 
       - name: 🚀 Run EAS build (development profile)
         run: pnpx eas-cli build --profile development --platform all --non-interactive --no-wait

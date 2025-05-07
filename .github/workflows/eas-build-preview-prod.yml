@@ -10,7 +10,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: expo
+        working-directory: app-expo
 
     steps:
       - name: ⏬ Checkout repository
@@ -24,24 +24,11 @@ jobs:
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "18"
+          cache: "pnpm"
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: 📝 Create .env file for production
-        run: |
-          echo 'EXPO_PUBLIC_NODE_ENV=production' >> .env
-          echo 'EXPO_PUBLIC_COMMIT_ID=${{ github.sha }}' >> .env
-          echo 'EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL=${{ secrets.EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL_PROD }}' >> .env
-          echo 'EXPO_PUBLIC_SUPABASE_URL=${{ secrets.EXPO_PUBLIC_SUPABASE_URL_PROD }}' >> .env
-          echo 'EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY_PROD }}' >> .env
-          echo 'EXPO_PUBLIC_DB_SCHEMA=public' >> .env
-          echo 'EXPO_PUBLIC_GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME_PROD }}' >> .env
-          echo 'EXPO_PUBLIC_GCS_STATIC_MASTER_DIR_PATH=${{ secrets.GCS_STATIC_MASTER_DIR_PATH_PROD }}' >> .env
-          echo 'EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID=${{ secrets.EXPO_PUBLIC_ADMOB_IOS_INTERSTITIAL_UNIT_ID_TEST }}' >> .env
-          echo 'EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID=${{ secrets.EXPO_PUBLIC_ADMOB_ANDROID_INTERSTITIAL_UNIT_ID_TEST }}' >> .env
 
       - name: 🏗 Setup Expo & EAS CLI
         uses: expo/expo-github-action@v8
@@ -50,9 +37,9 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
         env:
           EAS_ACCESS_TOKEN: ${{ secrets.EAS_ACCESS_TOKEN }}
-          APPLE_ID: ${{ secrets.EXPO_APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.EXPO_APPLE_TEAM_ID }}
-          ASC_APP_ID: ${{ secrets.EXPO_ASC_APP_ID }}
+
+      - name: ✨ Update environment variable
+        run: pnpx eas-cli env:update --variable-name EXPO_PUBLIC_COMMIT_ID --value ${{ github.sha }}  --non-interactive
 
       - name: 🚀 Build app (production preview)
-        run: pnpx eas-cli build --profile preview --platform all --non-interactive --no-wait
+        run: pnpx eas-cli build --profile preview --platform all --non-interactive --no-wait --clear-cache

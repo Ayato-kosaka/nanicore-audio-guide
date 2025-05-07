@@ -1,0 +1,30 @@
+{
+	"Common": {
+		"cancel": "Cancelar",
+		"goStore": "Abrir App Store"
+	},
+	"Error": {
+		"maintenanceMessage": "Actualmente estamos en mantenimiento.",
+		"unsupportedVersion": "Esta versión ya no es compatible."
+	},
+	"SpotCapture": {
+		"captureButton": "¿Qué es esto?",
+		"errorMessage": "No se pudo tomar la foto. Por favor, inténtalo de nuevo.",
+		"requestPermission": "Se necesita permiso para acceder a la cámara.",
+		"permissionDialog": {
+			"title": "Acceso a la cámara denegado",
+			"message": "Para usar la cámara, permite el acceso desde la configuración.",
+			"okLabel": "Abrir configuración"
+		}
+	},
+	"SpotGuide": {
+		"shareMessage": "Esta es una foto tomada con la app '¿Qué es esto? Guía de audio'.",
+		"generateSpotGuideErrorMessage": "No se pudo generar la guía. Por favor, inténtalo de nuevo."
+	},
+	"SpotGuideCard": {
+		"generating": "Generando guía..."
+	},
+	"SpotRecommend": {
+		"nanicore": "¿Qué es esto?"
+	}
+}
