@@ -99,6 +99,7 @@
 "prompt_usages","temperature","numeric(3,2)",false,false,false,false,"","","LLM生成時のtemperature設定","","","",false
 "prompt_usages","generated_user","uuid",false,false,false,true,"","","生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）","","","",false
 "prompt_usages","created_at","timestamptz",false,false,false,true,"","","作成日時","","","",false
+"prompt_usages","created_request_id","text",false,false,false,true,"","","作成した処理単位のトレースID","","","",false
 "prompt_usages","metadata","jsonb",false,false,false,false,"","","将来のA/Bテスト用メタ情報など","","","",false
 "config","key","text",true,false,false,true,"","","設定値のキー（例：v1_min_frontend_log_level）","","","",false
 "config","value","text",false,false,false,true,"","","設定値の値（例：info, 2 など）","","","",false

@@ -25,6 +25,7 @@ export function convertSupabaseToPrisma_PromptUsages(supabase: SupabasePromptUsa
     temperature: supabase.temperature !== null ? new Prisma.Decimal(supabase.temperature) : null,
     generated_user: supabase.generated_user,
     created_at: new Date(supabase.created_at),
+    created_request_id: supabase.created_request_id,
     metadata: supabase.metadata,
   };
 }
@@ -48,6 +49,7 @@ export function convertPrismaToSupabase_PromptUsages(prisma: PrismaPromptUsages)
     temperature: prisma.temperature?.toNumber() ?? null,
     generated_user: prisma.generated_user,
     created_at: prisma.created_at?.toISOString() ?? null,
+    created_request_id: prisma.created_request_id,
     metadata: prisma.metadata,
   };
 }

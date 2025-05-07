@@ -17,6 +17,7 @@ CREATE TABLE prompt_usages (
     temperature NUMERIC(3,2),
     generated_user UUID NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
+    created_request_id TEXT NOT NULL,
     metadata JSONB
 );
 
@@ -42,6 +43,7 @@ COMMENT ON COLUMN prompt_usages.llm_model IS '使用したLLM（例：claude-3, 
 COMMENT ON COLUMN prompt_usages.temperature IS 'LLM生成時のtemperature設定';
 COMMENT ON COLUMN prompt_usages.generated_user IS '生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）';
 COMMENT ON COLUMN prompt_usages.created_at IS '作成日時';
+COMMENT ON COLUMN spot_guides.created_request_id IS '作成した処理単位のトレースID';
 COMMENT ON COLUMN prompt_usages.metadata IS '将来のA/Bテスト用メタ情報など';
 
 -- RLS 有効化

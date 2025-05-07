@@ -199,6 +199,7 @@ exports.Prisma.Prompt_usagesScalarFieldEnum = {
   temperature: 'temperature',
   generated_user: 'generated_user',
   created_at: 'created_at',
+  created_request_id: 'created_request_id',
   metadata: 'metadata'
 };
 

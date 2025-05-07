@@ -16,21 +16,25 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 /**
  * Model backend_event_logs
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type backend_event_logs = $Result.DefaultSelection<Prisma.$backend_event_logsPayload>
 /**
  * Model config
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type config = $Result.DefaultSelection<Prisma.$configPayload>
 /**
  * Model ext_spots
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type ext_spots = $Result.DefaultSelection<Prisma.$ext_spotsPayload>
 /**
  * Model external_api_logs
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type external_api_logs = $Result.DefaultSelection<Prisma.$external_api_logsPayload>
 /**
@@ -42,26 +46,31 @@ export type frontend_event_logs = $Result.DefaultSelection<Prisma.$frontend_even
 /**
  * Model prompt_families
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type prompt_families = $Result.DefaultSelection<Prisma.$prompt_familiesPayload>
 /**
  * Model prompt_usages
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type prompt_usages = $Result.DefaultSelection<Prisma.$prompt_usagesPayload>
 /**
  * Model prompt_variants
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type prompt_variants = $Result.DefaultSelection<Prisma.$prompt_variantsPayload>
 /**
  * Model reactions
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type reactions = $Result.DefaultSelection<Prisma.$reactionsPayload>
 /**
  * Model spot_guides
  * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
  */
 export type spot_guides = $Result.DefaultSelection<Prisma.$spot_guidesPayload>
 /**
@@ -8528,6 +8537,7 @@ export namespace Prisma {
     temperature: Decimal | null
     generated_user: string | null
     created_at: Date | null
+    created_request_id: string | null
   }
 
   export type Prompt_usagesMaxAggregateOutputType = {
@@ -8542,6 +8552,7 @@ export namespace Prisma {
     temperature: Decimal | null
     generated_user: string | null
     created_at: Date | null
+    created_request_id: string | null
   }
 
   export type Prompt_usagesCountAggregateOutputType = {
@@ -8557,6 +8568,7 @@ export namespace Prisma {
     temperature: number
     generated_user: number
     created_at: number
+    created_request_id: number
     metadata: number
     _all: number
   }
@@ -8582,6 +8594,7 @@ export namespace Prisma {
     temperature?: true
     generated_user?: true
     created_at?: true
+    created_request_id?: true
   }
 
   export type Prompt_usagesMaxAggregateInputType = {
@@ -8596,6 +8609,7 @@ export namespace Prisma {
     temperature?: true
     generated_user?: true
     created_at?: true
+    created_request_id?: true
   }
 
   export type Prompt_usagesCountAggregateInputType = {
@@ -8611,6 +8625,7 @@ export namespace Prisma {
     temperature?: true
     generated_user?: true
     created_at?: true
+    created_request_id?: true
     metadata?: true
     _all?: true
   }
@@ -8714,6 +8729,7 @@ export namespace Prisma {
     temperature: Decimal | null
     generated_user: string
     created_at: Date
+    created_request_id: string
     metadata: JsonValue | null
     _count: Prompt_usagesCountAggregateOutputType | null
     _avg: Prompt_usagesAvgAggregateOutputType | null
@@ -8749,6 +8765,7 @@ export namespace Prisma {
     temperature?: boolean
     generated_user?: boolean
     created_at?: boolean
+    created_request_id?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
 
@@ -8765,6 +8782,7 @@ export namespace Prisma {
     temperature?: boolean
     generated_user?: boolean
     created_at?: boolean
+    created_request_id?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
 
@@ -8781,6 +8799,7 @@ export namespace Prisma {
     temperature?: boolean
     generated_user?: boolean
     created_at?: boolean
+    created_request_id?: boolean
     metadata?: boolean
   }, ExtArgs["result"]["prompt_usages"]>
 
@@ -8797,10 +8816,11 @@ export namespace Prisma {
     temperature?: boolean
     generated_user?: boolean
     created_at?: boolean
+    created_request_id?: boolean
     metadata?: boolean
   }
 
-  export type prompt_usagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_id" | "target_type" | "target_id" | "generated_text" | "used_prompt_text" | "input_data" | "llm_model" | "temperature" | "generated_user" | "created_at" | "metadata", ExtArgs["result"]["prompt_usages"]>
+  export type prompt_usagesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "family_id" | "variant_id" | "target_type" | "target_id" | "generated_text" | "used_prompt_text" | "input_data" | "llm_model" | "temperature" | "generated_user" | "created_at" | "created_request_id" | "metadata", ExtArgs["result"]["prompt_usages"]>
 
   export type $prompt_usagesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "prompt_usages"
@@ -8818,6 +8838,7 @@ export namespace Prisma {
       temperature: Prisma.Decimal | null
       generated_user: string
       created_at: Date
+      created_request_id: string
       metadata: Prisma.JsonValue | null
     }, ExtArgs["result"]["prompt_usages"]>
     composites: {}
@@ -9254,6 +9275,7 @@ export namespace Prisma {
     readonly temperature: FieldRef<"prompt_usages", 'Decimal'>
     readonly generated_user: FieldRef<"prompt_usages", 'String'>
     readonly created_at: FieldRef<"prompt_usages", 'DateTime'>
+    readonly created_request_id: FieldRef<"prompt_usages", 'String'>
     readonly metadata: FieldRef<"prompt_usages", 'Json'>
   }
     
@@ -14440,6 +14462,7 @@ export namespace Prisma {
     temperature: 'temperature',
     generated_user: 'generated_user',
     created_at: 'created_at',
+    created_request_id: 'created_request_id',
     metadata: 'metadata'
   };
 
@@ -15187,6 +15210,7 @@ export namespace Prisma {
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
     generated_user?: UuidFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
+    created_request_id?: StringFilter<"prompt_usages"> | string
     metadata?: JsonNullableFilter<"prompt_usages">
   }
 
@@ -15203,6 +15227,7 @@ export namespace Prisma {
     temperature?: SortOrderInput | SortOrder
     generated_user?: SortOrder
     created_at?: SortOrder
+    created_request_id?: SortOrder
     metadata?: SortOrderInput | SortOrder
   }
 
@@ -15222,6 +15247,7 @@ export namespace Prisma {
     temperature?: DecimalNullableFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
     generated_user?: UuidFilter<"prompt_usages"> | string
     created_at?: DateTimeFilter<"prompt_usages"> | Date | string
+    created_request_id?: StringFilter<"prompt_usages"> | string
     metadata?: JsonNullableFilter<"prompt_usages">
   }, "id">
 
@@ -15238,6 +15264,7 @@ export namespace Prisma {
     temperature?: SortOrderInput | SortOrder
     generated_user?: SortOrder
     created_at?: SortOrder
+    created_request_id?: SortOrder
     metadata?: SortOrderInput | SortOrder
     _count?: prompt_usagesCountOrderByAggregateInput
     _avg?: prompt_usagesAvgOrderByAggregateInput
@@ -15262,6 +15289,7 @@ export namespace Prisma {
     temperature?: DecimalNullableWithAggregatesFilter<"prompt_usages"> | Decimal | DecimalJsLike | number | string | null
     generated_user?: UuidWithAggregatesFilter<"prompt_usages"> | string
     created_at?: DateTimeWithAggregatesFilter<"prompt_usages"> | Date | string
+    created_request_id?: StringWithAggregatesFilter<"prompt_usages"> | string
     metadata?: JsonNullableWithAggregatesFilter<"prompt_usages">
   }
 
@@ -16106,6 +16134,7 @@ export namespace Prisma {
     temperature?: Decimal | DecimalJsLike | number | string | null
     generated_user: string
     created_at: Date | string
+    created_request_id: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16122,6 +16151,7 @@ export namespace Prisma {
     temperature?: Decimal | DecimalJsLike | number | string | null
     generated_user: string
     created_at: Date | string
+    created_request_id: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16138,6 +16168,7 @@ export namespace Prisma {
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_request_id?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16154,6 +16185,7 @@ export namespace Prisma {
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_request_id?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16170,6 +16202,7 @@ export namespace Prisma {
     temperature?: Decimal | DecimalJsLike | number | string | null
     generated_user: string
     created_at: Date | string
+    created_request_id: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16186,6 +16219,7 @@ export namespace Prisma {
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_request_id?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -16202,6 +16236,7 @@ export namespace Prisma {
     temperature?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     generated_user?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_request_id?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
   }
 
@@ -17218,6 +17253,7 @@ export namespace Prisma {
     temperature?: SortOrder
     generated_user?: SortOrder
     created_at?: SortOrder
+    created_request_id?: SortOrder
     metadata?: SortOrder
   }
 
@@ -17237,6 +17273,7 @@ export namespace Prisma {
     temperature?: SortOrder
     generated_user?: SortOrder
     created_at?: SortOrder
+    created_request_id?: SortOrder
   }
 
   export type prompt_usagesMinOrderByAggregateInput = {
@@ -17251,6 +17288,7 @@ export namespace Prisma {
     temperature?: SortOrder
     generated_user?: SortOrder
     created_at?: SortOrder
+    created_request_id?: SortOrder
   }
 
   export type prompt_usagesSumOrderByAggregateInput = {
