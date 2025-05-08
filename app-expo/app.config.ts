@@ -1,15 +1,14 @@
 import * as dotenv from "dotenv";
 import { ExpoConfig, ConfigContext } from "@expo/config";
+import { version } from "./package.json"
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
 	name: "nanicore-audio-guide",
 	slug: "nanicore",
 	owner: "nanicore-audio-guide",
-	runtimeVersion: {
-		policy: "appVersion",
-	},
-	version: "1.0.0",
+	runtimeVersion: version.split('.').slice(0, 2).join('.'), // e.g. "1.1"
+	version,
 	orientation: "portrait",
 	icon: "./assets/images/icon.png",
 	scheme: "myapp",
