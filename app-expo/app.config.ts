@@ -50,6 +50,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			},
 		],
 		[
+			"expo-camera",
+			{
+				cameraPermission: "$(PRODUCT_NAME) uses the camera to identify spots and give audio guides."
+			}
+		],
+		[
 			"react-native-google-mobile-ads",
 			{
 				androidAppId: "ca-app-pub-8992436220024710~4233642482",
