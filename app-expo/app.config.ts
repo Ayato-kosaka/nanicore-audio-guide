@@ -20,7 +20,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	ios: {
 		bundleIdentifier: "com.nanicore.audio.guide",
 		buildNumber: "1",
-		supportsTablet: true,
+		supportsTablet: false,
 		infoPlist: {
 			ITSAppUsesNonExemptEncryption: false,
 		},
