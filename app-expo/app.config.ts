@@ -56,6 +56,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			}
 		],
 		[
+			"expo-image-picker",
+			{
+				photosPermission: "Used to save captured spot photos to your library."
+			}
+		],
+		[
 			"react-native-google-mobile-ads",
 			{
 				androidAppId: "ca-app-pub-8992436220024710~4233642482",
