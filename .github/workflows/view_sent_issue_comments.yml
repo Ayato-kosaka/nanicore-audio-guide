@@ -1,0 +1,37 @@
+name: View Sent Issue Comments
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: "GitHub Username. Leave blank to show all comments."
+        required: false
+        default: ""
+
+jobs:
+  fetch-comments:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch and filter issue comments
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          API_URL="https://api.github.com/repos/Ayato-kosaka/nanicore-audio-guide/issues/comments?per_page=100&sort=created&direction=desc"
+
+          echo "Fetching comments from: $API_URL"
+          curl -s -H "Authorization: token $GITHUB_TOKEN" "$API_URL" > comments.json
+
+          USERNAME="${{ github.event.inputs.username }}"
+
+          if [ -n "$USERNAME" ]; then
+            echo "Filtering by user: $USERNAME"
+            JQ_FILTER=".[] | select(.user.login == \"$USERNAME\")"
+          else
+            echo "Showing all users"
+            JQ_FILTER=".[]"
+          fi
+
+          echo -e "\n==== ISSUE COMMENTS ====\n"
+
+          jq -r "$JQ_FILTER | \"\(.created_at)\n\(.html_url)\n\(.body | split(\"\n\")[:4] | join(\"\n\"))\n---\"" comments.json
