@@ -1,4 +1,4 @@
-name: View Sent Issue Comments
+name: GitHub Sent Issue Comments View
 
 on:
   workflow_dispatch:
