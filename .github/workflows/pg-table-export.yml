@@ -54,10 +54,15 @@ jobs:
 
       - name: Export table(s) to CSV
         run: |
-          export PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:.*:\(.*\)@.*/\1/p')
-          export PGHOST=$(echo $DATABASE_URL | sed -n 's/.*@\(.*\):.*/\1/p')
-          export PGUSER=$(echo $DATABASE_URL | sed -n 's/postgresql:\/\/\(.*\):.*/\1/p' | cut -d: -f1)
-          export PGDATABASE=$(echo $DATABASE_URL | sed -n 's/.*\/\(.*\)$/\1/p')
+          URL="${DATABASE_URL}"
+
+          PGUSER=$(echo $URL | sed -E 's|postgres://([^:]+):.*@\S+/\S+|\1|')
+          PGPASSWORD=$(echo $URL | sed -E 's|postgres://[^:]+:([^@]+)@\S+/\S+|\1|')
+          PGHOST=$(echo $URL | sed -E 's|postgres://[^@]+@([^:/]+):.*|\1|')
+          PGPORT=$(echo $URL | sed -E 's|postgres://[^@]+@[^:]+:([^/]+)/.*|\1|')
+          PGDATABASE=$(echo $URL | sed -E 's|postgres://[^@]+@[^/]+/([^?]+).*|\1|')
+
+          export PGUSER PGPASSWORD PGHOST PGPORT PGDATABASE
 
           mkdir -p export
           if [ -n "${{ steps.parse-inputs.outputs.table_name }}" ]; then
