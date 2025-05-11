@@ -28,7 +28,7 @@ jobs:
 
       - name: Authenticate to Google Cloud
         run: |
-          echo "$GCP_KEY" | base64 -d > /tmp/key.json
+          echo "$GCP_KEY" > /tmp/key.json
           gcloud auth activate-service-account --key-file=/tmp/key.json
           gcloud config set project $(jq -r .project_id /tmp/key.json)
 
