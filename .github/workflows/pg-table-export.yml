@@ -54,27 +54,17 @@ jobs:
 
       - name: Export table(s) to CSV
         run: |
-          URL="${DATABASE_URL}"
-
-          PGUSER=$(echo $URL | sed -E 's|postgres://([^:]+):.*@\S+/\S+|\1|')
-          PGPASSWORD=$(echo $URL | sed -E 's|postgres://[^:]+:([^@]+)@\S+/\S+|\1|')
-          PGHOST=$(echo $URL | sed -E 's|postgres://[^@]+@([^:/]+):.*|\1|')
-          PGPORT=$(echo $URL | sed -E 's|postgres://[^@]+@[^:]+:([^/]+)/.*|\1|')
-          PGDATABASE=$(echo $URL | sed -E 's|postgres://[^@]+@[^/]+/([^?]+).*|\1|')
-
-          export PGUSER PGPASSWORD PGHOST PGPORT PGDATABASE
-
           mkdir -p export
           if [ -n "${{ steps.parse-inputs.outputs.table_name }}" ]; then
             tables="${{ steps.parse-inputs.outputs.table_name }}"
           else
-            tables=$(psql -t -c "SELECT tablename FROM pg_tables WHERE schemaname = '${{ steps.parse-inputs.outputs.schema }}';" | xargs)
+            tables=$(psql "$DATABASE_URL" -t -c "SELECT tablename FROM pg_tables WHERE schemaname = '${{ steps.parse-inputs.outputs.schema }}';" | xargs)
           fi
 
           for table in $tables; do
             csv_file="export/${table}.csv"
             echo "Exporting $table to $csv_file"
-            psql -c "\\COPY \"${{ steps.parse-inputs.outputs.schema }}\".\"$table\" TO '$csv_file' WITH CSV HEADER"
+            psql "$DATABASE_URL" -c "\\COPY \"${{ steps.parse-inputs.outputs.schema }}\".\"$table\" TO '$csv_file' WITH CSV HEADER"
 
       - name: Upload CSVs to GCS with metadata
         run: |

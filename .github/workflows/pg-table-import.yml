@@ -39,19 +39,9 @@ jobs:
 
       - name: Import CSV into PostgreSQL
         run: |
-          URL="${DATABASE_URL}"
-
-          PGUSER=$(echo $URL | sed -E 's|postgres://([^:]+):.*@\S+/\S+|\1|')
-          PGPASSWORD=$(echo $URL | sed -E 's|postgres://[^:]+:([^@]+)@\S+/\S+|\1|')
-          PGHOST=$(echo $URL | sed -E 's|postgres://[^@]+@([^:/]+):.*|\1|')
-          PGPORT=$(echo $URL | sed -E 's|postgres://[^@]+@[^:]+:([^/]+)/.*|\1|')
-          PGDATABASE=$(echo $URL | sed -E 's|postgres://[^@]+@[^/]+/([^?]+).*|\1|')
-
-          export PGUSER PGPASSWORD PGHOST PGPORT PGDATABASE
-
           for file in import/*.csv; do
             table=$(basename "$file" .csv)
             echo "Importing $table from $file"
-            psql -c "TRUNCATE TABLE \"${{ github.event.inputs.schema }}\".\"$table\" CASCADE;"
-            psql -c "\\COPY \"${{ github.event.inputs.schema }}\".\"$table\" FROM '$file' WITH CSV HEADER"
+            psql "$DATABASE_URL" -c "TRUNCATE TABLE \"${{ github.event.inputs.schema }}\".\"$table\" CASCADE;"
+            psql "$DATABASE_URL" -c "\\COPY \"${{ github.event.inputs.schema }}\".\"$table\" FROM '$file' WITH CSV HEADER"
           done
