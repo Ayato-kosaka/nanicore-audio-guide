@@ -13,7 +13,9 @@ export type Database = {
         Row: {
           created_at: string
           created_commit_id: string
-          error_level: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level:
+            | Database["dev"]["Enums"]["backend_event_logs_error_level"]
+            | null
           event_name: string | null
           function_name: string | null
           id: string
@@ -24,7 +26,9 @@ export type Database = {
         Insert: {
           created_at: string
           created_commit_id: string
-          error_level?: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level?:
+            | Database["dev"]["Enums"]["backend_event_logs_error_level"]
+            | null
           event_name?: string | null
           function_name?: string | null
           id: string
@@ -35,7 +39,9 @@ export type Database = {
         Update: {
           created_at?: string
           created_commit_id?: string
-          error_level?: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level?:
+            | Database["dev"]["Enums"]["backend_event_logs_error_level"]
+            | null
           event_name?: string | null
           function_name?: string | null
           id?: string
@@ -188,21 +194,21 @@ export type Database = {
           description: string
           id: string
           name: string
-          purpose: "spot_guide_manuscript"
+          purpose: Database["dev"]["Enums"]["prompt_families_purpose"]
           weight: number
         }
         Insert: {
           description: string
           id: string
           name: string
-          purpose: "spot_guide_manuscript"
+          purpose: Database["dev"]["Enums"]["prompt_families_purpose"]
           weight: number
         }
         Update: {
           description?: string
           id?: string
           name?: string
-          purpose?: "spot_guide_manuscript"
+          purpose?: Database["dev"]["Enums"]["prompt_families_purpose"]
           weight?: number
         }
         Relationships: []
@@ -298,33 +304,33 @@ export type Database = {
       }
       reactions: {
         Row: {
-          action_type: "like" | "disLike" | "regenerate"
+          action_type: Database["dev"]["Enums"]["reactions_action_type"]
           created_at: string
           created_version: string
           id: string
           lock_no: number
           target_id: string
-          target_type: "spot_guides"
+          target_type: Database["dev"]["Enums"]["reactions_target_type"]
           user_id: string
         }
         Insert: {
-          action_type: "like" | "disLike" | "regenerate"
+          action_type: Database["dev"]["Enums"]["reactions_action_type"]
           created_at: string
           created_version: string
           id: string
           lock_no: number
           target_id: string
-          target_type: "spot_guides"
+          target_type: Database["dev"]["Enums"]["reactions_target_type"]
           user_id: string
         }
         Update: {
-          action_type?: "like" | "disLike" | "regenerate"
+          action_type?: Database["dev"]["Enums"]["reactions_action_type"]
           created_at?: string
           created_version?: string
           id?: string
           lock_no?: number
           target_id?: string
-          target_type?: "spot_guides"
+          target_type?: Database["dev"]["Enums"]["reactions_target_type"]
           user_id?: string
         }
         Relationships: []

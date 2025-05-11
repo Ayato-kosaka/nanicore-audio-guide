@@ -105,6 +105,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
 				temperature,
 				generated_user: DEFAULT_SPOT_GUIDE_CREATED_USER_ID,
 				created_at: new Date(),
+				created_request_id: requestId,
 			},
 		});
 
