@@ -1,4 +1,4 @@
-name: Import CSV into PostgreSQL
+name: PostgreSQL Import CSV into Table
 
 on:
   workflow_dispatch:

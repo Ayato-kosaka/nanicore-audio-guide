@@ -1,4 +1,4 @@
-name: Export PostgreSQL Table(s) to CSV
+name: PostgreSQL Table(s) Export to CSV
 
 on:
   # schedule:
@@ -70,18 +70,6 @@ jobs:
             csv_file="export/${table}.csv"
             echo "Exporting $table to $csv_file"
             psql -c "\\COPY \"${{ steps.parse-inputs.outputs.schema }}\".\"$table\" TO '$csv_file' WITH CSV HEADER"
-          done
-
-      - name: Write metadata file
-        run: |
-          cat <<EOF > export/metadata.json
-{
-  "schema": "${{ steps.parse-inputs.outputs.schema }}",
-  "tables": "$(ls export/*.csv | xargs -n1 basename | paste -sd ',' -)",
-  "exported_at": "${{ steps.vars.outputs.timestamp }}",
-  "commit_sha": "${{ steps.vars.outputs.sha }}"
-}
-EOF
 
       - name: Upload CSVs to GCS with metadata
         run: |
