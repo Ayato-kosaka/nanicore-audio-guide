@@ -1,0 +1,52 @@
+name: Import CSV into PostgreSQL
+
+on:
+  workflow_dispatch:
+    inputs:
+      schema:
+        description: "Schema to import into (e.g., dev)"
+        required: false
+        default: "dev"
+      timestamp:
+        description: "Timestamp of the CSV export directory (e.g., 20240511-030000)"
+        required: true
+
+jobs:
+  import-csv-to-postgres:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL_PROD }}
+      GCS_BUCKET: ${{ secrets.GCS_BUCKET_NAME_PROD }}
+      GCP_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client jq
+
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "$GCP_KEY" | base64 -d > /tmp/key.json
+          gcloud auth activate-service-account --key-file=/tmp/key.json
+          gcloud config set project $(jq -r .project_id /tmp/key.json)
+
+      - name: Download CSV files from GCS
+        run: |
+          mkdir -p import
+          gsutil -m cp "gs://${GCS_BUCKET}/system/PostgreSQL/csv_export/${{ github.event.inputs.timestamp }}/*.csv" import/
+
+      - name: Import CSV into PostgreSQL
+        run: |
+          export PGPASSWORD=$(echo $DATABASE_URL | sed -n 's/.*:.*:\(.*\)@.*/\1/p')
+          export PGHOST=$(echo $DATABASE_URL | sed -n 's/.*@\(.*\):.*/\1/p')
+          export PGUSER=$(echo $DATABASE_URL | sed -n 's/postgresql:\/\/\(.*\):.*/\1/p' | cut -d: -f1)
+          export PGDATABASE=$(echo $DATABASE_URL | sed -n 's/.*\/\(.*\)$/\1/p')
+
+          for file in import/*.csv; do
+            table=$(basename "$file" .csv)
+            echo "Importing $table from $file"
+            psql -c "TRUNCATE TABLE \"${{ github.event.inputs.schema }}\".\"$table\" CASCADE;"
+            psql -c "\\COPY \"${{ github.event.inputs.schema }}\".\"$table\" FROM '$file' WITH CSV HEADER"
+          done
