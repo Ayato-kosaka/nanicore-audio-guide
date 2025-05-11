@@ -65,6 +65,7 @@ jobs:
             csv_file="export/${table}.csv"
             echo "Exporting $table to $csv_file"
             psql "$DATABASE_URL" -c "\\COPY \"${{ steps.parse-inputs.outputs.schema }}\".\"$table\" TO '$csv_file' WITH CSV HEADER"
+          done
 
       - name: Upload CSVs to GCS with metadata
         run: |
