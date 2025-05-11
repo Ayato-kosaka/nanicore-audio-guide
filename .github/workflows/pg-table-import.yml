@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL_PROD }}
+      DATABASE_URL: ${{ secrets.POSTGRES_DATABASE_URL }}
       GCS_BUCKET: ${{ secrets.GCS_BUCKET_NAME_PROD }}
       GCP_KEY: ${{ secrets.GCP_SA_KEY }}
 
