@@ -8,7 +8,7 @@ import { findOrCreateSpotFromId as findOrCreateSpotFromIdService } from "../serv
 
 export const findOrCreateSpotFromId = withValidatedAuthHandler(
 	findOrCreateSpotFromIdRequestSchema,
-	async ({ res, input, requestId, userId }): Promise<void> => {
+	async function findOrCreateSpotFromId({ res, input, requestId, userId }) {
 		const { spotId } = input;
 
 		const extSpot = await findOrCreateSpotFromIdService(spotId, requestId, userId);
