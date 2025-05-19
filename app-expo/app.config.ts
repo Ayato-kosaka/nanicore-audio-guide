@@ -110,7 +110,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 					"3rd42ekr43.skadnetwork",
 					"3qcr597p9d.skadnetwork",
 				],
-				userTrackingUsageDescription: "This identifier will be used to deliver personalized ads to you.",
 			},
 		],
 		[
