@@ -2,9 +2,9 @@ name: EAS Build Submit Prod
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "release/**"
+  # push:
+  # branches:
+  #   - "release/**"
 
 jobs:
   build-submit-prod:
