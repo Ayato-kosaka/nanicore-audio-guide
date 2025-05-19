@@ -3,7 +3,6 @@ import { useRouter } from "expo-router";
 import type { ExternalPathString } from "expo-router";
 import * as Localization from "expo-localization";
 import * as SplashScreen from "expo-splash-screen";
-import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { Env } from "@/constants/Env";
 import { getResolvedLocale } from "@/lib/i18n";
 
@@ -21,15 +20,12 @@ export default function App() {
 	const router = useRouter();
 
 	useEffect(() => {
-		const requestParmission = async () => {
-			await requestTrackingPermissionsAsync();
-		};
-		requestParmission();
-
 		const resolvedLocale = getResolvedLocale(Localization.getLocales?.()[0]?.languageTag);
+
 		if (Env.NODE_ENV === "development") {
 			console.log(`[LocaleRedirect] Detected locale: ${resolvedLocale}`);
 		}
+
 		const timer = setTimeout(() => {
 			// 対応するロケールにリダイレクト
 			router.replace(`/${resolvedLocale}` as ExternalPathString);
