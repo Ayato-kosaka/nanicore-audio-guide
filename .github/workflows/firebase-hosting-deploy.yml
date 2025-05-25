@@ -56,6 +56,9 @@ jobs:
       - name: 🏗️ Build Web App
         run: pnpm --filter app-expo build:web
 
+      - name: 📄 Generate app-ads.txt from secret
+        run: echo "${{ secrets.ADMOB_APP_ADS_TXT }}" > app-expo/dist/app-ads.txt
+
       - name: 🚀 Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
