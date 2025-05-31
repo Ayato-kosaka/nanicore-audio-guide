@@ -25,6 +25,7 @@ export const getWikipediaImageFromKgid = async (
 		itemListElement: {
 			result: {
 				detailedDescription?: { url?: string };
+				name?: string;
 			};
 		}[];
 	}>({
@@ -38,7 +39,7 @@ export const getWikipediaImageFromKgid = async (
 
 	const articleUrl = kgResponse?.itemListElement?.[0]?.result?.detailedDescription?.url;
 	if (!articleUrl) {
-		return { imageUrl: null, title: null };
+		return { imageUrl: null, title: kgResponse?.itemListElement?.[0]?.result?.name ?? null };
 	}
 
 	// Wikipedia URL からタイトルを抽出
