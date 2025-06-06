@@ -79,7 +79,9 @@ export type Database = {
           landmark_longitude: number | null
           lock_no: number
           title: string
-          vision_detection_type: "LANDMARK_DETECTION" | "WEB_DETECTION" | null
+          vision_detection_type:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Insert: {
           created_at: string
@@ -90,7 +92,9 @@ export type Database = {
           landmark_longitude?: number | null
           lock_no: number
           title: string
-          vision_detection_type?: "LANDMARK_DETECTION" | "WEB_DETECTION" | null
+          vision_detection_type?:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Update: {
           created_at?: string
@@ -101,7 +105,9 @@ export type Database = {
           landmark_longitude?: number | null
           lock_no?: number
           title?: string
-          vision_detection_type?: "LANDMARK_DETECTION" | "WEB_DETECTION" | null
+          vision_detection_type?:
+            | Database["dev"]["Enums"]["ext_spots_vision_detection_type"]
+            | null
         }
         Relationships: []
       }
@@ -158,7 +164,9 @@ export type Database = {
           created_app_version: string
           created_at: string
           created_commit_id: string
-          error_level: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level:
+            | Database["dev"]["Enums"]["frontend_event_logs_error_level"]
+            | null
           event_name: string | null
           id: string
           path_name: string | null
@@ -169,7 +177,9 @@ export type Database = {
           created_app_version: string
           created_at: string
           created_commit_id: string
-          error_level?: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level?:
+            | Database["dev"]["Enums"]["frontend_event_logs_error_level"]
+            | null
           event_name?: string | null
           id: string
           path_name?: string | null
@@ -180,7 +190,9 @@ export type Database = {
           created_app_version?: string
           created_at?: string
           created_commit_id?: string
-          error_level?: "trace" | "debug" | "info" | "warn" | "error" | null
+          error_level?:
+            | Database["dev"]["Enums"]["frontend_event_logs_error_level"]
+            | null
           event_name?: string | null
           id?: string
           path_name?: string | null
@@ -225,7 +237,7 @@ export type Database = {
           llm_model: string
           metadata: Json | null
           target_id: string
-          target_type: "spot_guides"
+          target_type: Database["dev"]["Enums"]["prompt_usages_target_type"]
           temperature: number | null
           used_prompt_text: string
           variant_id: string
@@ -241,7 +253,7 @@ export type Database = {
           llm_model: string
           metadata?: Json | null
           target_id: string
-          target_type: "spot_guides"
+          target_type: Database["dev"]["Enums"]["prompt_usages_target_type"]
           temperature?: number | null
           used_prompt_text: string
           variant_id: string
@@ -257,7 +269,7 @@ export type Database = {
           llm_model?: string
           metadata?: Json | null
           target_id?: string
-          target_type?: "spot_guides"
+          target_type?: Database["dev"]["Enums"]["prompt_usages_target_type"]
           temperature?: number | null
           used_prompt_text?: string
           variant_id?: string

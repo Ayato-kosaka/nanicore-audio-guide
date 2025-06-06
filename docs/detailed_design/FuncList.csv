@@ -1,15 +1,10 @@
 "Delete","ServiceName","ServiceID","FuncType","FuncTypeID","FuncName","Memo"
 "","Guid","G","BusinessLogic","BL","findOrCreateSpotFromImage","画像（FormData）からスポットを推定し、該当スポットを検索または登録する。"
-"","Guid","G","BusinessLogic","BL","findSpot","スポットID から該当スポットを検索する。"
 "","Guid","G","BusinessLogic","BL","listSpotGuides","指定されたスポットIDと言語に基づいて、関連ガイド情報を取得する。"
 "","Guid","G","BusinessLogic","BL","generateSpotGuide","外部APIを使用して、スポットに関連するガイド情報を生成・登録する。"
 "","Guid","G","BusinessLogic","BL","listRecommendedSpotsByVisitHistory","指定された spot_id に基づき、spot_visits の履歴から次に訪れられる傾向のあるスポットを集計し、対応する m_spots を取得する"
 "","Guid","G","Page","PA","SpotCapture","カメラによる写真撮影、および撮影画像を用いたスポット情報の解析。解析結果として m_spot（メタ情報）取得し、遷移先に渡す責務を持つ。"
 "","Guid","G","Page","PA","SpotGuide","遷移元から受け取った spot オブジェクトおよび imageUri をもとに、観光スポットの詳細情報（名称・解説テキストなど）の表示、TTS再生、関連スポットのリコメンド表示など、スポットガイド全般の体験を提供する。"
-"","Guid","G","Page","PA","SpotGuideFromImageUri","パラメータで受け取った画像を用いたスポット情報の解析。解析結果として m_spot（メタ情報）取得し、遷移先に渡す責務を持つ。
-導線はないので、E2Eテストなど、試験で利用する。"
-"","Guid","G","Page","PA","SpotGuideFromSpotId","パラメータで受け取ったスポットIDを用いて m_spot を検索し、遷移先に渡す責務を持つ。
-導線はないので、E2Eテストなど、試験で利用する。"
 "","Guid","G","DataBase","DB","ext_spots","外部API経由で登録される、観光地・絵画等そのもののマスタ"
 "","Guid","G","DataBase","DB","spot_guides","各スポットに対する多言語対応の音声ガイド情報を格納するテーブル"
 "","Guid","G","DataBase","DB","spot_visits","ユーザーによるスポット訪問ログを記録するテーブル"
