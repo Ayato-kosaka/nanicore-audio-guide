@@ -31,6 +31,7 @@ export const callExternalApi = async <T>({
 	apiName,
 	endpoint,
 	customHeaders = {},
+	redirect,
 	method,
 	requestPayload,
 	userId,
@@ -40,6 +41,7 @@ export const callExternalApi = async <T>({
 	apiName: string;
 	endpoint: string;
 	customHeaders?: Record<string, string>;
+	redirect?: RequestRedirect;
 	method: "GET" | "POST";
 	requestPayload?: any;
 	userId: string;
@@ -56,6 +58,7 @@ export const callExternalApi = async <T>({
 				"Content-Type": "application/json",
 				...customHeaders,
 			},
+			redirect,
 			body: method === "POST" ? JSON.stringify(requestPayload) : undefined,
 		});
 

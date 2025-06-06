@@ -7,7 +7,10 @@ import { useLogger } from "@/hooks/useLogger";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
 
-import type { FindOrCreateSpotFromIdResponse } from "@shared/api/findOrCreateSpotFromId.schema";
+import type {
+	FindOrCreateSpotFromIdRequest,
+	FindOrCreateSpotFromIdResponse,
+} from "@shared/api/findOrCreateSpotFromId.schema";
 import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext_spots";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import i18n from "@/lib/i18n";
@@ -35,12 +38,11 @@ export default function SpotSearch() {
 			});
 
 			try {
-				const { extSpots } = await callCloudFunction<
-					{
-						spotId: string;
-					},
-					FindOrCreateSpotFromIdResponse
-				>("findOrCreateSpotFromId", { spotId }, "v1");
+				const { extSpots } = await callCloudFunction<FindOrCreateSpotFromIdRequest, FindOrCreateSpotFromIdResponse>(
+					"findOrCreateSpotFromId",
+					{ spotId },
+					"v1",
+				);
 
 				router.replace({
 					pathname: "/[locale]/SpotGuide",

@@ -6,41 +6,21 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
 
+import type {
+	FindOrCreateSpotFromPlaceIdRequest,
+	FindOrCreateSpotFromPlaceIdResponse,
+} from "@shared/api/findOrCreateSpotFromPlaceId.schema";
 import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext_spots";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import i18n from "@/lib/i18n";
 import { SpotSearchByPlaceIdParams } from "@/types/navigation";
-import { Env } from "@/constants/Env";
 import { useLocale } from "@/hooks/useLocale";
-
-// 型：PlaceDetailsレスポンスの型
-type PlaceDetailsResponse = {
-	title: string;
-	imageUrl: string | null;
-};
-
-// 仮のAPI関数：本来は `lib/api` などに定義して分離する
-async function fetchPlaceDetails(placeId: string, language: string): Promise<PlaceDetailsResponse> {
-	// 仮のAPIエンドポイントにリクエストを送信。nanicore でエンドポイントを開放し次第更新する。
-	const response = await fetch("https://spelieve-backend-place-r4qxqxf4ta-an.a.run.app/PBL002", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ place_id: placeId, language }),
-	});
-
-	if (!response.ok) {
-		throw new Error(`Failed to fetch place details: ${response.statusText}`);
-	}
-
-	const data = await response.json();
-	return data as PlaceDetailsResponse;
-}
+import { useCloudFunction } from "@/hooks/useCloudFunction";
 
 export default function SpotSearchByPlaceId() {
 	const { id: placeId } = useLocalSearchParams<SpotSearchByPlaceIdParams>();
 	const { isLoading, withLoading } = useWithLoading();
+	const { callCloudFunction } = useCloudFunction();
 	const { logFrontendEvent } = useLogger();
 	const { showSnackbar } = useSnackbar();
 	const locale = useLocale();
@@ -60,25 +40,18 @@ export default function SpotSearchByPlaceId() {
 			});
 
 			try {
-				const { title, imageUrl } = await fetchPlaceDetails(placeId, locale.split("-")[0]);
+				const { extSpots } = await callCloudFunction<
+					FindOrCreateSpotFromPlaceIdRequest,
+					FindOrCreateSpotFromPlaceIdResponse
+				>("findOrCreateSpotFromPlaceId", { placeId }, "v1");
 
 				router.replace({
 					pathname: "/[locale]/SpotGuide",
 					params: {
 						locale: i18n.locale,
 						...serializeSpotGuideParams({
-							extSpots: convertSupabaseToPrisma_ExtSpots({
-								id: "/g/dummy",
-								title: title,
-								image_url: null,
-								vision_detection_type: null,
-								landmark_latitude: null,
-								landmark_longitude: null,
-								is_recommendable: false,
-								created_at: new Date().toISOString(),
-								lock_no: 0,
-							}),
-							imageUri: imageUrl,
+							extSpots: convertSupabaseToPrisma_ExtSpots(extSpots),
+							imageUri: extSpots?.image_url,
 							takenPhotoStoragePath: null,
 						}),
 					},

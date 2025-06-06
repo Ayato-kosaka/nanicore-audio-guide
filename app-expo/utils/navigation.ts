@@ -10,4 +10,5 @@ export const deserializeSpotGuideParams = (params: SpotGuideSerializedParams): S
 	...params,
 	extSpots: params.extSpots ? convertSupabaseToPrisma_ExtSpots(JSON.parse(params.extSpots)) : undefined,
 	takenPhotoStoragePath: params.takenPhotoStoragePath || undefined,
+	imageUri: params.imageUri ? decodeURIComponent(params.imageUri) : undefined,
 });
