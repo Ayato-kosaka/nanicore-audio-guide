@@ -30,6 +30,12 @@ export type SpotGuideSerializedParams = {
 export type SpotSearchParams = { id: string };
 
 /**
+ *  SpotSearchByPlaceId  画面に渡されるパラメータ
+ * - id: 検索結果のID
+ */
+export type SpotSearchByPlaceIdParams = { id: string };
+
+/**
  * 🚦 アプリ内ルーティングで使用されるパラメータ一覧。
  *
  * - `react-navigation` や `expo-router` の型安全な navigation 用
@@ -39,4 +45,5 @@ export type RootStackParamList = {
 	SpotCapture: {}; // 撮影画面（パラメータなし）
 	SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
 	SpotSearch: SpotSearchParams; // SpotSearch画面
+	SpotSearchByPlaceId: SpotSearchByPlaceIdParams; // SpotSearchByPlaceId画面
 };
