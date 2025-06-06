@@ -6,7 +6,7 @@ import {
 } from "../../../../shared/api/findOrCreateSpotFromPlaceId.schema";
 import { convertPrismaToSupabase_ExtSpots, PrismaExtSpots } from "../../../../shared/converters/convert_ext_spots";
 import { callExternalApi } from "../lib/backendUtils";
-import { env } from "process";
+import { env } from "../lib/env";
 
 // 型：PlaceDetailsレスポンスの型
 type PlaceDetailsResponse = {
@@ -16,7 +16,7 @@ type PlaceDetailsResponse = {
 
 // 仮のAPI関数：本来は `lib/api` などに定義して分離する
 async function fetchPlaceDetails(placeId: string, requestId: string, userId: string): Promise<PlaceDetailsResponse> {
-    const apiKey = env.GOOGLE_MAPS_API_KEY;
+    const apiKey = env.FUNCTIONS_GOOGLE_PLACE_API_KEY;
 
     try {
         const placeResponse = await callExternalApi<{
