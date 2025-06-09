@@ -16,9 +16,6 @@ export const loadStaticMaster = async <T extends keyof Database["dev"]["Tables"]
 ) => {
 	const encodedFilePath = encodeURIComponent(dirPath + tableName + ".json");
 	const firebaseStorageUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodedFilePath}?alt=media`;
-	if (!firebaseStorageUrl) {
-		throw new Error("Environment variable SHARED_STATIC_MASTER_GCS_URL is not defined.");
-	}
 
 	const res = await fetch(firebaseStorageUrl);
 	if (!res.ok) {
