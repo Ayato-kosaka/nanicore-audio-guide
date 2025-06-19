@@ -62,6 +62,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			}
 		],
 		[
+			"expo-location",
+			{
+				locationAlwaysAndWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationAlwaysPermission: "Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				isIosBackgroundLocationEnabled: false,
+				isAndroidBackgroundLocationEnabled: false,
+			}
+		],
+		[
 			"react-native-google-mobile-ads",
 			{
 				androidAppId: "ca-app-pub-8992436220024710~4233642482",

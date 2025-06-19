@@ -7,6 +7,28 @@
 		"maintenanceMessage": "We are currently undergoing maintenance.",
 		"unsupportedVersion": "This version is no longer supported."
 	},
+	"Map": {
+		"searchPlaceholder": "Search for a place...",
+		"noResultsFound": "No results found for your search",
+		"searchError": "Failed to search location",
+		"locationPermissionDenied": "Location permission denied",
+		"locationError": "Failed to get current location"
+	},
+	"PlaceGuide": {
+		"takePhoto": "Take Photo",
+		"selectCategories": "Select Categories",
+		"customQuery": "Ask something specific...",
+		"generateGuides": "Generate Guides",
+		"placeGuides": "Place Guides",
+		"analyzePhoto": "Analyze Photo",
+		"askAboutPhoto": "Ask about this photo...",
+		"photoAnalysis": "Photo Analysis",
+		"loadError": "Failed to load place guides",
+		"generateError": "Failed to generate guides",
+		"selectCategoryOrQuery": "Please select a category or enter a custom query",
+		"photoAdded": "Photo added! Select categories to analyze it.",
+		"guidesGenerated": "Guides generated successfully!"
+	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
 		"errorMessage": "Failed to capture the photo. Please try again.",

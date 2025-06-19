@@ -7,6 +7,28 @@
 		"maintenanceMessage": "ただいまメンテナンス中です。",
 		"unsupportedVersion": "古いバージョンのため利用できません。"
 	},
+	"Map": {
+		"searchPlaceholder": "場所を検索...",
+		"noResultsFound": "検索結果が見つかりませんでした",
+		"searchError": "場所の検索に失敗しました",
+		"locationPermissionDenied": "位置情報の許可が拒否されました",
+		"locationError": "現在地の取得に失敗しました"
+	},
+	"PlaceGuide": {
+		"takePhoto": "写真を撮る",
+		"selectCategories": "カテゴリを選択",
+		"customQuery": "具体的な質問をする...",
+		"generateGuides": "ガイドを生成",
+		"placeGuides": "場所ガイド",
+		"analyzePhoto": "写真を分析",
+		"askAboutPhoto": "この写真について質問...",
+		"photoAnalysis": "写真分析",
+		"loadError": "場所ガイドの読み込みに失敗しました",
+		"generateError": "ガイドの生成に失敗しました",
+		"selectCategoryOrQuery": "カテゴリを選択するか、カスタムクエリを入力してください",
+		"photoAdded": "写真が追加されました！カテゴリを選択して分析してください。",
+		"guidesGenerated": "ガイドが正常に生成されました！"
+	},
 	"SpotCapture": {
 		"captureButton": "なにこれ",
 		"errorMessage": "撮影に失敗しました。もう一度お試しください。",
