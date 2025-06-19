@@ -1,29 +1,39 @@
 {
-	"name": "nanicore-audio-guide",
-	"private": true,
-	"version": "1.0.0",
-	"workspaces": [
-		"app-expo",
-		"functions",
-		"e2e"
-	],
-	"scripts": {
-		"dev": "turbo run dev",
-		"build": "turbo run build",
-		"lint": "turbo run lint",
-		"format": "prettier --write .",
-		"typecheck": "turbo run typecheck",
-		"deploy:functions": "pnpm --workspace functions run deploy",
-		"db:migration": "bash scripts/apply-migration.sh",
-		"db:pull": "bash scripts/db-pull.sh",
-		"db:reset": "bash scripts/reset-schema.sh",
-		"deploy:storage": "pnpm firebase deploy --only storage"
-	},
-	"devDependencies": {
-		"firebase-tools": "^14.1.0",
-		"prettier": "^3.2.5",
-		"turbo": "^2.5.0",
-		"typescript": "^5.4.3"
-	},
-	"packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
+  "name": "web-audio-guide",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "@supabase/supabase-js": "^2.38.4",
+    "zustand": "^4.4.7",
+    "framer-motion": "^10.16.16",
+    "lucide-react": "^0.294.0",
+    "react-hot-toast": "^2.4.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@types/uuid": "^9.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "@vitejs/plugin-react": "^4.1.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
 }
