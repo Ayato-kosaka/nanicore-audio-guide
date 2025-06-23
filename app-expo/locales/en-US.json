@@ -12,7 +12,9 @@
 		"noResultsFound": "No results found for your search",
 		"searchError": "Failed to search location",
 		"locationPermissionDenied": "Location permission denied",
-		"locationError": "Failed to get current location"
+		"locationError": "Failed to get current location",
+		"dragToSelect": "Drag the map to select a location",
+		"searchPlaces": "Search Places"
 	},
 	"PlaceGuide": {
 		"loading": "Loading place guide...",

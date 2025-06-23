@@ -12,7 +12,9 @@
 		"noResultsFound": "検索結果が見つかりませんでした",
 		"searchError": "場所の検索に失敗しました",
 		"locationPermissionDenied": "位置情報の許可が拒否されました",
-		"locationError": "現在地の取得に失敗しました"
+		"locationError": "現在地の取得に失敗しました",
+		"dragToSelect": "地図をドラッグして地点を選択してください",
+		"searchPlaces": "場所を検索"
 	},
 	"PlaceGuide": {
 		"loading": "場所ガイドを読み込み中...",
