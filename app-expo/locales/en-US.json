@@ -15,19 +15,16 @@
 		"locationError": "Failed to get current location"
 	},
 	"PlaceGuide": {
+		"loading": "Loading place guide...",
 		"takePhoto": "Take Photo",
-		"selectCategories": "Select Categories",
-		"customQuery": "Ask something specific...",
-		"generateGuides": "Generate Guides",
-		"placeGuides": "Place Guides",
-		"analyzePhoto": "Analyze Photo",
-		"askAboutPhoto": "Ask about this photo...",
-		"photoAnalysis": "Photo Analysis",
+		"askQuestion": "Ask about this place",
+		"askCustomQuestion": "Ask a Custom Question",
+		"customQueryPlaceholder": "What would you like to know about this place?",
+		"generateGuides": "Generate Guide",
 		"loadError": "Failed to load place guides",
 		"generateError": "Failed to generate guides",
-		"selectCategoryOrQuery": "Please select a category or enter a custom query",
-		"photoAdded": "Photo added! Select categories to analyze it.",
-		"guidesGenerated": "Guides generated successfully!"
+		"photoAdded": "Photo added! Explore the new image.",
+		"guidesGenerated": "Guide generated successfully!"
 	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
