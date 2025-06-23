@@ -10,12 +10,7 @@ type CustomQueryModalProps = {
 	loading: boolean;
 };
 
-export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
-	visible,
-	onDismiss,
-	onSubmit,
-	loading,
-}) => {
+export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onDismiss, onSubmit, loading }) => {
 	const [query, setQuery] = useState("");
 
 	const handleSubmit = useCallback(async () => {
@@ -35,8 +30,7 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
 				visible={visible}
 				onDismiss={handleDismiss}
 				contentContainerStyle={styles.modalContainer}
-				testID="custom-query-modal"
-			>
+				testID="custom-query-modal">
 				<View style={styles.header}>
 					<Text variant="titleLarge" style={styles.title}>
 						{i18n.t("PlaceGuide.askCustomQuestion")}
@@ -68,8 +62,7 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
 						onPress={handleDismiss}
 						style={styles.cancelButton}
 						disabled={loading}
-						testID="cancel-button"
-					>
+						testID="cancel-button">
 						{i18n.t("Common.cancel")}
 					</Button>
 					<Button
@@ -79,8 +72,7 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
 						disabled={loading || !query.trim()}
 						style={styles.submitButton}
 						buttonColor="#fe3764"
-						testID="submit-query-button"
-					>
+						testID="submit-query-button">
 						{i18n.t("PlaceGuide.generateGuides")}
 					</Button>
 				</View>
