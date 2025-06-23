@@ -146,7 +146,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 				onError={handleImageError}
 				testID={`place-image-${placeImage.id}`}>
 				{/* Header Overlay - Inside each card */}
-				<View style={styles.headerOverlay}>
+				<LinearGradient colors={["rgba(0,0,0,0.85)", "rgba(0,0,0,0)"]} style={styles.headerOverlay}>
 					<Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
 						{placeName}
 					</Text>
@@ -158,7 +158,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 						style={styles.closeButton}
 						testID="close-button"
 					/>
-				</View>
+				</LinearGradient>
 
 				{/* Guide Content */}
 				<LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} style={styles.contentOverlay}>
@@ -174,35 +174,32 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 
 					{/* Question Field - Below guide content */}
 					<View style={styles.questionField}>
-						<View style={styles.questionActions}>
-							<View style={styles.categoryButtonsContainer}>
-								{availableCategories.slice(0, 4).map((category) => (
-									<View key={category.id} style={styles.categoryButtonWrapper}>
-										<IconButton
-											icon={category.icon}
-											size={20}
-											iconColor="white"
-											onPress={() => handleCategoryPress(category.id)}
-											style={styles.categoryButton}
-											disabled={isLoading}
-											testID={`category-button-${category.id}`}
-										/>
-										<Text style={styles.categoryLabel}>{category.label}</Text>
-									</View>
-								))}
-							</View>
-							<View style={styles.customQueryButtonWrapper}>
+						<View style={styles.customQueryButtonWrapper}>
+							<IconButton
+								icon="message-text-outline"
+								size={20}
+								iconColor="white"
+								onPress={() => setShowCustomModal(true)}
+								style={styles.customQueryButton}
+								testID="custom-query-button"
+							/>
+							<Text style={styles.categoryLabel}>Custom</Text>
+						</View>
+
+						{availableCategories.slice(0, 4).map((category) => (
+							<View key={category.id} style={styles.categoryButtonWrapper}>
 								<IconButton
-									icon="message-text-outline"
+									icon={category.icon}
 									size={20}
 									iconColor="white"
-									onPress={() => setShowCustomModal(true)}
-									style={styles.customQueryButton}
-									testID="custom-query-button"
+									onPress={() => handleCategoryPress(category.id)}
+									style={styles.categoryButton}
+									disabled={isLoading}
+									testID={`category-button-${category.id}`}
 								/>
-								<Text style={styles.categoryLabel}>Custom</Text>
+								<Text style={styles.categoryLabel}>{category.label}</Text>
 							</View>
-						</View>
+						))}
 					</View>
 				</LinearGradient>
 			</ImageBackground>
@@ -237,7 +234,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		paddingHorizontal: 20,
 		paddingVertical: 12,
-		backgroundColor: "rgba(0, 0, 0, 0.4)",
 		zIndex: 10,
 		...Platform.select({
 			ios: {
@@ -270,7 +266,7 @@ const styles = StyleSheet.create({
 		paddingTop: 120,
 	},
 	guidesScrollView: {
-		maxHeight: "50%",
+		maxHeight: "30%",
 	},
 	guidesContent: {
 		gap: 16,
@@ -281,17 +277,9 @@ const styles = StyleSheet.create({
 		paddingTop: 16,
 		borderTopWidth: 1,
 		borderTopColor: "rgba(255, 255, 255, 0.2)",
-	},
-	questionActions: {
 		flexDirection: "row",
 		alignItems: "flex-start",
-		gap: 16,
-	},
-	categoryButtonsContainer: {
-		flex: 1,
-		flexDirection: "row",
-		flexWrap: "wrap",
-		gap: 12,
+		gap: 8,
 	},
 	categoryButtonWrapper: {
 		alignItems: "center",
