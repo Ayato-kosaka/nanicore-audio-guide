@@ -126,10 +126,6 @@ export default function PlaceGuideScreen() {
 		setCurrentIndex(index);
 	}, []);
 
-	const handleBackPress = useCallback(() => {
-		router.back();
-	}, [router]);
-
 	const handlePrevious = useCallback(() => {
 		if (currentIndex > 0) {
 			carouselRef.current?.scrollTo({ index: currentIndex - 1, animated: true });
@@ -149,10 +145,11 @@ export default function PlaceGuideScreen() {
 					placeImage={item}
 					placeName={params.placeName}
 					onUpdate={(updates) => updatePlaceImage(item.id, updates)}
+					onBackPress={() => router.back()}
 				/>
 			</View>
 		),
-		[params.placeName, updatePlaceImage],
+		[params.placeName, updatePlaceImage, router],
 	);
 
 	if (placeImages.length === 0) {
@@ -170,21 +167,6 @@ export default function PlaceGuideScreen() {
 		<View style={styles.container}>
 			{/* Banner Ad */}
 			<BannerAdView />
-
-			{/* Header Overlay */}
-			<View style={styles.headerOverlay}>
-				<Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
-					{params.placeName}
-				</Text>
-				<IconButton
-					icon="close"
-					size={20}
-					iconColor="white"
-					onPress={handleBackPress}
-					style={styles.closeButton}
-					testID="close-button"
-				/>
-			</View>
 
 			{/* Image Carousel */}
 			<Carousel
@@ -265,41 +247,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-	},
-	headerOverlay: {
-		position: "absolute",
-		top: 0,
-		left: 0,
-		right: 0,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		paddingHorizontal: 20,
-		paddingVertical: 12,
-		backgroundColor: "rgba(0, 0, 0, 0.4)",
-		zIndex: 10,
-		...Platform.select({
-			ios: {
-				paddingTop: 56,
-			},
-			android: {
-				paddingTop: 44,
-			},
-		}),
-	},
-	placeName: {
-		flex: 1,
-		color: "white",
-		fontWeight: "500",
-		fontSize: 16,
-		textShadowColor: "rgba(0, 0, 0, 0.8)",
-		textShadowOffset: { width: 0, height: 1 },
-		textShadowRadius: 2,
-	},
-	closeButton: {
-		margin: 0,
-		backgroundColor: "rgba(255, 255, 255, 0.2)",
-		borderRadius: 20,
 	},
 	carouselContainer: {
 		flex: 1,
