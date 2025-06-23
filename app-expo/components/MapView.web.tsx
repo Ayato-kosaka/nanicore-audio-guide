@@ -1,34 +1,7 @@
 import React from "react";
 import { GoogleMap, Marker as GoogleMarker, LoadScript } from "@react-google-maps/api";
 import type { MapViewProps, MarkerProps } from "./MapView";
-
-// React Native event types used by MapView and Marker
-interface LatLng {
-	latitude: number;
-	longitude: number;
-}
-
-interface Point {
-	x: number;
-	y: number;
-}
-
-interface MarkerPressEvent {
-	nativeEvent: {
-		id: string;
-		action: "marker-press";
-		coordinate: LatLng;
-		position?: Point;
-	};
-}
-
-interface MapPressEvent {
-	nativeEvent: {
-		coordinate: LatLng;
-		position: Point;
-		action?: "marker-press" | "press";
-	};
-}
+import type { MapPressEvent, MarkerPressEvent } from "react-native-maps";
 
 interface RegionChangeDetails {
 	isGesture: boolean;
@@ -38,7 +11,7 @@ export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, test
 	const handleClick = React.useCallback(
 		(e: google.maps.MapMouseEvent) => {
 			if (!onPress || !e.latLng) return;
-			const event: MarkerPressEvent = {
+			const event = {
 				nativeEvent: {
 					id: testID ?? "",
 					action: "marker-press",
@@ -47,7 +20,7 @@ export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, test
 						longitude: e.latLng.lng(),
 					},
 				},
-			};
+			} as unknown as MarkerPressEvent;
 			onPress(event);
 		},
 		[onPress, testID],
@@ -98,7 +71,7 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 		const handleClick = React.useCallback(
 			(e: google.maps.MapMouseEvent) => {
 				if (!onPress || !e.latLng) return;
-				const pressEvent: MapPressEvent = {
+				const pressEvent = {
 					nativeEvent: {
 						coordinate: {
 							latitude: e.latLng.lat(),
@@ -106,7 +79,7 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 						},
 						position: { x: 0, y: 0 },
 					},
-				};
+				} as unknown as MapPressEvent;
 				onPress(pressEvent);
 			},
 			[onPress],
