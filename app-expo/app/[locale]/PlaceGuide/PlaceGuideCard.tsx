@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, ImageBackground, ScrollView } from "react-native";
+import { View, StyleSheet, ImageBackground, ScrollView, Platform } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -28,6 +28,7 @@ type PlaceGuideCardProps = {
 	placeImage: PlaceImage;
 	placeName: string;
 	onUpdate: (updates: Partial<PlaceImage>) => void;
+	onBackPress: () => void;
 };
 
 const GUIDE_CATEGORIES = [
@@ -41,7 +42,7 @@ const GUIDE_CATEGORIES = [
 	{ id: "safety", label: "Safety", icon: "shield-check-outline" },
 ];
 
-export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, placeName, onUpdate }) => {
+export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, placeName, onUpdate, onBackPress }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 
@@ -144,32 +145,19 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 				resizeMode="cover"
 				onError={handleImageError}
 				testID={`place-image-${placeImage.id}`}>
-				{/* Question Field Overlay */}
-				<View style={styles.questionFieldOverlay}>
-					<View style={styles.questionContainer}>
-						<IconButton
-							icon="message-text-outline"
-							size={18}
-							iconColor="white"
-							onPress={() => setShowCustomModal(true)}
-							style={styles.messageIcon}
-							testID="custom-query-button"
-						/>
-						<View style={styles.categoriesContainer}>
-							{availableCategories.slice(0, 4).map((category) => (
-								<IconButton
-									key={category.id}
-									icon={category.icon}
-									size={16}
-									iconColor="white"
-									onPress={() => handleCategoryPress(category.id)}
-									style={styles.categoryButton}
-									disabled={isLoading}
-									testID={`category-button-${category.id}`}
-								/>
-							))}
-						</View>
-					</View>
+				{/* Header Overlay - Inside each card */}
+				<View style={styles.headerOverlay}>
+					<Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
+						{placeName}
+					</Text>
+					<IconButton
+						icon="close"
+						size={20}
+						iconColor="white"
+						onPress={onBackPress}
+						style={styles.closeButton}
+						testID="close-button"
+					/>
 				</View>
 
 				{/* Guide Content */}
@@ -183,6 +171,39 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 							<GuideSection key={guide.id} guide={guide} isFirst={index === 0} />
 						))}
 					</ScrollView>
+
+					{/* Question Field - Below guide content */}
+					<View style={styles.questionField}>
+						<View style={styles.questionActions}>
+							<View style={styles.categoryButtonsContainer}>
+								{availableCategories.slice(0, 4).map((category) => (
+									<View key={category.id} style={styles.categoryButtonWrapper}>
+										<IconButton
+											icon={category.icon}
+											size={20}
+											iconColor="white"
+											onPress={() => handleCategoryPress(category.id)}
+											style={styles.categoryButton}
+											disabled={isLoading}
+											testID={`category-button-${category.id}`}
+										/>
+										<Text style={styles.categoryLabel}>{category.label}</Text>
+									</View>
+								))}
+							</View>
+							<View style={styles.customQueryButtonWrapper}>
+								<IconButton
+									icon="message-text-outline"
+									size={20}
+									iconColor="white"
+									onPress={() => setShowCustomModal(true)}
+									style={styles.customQueryButton}
+									testID="custom-query-button"
+								/>
+								<Text style={styles.categoryLabel}>Custom</Text>
+							</View>
+						</View>
+					</View>
 				</LinearGradient>
 			</ImageBackground>
 
@@ -206,37 +227,40 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "flex-end",
 	},
-	questionFieldOverlay: {
+	headerOverlay: {
 		position: "absolute",
-		top: 80,
-		left: 20,
-		right: 20,
-		zIndex: 5,
-	},
-	questionContainer: {
+		top: 0,
+		left: 0,
+		right: 0,
 		flexDirection: "row",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.6)",
-		borderRadius: 20,
-		paddingVertical: 6,
-		paddingHorizontal: 12,
-		backdropFilter: "blur(10px)",
+		justifyContent: "space-between",
+		paddingHorizontal: 20,
+		paddingVertical: 12,
+		backgroundColor: "rgba(0, 0, 0, 0.4)",
+		zIndex: 10,
+		...Platform.select({
+			ios: {
+				paddingTop: 56,
+			},
+			android: {
+				paddingTop: 44,
+			},
+		}),
 	},
-	messageIcon: {
-		margin: 0,
-		marginRight: 4,
-	},
-	categoriesContainer: {
-		flexDirection: "row",
+	placeName: {
 		flex: 1,
-		justifyContent: "space-around",
+		color: "white",
+		fontWeight: "500",
+		fontSize: 16,
+		textShadowColor: "rgba(0, 0, 0, 0.8)",
+		textShadowOffset: { width: 0, height: 1 },
+		textShadowRadius: 2,
 	},
-	categoryButton: {
+	closeButton: {
 		margin: 0,
-		backgroundColor: "rgba(255, 255, 255, 0.15)",
-		borderRadius: 16,
-		width: 32,
-		height: 32,
+		backgroundColor: "rgba(255, 255, 255, 0.2)",
+		borderRadius: 20,
 	},
 	contentOverlay: {
 		flex: 1,
@@ -246,10 +270,58 @@ const styles = StyleSheet.create({
 		paddingTop: 120,
 	},
 	guidesScrollView: {
-		maxHeight: "40%",
+		maxHeight: "50%",
 	},
 	guidesContent: {
 		gap: 16,
 		paddingBottom: 20,
+	},
+	questionField: {
+		marginTop: 16,
+		paddingTop: 16,
+		borderTopWidth: 1,
+		borderTopColor: "rgba(255, 255, 255, 0.2)",
+	},
+	questionActions: {
+		flexDirection: "row",
+		alignItems: "flex-start",
+		gap: 16,
+	},
+	categoryButtonsContainer: {
+		flex: 1,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		gap: 12,
+	},
+	categoryButtonWrapper: {
+		alignItems: "center",
+		minWidth: 60,
+	},
+	categoryButton: {
+		margin: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.15)",
+		borderRadius: 20,
+		width: 40,
+		height: 40,
+	},
+	customQueryButtonWrapper: {
+		alignItems: "center",
+		minWidth: 60,
+	},
+	customQueryButton: {
+		margin: 0,
+		backgroundColor: "rgba(254, 55, 100, 0.3)",
+		borderRadius: 20,
+		width: 40,
+		height: 40,
+	},
+	categoryLabel: {
+		fontSize: 10,
+		color: "white",
+		textAlign: "center",
+		marginTop: 4,
+		textShadowColor: "rgba(0, 0, 0, 0.8)",
+		textShadowOffset: { width: 0, height: 1 },
+		textShadowRadius: 2,
 	},
 });
