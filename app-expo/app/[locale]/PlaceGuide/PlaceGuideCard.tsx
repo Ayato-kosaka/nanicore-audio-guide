@@ -21,9 +21,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ guide }) => {
 					<Text variant="titleMedium" style={styles.title} numberOfLines={2}>
 						{guide.title}
 					</Text>
-					<Chip size="small" style={styles.categoryChip}>
-						{guide.category}
-					</Chip>
+					<Chip style={styles.categoryChip}>{guide.category}</Chip>
 				</View>
 				<Text variant="bodyMedium" style={styles.description} numberOfLines={4}>
 					{guide.content}
