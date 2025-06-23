@@ -1,18 +1,14 @@
-import { Platform } from "react-native";
-import type { MapViewProps, MarkerProps, Region } from "./MapView.native";
+import React from "react";
+import MapViewRN, { Marker as RNMarker } from "react-native-maps";
+import type { MapViewProps as RNMapViewProps, MapMarkerProps as RNMarkerProps, Region } from "react-native-maps";
 
-let MapView: React.ComponentType<MapViewProps>;
-let Marker: React.ComponentType<MarkerProps>;
+export type MapViewProps = RNMapViewProps;
+export type MarkerProps = RNMarkerProps;
+export type { Region };
 
-if (Platform.OS === "web") {
-  const Web = require("./MapView.web");
-  MapView = Web.default;
-  Marker = Web.Marker;
-} else {
-  const Native = require("./MapView.native");
-  MapView = Native.default;
-  Marker = Native.Marker;
-}
+const MapView = React.forwardRef<MapViewRN, MapViewProps>((props, ref) => {
+	return <MapViewRN ref={ref} {...props} />;
+});
 
-export { MapView as default, Marker };
-export type { MapViewProps, MarkerProps, Region };
+export const Marker = RNMarker;
+export default MapView;

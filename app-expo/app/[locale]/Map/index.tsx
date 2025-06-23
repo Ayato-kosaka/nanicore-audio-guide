@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, ComponentRef } from "react";
 import { View, StyleSheet, Platform, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Searchbar, FAB } from "react-native-paper";
@@ -34,7 +34,7 @@ export default function MapScreen() {
 	const [region, setRegion] = useState<Region>(INITIAL_REGION);
 	const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);
 	const [isSearching, setIsSearching] = useState(false);
-	const mapRef = useRef<MapView>(null);
+	const mapRef = useRef<ComponentRef<typeof MapView> | null>(null);
 
 	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
@@ -49,7 +49,7 @@ export default function MapScreen() {
 
 			// Use Expo Location for geocoding
 			const geocoded = await Location.geocodeAsync(searchQuery);
-			
+
 			if (geocoded.length > 0) {
 				const location = geocoded[0];
 				const newRegion: Region = {
@@ -82,22 +82,25 @@ export default function MapScreen() {
 		}
 	}, [searchQuery, logFrontendEvent, showSnackbar]);
 
-	const handleMapPress = useCallback((event: any) => {
-		const { coordinate } = event.nativeEvent;
-		const location: MapLocation = {
-			latitude: coordinate.latitude,
-			longitude: coordinate.longitude,
-			name: `${coordinate.latitude.toFixed(4)}, ${coordinate.longitude.toFixed(4)}`,
-		};
+	const handleMapPress = useCallback(
+		(event: any) => {
+			const { coordinate } = event.nativeEvent;
+			const location: MapLocation = {
+				latitude: coordinate.latitude,
+				longitude: coordinate.longitude,
+				name: `${coordinate.latitude.toFixed(4)}, ${coordinate.longitude.toFixed(4)}`,
+			};
 
-		setSelectedLocation(location);
+			setSelectedLocation(location);
 
-		logFrontendEvent({
-			event_name: "mapLocationSelected",
-			error_level: "info",
-			payload: { location },
-		});
-	}, [logFrontendEvent]);
+			logFrontendEvent({
+				event_name: "mapLocationSelected",
+				error_level: "info",
+				payload: { location },
+			});
+		},
+		[logFrontendEvent],
+	);
 
 	const handleLocationSelect = useCallback(() => {
 		if (!selectedLocation) return;
@@ -119,7 +122,7 @@ export default function MapScreen() {
 
 	const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
-		
+
 		logFrontendEvent({
 			event_name: "mapCameraButtonPressed",
 			error_level: "info",
@@ -183,8 +186,7 @@ export default function MapScreen() {
 				onPress={handleMapPress}
 				showsUserLocation={true}
 				showsMyLocationButton={false}
-				testID="map-view"
-			>
+				testID="map-view">
 				{selectedLocation && (
 					<Marker
 						coordinate={{
@@ -205,12 +207,7 @@ export default function MapScreen() {
 					style={[styles.fab, styles.locationFab]}
 					testID="location-fab"
 				/>
-				<FAB
-					icon="camera"
-					onPress={handleCameraPress}
-					style={[styles.fab, styles.cameraFab]}
-					testID="camera-fab"
-				/>
+				<FAB icon="camera" onPress={handleCameraPress} style={[styles.fab, styles.cameraFab]} testID="camera-fab" />
 			</View>
 		</View>
 	);
