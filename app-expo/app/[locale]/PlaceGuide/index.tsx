@@ -189,8 +189,8 @@ export default function PlaceGuideScreen() {
 				pagingEnabled={true}
 				snapEnabled={true}
 				modeConfig={{
-					parallaxScrollingScale: 0.9,
-					parallaxScrollingOffset: 50,
+					parallaxScrollingScale: 0.95,
+					parallaxScrollingOffset: 30,
 				}}
 				scrollAnimationDuration={300}
 				renderItem={renderItem}
@@ -204,7 +204,7 @@ export default function PlaceGuideScreen() {
 			{/* Camera Button */}
 			<IconButton
 				icon="camera"
-				size={32}
+				size={28}
 				mode="contained"
 				containerColor="#fe3764"
 				iconColor="white"
@@ -234,7 +234,7 @@ export default function PlaceGuideScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#f5f5f5",
+		backgroundColor: "#fafafa",
 	},
 	loadingContainer: {
 		flex: 1,
@@ -244,31 +244,38 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
-		paddingHorizontal: 8,
-		paddingVertical: 8,
+		paddingHorizontal: 4,
+		paddingVertical: 12,
 		backgroundColor: "white",
-		borderBottomWidth: 1,
-		borderBottomColor: "#e0e0e0",
+		borderBottomWidth: 0.5,
+		borderBottomColor: "#e8e8e8",
+		elevation: 2,
+		shadowColor: "#000",
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		shadowOffset: { width: 0, height: 2 },
 		...Platform.select({
 			ios: {
-				paddingTop: 50,
+				paddingTop: 56,
 			},
 			android: {
-				paddingTop: 20,
+				paddingTop: 24,
 			},
 		}),
 	},
 	backButton: {
 		margin: 0,
+		marginLeft: 4,
 	},
 	placeName: {
 		flex: 1,
 		textAlign: "center",
-		fontWeight: "600",
+		fontWeight: "700",
 		marginHorizontal: 16,
+		color: "#1a1a1a",
 	},
 	headerSpacer: {
-		width: 40,
+		width: 48,
 	},
 	carouselContainer: {
 		flex: 1,
@@ -283,33 +290,38 @@ const styles = StyleSheet.create({
 	},
 	cameraButton: {
 		position: "absolute",
-		bottom: 32,
-		right: 16,
-		elevation: 8,
-		shadowColor: "#000",
-		shadowOpacity: 0.3,
-		shadowRadius: 12,
-		shadowOffset: { width: 0, height: 4 },
+		bottom: 120,
+		right: 20,
+		elevation: 12,
+		shadowColor: "#fe3764",
+		shadowOpacity: 0.4,
+		shadowRadius: 16,
+		shadowOffset: { width: 0, height: 6 },
+		borderRadius: 28,
 	},
 	pageIndicator: {
 		position: "absolute",
-		bottom: 100,
+		bottom: 24,
 		left: 0,
 		right: 0,
 		flexDirection: "row",
 		justifyContent: "center",
 		alignItems: "center",
-		gap: 8,
+		gap: 6,
+		paddingHorizontal: 20,
+		paddingVertical: 12,
 	},
 	dot: {
-		width: 8,
-		height: 8,
-		borderRadius: 4,
+		width: 6,
+		height: 6,
+		borderRadius: 3,
 	},
 	activeDot: {
 		backgroundColor: "#fe3764",
+		width: 20,
+		borderRadius: 3,
 	},
 	inactiveDot: {
-		backgroundColor: "rgba(255, 255, 255, 0.5)",
+		backgroundColor: "rgba(0, 0, 0, 0.2)",
 	},
 });

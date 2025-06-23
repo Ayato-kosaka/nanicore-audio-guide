@@ -43,7 +43,7 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
 					</Text>
 					<IconButton
 						icon="close"
-						size={24}
+						size={20}
 						onPress={handleDismiss}
 						style={styles.closeButton}
 						testID="close-modal-button"
@@ -78,6 +78,7 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({
 						loading={loading}
 						disabled={loading || !query.trim()}
 						style={styles.submitButton}
+						buttonColor="#fe3764"
 						testID="submit-query-button"
 					>
 						{i18n.t("PlaceGuide.generateGuides")}
@@ -92,9 +93,14 @@ const styles = StyleSheet.create({
 	modalContainer: {
 		backgroundColor: "white",
 		margin: 20,
-		borderRadius: 12,
-		padding: 20,
+		borderRadius: 16,
+		padding: 24,
 		maxHeight: "80%",
+		elevation: 8,
+		shadowColor: "#000",
+		shadowOpacity: 0.25,
+		shadowRadius: 12,
+		shadowOffset: { width: 0, height: 4 },
 	},
 	header: {
 		flexDirection: "row",
@@ -104,13 +110,15 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontWeight: "600",
+		fontWeight: "700",
+		color: "#1a1a1a",
 	},
 	closeButton: {
 		margin: 0,
 	},
 	textInput: {
-		marginBottom: 20,
+		marginBottom: 24,
+		backgroundColor: "#fafafa",
 	},
 	buttonContainer: {
 		flexDirection: "row",
@@ -118,6 +126,7 @@ const styles = StyleSheet.create({
 	},
 	cancelButton: {
 		flex: 1,
+		borderColor: "#e0e0e0",
 	},
 	submitButton: {
 		flex: 1,

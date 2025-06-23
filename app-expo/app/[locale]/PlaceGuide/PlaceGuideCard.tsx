@@ -1,12 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { View, StyleSheet, ImageBackground, ScrollView, Platform } from "react-native";
-import { Text, IconButton, Chip, TextInput, Button } from "react-native-paper";
+import { View, StyleSheet, ImageBackground, ScrollView } from "react-native";
+import { Text, IconButton, Chip } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
-import { useDialog } from "@/contexts/DialogProvider";
 import i18n from "@/lib/i18n";
 
 import { GuideSection } from "./GuideSection";
@@ -57,13 +56,9 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 	const { showSnackbar } = useSnackbar();
-	const { showDialog } = useDialog();
 
 	const [chips, setChips] = useState<GuideChip[]>(GUIDE_CATEGORIES);
 	const [showCustomModal, setShowCustomModal] = useState(false);
-	const [currentGuideIndex, setCurrentGuideIndex] = useState(0);
-
-	const currentGuide = placeImage.guides[currentGuideIndex] || placeImage.guides[0];
 
 	const handleChipPress = useCallback(
 		withLoading(async (chipId: string) => {
@@ -82,8 +77,8 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				const updatedGuides = [...placeImage.guides, newGuide];
 				onUpdate({ guides: updatedGuides });
 
-				// Navigate to the new guide
-				setCurrentGuideIndex(updatedGuides.length - 1);
+				// Hide the pressed chip
+				setChips(prev => prev.filter(c => c.id !== chipId));
 
 				logFrontendEvent({
 					event_name: "placeGuideChipPressed",
@@ -120,9 +115,6 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				const updatedGuides = [...placeImage.guides, newGuide];
 				onUpdate({ guides: updatedGuides });
 
-				// Navigate to the new guide
-				setCurrentGuideIndex(updatedGuides.length - 1);
-
 				logFrontendEvent({
 					event_name: "placeGuideCustomQuery",
 					error_level: "info",
@@ -143,18 +135,6 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 		[placeImage, placeName, onUpdate, logFrontendEvent, showSnackbar],
 	);
 
-	const handlePreviousGuide = useCallback(() => {
-		if (currentGuideIndex > 0) {
-			setCurrentGuideIndex(currentGuideIndex - 1);
-		}
-	}, [currentGuideIndex]);
-
-	const handleNextGuide = useCallback(() => {
-		if (currentGuideIndex < placeImage.guides.length - 1) {
-			setCurrentGuideIndex(currentGuideIndex + 1);
-		}
-	}, [currentGuideIndex, placeImage.guides.length]);
-
 	const handleImageError = useCallback(() => {
 		logFrontendEvent({
 			event_name: "placeImageLoadError",
@@ -172,80 +152,59 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				onError={handleImageError}
 				testID={`place-image-${placeImage.id}`}>
 				
-				{/* Guide Content Overlay */}
-				<LinearGradient 
-					colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.8)"]} 
-					style={styles.contentOverlay}
-				>
-					{/* Guide Navigation */}
-					{placeImage.guides.length > 1 && (
-						<View style={styles.guideNavigation}>
-							<IconButton
-								icon="chevron-left"
-								size={20}
-								iconColor="white"
-								onPress={handlePreviousGuide}
-								disabled={currentGuideIndex === 0}
-								style={styles.navButton}
-								testID="previous-guide-button"
-							/>
-							<Text style={styles.guideCounter}>
-								{currentGuideIndex + 1} / {placeImage.guides.length}
-							</Text>
-							<IconButton
-								icon="chevron-right"
-								size={20}
-								iconColor="white"
-								onPress={handleNextGuide}
-								disabled={currentGuideIndex === placeImage.guides.length - 1}
-								style={styles.navButton}
-								testID="next-guide-button"
-							/>
-						</View>
-					)}
-
-					{/* Current Guide */}
-					<GuideSection guide={currentGuide} />
-				</LinearGradient>
-			</ImageBackground>
-
-			{/* Question Field */}
-			<View style={styles.questionField}>
-				<View style={styles.questionHeader}>
-					<IconButton
-						icon="message-text-outline"
-						size={24}
-						iconColor="#fe3764"
-						onPress={() => setShowCustomModal(true)}
-						style={styles.messageIcon}
-						testID="custom-query-button"
-					/>
-					<Text variant="titleSmall" style={styles.questionTitle}>
-						{i18n.t("PlaceGuide.askQuestion")}
-					</Text>
+				{/* Question Field Overlay */}
+				<View style={styles.questionFieldOverlay}>
+					<View style={styles.questionContainer}>
+						<IconButton
+							icon="message-text-outline"
+							size={20}
+							iconColor="white"
+							onPress={() => setShowCustomModal(true)}
+							style={styles.messageIcon}
+							testID="custom-query-button"
+						/>
+						<ScrollView 
+							horizontal 
+							showsHorizontalScrollIndicator={false}
+							style={styles.chipsContainer}
+							contentContainerStyle={styles.chipsContent}
+						>
+							{chips.map(chip => (
+								<Chip
+									key={chip.id}
+									onPress={() => handleChipPress(chip.id)}
+									style={styles.chip}
+									textStyle={styles.chipText}
+									disabled={isLoading}
+									testID={`category-chip-${chip.id}`}
+								>
+									{chip.label}
+								</Chip>
+							))}
+						</ScrollView>
+					</View>
 				</View>
 
-				{/* Category Chips */}
-				<ScrollView 
-					horizontal 
-					showsHorizontalScrollIndicator={false}
-					style={styles.chipsContainer}
-					contentContainerStyle={styles.chipsContent}
+				{/* Guide Content */}
+				<LinearGradient 
+					colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} 
+					style={styles.contentOverlay}
 				>
-					{chips.map(chip => (
-						<Chip
-							key={chip.id}
-							onPress={() => handleChipPress(chip.id)}
-							style={styles.chip}
-							textStyle={styles.chipText}
-							disabled={isLoading}
-							testID={`category-chip-${chip.id}`}
-						>
-							{chip.label}
-						</Chip>
-					))}
-				</ScrollView>
-			</View>
+					<ScrollView 
+						style={styles.guidesScrollView}
+						showsVerticalScrollIndicator={false}
+						contentContainerStyle={styles.guidesContent}
+					>
+						{placeImage.guides.map((guide, index) => (
+							<GuideSection 
+								key={guide.id} 
+								guide={guide} 
+								isFirst={index === 0}
+							/>
+						))}
+					</ScrollView>
+				</LinearGradient>
+			</ImageBackground>
 
 			{/* Custom Query Modal */}
 			<CustomQueryModal
@@ -267,62 +226,54 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "flex-end",
 	},
-	contentOverlay: {
-		flex: 1,
-		justifyContent: "flex-end",
-		paddingHorizontal: 20,
-		paddingBottom: 20,
+	questionFieldOverlay: {
+		position: "absolute",
+		top: 20,
+		left: 16,
+		right: 16,
+		zIndex: 1,
 	},
-	guideNavigation: {
+	questionContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "center",
-		marginBottom: 16,
-	},
-	navButton: {
-		backgroundColor: "rgba(255, 255, 255, 0.2)",
-		margin: 0,
-	},
-	guideCounter: {
-		color: "white",
-		fontSize: 14,
-		fontWeight: "600",
-		marginHorizontal: 16,
-	},
-	questionField: {
-		backgroundColor: "white",
-		paddingHorizontal: 20,
-		paddingVertical: 16,
-		borderTopWidth: 1,
-		borderTopColor: "#e0e0e0",
-	},
-	questionHeader: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginBottom: 12,
+		backgroundColor: "rgba(0, 0, 0, 0.6)",
+		borderRadius: 20,
+		paddingVertical: 8,
+		paddingHorizontal: 12,
+		backdropFilter: "blur(10px)",
 	},
 	messageIcon: {
 		margin: 0,
 		marginRight: 8,
 	},
-	questionTitle: {
-		flex: 1,
-		fontWeight: "600",
-		color: "#333",
-	},
 	chipsContainer: {
-		marginHorizontal: -4,
+		flex: 1,
 	},
 	chipsContent: {
-		paddingHorizontal: 4,
-		gap: 8,
+		gap: 6,
+		paddingRight: 8,
 	},
 	chip: {
-		backgroundColor: "#f5f5f5",
-		marginHorizontal: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.9)",
+		height: 28,
 	},
 	chipText: {
-		fontSize: 12,
-		color: "#666",
+		fontSize: 11,
+		color: "#333",
+		fontWeight: "500",
+	},
+	contentOverlay: {
+		flex: 1,
+		justifyContent: "flex-end",
+		paddingHorizontal: 20,
+		paddingBottom: 24,
+		paddingTop: 80,
+	},
+	guidesScrollView: {
+		maxHeight: "70%",
+	},
+	guidesContent: {
+		gap: 20,
+		paddingBottom: 20,
 	},
 });
