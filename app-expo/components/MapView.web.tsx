@@ -1,29 +1,6 @@
 import React from "react";
 import { GoogleMap, Marker as GoogleMarker, LoadScript } from "@react-google-maps/api";
-
-export type Region = {
-	latitude: number;
-	longitude: number;
-	latitudeDelta: number;
-	longitudeDelta: number;
-};
-
-export type MapViewProps = {
-	style?: React.CSSProperties;
-	region: Region;
-	onRegionChangeComplete?: (region: Region) => void;
-	onPress?: (e: google.maps.MapMouseEvent) => void;
-	showsUserLocation?: boolean;
-	showsMyLocationButton?: boolean;
-	children?: React.ReactNode;
-};
-
-export type MarkerProps = {
-	coordinate: { latitude: number; longitude: number };
-	title?: string;
-	onPress?: () => void;
-	testID?: string;
-};
+import type { MapViewProps, MarkerProps } from "./MapView";
 
 export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, testID }) => (
 	<GoogleMarker
