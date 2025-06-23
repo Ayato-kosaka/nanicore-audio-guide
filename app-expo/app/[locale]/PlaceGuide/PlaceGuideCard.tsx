@@ -48,11 +48,7 @@ const GUIDE_CATEGORIES: GuideChip[] = [
 	{ id: "safety", label: "Safety", selected: false },
 ];
 
-export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ 
-	placeImage, 
-	placeName, 
-	onUpdate 
-}) => {
+export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, placeName, onUpdate }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 	const { showSnackbar } = useSnackbar();
@@ -62,7 +58,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 
 	const handleChipPress = useCallback(
 		withLoading(async (chipId: string) => {
-			const chip = chips.find(c => c.id === chipId);
+			const chip = chips.find((c) => c.id === chipId);
 			if (!chip) return;
 
 			try {
@@ -78,7 +74,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				onUpdate({ guides: updatedGuides });
 
 				// Hide the pressed chip
-				setChips(prev => prev.filter(c => c.id !== chipId));
+				setChips((prev) => prev.filter((c) => c.id !== chipId));
 
 				logFrontendEvent({
 					event_name: "placeGuideChipPressed",
@@ -151,58 +147,47 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				resizeMode="cover"
 				onError={handleImageError}
 				testID={`place-image-${placeImage.id}`}>
-				
-				{/* Question Field Overlay */}
-				<View style={styles.questionFieldOverlay}>
-					<View style={styles.questionContainer}>
-						<IconButton
-							icon="message-text-outline"
-							size={20}
-							iconColor="white"
-							onPress={() => setShowCustomModal(true)}
-							style={styles.messageIcon}
-							testID="custom-query-button"
-						/>
-						<ScrollView 
-							horizontal 
-							showsHorizontalScrollIndicator={false}
-							style={styles.chipsContainer}
-							contentContainerStyle={styles.chipsContent}
-						>
-							{chips.map(chip => (
-								<Chip
-									key={chip.id}
-									onPress={() => handleChipPress(chip.id)}
-									style={styles.chip}
-									textStyle={styles.chipText}
-									disabled={isLoading}
-									testID={`category-chip-${chip.id}`}
-								>
-									{chip.label}
-								</Chip>
-							))}
-						</ScrollView>
-					</View>
-				</View>
-
 				{/* Guide Content */}
-				<LinearGradient 
-					colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} 
-					style={styles.contentOverlay}
-				>
-					<ScrollView 
+				<LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} style={styles.contentOverlay}>
+					<ScrollView
 						style={styles.guidesScrollView}
 						showsVerticalScrollIndicator={false}
-						contentContainerStyle={styles.guidesContent}
-					>
+						contentContainerStyle={styles.guidesContent}>
 						{placeImage.guides.map((guide, index) => (
-							<GuideSection 
-								key={guide.id} 
-								guide={guide} 
-								isFirst={index === 0}
-							/>
+							<GuideSection key={guide.id} guide={guide} isFirst={index === 0} />
 						))}
 					</ScrollView>
+
+					{/* Question Field Overlay */}
+					<View style={styles.questionFieldOverlay}>
+						<View style={styles.questionContainer}>
+							<IconButton
+								icon="message-text-outline"
+								size={20}
+								iconColor="white"
+								onPress={() => setShowCustomModal(true)}
+								style={styles.messageIcon}
+								testID="custom-query-button"
+							/>
+							<ScrollView
+								horizontal
+								showsHorizontalScrollIndicator={false}
+								style={styles.chipsContainer}
+								contentContainerStyle={styles.chipsContent}>
+								{chips.map((chip) => (
+									<Chip
+										key={chip.id}
+										onPress={() => handleChipPress(chip.id)}
+										style={styles.chip}
+										textStyle={styles.chipText}
+										disabled={isLoading}
+										testID={`category-chip-${chip.id}`}>
+										{chip.label}
+									</Chip>
+								))}
+							</ScrollView>
+						</View>
+					</View>
 				</LinearGradient>
 			</ImageBackground>
 
@@ -227,11 +212,7 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end",
 	},
 	questionFieldOverlay: {
-		position: "absolute",
-		top: 20,
-		left: 16,
-		right: 16,
-		zIndex: 1,
+		marginTop: 20,
 	},
 	questionContainer: {
 		flexDirection: "row",
@@ -270,7 +251,7 @@ const styles = StyleSheet.create({
 		paddingTop: 80,
 	},
 	guidesScrollView: {
-		maxHeight: "70%",
+		maxHeight: "30%",
 	},
 	guidesContent: {
 		gap: 20,

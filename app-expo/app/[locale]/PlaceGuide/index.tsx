@@ -70,7 +70,8 @@ export default function PlaceGuideScreen() {
 					{
 						id: "initial_guide",
 						title: `Welcome to ${params.placeName}`,
-						content: "This is a beautiful location with rich history and culture. Explore the area to discover hidden gems and local attractions.",
+						content:
+							"This is a beautiful location with rich history and culture. Explore the area to discover hidden gems and local attractions.",
 						category: "general",
 					},
 				],
@@ -90,7 +91,7 @@ export default function PlaceGuideScreen() {
 	const handleCameraPress = useCallback(() => {
 		// Mock photo capture - replace with actual camera implementation
 		const mockImageUri = `https://picsum.photos/400/600?random=${Date.now()}`;
-		
+
 		const newImage: PlaceImage = {
 			id: `photo_${Date.now()}`,
 			imageUri: mockImageUri,
@@ -99,14 +100,15 @@ export default function PlaceGuideScreen() {
 				{
 					id: `guide_${Date.now()}`,
 					title: "Photo Analysis",
-					content: "This is an analysis of your captured photo. The AI has identified interesting elements and can provide detailed information about what's visible in the image.",
+					content:
+						"This is an analysis of your captured photo. The AI has identified interesting elements and can provide detailed information about what's visible in the image.",
 					category: "photo_analysis",
 				},
 			],
 		};
 
-		setPlaceImages(prev => [...prev, newImage]);
-		
+		setPlaceImages((prev) => [...prev, newImage]);
+
 		// Navigate to the new image
 		setTimeout(() => {
 			carouselRef.current?.scrollTo({ index: placeImages.length, animated: true });
@@ -122,11 +124,7 @@ export default function PlaceGuideScreen() {
 	}, [placeImages.length, logFrontendEvent, showSnackbar]);
 
 	const updatePlaceImage = useCallback((imageId: string, updates: Partial<PlaceImage>) => {
-		setPlaceImages(prev => 
-			prev.map(image => 
-				image.id === imageId ? { ...image, ...updates } : image
-			)
-		);
+		setPlaceImages((prev) => prev.map((image) => (image.id === imageId ? { ...image, ...updates } : image)));
 	}, []);
 
 	const handleSnapToItem = useCallback((index: number) => {
@@ -204,7 +202,7 @@ export default function PlaceGuideScreen() {
 			{/* Camera Button */}
 			<IconButton
 				icon="camera"
-				size={28}
+				size={44}
 				mode="contained"
 				containerColor="#fe3764"
 				iconColor="white"
@@ -217,13 +215,7 @@ export default function PlaceGuideScreen() {
 			{placeImages.length > 1 && (
 				<View style={styles.pageIndicator}>
 					{placeImages.map((_, index) => (
-						<View
-							key={index}
-							style={[
-								styles.dot,
-								index === currentIndex ? styles.activeDot : styles.inactiveDot,
-							]}
-						/>
+						<View key={index} style={[styles.dot, index === currentIndex ? styles.activeDot : styles.inactiveDot]} />
 					))}
 				</View>
 			)}
@@ -290,8 +282,8 @@ const styles = StyleSheet.create({
 	},
 	cameraButton: {
 		position: "absolute",
-		bottom: 120,
-		right: 20,
+		bottom: 90,
+		right: 30,
 		elevation: 12,
 		shadowColor: "#fe3764",
 		shadowOpacity: 0.4,
