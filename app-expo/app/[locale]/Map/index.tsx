@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { View, StyleSheet, Platform, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Searchbar, FAB } from "react-native-paper";
-import MapView, { Marker, Region } from "react-native-maps";
+import MapView, { Marker, Region } from "@/components/MapView";
 import * as Location from "expo-location";
 
 import { useLogger } from "@/hooks/useLogger";
