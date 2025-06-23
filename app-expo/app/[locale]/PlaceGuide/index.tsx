@@ -7,7 +7,6 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useLogger } from "@/hooks/useLogger";
 import { useLocale } from "@/hooks/useLocale";
 import { useWithLoading } from "@/hooks/useWithLoading";
-import { useSnackbar } from "@/contexts/SnackbarProvider";
 import i18n from "@/lib/i18n";
 
 import { PlaceGuideCard } from "./PlaceGuideCard";
@@ -42,7 +41,6 @@ export default function PlaceGuideScreen() {
 	const locale = useLocale();
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
-	const { showSnackbar } = useSnackbar();
 
 	const [placeImages, setPlaceImages] = useState<PlaceImage[]>([]);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,7 +82,6 @@ export default function PlaceGuideScreen() {
 				error_level: "error",
 				payload: { error: error.message },
 			});
-			showSnackbar(i18n.t("PlaceGuide.loadError"));
 		}
 	});
 
@@ -119,9 +116,7 @@ export default function PlaceGuideScreen() {
 			error_level: "info",
 			payload: { imageId: newImage.id },
 		});
-
-		showSnackbar(i18n.t("PlaceGuide.photoAdded"));
-	}, [placeImages.length, logFrontendEvent, showSnackbar]);
+	}, [placeImages.length, logFrontendEvent]);
 
 	const updatePlaceImage = useCallback((imageId: string, updates: Partial<PlaceImage>) => {
 		setPlaceImages((prev) => prev.map((image) => (image.id === imageId ? { ...image, ...updates } : image)));
@@ -134,6 +129,18 @@ export default function PlaceGuideScreen() {
 	const handleBackPress = useCallback(() => {
 		router.back();
 	}, [router]);
+
+	const handlePrevious = useCallback(() => {
+		if (currentIndex > 0) {
+			carouselRef.current?.scrollTo({ index: currentIndex - 1, animated: true });
+		}
+	}, [currentIndex]);
+
+	const handleNext = useCallback(() => {
+		if (currentIndex < placeImages.length - 1) {
+			carouselRef.current?.scrollTo({ index: currentIndex + 1, animated: true });
+		}
+	}, [currentIndex, placeImages.length]);
 
 	const renderItem = useCallback(
 		({ item, index }: { item: PlaceImage; index: number }) => (
@@ -164,19 +171,19 @@ export default function PlaceGuideScreen() {
 			{/* Banner Ad */}
 			<BannerAdView />
 
-			{/* Header */}
-			<View style={styles.header}>
-				<IconButton
-					icon="arrow-left"
-					size={24}
-					onPress={handleBackPress}
-					style={styles.backButton}
-					testID="back-button"
-				/>
-				<Text variant="headlineSmall" style={styles.placeName} numberOfLines={1}>
+			{/* Header Overlay */}
+			<View style={styles.headerOverlay}>
+				<Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
 					{params.placeName}
 				</Text>
-				<View style={styles.headerSpacer} />
+				<IconButton
+					icon="close"
+					size={20}
+					iconColor="white"
+					onPress={handleBackPress}
+					style={styles.closeButton}
+					testID="close-button"
+				/>
 			</View>
 
 			{/* Image Carousel */}
@@ -198,6 +205,32 @@ export default function PlaceGuideScreen() {
 				mode="parallax"
 				testID="place-images-carousel"
 			/>
+
+			{/* Navigation Arrows */}
+			{placeImages.length > 1 && (
+				<>
+					{currentIndex > 0 && (
+						<IconButton
+							icon="chevron-left"
+							size={28}
+							iconColor="white"
+							onPress={handlePrevious}
+							style={[styles.navigationArrow, styles.leftArrow]}
+							testID="previous-button"
+						/>
+					)}
+					{currentIndex < placeImages.length - 1 && (
+						<IconButton
+							icon="chevron-right"
+							size={28}
+							iconColor="white"
+							onPress={handleNext}
+							style={[styles.navigationArrow, styles.rightArrow]}
+							testID="next-button"
+						/>
+					)}
+				</>
+			)}
 
 			{/* Camera Button */}
 			<IconButton
@@ -233,41 +266,40 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
-	header: {
+	headerOverlay: {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		right: 0,
 		flexDirection: "row",
 		alignItems: "center",
-		paddingHorizontal: 4,
+		justifyContent: "space-between",
+		paddingHorizontal: 20,
 		paddingVertical: 12,
-		backgroundColor: "white",
-		borderBottomWidth: 0.5,
-		borderBottomColor: "#e8e8e8",
-		elevation: 2,
-		shadowColor: "#000",
-		shadowOpacity: 0.1,
-		shadowRadius: 4,
-		shadowOffset: { width: 0, height: 2 },
+		backgroundColor: "rgba(0, 0, 0, 0.4)",
+		zIndex: 10,
 		...Platform.select({
 			ios: {
 				paddingTop: 56,
 			},
 			android: {
-				paddingTop: 24,
+				paddingTop: 44,
 			},
 		}),
 	},
-	backButton: {
-		margin: 0,
-		marginLeft: 4,
-	},
 	placeName: {
 		flex: 1,
-		textAlign: "center",
-		fontWeight: "700",
-		marginHorizontal: 16,
-		color: "#1a1a1a",
+		color: "white",
+		fontWeight: "500",
+		fontSize: 16,
+		textShadowColor: "rgba(0, 0, 0, 0.8)",
+		textShadowOffset: { width: 0, height: 1 },
+		textShadowRadius: 2,
 	},
-	headerSpacer: {
-		width: 48,
+	closeButton: {
+		margin: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.2)",
+		borderRadius: 20,
 	},
 	carouselContainer: {
 		flex: 1,
@@ -276,9 +308,24 @@ const styles = StyleSheet.create({
 	},
 	cardContainer: {
 		height: "100%",
-		borderRadius: 0,
+		borderRadius: 12,
 		alignItems: "center",
 		backgroundColor: "#fff",
+		overflow: "hidden",
+	},
+	navigationArrow: {
+		position: "absolute",
+		top: "50%",
+		marginTop: -24,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		borderRadius: 24,
+		zIndex: 5,
+	},
+	leftArrow: {
+		left: 20,
+	},
+	rightArrow: {
+		right: 20,
 	},
 	cameraButton: {
 		position: "absolute",
@@ -314,6 +361,6 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 	},
 	inactiveDot: {
-		backgroundColor: "rgba(0, 0, 0, 0.2)",
+		backgroundColor: "rgba(255, 255, 255, 0.6)",
 	},
 });

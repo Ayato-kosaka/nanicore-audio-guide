@@ -93,12 +93,12 @@ const styles = StyleSheet.create({
 	modalContainer: {
 		backgroundColor: "white",
 		margin: 20,
-		borderRadius: 16,
+		borderRadius: 20,
 		padding: 24,
 		maxHeight: "80%",
 		elevation: 8,
 		shadowColor: "#000",
-		shadowOpacity: 0.25,
+		shadowOpacity: 0.15,
 		shadowRadius: 12,
 		shadowOffset: { width: 0, height: 4 },
 	},
@@ -110,11 +110,14 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontWeight: "700",
+		fontWeight: "600",
 		color: "#1a1a1a",
+		fontSize: 18,
 	},
 	closeButton: {
 		margin: 0,
+		backgroundColor: "#f5f5f5",
+		borderRadius: 20,
 	},
 	textInput: {
 		marginBottom: 24,
@@ -127,8 +130,10 @@ const styles = StyleSheet.create({
 	cancelButton: {
 		flex: 1,
 		borderColor: "#e0e0e0",
+		borderRadius: 12,
 	},
 	submitButton: {
 		flex: 1,
+		borderRadius: 12,
 	},
 });

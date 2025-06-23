@@ -1,11 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, StyleSheet, ImageBackground, ScrollView } from "react-native";
-import { Text, IconButton, Chip } from "react-native-paper";
+import { Text, IconButton } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
-import { useSnackbar } from "@/contexts/SnackbarProvider";
 import i18n from "@/lib/i18n";
 
 import { GuideSection } from "./GuideSection";
@@ -25,74 +24,74 @@ type PlaceImage = {
 	isInitial: boolean;
 };
 
-type GuideChip = {
-	id: string;
-	label: string;
-	selected: boolean;
-};
-
 type PlaceGuideCardProps = {
 	placeImage: PlaceImage;
 	placeName: string;
 	onUpdate: (updates: Partial<PlaceImage>) => void;
 };
 
-const GUIDE_CATEGORIES: GuideChip[] = [
-	{ id: "history", label: "History", selected: false },
-	{ id: "culture", label: "Culture", selected: false },
-	{ id: "food", label: "Food", selected: false },
-	{ id: "architecture", label: "Architecture", selected: false },
-	{ id: "nature", label: "Nature", selected: false },
-	{ id: "people", label: "People", selected: false },
-	{ id: "cost", label: "Cost", selected: false },
-	{ id: "safety", label: "Safety", selected: false },
+const GUIDE_CATEGORIES = [
+	{ id: "history", label: "History", icon: "book-open-outline" },
+	{ id: "culture", label: "Culture", icon: "palette-outline" },
+	{ id: "food", label: "Food", icon: "food-outline" },
+	{ id: "architecture", label: "Architecture", icon: "home-city-outline" },
+	{ id: "nature", label: "Nature", icon: "leaf-outline" },
+	{ id: "people", label: "People", icon: "account-group-outline" },
+	{ id: "cost", label: "Cost", icon: "currency-usd" },
+	{ id: "safety", label: "Safety", icon: "shield-check-outline" },
 ];
 
 export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, placeName, onUpdate }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
-	const { showSnackbar } = useSnackbar();
 
-	const [chips, setChips] = useState<GuideChip[]>(GUIDE_CATEGORIES);
+	const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
 	const [showCustomModal, setShowCustomModal] = useState(false);
+	const guidesScrollViewRef = useRef<ScrollView>(null);
 
-	const handleChipPress = useCallback(
-		withLoading(async (chipId: string) => {
-			const chip = chips.find((c) => c.id === chipId);
-			if (!chip) return;
+	// Auto-scroll to bottom when new guides are added
+	useEffect(() => {
+		if (placeImage.guides.length > 1) {
+			setTimeout(() => {
+				guidesScrollViewRef.current?.scrollToEnd({ animated: true });
+			}, 300);
+		}
+	}, [placeImage.guides.length]);
+
+	const handleCategoryPress = useCallback(
+		withLoading(async (categoryId: string) => {
+			const category = availableCategories.find((c) => c.id === categoryId);
+			if (!category) return;
 
 			try {
 				// Mock guide generation based on category
 				const newGuide: PlaceGuide = {
-					id: `${placeImage.id}_${chipId}_${Date.now()}`,
-					title: `${chip.label} Guide`,
-					content: `Detailed information about ${chip.label.toLowerCase()} in ${placeName}. This guide provides comprehensive insights and local knowledge about this specific aspect of the location.`,
-					category: chipId,
+					id: `${placeImage.id}_${categoryId}_${Date.now()}`,
+					title: `${category.label} Guide`,
+					content: `Detailed information about ${category.label.toLowerCase()} in ${placeName}. This guide provides comprehensive insights and local knowledge about this specific aspect of the location.`,
+					category: categoryId,
 				};
 
 				const updatedGuides = [...placeImage.guides, newGuide];
 				onUpdate({ guides: updatedGuides });
 
-				// Hide the pressed chip
-				setChips((prev) => prev.filter((c) => c.id !== chipId));
+				// Remove the used category
+				setAvailableCategories((prev) => prev.filter((c) => c.id !== categoryId));
 
 				logFrontendEvent({
-					event_name: "placeGuideChipPressed",
+					event_name: "placeGuideCategoryPressed",
 					error_level: "info",
-					payload: { chipId, placeImageId: placeImage.id },
+					payload: { categoryId, placeImageId: placeImage.id },
 				});
-
-				showSnackbar(i18n.t("PlaceGuide.guidesGenerated"));
 			} catch (error: any) {
 				logFrontendEvent({
-					event_name: "generatePlaceGuideFromChipFailed",
+					event_name: "generatePlaceGuideFromCategoryFailed",
 					error_level: "error",
-					payload: { error: error.message, chipId },
+					payload: { error: error.message, categoryId },
 				});
-				showSnackbar(i18n.t("PlaceGuide.generateError"));
 			}
 		}),
-		[chips, placeImage, placeName, onUpdate, logFrontendEvent, showSnackbar],
+		[availableCategories, placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
 	const handleCustomQuery = useCallback(
@@ -117,7 +116,6 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 					payload: { query, placeImageId: placeImage.id },
 				});
 
-				showSnackbar(i18n.t("PlaceGuide.guidesGenerated"));
 				setShowCustomModal(false);
 			} catch (error: any) {
 				logFrontendEvent({
@@ -125,10 +123,9 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 					error_level: "error",
 					payload: { error: error.message, query },
 				});
-				showSnackbar(i18n.t("PlaceGuide.generateError"));
 			}
 		}),
-		[placeImage, placeName, onUpdate, logFrontendEvent, showSnackbar],
+		[placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
 	const handleImageError = useCallback(() => {
@@ -147,9 +144,38 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 				resizeMode="cover"
 				onError={handleImageError}
 				testID={`place-image-${placeImage.id}`}>
+				{/* Question Field Overlay */}
+				<View style={styles.questionFieldOverlay}>
+					<View style={styles.questionContainer}>
+						<IconButton
+							icon="message-text-outline"
+							size={18}
+							iconColor="white"
+							onPress={() => setShowCustomModal(true)}
+							style={styles.messageIcon}
+							testID="custom-query-button"
+						/>
+						<View style={styles.categoriesContainer}>
+							{availableCategories.slice(0, 4).map((category) => (
+								<IconButton
+									key={category.id}
+									icon={category.icon}
+									size={16}
+									iconColor="white"
+									onPress={() => handleCategoryPress(category.id)}
+									style={styles.categoryButton}
+									disabled={isLoading}
+									testID={`category-button-${category.id}`}
+								/>
+							))}
+						</View>
+					</View>
+				</View>
+
 				{/* Guide Content */}
 				<LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} style={styles.contentOverlay}>
 					<ScrollView
+						ref={guidesScrollViewRef}
 						style={styles.guidesScrollView}
 						showsVerticalScrollIndicator={false}
 						contentContainerStyle={styles.guidesContent}>
@@ -157,37 +183,6 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 							<GuideSection key={guide.id} guide={guide} isFirst={index === 0} />
 						))}
 					</ScrollView>
-
-					{/* Question Field Overlay */}
-					<View style={styles.questionFieldOverlay}>
-						<View style={styles.questionContainer}>
-							<IconButton
-								icon="message-text-outline"
-								size={20}
-								iconColor="white"
-								onPress={() => setShowCustomModal(true)}
-								style={styles.messageIcon}
-								testID="custom-query-button"
-							/>
-							<ScrollView
-								horizontal
-								showsHorizontalScrollIndicator={false}
-								style={styles.chipsContainer}
-								contentContainerStyle={styles.chipsContent}>
-								{chips.map((chip) => (
-									<Chip
-										key={chip.id}
-										onPress={() => handleChipPress(chip.id)}
-										style={styles.chip}
-										textStyle={styles.chipText}
-										disabled={isLoading}
-										testID={`category-chip-${chip.id}`}>
-										{chip.label}
-									</Chip>
-								))}
-							</ScrollView>
-						</View>
-					</View>
 				</LinearGradient>
 			</ImageBackground>
 
@@ -212,49 +207,49 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end",
 	},
 	questionFieldOverlay: {
-		marginTop: 20,
+		position: "absolute",
+		top: 80,
+		left: 20,
+		right: 20,
+		zIndex: 5,
 	},
 	questionContainer: {
 		flexDirection: "row",
 		alignItems: "center",
 		backgroundColor: "rgba(0, 0, 0, 0.6)",
 		borderRadius: 20,
-		paddingVertical: 8,
+		paddingVertical: 6,
 		paddingHorizontal: 12,
 		backdropFilter: "blur(10px)",
 	},
 	messageIcon: {
 		margin: 0,
-		marginRight: 8,
+		marginRight: 4,
 	},
-	chipsContainer: {
+	categoriesContainer: {
+		flexDirection: "row",
 		flex: 1,
+		justifyContent: "space-around",
 	},
-	chipsContent: {
-		gap: 6,
-		paddingRight: 8,
-	},
-	chip: {
-		backgroundColor: "rgba(255, 255, 255, 0.9)",
-		height: 28,
-	},
-	chipText: {
-		fontSize: 11,
-		color: "#333",
-		fontWeight: "500",
+	categoryButton: {
+		margin: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.15)",
+		borderRadius: 16,
+		width: 32,
+		height: 32,
 	},
 	contentOverlay: {
 		flex: 1,
 		justifyContent: "flex-end",
 		paddingHorizontal: 20,
 		paddingBottom: 24,
-		paddingTop: 80,
+		paddingTop: 120,
 	},
 	guidesScrollView: {
-		maxHeight: "30%",
+		maxHeight: "40%",
 	},
 	guidesContent: {
-		gap: 20,
+		gap: 16,
 		paddingBottom: 20,
 	},
 });
