@@ -208,71 +208,22 @@ export default function MapScreen() {
 				)}
 			</MapView>
 
-			{/* FAB Container - Top left */}
-			<View style={styles.fabContainer}>
-				<IconButton
-					icon="crosshairs-gps"
-					onPress={getCurrentLocation}
-					style={styles.locationFab}
-					iconColor="#666"
-					testID="location-fab"
-				/>
-			</View>
-
-			{/* Bottom Sheet */}
-			<View style={[styles.bottomSheet, isSearchExpanded && styles.expandedBottomSheet]}>
-				{isSearchExpanded ? (
-					// Expanded Search UI
-					<View style={styles.expandedSearchContainer}>
-						<View style={styles.searchHeader}>
-							<Text variant="titleMedium" style={styles.searchTitle}>
-								Search Places
-							</Text>
-							<IconButton
-								icon="close"
-								size={20}
-								onPress={handleSearchCollapse}
-								style={styles.closeSearchButton}
-								testID="close-search-button"
-							/>
-						</View>
-						<Searchbar
-							placeholder={i18n.t("Map.searchPlaceholder")}
-							onChangeText={setSearchQuery}
-							value={searchQuery}
-							onSubmitEditing={handleSearch}
-							loading={isSearching}
-							style={styles.expandedSearchBar}
-							inputStyle={styles.searchInput}
-							testID="expanded-search-bar"
+			{/* Bottom Container */}
+			<View style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
+				{/* FAB Container*/}
+				{!isSearchExpanded && (
+					<View style={styles.fabContainer}>
+						<IconButton
+							icon="crosshairs-gps"
+							size={32}
+							onPress={getCurrentLocation}
+							style={styles.locationFab}
+							iconColor="#666"
+							testID="location-fab"
 						/>
-					</View>
-				) : (
-					// Collapsed Bottom Sheet UI
-					<>
-						{/* Instruction Text */}
-						<Text variant="bodySmall" style={styles.instructionText}>
-							地図をドラッグして地点を選択してください
-						</Text>
-
-						{/* Location Display Box */}
-						<View style={styles.locationBox} onTouchEnd={handleSearchBoxPress}>
-							<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
-								{selectedLocation?.name || i18n.t("Map.searchPlaceholder")}
-							</Text>
-							<IconButton
-								icon="magnify"
-								size={20}
-								iconColor="#666"
-								style={styles.searchIcon}
-								testID="search-icon"
-							/>
-						</View>
-
-						{/* Camera Button */}
 						<IconButton
 							icon="camera"
-							size={20}
+							size={32}
 							mode="contained"
 							containerColor="#fe3764"
 							iconColor="white"
@@ -280,21 +231,75 @@ export default function MapScreen() {
 							style={styles.cameraFab}
 							testID="camera-fab"
 						/>
-
-						{/* Nanicore Button */}
-						<Button
-							mode="contained"
-							onPress={handleLocationSelect}
-							disabled={!selectedLocation}
-							style={[styles.nanicoreButton, !selectedLocation && styles.disabledButton]}
-							buttonColor="#fe3764"
-							labelStyle={styles.nanicoreButtonLabel}
-							contentStyle={styles.nanicoreButtonContent}
-							testID="nanicore-button">
-							なにこれ
-						</Button>
-					</>
+					</View>
 				)}
+
+				{/* Bottom Sheet */}
+				<View style={styles.bottomSheet}>
+					{isSearchExpanded ? (
+						// Expanded Search UI
+						<View style={styles.expandedSearchContainer}>
+							<View style={styles.searchHeader}>
+								<Text variant="titleMedium" style={styles.searchTitle}>
+									Search Places
+								</Text>
+								<IconButton
+									icon="close"
+									size={20}
+									onPress={handleSearchCollapse}
+									style={styles.closeSearchButton}
+									testID="close-search-button"
+								/>
+							</View>
+							<Searchbar
+								placeholder={i18n.t("Map.searchPlaceholder")}
+								onChangeText={setSearchQuery}
+								value={searchQuery}
+								onSubmitEditing={handleSearch}
+								loading={isSearching}
+								style={styles.expandedSearchBar}
+								inputStyle={styles.searchInput}
+								testID="expanded-search-bar"
+							/>
+						</View>
+					) : (
+						// Collapsed Bottom Sheet UI
+						<>
+							{/* Instruction Text */}
+							<Text variant="bodySmall" style={styles.instructionText}>
+								地図をドラッグして地点を選択してください
+							</Text>
+
+							{/* Location Display Box */}
+							<View style={styles.locationBox} onTouchEnd={handleSearchBoxPress}>
+								<IconButton
+									icon="map-marker"
+									size={20}
+									iconColor="#666"
+									style={styles.markerIcon}
+									testID="marker-icon"
+								/>
+								<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
+									{selectedLocation?.name || i18n.t("Map.searchPlaceholder")}
+								</Text>
+								<IconButton icon="magnify" size={20} iconColor="#666" style={styles.searchIcon} testID="search-icon" />
+							</View>
+
+							{/* Nanicore Button */}
+							<Button
+								mode="contained"
+								onPress={handleLocationSelect}
+								disabled={!selectedLocation}
+								style={[styles.nanicoreButton, !selectedLocation && styles.disabledButton]}
+								buttonColor="#fe3764"
+								labelStyle={styles.nanicoreButtonLabel}
+								contentStyle={styles.nanicoreButtonContent}
+								testID="nanicore-button">
+								なにこれ
+							</Button>
+						</>
+					)}
+				</View>
 			</View>
 		</View>
 	);
@@ -366,11 +371,19 @@ const styles = StyleSheet.create({
 	map: {
 		flex: 1,
 	},
-	fabContainer: {
+	bottomContainer: {
 		position: "absolute",
-		top: Platform.OS === "ios" ? 60 : 40,
-		left: 16,
+		bottom: 0,
+		left: 0,
+		right: 0,
+	},
+	fabContainer: {
+		flexDirection: "column",
+		alignItems: "flex-end",
+		justifyContent: "flex-end",
 		zIndex: 1,
+		marginRight: 16,
+		marginBottom: 16,
 	},
 	locationFab: {
 		backgroundColor: "white",
@@ -382,10 +395,7 @@ const styles = StyleSheet.create({
 		shadowOffset: { width: 0, height: 2 },
 	},
 	bottomSheet: {
-		position: "absolute",
-		bottom: 0,
-		left: 0,
-		right: 0,
+		flex: 1,
 		backgroundColor: "white",
 		borderTopLeftRadius: 24,
 		borderTopRightRadius: 24,
@@ -451,18 +461,19 @@ const styles = StyleSheet.create({
 		color: "#495057",
 		fontSize: 15,
 	},
+	markerIcon: {
+		margin: 0,
+	},
 	searchIcon: {
 		margin: 0,
 	},
 	cameraFab: {
-		alignSelf: "flex-end",
-		marginBottom: 16,
-		borderRadius: 24,
-		elevation: 4,
+		elevation: 12,
 		shadowColor: "#fe3764",
-		shadowOpacity: 0.3,
-		shadowRadius: 8,
-		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.4,
+		shadowRadius: 16,
+		shadowOffset: { width: 0, height: 6 },
+		borderRadius: 28,
 	},
 	nanicoreButton: {
 		borderRadius: 20,
