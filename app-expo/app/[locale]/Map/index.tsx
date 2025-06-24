@@ -17,8 +17,6 @@ type MapLocation = {
 	placeId?: string;
 };
 
-const { width, height } = Dimensions.get("window");
-
 const INITIAL_REGION: Region = {
 	latitude: 35.6762,
 	longitude: 139.6503,
@@ -30,7 +28,6 @@ export default function MapScreen() {
 	const router = useRouter();
 	const locale = useLocale();
 	const { logFrontendEvent } = useLogger();
-	const { isLoading, withLoading } = useWithLoading();
 
 	const [region, setRegion] = useState<Region>(INITIAL_REGION);
 	const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);
@@ -60,8 +57,8 @@ export default function MapScreen() {
 			const newRegion: Region = {
 				latitude: location.coords.latitude,
 				longitude: location.coords.longitude,
-				latitudeDelta: 0.01,
-				longitudeDelta: 0.01,
+				latitudeDelta: 0.002,
+				longitudeDelta: 0.002,
 			};
 
 			setRegion(newRegion);
