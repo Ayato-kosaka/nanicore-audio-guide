@@ -7,6 +7,7 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 import { useLogger } from "@/hooks/useLogger";
 import { supabase } from "@/lib/supabase";
+import { toggleReaction } from "@/lib/reactions";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/contexts/AuthProvider";
 import i18n from "@/lib/i18n";
@@ -123,54 +124,38 @@ const SpotGuideCard = ({
 	 *
 	 * - Supabase の reactions テーブルを更新
 	 */
-	const handleToggleLike = useCallback(async () => {
-		if (!user?.id || !currentGuide?.id) return;
+       const handleToggleLike = useCallback(async () => {
+               if (!currentGuide?.id) return;
 
-		const guideId = currentGuide.id;
-		const willLike = !isLiked;
-		setIsLiked(willLike);
+               const guideId = currentGuide.id;
+               const willLike = !isLiked;
+               setIsLiked(willLike);
 
-		logFrontendEvent({
-			event_name: "toggleLike",
-			payload: { guideId, willLike },
-			error_level: "info",
-		});
+               logFrontendEvent({
+                       event_name: "toggleLike",
+                       payload: { guideId, willLike },
+                       error_level: "info",
+               });
 
-		try {
-			if (willLike) {
-				const { error } = await supabase.from("reactions").insert({
-					id: uuidv4(),
-					user_id: user.id,
-					target_type: "spot_guides",
-					target_id: guideId,
-					action_type: "like",
-					created_at: new Date().toISOString(),
-					created_version: Env.APP_VERSION,
-					lock_no: 0,
-				});
-				if (error) throw new Error(error.message);
-			} else {
-				const { error } = await supabase
-					.from("reactions")
-					.delete()
-					.eq("user_id", user.id)
-					.eq("target_type", "spot_guides")
-					.eq("target_id", guideId)
-					.eq("action_type", "like");
-				if (error) throw new Error(error.message);
-			}
-		} catch (err: any) {
-			logFrontendEvent({
-				event_name: "toggleLikeFailed",
-				error_level: "error",
-				payload: {
-					guideId,
-					willLike,
-					error: err.message ?? "Failed to update like status.",
-				},
-			});
-		}
-	}, [currentGuide?.id, isLiked, user?.id]);
+               try {
+                       await toggleReaction({
+                               willReact: willLike,
+                               target_type: "spot_guides",
+                               target_id: guideId,
+                               action_type: "like",
+                       });
+               } catch (err: any) {
+                       logFrontendEvent({
+                               event_name: "toggleLikeFailed",
+                               error_level: "error",
+                               payload: {
+                                       guideId,
+                                       willLike,
+                                       error: err.message ?? "Failed to update like status.",
+                               },
+                       });
+               }
+       }, [currentGuide?.id, isLiked]);
 
 	/**
 	 * 🪄 新しいガイドを生成してリストに追加する。
