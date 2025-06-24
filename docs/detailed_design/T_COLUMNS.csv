@@ -9,6 +9,31 @@
 "ext_spots","created_at","timestamptz","",false,false,true,"","","スポットの作成日時","",false,"",false
 "ext_spots","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
 "spot_guides","id","text",true,false,false,true,"","","ガイドの一意なID（UUID）","",false,"",false
+"ext_places","id","text",true,false,false,true,"","","場所の一意なサロゲートID（Google Vision APIのentityIdやmidを利用）","",false,"",false
+"ext_places","title","text","",false,false,true,"","","場所名（多言語対応なし）","","","",false
+"ext_places","image_url","text","",false,false,false,"","","場所画像のURL（外部公開用）","",false,"",false
+"ext_places","vision_detection_type","enum ('LANDMARK_DETECTION', 'WEB_DETECTION')","",false,false,false,"","","データ取得元の種別（Google Vision の feature type.）","","","",false
+"ext_places","landmark_latitude","double precision","",false,false,false,"",true,"場所の緯度（Google Visionのランドマーク情報）","",false,"",false
+"ext_places","landmark_longitude","double precision","",false,false,false,"",true,"場所の経度（Google Visionのランドマーク情報）","",false,"",false
+"ext_places","is_recommendable","boolean","",false,false,true,"","","レコメンド対象とするかのフラグ","","","",false
+"ext_places","created_at","timestamptz","",false,false,true,"","","場所の作成日時","",false,"",false
+"ext_places","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
+"place_guides","id","text",true,false,false,true,"","","ガイドの一意なID（UUID）","",false,"",false
+"place_guides","place_id","text","","ext_places(id) ",false,true,"",true,"紐づく場所ID","",false,"",false
+"place_guides","language_tag","text","",false,false,true,"",true,"ガイドの言語タグ（IETF BCP 47準拠、例：en-US, ja-JP）","",false,"",false
+"place_guides","title","text","",false,false,true,"","","ガイドタイトル（UI上での表示名）","",false,"",false
+"place_guides","manuscript","text","",false,false,true,"","","ガイドの本文テキスト","",false,"",false
+"place_guides","tags","text[]","",false,false,true,"","","ガイドに付与されるジャンル・属性タグ","",false,"",false
+"place_guides","audio_storage_path","text","",false,false,true,"","","音声ファイルの保存パス（Text-to-Speechなどで生成）","",false,"",false
+"place_guides","price_amount","numeric(10,2)","",false,false,true,"","","ガイドの価格（税抜き、通貨単位なし）","",false,"",false
+"place_guides","currency","text","",false,false,false,"","","ガイドの通貨コード（ISO 4217）","",false,"",false
+"place_guides","recommendation_weight","integer","",false,false,true,"",true,"レコメンドロジック用の重みスコア","",true,"",false
+"place_guides","min_version_major","integer","",false,false,true,"","","表示対象となる最小クライアントバージョン","",false,"",false
+"place_guides","max_version_major","integer","",false,false,true,"","","表示対象となる最大クライアントバージョン","",false,"",false
+"place_guides","created_user","uuid","",false,false,true,"","","ガイド作成者（デフォルト生成ガイドの場合は usr_id_for_system）","",false,"",false
+"place_guides","created_at","timestamptz","",false,false,true,"","","ガイド作成日時","",false,"",false
+"place_guides","created_request_id","text","",false,false,true,"","","このガイドを作成した処理単位のトレースID","","","",false
+"place_guides","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
 "spot_guides","spot_id","text","","ext_spots(id) ",false,true,"",true,"紐づくスポットID","",false,"",false
 "spot_guides","language_tag","text","",false,false,true,"",true,"ガイドの言語タグ（IETF BCP 47準拠、例：en-US, ja-JP）","",false,"",false
 "spot_guides","title","text","",false,false,true,"","","ガイドタイトル（UI上での表示名）","",false,"",false
@@ -37,8 +62,20 @@
 "spot_visits","updated_at","timestamptz","",false,false,true,"","","最終更新日時","","","",false
 "spot_visits","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
 "reactions","id","text",true,false,false,true,"","","リアクションの一意なID（UUID）","",false,"",false
+"place_visits","id","text",true,false,false,true,"","","訪問ログの一意なID（UUID）","",false,"",false
+"place_visits","user_id","uuid","",false,false,true,"",true,"訪問したユーザーのID","",false,"",false
+"place_visits","place_id","text","","ext_places(id) ",false,true,"",true,"訪問された場所ID","",false,"",false
+"place_visits","represent_guide_id","text","","place_guides(id) ",false,false,"",true,"当該訪問時に利用されたガイドID","","","",false
+"place_visits","taken_photo_storage_path","text","",false,false,false,"","","撮影された写真の保存パス","",false,"",false
+"place_visits","prev_place_id","text","","ext_places(id) ",false,false,"",true,"直前に訪問した場所ID（移動経路把握用）","",false,"",false
+"place_visits","time_gap_minutes","integer","",false,false,false,"","","直前場所からの経過時間（分）","",false,"",false
+"place_visits","min_version_major","integer","",false,false,true,"",true,"表示対象となる最小クライアントバージョン","",false,"",false
+"place_visits","max_version_major","integer","",false,false,true,"",true,"表示対象となる最大クライアントバージョン","",false,"",false
+"place_visits","created_at","timestamptz","",false,false,true,"","","訪問ログ作成日時","",false,"",false
+"place_visits","updated_at","timestamptz","",false,false,true,"","","最終更新日時","","","",false
+"place_visits","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
 "reactions","user_id","uuid","",false,true,true,"","","リアクションをしたユーザーのID（匿名可）","",false,"",false
-"reactions","target_type","enum ('spot_guides')","",false,true,true,"","","リアクション対象のテーブル（例：spot, spot_guide）","","","",false
+"reactions","target_type","enum ('spot_guides', 'place_guides')","",false,true,true,"","","リアクション対象のテーブル（例：spot_guide, place_guide）","","","",false
 "reactions","target_id","text","",false,true,true,"",true,"対象となるスポットやガイドのID","",false,"",false
 "reactions","action_type","enum ('like', 'disLike', 'regenerate')","",false,true,true,"","","実行されたアクションの種類（例：like, bookmark）","",false,"",false
 "reactions","created_at","timestamptz","",false,false,true,"","","リアクション作成日時","","","",false
@@ -48,8 +85,8 @@
 "frontend_event_logs","user_id","uuid","",false,false,false,"","","操作を行ったユーザーのID","","","",false
 "frontend_event_logs","event_name","text","",false,false,false,"","","イベント名（例：onPressPlay, mounted）","","","",false
 "frontend_event_logs","error_level","enum ('trace', 'debug', 'info', 'warn', 'error')","",false,false,false,"",true,"エラーレベル","","","",false
-"frontend_event_logs","path_name","text","",false,false,false,"","","アクセス時のパス（例：/spot-guide/display）","","","",false
-"frontend_event_logs","payload","text","",false,false,false,"","","任意のイベント追加情報（例：{ spot_id: 'abc' }）","","","",false
+"frontend_event_logs","path_name","text","",false,false,false,"","","アクセス時のパス（例：/spot-guide/display や /place-guide/display）","","","",false
+"frontend_event_logs","payload","text","",false,false,false,"","","任意のイベント追加情報（例：{ spot_id: 'abc' }, { place_id: 'xyz' }）","","","",false
 "frontend_event_logs","created_at","timestamptz","",false,false,true,"",true,"イベント発生日時","","","",false
 "frontend_event_logs","created_app_version","text","",false,false,true,"","","イベント発生時のアプリバージョン","","","",false
 "frontend_event_logs","created_commit_id","text","",false,false,true,"","","発生時のコードバージョン（Git SHAなど）","","","",false
@@ -78,7 +115,7 @@
 "prompt_families","id","text",true,false,false,true,"","","プロンプトファミリーの一意なID（UUID）","","","",false
 "prompt_families","name","text",false,false,false,true,"","","プロンプトファミリー名（例: friendly_guide）","","","",false
 "prompt_families","description","text",false,false,false,true,"","","説明メモ（開発者/編集者向け）","","","",false
-"prompt_families","purpose","enum('spot_guide_manuscript')",false,false,false,true,"","","プロンプトの目的種別","","","",false
+"prompt_families","purpose","enum('spot_guide_manuscript','place_guide_manuscript')",false,false,false,true,"","","プロンプトの目的種別","","","",false
 "prompt_families","weight","integer",false,false,false,true,"","","利用優先度（0なら非アクティブ扱い）","","","",false
 "prompt_variants","id","text",true,false,false,true,"","","プロンプトバリエーションのID（UUID）","","","",false
 "prompt_variants","family_id","text",false,"prompt_families(id)",true,true,"",true,"紐づくプロンプトファミリーID","","","",false
@@ -90,11 +127,11 @@
 "prompt_usages","id","text",true,false,false,true,"","","利用ログの一意なID（UUID）","","","",false
 "prompt_usages","family_id","text",false,false,false,true,"",true,"使用されたプロンプトファミリーID","","","",false
 "prompt_usages","variant_id","text",false,false,false,true,"",true,"使用されたプロンプトバリエーションID","","","",false
-"prompt_usages","target_type","enum ('spot_guides')",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
+"prompt_usages","target_type","enum ('spot_guides', 'place_guides')",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
 "prompt_usages","target_id","text",false,false,false,true,"",true,"対象レコードのID","","","",false
 "prompt_usages","generated_text","text",false,false,false,true,"","","実際に生成されたガイド原稿","","","",false
 "prompt_usages","used_prompt_text","text",false,false,false,true,"","","使用されたプロンプトテンプレートのスナップショット","","","",false
-"prompt_usages","input_data","jsonb",false,false,false,false,"","","入力値（例：スポット名、ジャンルなど）","","","",false
+"prompt_usages","input_data","jsonb",false,false,false,false,"","","入力値（例：スポット名や場所名、ジャンルなど）","","","",false
 "prompt_usages","llm_model","text",false,false,false,true,"","","使用したLLM（例：claude-3, gpt-4 など）","","","",false
 "prompt_usages","temperature","numeric(3,2)",false,false,false,false,"","","LLM生成時のtemperature設定","","","",false
 "prompt_usages","generated_user","uuid",false,false,false,true,"","","生成実行者（デフォルト生成ガイドの場合は usr_id_for_system）","","","",false

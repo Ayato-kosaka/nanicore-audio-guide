@@ -1,7 +1,11 @@
 export { findOrCreateSpotFromId } from "./routes/findOrCreateSpotFromId";
 export { findOrCreateSpotFromImage } from "./routes/findOrCreateSpotFromImage";
+export { findOrCreatePlaceFromImage } from "./routes/findOrCreatePlaceFromImage";
+export { findOrCreatePlaceFromId } from "./routes/findOrCreatePlaceFromId";
 export { findOrCreateSpotFromPlaceId } from "./routes/findOrCreateSpotFromPlaceId";
+export { generatePlaceGuide } from "./routes/generatePlaceGuide";
 export { generateSpotGuide } from "./routes/generateSpotGuide";
+export { listPlaceGuides } from "./routes/listPlaceGuides";
 export { listRecommendedSpotsByVisitHistory } from "./routes/listRecommendedSpotsByVisitHistory";
 export { listSpotGuides } from "./routes/listSpotGuides";
 export { pingDb } from "./routes/pingDb";

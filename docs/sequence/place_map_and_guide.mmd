@@ -1,0 +1,124 @@
+sequenceDiagram
+    actor User
+    participant PA as React Native App
+    participant BL as Backend
+    participant DB as Database
+    participant API as 外部API
+    participant Storage as Cloud Storage
+
+    %% App起動時の処理
+    Note over User,PA: App 起動処理
+    PA ->> PA: signInAnonymously()
+
+    %% PlaceMapSelect 処理
+    Note over User,PA: PlaceMapSelect（撮影 → 場所抽出）
+    User ->> PA: 撮影ボタンをタップ（onPressCapture）
+    PA ->> PA: showLoading()
+    PA ->> PA: 画像圧縮（1024px / JPEG 70%）
+
+    PA ->> BL: POST /findOrCreatePlaceFromImage(FormData)
+    BL ->> Storage: 画像ファイルアップロード
+    Storage -->> BL: imageUri
+
+    BL ->> API: Google Cloud Vision API(imageUri)
+    API -->> BL: [{ salogate_key, source_type, score, fullMatchingImages, description }]
+
+    alt source_type == LANDMARK_DETECTION
+        BL ->> API: Google Knowledge Graph API
+        API -->> BL: Wikipedia URL
+
+        BL ->> API: Wikipedia API
+        API -->> BL: 場所画像・title
+    end
+
+    BL ->> DB: SELECT ext_places WHERE salogate_key
+    DB -->> BL: ext_places
+
+    alt ext_places 未取得
+        BL ->> DB: INSERT INTO ext_places
+    end
+
+    BL -->> PA: { ext_places, uploadedUri, takenPhotoStoragePath }
+
+    PA ->> PA: hideLoading()
+    PA ->> PA: push("PlaceGuide", { ext_places, uploadedUri, takenPhotoStoragePath })
+
+    %% PlaceGuide 初期表示
+    Note over User,PA: PlaceGuide 初期表示
+    PA ->> PA: showLoading()
+    PA ->> BL: GET /listPlaceGuides(placeId, languageTag)
+    BL ->> DB: SELECT place_guides WHERE place_id
+    DB -->> BL: place_guides[]
+    BL -->> PA: place_guides[]
+
+    PA ->> BL: GET /(placeId)
+    BL ->> DB: SELECT place_visits WHERE place_id
+    DB -->> BL: place_id[]
+    BL ->> DB: SELECT ext_places WHERE place_id[]
+    DB -->> BL: ext_places[]
+    BL -->> PA: ext_places[]
+
+    PA ->> PA: hideLoading()
+
+    %% PlaceGuide UI操作
+    User ->> PA: スワイプ（前後のリコメンド切替）
+    PA ->> PA: increment / decrement(placeIndex)
+    alt placeIndex % 5 == 0
+        PA ->> PA: showInterstitialAd()
+    end
+
+    User ->> PA: 🔗 インスタにリンク
+    PA ->> PA: shareInstagram(imageUri)
+
+    User ->> PA: 🔙 カメラに戻る
+    PA ->> PA: routerBack("PlaceMapSelect")
+
+    %% PlaceGuideCard 処理
+    Note over User,PA: PlaceGuideCard 表示処理
+    PA ->> PA: showLoading()
+    alt placeIndex または placeGuides.isEmpty
+        PA ->> PA: generatePlaceGuide()
+    end
+    PA ->> PA: hideLoading()
+
+    PA ->> PA: 音声再生（playAudioFromStorage）
+
+    PA ->> DB: SELECT place_visits ORDER BY created_at DESC LIMIT 1
+    DB -->> PA: prev_place_id
+    PA -) DB: INSERT INTO place_visits
+
+    %% PlaceGuideCard インタラクション
+    User ->> PA: 音声再生ボタン
+    PA ->> PA: playAudioFromStorage()
+
+    User ->> PA: ❤️ ボタン（いいね）
+    PA ->> DB: INSERT / DELETE reactions(like)
+
+    User ->> PA: 🔁 ボタン（次のガイド場所）
+    PA ->> PA: showLoading()
+    PA ->> DB: UPSERT reactions(dislike)
+    PA ->> PA: increment(placeGuideIndex)
+
+    alt 最後のplaceGuide
+        PA ->> BL: POST /generatePlaceGuide(place, lang_code)
+        BL ->> API: Claude → タイトル・原稿・タグ生成
+        API -->> BL: guide data
+
+        BL ->> API: Google Cloud Text-to-Speech
+        API -->> BL: 音声ファイル(audio_file)
+
+        BL ->> Storage: 音声ファイルアップロード
+        Storage -->> BL: audioUri
+
+        BL ->> DB: INSERT INTO place_guides
+        BL -->> PA: place_guides
+    end
+
+    PA ->> PA: hideLoading()
+    PA ->> PA: playAudioFromStorage()
+    PA -) DB: UPDATE place_visits SET represent_guide_id
+
+    %% PlaceRecommendCard 操作
+    Note over User,PA: PlaceRecommendCard「なにこれ」操作
+    User ->> PA: 「なにこれ」ボタン押下
+    PA ->> PA: replace("PlaceGuide", { imageUri, ext_places })
