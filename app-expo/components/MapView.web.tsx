@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleMap, Marker as GoogleMarker, LoadScript } from "@react-google-maps/api";
 import type { MapViewProps, MarkerProps } from "./MapView";
-import type { MapPressEvent, MarkerPressEvent } from "react-native-maps";
+import type { MapPressEvent, MarkerPressEvent, PoiClickEvent } from "react-native-maps";
 
 interface RegionChangeDetails {
 	isGesture: boolean;
@@ -37,7 +37,7 @@ export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, test
 };
 
 const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
-	({ style, region, onRegionChangeComplete, onPress, children }, ref) => {
+	({ style, region, onRegionChangeComplete, onPress, onPoiClick, children }, ref) => {
 		const handleLoad = React.useCallback(
 			(map: google.maps.Map) => {
 				if (typeof ref === "function") {
@@ -70,17 +70,36 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 
 		const handleClick = React.useCallback(
 			(e: google.maps.MapMouseEvent) => {
-				if (!onPress || !e.latLng) return;
-				const pressEvent = {
-					nativeEvent: {
-						coordinate: {
-							latitude: e.latLng.lat(),
-							longitude: e.latLng.lng(),
+				if (!e.latLng) return;
+				const { placeId } = e as unknown as { placeId: string | undefined };
+				if (placeId && onPoiClick) {
+					// If the event has a placeId, it's a POI click
+					const poiClockEvent = {
+						nativeEvent: {
+							id: placeId,
+							action: "poi-click",
+							coordinate: {
+								latitude: e.latLng.lat(),
+								longitude: e.latLng.lng(),
+							},
 						},
-						position: { x: 0, y: 0 },
-					},
-				} as unknown as MapPressEvent;
-				onPress(pressEvent);
+					} as unknown as PoiClickEvent;
+					onPoiClick(poiClockEvent);
+					return;
+				}
+				if (onPress) {
+					// Handle map press event
+					const pressEvent = {
+						nativeEvent: {
+							coordinate: {
+								latitude: e.latLng.lat(),
+								longitude: e.latLng.lng(),
+							},
+							position: { x: 0, y: 0 },
+						},
+					} as unknown as MapPressEvent;
+					onPress(pressEvent);
+				}
 			},
 			[onPress],
 		);
@@ -96,7 +115,7 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 				<GoogleMap
 					onLoad={handleLoad}
 					center={{ lat: region?.latitude ?? 0, lng: region?.longitude ?? 0 }}
-					zoom={10}
+					zoom={17}
 					mapContainerStyle={containerStyle}
 					onClick={handleClick}
 					onIdle={handleIdle}>

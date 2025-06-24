@@ -147,12 +147,12 @@ export default function MapScreen() {
 	}, [searchQuery, logFrontendEvent]);
 
 	/**
-	 * 🗺️ 地図上をタップしたときの処理
+	 * 🗺️ 地図ピン押下した場合
 	 *
 	 * - 座標を選択し選択地点として保存
 	 * - ログに位置を記録
 	 */
-	const handleMapPress = useCallback(
+	const handlePoiPress = useCallback(
 		(event: any) => {
 			const { coordinate } = event.nativeEvent;
 			const location: MapLocation = {
@@ -235,7 +235,7 @@ export default function MapScreen() {
 				style={styles.map}
 				region={region}
 				onRegionChangeComplete={setRegion}
-				onPress={handleMapPress}
+				onPoiClick={handlePoiPress}
 				showsUserLocation={true}
 				showsMyLocationButton={false}
 				customMapStyle={mapStyle}
