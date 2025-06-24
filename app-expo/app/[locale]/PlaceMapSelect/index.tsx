@@ -11,15 +11,6 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 
-/**
- * 🗺️ MapScreen
- *
- * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
- * - 位置情報サービスから現在地を取得して初期表示
- * - キーワード検索や地図タップで地点を選択
- * - 選択した地点から PlaceGuide へ移動
- */
-
 type MapLocation = {
 	latitude: number;
 	longitude: number;
@@ -35,7 +26,7 @@ const INITIAL_REGION: Region = {
 };
 
 /**
- * 🗺️ MapScreen
+ * 🗺️ PlaceMapSelect Screen
  *
  * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
  * - 位置情報サービスから現在地を取得して初期表示
@@ -182,9 +173,9 @@ export default function MapScreen() {
 	);
 
 	/**
-	 * 🎯 選択した地点から PlaceGuide へ遷移
+	 * 🎯 「なにこれ」押下したときの処理
 	 */
-	const handleLocationSelect = withLoading(async () => {
+	const handleNanicorePress = withLoading(async () => {
 		if (!selectedLocation) return;
 
 		// Generate a mock place ID for navigation
@@ -209,7 +200,7 @@ export default function MapScreen() {
 	});
 
 	/**
-	 * 📸 撮影画面へ遷移
+	 * 📸 カメラボタンを押下した時の処理
 	 */
 	const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
@@ -341,7 +332,7 @@ export default function MapScreen() {
 							{/* Nanicore Button */}
 							<Button
 								mode="contained"
-								onPress={handleLocationSelect}
+								onPress={handleNanicorePress}
 								disabled={!selectedLocation}
 								style={[styles.nanicoreButton, !selectedLocation && styles.disabledButton]}
 								buttonColor="#fe3764"
