@@ -1,5 +1,4 @@
 import { PrismaExtSpots } from "@shared/converters/convert_ext_spots";
-import { PrismaExtPlaces } from "@shared/converters/convert_ext_places";
 
 export type PlaceGuideParams = {
 	placeId: string;
@@ -30,15 +29,6 @@ export type SpotGuideParams = {
 export type SpotGuideSerializedParams = {
 	[K in keyof SpotGuideParams]?: string;
 };
-export type PlaceGuideParams = {
-        extPlaces?: PrismaExtPlaces;
-        imageUri?: string | null;
-        takenPhotoStoragePath?: string | null;
-};
-
-export type PlaceGuideSerializedParams = {
-        [K in keyof PlaceGuideParams]?: string;
-};
 
 /**
  *  SpotSearch  画面に渡されるパラメータ
@@ -51,6 +41,8 @@ export type SpotSearchParams = { id: string };
  * - id: 検索結果のID
  */
 export type SpotSearchByPlaceIdParams = { id: string };
+
+/**
  * 🚦 アプリ内ルーティングで使用されるパラメータ一覧。
  *
  * - `react-navigation` や `expo-router` の型安全な navigation 用
@@ -62,6 +54,4 @@ export type RootStackParamList = {
 	SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
 	SpotSearch: SpotSearchParams; // SpotSearch画面
 	SpotSearchByPlaceId: SpotSearchByPlaceIdParams; // SpotSearchByPlaceId画面
-        PlaceMapSelect: {};
-        PlaceGuide: PlaceGuideSerializedParams;
 };
