@@ -3,6 +3,13 @@ import { View, StyleSheet } from "react-native";
 import { Portal, Modal, Text, TextInput, Button, IconButton } from "react-native-paper";
 import i18n from "@/lib/i18n";
 
+/**
+ * 📝 CustomQueryModal
+ *
+ * ガイド生成のためのカスタム質問を入力するモーダル。
+ * ユーザーが入力した質問を PlaceGuideCard に渡す。
+ */
+
 type CustomQueryModalProps = {
 	visible: boolean;
 	onDismiss: () => void;
@@ -11,18 +18,24 @@ type CustomQueryModalProps = {
 };
 
 export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onDismiss, onSubmit, loading }) => {
-	const [query, setQuery] = useState("");
+        const [query, setQuery] = useState("");
 
-	const handleSubmit = useCallback(async () => {
-		if (!query.trim()) return;
-		await onSubmit(query);
-		setQuery("");
-	}, [query, onSubmit]);
+        /**
+         * ✅ 入力された質問を送信
+         */
+        const handleSubmit = useCallback(async () => {
+                if (!query.trim()) return;
+                await onSubmit(query);
+                setQuery("");
+        }, [query, onSubmit]);
 
-	const handleDismiss = useCallback(() => {
-		setQuery("");
-		onDismiss();
-	}, [onDismiss]);
+        /**
+         * ❎ モーダルを閉じて入力をリセット
+         */
+        const handleDismiss = useCallback(() => {
+                setQuery("");
+                onDismiss();
+        }, [onDismiss]);
 
 	return (
 		<Portal>

@@ -11,6 +11,15 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 
+/**
+ * 🗺️ MapScreen
+ *
+ * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
+ * - 位置情報サービスから現在地を取得して初期表示
+ * - キーワード検索や地図タップで地点を選択
+ * - 選択した地点から PlaceGuide へ移動
+ */
+
 type MapLocation = {
 	latitude: number;
 	longitude: number;

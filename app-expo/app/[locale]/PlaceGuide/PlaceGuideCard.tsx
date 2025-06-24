@@ -10,6 +10,14 @@ import i18n from "@/lib/i18n";
 import { GuideSection } from "./GuideSection";
 import { CustomQueryModal } from "./CustomQueryModal";
 
+/**
+ * 🏞️ PlaceGuideCard
+ *
+ * 撮影した場所の画像と複数のガイドを表示するカードコンポーネント。
+ * - ガイドの追加生成やカスタム質問を処理
+ * - ヘッダー内で閉じる操作を提供
+ */
+
 type PlaceGuide = {
 	id: string;
 	title: string;
@@ -59,7 +67,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		}
 	}, [placeImage.guides.length]);
 
-	const handleCategoryPress = useCallback(
+        /**
+         * 🗂 カテゴリ選択に応じて新しいガイドを生成
+         */
+        const handleCategoryPress = useCallback(
 		withLoading(async (categoryId: string) => {
 			const category = availableCategories.find((c) => c.id === categoryId);
 			if (!category) return;
@@ -95,7 +106,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		[availableCategories, placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
-	const handleCustomQuery = useCallback(
+        /**
+         * ✏️ カスタム質問からガイドを生成
+         */
+        const handleCustomQuery = useCallback(
 		withLoading(async (query: string) => {
 			if (!query.trim()) return;
 
@@ -129,7 +143,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		[placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
-	const handleImageError = useCallback(() => {
+        /**
+         * 🖼️ 画像読み込みエラー時の処理
+         */
+        const handleImageError = useCallback(() => {
 		logFrontendEvent({
 			event_name: "placeImageLoadError",
 			error_level: "error",
