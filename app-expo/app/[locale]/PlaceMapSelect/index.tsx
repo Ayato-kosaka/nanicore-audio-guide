@@ -25,6 +25,14 @@ const INITIAL_REGION: Region = {
 	longitudeDelta: 0.0421,
 };
 
+/**
+ * 🗺️ MapScreen
+ *
+ * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
+ * - 位置情報サービスから現在地を取得して初期表示
+ * - キーワード検索や地図タップで地点を選択
+ * - 選択した地点から PlaceGuide へ移動
+ */
 export default function MapScreen() {
 	const router = useRouter();
 	const locale = useLocale();
@@ -44,6 +52,12 @@ export default function MapScreen() {
 		getCurrentLocation();
 	}, []);
 
+	/**
+	 * 📍 現在地を取得して地図を更新
+	 *
+	 * - 位置情報の許可を確認
+	 * - 成功時は地図を現在地へ移動
+	 */
 	const getCurrentLocation = useCallback(async () => {
 		try {
 			const { status } = await Location.requestForegroundPermissionsAsync();
@@ -81,6 +95,12 @@ export default function MapScreen() {
 		}
 	}, [logFrontendEvent]);
 
+	/**
+	 * 🔎 地名検索を実行
+	 *
+	 * - 入力キーワードをジオコーディング
+	 * - 成功時は地図を移動し選択地点を更新
+	 */
 	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
 
@@ -126,6 +146,12 @@ export default function MapScreen() {
 		}
 	}, [searchQuery, logFrontendEvent]);
 
+	/**
+	 * 🗺️ 地図上をタップしたときの処理
+	 *
+	 * - 座標を選択し選択地点として保存
+	 * - ログに位置を記録
+	 */
 	const handleMapPress = useCallback(
 		(event: any) => {
 			const { coordinate } = event.nativeEvent;
@@ -146,6 +172,9 @@ export default function MapScreen() {
 		[logFrontendEvent],
 	);
 
+	/**
+	 * 🎯 選択した地点から PlaceGuide へ遷移
+	 */
 	const handleLocationSelect = withLoading(async () => {
 		if (!selectedLocation) return;
 
@@ -170,6 +199,9 @@ export default function MapScreen() {
 		});
 	});
 
+	/**
+	 * 📸 撮影画面へ遷移
+	 */
 	const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
 
@@ -180,10 +212,16 @@ export default function MapScreen() {
 		});
 	}, [router, locale, logFrontendEvent]);
 
+	/**
+	 * 🔍 検索ボックス押下時に検索UIを展開
+	 */
 	const handleSearchBoxPress = useCallback(() => {
 		setIsSearchExpanded(true);
 	}, []);
 
+	/**
+	 * ❌ 検索UIを閉じる
+	 */
 	const handleSearchCollapse = useCallback(() => {
 		setIsSearchExpanded(false);
 		setSearchQuery("");
