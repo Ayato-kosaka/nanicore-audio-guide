@@ -9,6 +9,7 @@ import { useLogger } from "@/hooks/useLogger";
 import { useLocale } from "@/hooks/useLocale";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
+import { useCloudFunction } from "@/hooks/useCloudFunction";
 
 /**
  * 🗺️ MapScreen
@@ -26,8 +27,6 @@ type MapLocation = {
 	placeId?: string;
 };
 
-const { width, height } = Dimensions.get("window");
-
 const INITIAL_REGION: Region = {
 	latitude: 35.6762,
 	longitude: 139.6503,
@@ -35,9 +34,18 @@ const INITIAL_REGION: Region = {
 	longitudeDelta: 0.0421,
 };
 
+/**
+ * 🗺️ MapScreen
+ *
+ * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
+ * - 位置情報サービスから現在地を取得して初期表示
+ * - キーワード検索や地図タップで地点を選択
+ * - 選択した地点から PlaceGuide へ移動
+ */
 export default function MapScreen() {
 	const router = useRouter();
 	const locale = useLocale();
+	const { callCloudFunction } = useCloudFunction();
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 
@@ -48,18 +56,18 @@ export default function MapScreen() {
 	const [isSearching, setIsSearching] = useState(false);
 	const mapRef = useRef<ComponentRef<typeof MapView> | null>(null);
 
-        // Initialize with user's current location
-        React.useEffect(() => {
-                getCurrentLocation();
-        }, []);
+	// Initialize with user's current location
+	React.useEffect(() => {
+		getCurrentLocation();
+	}, []);
 
-        /**
-         * 📍 現在地を取得して地図を更新
-         *
-         * - 位置情報の許可を確認
-         * - 成功時は地図を現在地へ移動
-         */
-        const getCurrentLocation = useCallback(async () => {
+	/**
+	 * 📍 現在地を取得して地図を更新
+	 *
+	 * - 位置情報の許可を確認
+	 * - 成功時は地図を現在地へ移動
+	 */
+	const getCurrentLocation = useCallback(async () => {
 		try {
 			const { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== "granted") {
@@ -75,8 +83,8 @@ export default function MapScreen() {
 			const newRegion: Region = {
 				latitude: location.coords.latitude,
 				longitude: location.coords.longitude,
-				latitudeDelta: 0.01,
-				longitudeDelta: 0.01,
+				latitudeDelta: 0.002,
+				longitudeDelta: 0.002,
 			};
 
 			setRegion(newRegion);
@@ -96,13 +104,13 @@ export default function MapScreen() {
 		}
 	}, [logFrontendEvent]);
 
-        /**
-         * 🔎 地名検索を実行
-         *
-         * - 入力キーワードをジオコーディング
-         * - 成功時は地図を移動し選択地点を更新
-         */
-        const handleSearch = useCallback(async () => {
+	/**
+	 * 🔎 地名検索を実行
+	 *
+	 * - 入力キーワードをジオコーディング
+	 * - 成功時は地図を移動し選択地点を更新
+	 */
+	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
 
 		setIsSearching(true);
@@ -147,13 +155,13 @@ export default function MapScreen() {
 		}
 	}, [searchQuery, logFrontendEvent]);
 
-        /**
-         * 🗺️ 地図上をタップしたときの処理
-         *
-         * - 座標を選択し選択地点として保存
-         * - ログに位置を記録
-         */
-        const handleMapPress = useCallback(
+	/**
+	 * 🗺️ 地図上をタップしたときの処理
+	 *
+	 * - 座標を選択し選択地点として保存
+	 * - ログに位置を記録
+	 */
+	const handleMapPress = useCallback(
 		(event: any) => {
 			const { coordinate } = event.nativeEvent;
 			const location: MapLocation = {
@@ -173,31 +181,37 @@ export default function MapScreen() {
 		[logFrontendEvent],
 	);
 
-        /**
-         * 🎯 選択した地点から PlaceGuide へ遷移
-         */
-        const handleLocationSelect = useCallback(() => {
+	/**
+	 * 🎯 選択した地点から PlaceGuide へ遷移
+	 */
+	const handleLocationSelect = withLoading(async () => {
 		if (!selectedLocation) return;
 
 		// Generate a mock place ID for navigation
-		const mockPlaceId = `place_${selectedLocation.latitude}_${selectedLocation.longitude}`;
+		const placeId = `place_${selectedLocation.latitude}_${selectedLocation.longitude}`;
+
+		// const { extPlaces } = await callCloudFunction<{ placeId: string }, FindOrCreatePlaceFromIdResponse>(
+		// 	"findOrCreatePlaceFromId",
+		// 	{ placeId },
+		// 	"v1",
+		// );
 
 		router.push({
 			pathname: "/[locale]/PlaceGuide",
 			params: {
 				locale,
-				placeId: mockPlaceId,
+				placeId,
 				placeName: selectedLocation.name || "Selected Location",
 				latitude: selectedLocation.latitude.toString(),
 				longitude: selectedLocation.longitude.toString(),
 			},
 		});
-	}, [selectedLocation, router, locale]);
+	});
 
-        /**
-         * 📸 撮影画面へ遷移
-         */
-        const handleCameraPress = useCallback(() => {
+	/**
+	 * 📸 撮影画面へ遷移
+	 */
+	const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
 
 		logFrontendEvent({
@@ -207,20 +221,20 @@ export default function MapScreen() {
 		});
 	}, [router, locale, logFrontendEvent]);
 
-        /**
-         * 🔍 検索ボックス押下時に検索UIを展開
-         */
-        const handleSearchBoxPress = useCallback(() => {
-                setIsSearchExpanded(true);
-        }, []);
+	/**
+	 * 🔍 検索ボックス押下時に検索UIを展開
+	 */
+	const handleSearchBoxPress = useCallback(() => {
+		setIsSearchExpanded(true);
+	}, []);
 
-        /**
-         * ❌ 検索UIを閉じる
-         */
-        const handleSearchCollapse = useCallback(() => {
-                setIsSearchExpanded(false);
-                setSearchQuery("");
-        }, []);
+	/**
+	 * ❌ 検索UIを閉じる
+	 */
+	const handleSearchCollapse = useCallback(() => {
+		setIsSearchExpanded(false);
+		setSearchQuery("");
+	}, []);
 
 	return (
 		<View style={styles.container}>
@@ -247,71 +261,22 @@ export default function MapScreen() {
 				)}
 			</MapView>
 
-			{/* FAB Container - Top left */}
-			<View style={styles.fabContainer}>
-				<IconButton
-					icon="crosshairs-gps"
-					onPress={getCurrentLocation}
-					style={styles.locationFab}
-					iconColor="#666"
-					testID="location-fab"
-				/>
-			</View>
-
-			{/* Bottom Sheet */}
-			<View style={[styles.bottomSheet, isSearchExpanded && styles.expandedBottomSheet]}>
-				{isSearchExpanded ? (
-					// Expanded Search UI
-					<View style={styles.expandedSearchContainer}>
-						<View style={styles.searchHeader}>
-							<Text variant="titleMedium" style={styles.searchTitle}>
-								Search Places
-							</Text>
-							<IconButton
-								icon="close"
-								size={20}
-								onPress={handleSearchCollapse}
-								style={styles.closeSearchButton}
-								testID="close-search-button"
-							/>
-						</View>
-						<Searchbar
-							placeholder={i18n.t("Map.searchPlaceholder")}
-							onChangeText={setSearchQuery}
-							value={searchQuery}
-							onSubmitEditing={handleSearch}
-							loading={isSearching}
-							style={styles.expandedSearchBar}
-							inputStyle={styles.searchInput}
-							testID="expanded-search-bar"
+			{/* Bottom Container */}
+			<View style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
+				{/* FAB Container*/}
+				{!isSearchExpanded && (
+					<View style={styles.fabContainer}>
+						<IconButton
+							icon="crosshairs-gps"
+							size={32}
+							onPress={getCurrentLocation}
+							style={styles.locationFab}
+							iconColor="#666"
+							testID="location-fab"
 						/>
-					</View>
-				) : (
-					// Collapsed Bottom Sheet UI
-					<>
-						{/* Instruction Text */}
-						<Text variant="bodySmall" style={styles.instructionText}>
-							地図をドラッグして地点を選択してください
-						</Text>
-
-						{/* Location Display Box */}
-						<View style={styles.locationBox} onTouchEnd={handleSearchBoxPress}>
-							<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
-								{selectedLocation?.name || i18n.t("Map.searchPlaceholder")}
-							</Text>
-							<IconButton
-								icon="magnify"
-								size={20}
-								iconColor="#666"
-								style={styles.searchIcon}
-								testID="search-icon"
-							/>
-						</View>
-
-						{/* Camera Button */}
 						<IconButton
 							icon="camera"
-							size={20}
+							size={32}
 							mode="contained"
 							containerColor="#fe3764"
 							iconColor="white"
@@ -319,21 +284,75 @@ export default function MapScreen() {
 							style={styles.cameraFab}
 							testID="camera-fab"
 						/>
-
-						{/* Nanicore Button */}
-						<Button
-							mode="contained"
-							onPress={handleLocationSelect}
-							disabled={!selectedLocation}
-							style={[styles.nanicoreButton, !selectedLocation && styles.disabledButton]}
-							buttonColor="#fe3764"
-							labelStyle={styles.nanicoreButtonLabel}
-							contentStyle={styles.nanicoreButtonContent}
-							testID="nanicore-button">
-							なにこれ
-						</Button>
-					</>
+					</View>
 				)}
+
+				{/* Bottom Sheet */}
+				<View style={styles.bottomSheet}>
+					{isSearchExpanded ? (
+						// Expanded Search UI
+						<View style={styles.expandedSearchContainer}>
+							<View style={styles.searchHeader}>
+								<Text variant="titleMedium" style={styles.searchTitle}>
+									Search Places
+								</Text>
+								<IconButton
+									icon="close"
+									size={20}
+									onPress={handleSearchCollapse}
+									style={styles.closeSearchButton}
+									testID="close-search-button"
+								/>
+							</View>
+							<Searchbar
+								placeholder={i18n.t("Map.searchPlaceholder")}
+								onChangeText={setSearchQuery}
+								value={searchQuery}
+								onSubmitEditing={handleSearch}
+								loading={isSearching}
+								style={styles.expandedSearchBar}
+								inputStyle={styles.searchInput}
+								testID="expanded-search-bar"
+							/>
+						</View>
+					) : (
+						// Collapsed Bottom Sheet UI
+						<>
+							{/* Instruction Text */}
+							<Text variant="bodySmall" style={styles.instructionText}>
+								地図をドラッグして地点を選択してください
+							</Text>
+
+							{/* Location Display Box */}
+							<View style={styles.locationBox} onTouchEnd={handleSearchBoxPress}>
+								<IconButton
+									icon="map-marker"
+									size={20}
+									iconColor="#666"
+									style={styles.markerIcon}
+									testID="marker-icon"
+								/>
+								<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
+									{selectedLocation?.name || i18n.t("Map.searchPlaceholder")}
+								</Text>
+								<IconButton icon="magnify" size={20} iconColor="#666" style={styles.searchIcon} testID="search-icon" />
+							</View>
+
+							{/* Nanicore Button */}
+							<Button
+								mode="contained"
+								onPress={handleLocationSelect}
+								disabled={!selectedLocation}
+								style={[styles.nanicoreButton, !selectedLocation && styles.disabledButton]}
+								buttonColor="#fe3764"
+								labelStyle={styles.nanicoreButtonLabel}
+								contentStyle={styles.nanicoreButtonContent}
+								testID="nanicore-button">
+								なにこれ
+							</Button>
+						</>
+					)}
+				</View>
 			</View>
 		</View>
 	);
@@ -405,11 +424,19 @@ const styles = StyleSheet.create({
 	map: {
 		flex: 1,
 	},
-	fabContainer: {
+	bottomContainer: {
 		position: "absolute",
-		top: Platform.OS === "ios" ? 60 : 40,
-		left: 16,
+		bottom: 0,
+		left: 0,
+		right: 0,
+	},
+	fabContainer: {
+		flexDirection: "column",
+		alignItems: "flex-end",
+		justifyContent: "flex-end",
 		zIndex: 1,
+		marginRight: 16,
+		marginBottom: 16,
 	},
 	locationFab: {
 		backgroundColor: "white",
@@ -421,10 +448,7 @@ const styles = StyleSheet.create({
 		shadowOffset: { width: 0, height: 2 },
 	},
 	bottomSheet: {
-		position: "absolute",
-		bottom: 0,
-		left: 0,
-		right: 0,
+		flex: 1,
 		backgroundColor: "white",
 		borderTopLeftRadius: 24,
 		borderTopRightRadius: 24,
@@ -490,18 +514,19 @@ const styles = StyleSheet.create({
 		color: "#495057",
 		fontSize: 15,
 	},
+	markerIcon: {
+		margin: 0,
+	},
 	searchIcon: {
 		margin: 0,
 	},
 	cameraFab: {
-		alignSelf: "flex-end",
-		marginBottom: 16,
-		borderRadius: 24,
-		elevation: 4,
+		elevation: 12,
 		shadowColor: "#fe3764",
-		shadowOpacity: 0.3,
-		shadowRadius: 8,
-		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.4,
+		shadowRadius: 16,
+		shadowOffset: { width: 0, height: 6 },
+		borderRadius: 28,
 	},
 	nanicoreButton: {
 		borderRadius: 20,

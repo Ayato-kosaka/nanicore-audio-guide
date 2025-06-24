@@ -25,7 +25,7 @@ export const useWithLoading = () => {
 	 */
 	const withLoading = useCallback(
 		<Args extends any[], ReturnType>(
-			fn: (...args: Args) => Promise<ReturnType>
+			fn: (...args: Args) => Promise<ReturnType>,
 		): ((...args: Args) => Promise<ReturnType>) => {
 			return async (...args: Args): Promise<ReturnType> => {
 				setIsLoading(true);
@@ -36,7 +36,7 @@ export const useWithLoading = () => {
 				}
 			};
 		},
-		[]
+		[],
 	);
 
 	return { isLoading, withLoading };

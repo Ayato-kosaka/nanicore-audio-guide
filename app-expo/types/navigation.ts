@@ -1,5 +1,12 @@
 import { PrismaExtSpots } from "@shared/converters/convert_ext_spots";
 
+export type PlaceGuideParams = {
+	placeId: string;
+	placeName: string;
+	latitude?: string;
+	longitude?: string;
+};
+
 /**
  * 🎯 SpotGuide 画面に渡されるパラメータ（非シリアライズ形式）。
  *
@@ -42,6 +49,7 @@ export type SpotSearchByPlaceIdParams = { id: string };
  * - 各画面に渡すパラメータ構造を明示することで補完・型検査が強化される
  */
 export type RootStackParamList = {
+	PlaceGuide: PlaceGuideParams; // PlaceGuide画面（URL渡し用）
 	SpotCapture: {}; // 撮影画面（パラメータなし）
 	SpotGuide: SpotGuideSerializedParams; // SpotGuide画面（URL渡し用）
 	SpotSearch: SpotSearchParams; // SpotSearch画面

@@ -11,6 +11,7 @@ import i18n from "@/lib/i18n";
 
 import { PlaceGuideCard } from "./PlaceGuideCard";
 import { BannerAdView } from "@/components/BannerAdView";
+import { PlaceGuideParams } from "@/types/navigation";
 
 /**
  * 🗺️ PlaceGuideScreen
@@ -21,13 +22,6 @@ import { BannerAdView } from "@/components/BannerAdView";
  */
 
 const { width, height } = Dimensions.get("window");
-
-type PlaceGuideParams = {
-	placeId: string;
-	placeName: string;
-	latitude?: string;
-	longitude?: string;
-};
 
 type PlaceGuide = {
 	id: string;
