@@ -18,24 +18,24 @@ type CustomQueryModalProps = {
 };
 
 export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onDismiss, onSubmit, loading }) => {
-        const [query, setQuery] = useState("");
+	const [query, setQuery] = useState("");
 
-        /**
-         * ✅ 入力された質問を送信
-         */
-        const handleSubmit = useCallback(async () => {
-                if (!query.trim()) return;
-                await onSubmit(query);
-                setQuery("");
-        }, [query, onSubmit]);
+	/**
+	 * ✅ 入力された質問を送信
+	 */
+	const handleSubmit = useCallback(async () => {
+		if (!query.trim()) return;
+		await onSubmit(query);
+		setQuery("");
+	}, [query, onSubmit]);
 
-        /**
-         * ❎ モーダルを閉じて入力をリセット
-         */
-        const handleDismiss = useCallback(() => {
-                setQuery("");
-                onDismiss();
-        }, [onDismiss]);
+	/**
+	 * ❎ モーダルを閉じて入力をリセット
+	 */
+	const handleDismiss = useCallback(() => {
+		setQuery("");
+		onDismiss();
+	}, [onDismiss]);
 
 	return (
 		<Portal>

@@ -25,21 +25,21 @@ export const GuideSection: React.FC<GuideSectionProps> = ({ guide, isFirst = fal
 	const [isLiked, setIsLiked] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 
-        /**
-         * 💖 いいねボタンのトグル
-         */
-        const handleLikePress = () => {
-                setIsLiked(!isLiked);
-        };
+	/**
+	 * 💖 いいねボタンのトグル
+	 */
+	const handleLikePress = () => {
+		setIsLiked(!isLiked);
+	};
 
-        /**
-         * ▶️ 音声再生のトグル
-         */
-        const handlePlayPress = () => {
-                setIsPlaying(!isPlaying);
-                // Mock audio playback toggle
-                setTimeout(() => setIsPlaying(false), 2000);
-        };
+	/**
+	 * ▶️ 音声再生のトグル
+	 */
+	const handlePlayPress = () => {
+		setIsPlaying(!isPlaying);
+		// Mock audio playback toggle
+		setTimeout(() => setIsPlaying(false), 2000);
+	};
 
 	return (
 		<View style={[styles.container, isFirst && styles.firstGuide]}>

@@ -67,10 +67,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		}
 	}, [placeImage.guides.length]);
 
-        /**
-         * 🗂 カテゴリ選択に応じて新しいガイドを生成
-         */
-        const handleCategoryPress = useCallback(
+	/**
+	 * 🗂 カテゴリ選択に応じて新しいガイドを生成
+	 */
+	const handleCategoryPress = useCallback(
 		withLoading(async (categoryId: string) => {
 			const category = availableCategories.find((c) => c.id === categoryId);
 			if (!category) return;
@@ -106,10 +106,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		[availableCategories, placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
-        /**
-         * ✏️ カスタム質問からガイドを生成
-         */
-        const handleCustomQuery = useCallback(
+	/**
+	 * ✏️ カスタム質問からガイドを生成
+	 */
+	const handleCustomQuery = useCallback(
 		withLoading(async (query: string) => {
 			if (!query.trim()) return;
 
@@ -143,10 +143,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({ placeImage, plac
 		[placeImage, placeName, onUpdate, logFrontendEvent],
 	);
 
-        /**
-         * 🖼️ 画像読み込みエラー時の処理
-         */
-        const handleImageError = useCallback(() => {
+	/**
+	 * 🖼️ 画像読み込みエラー時の処理
+	 */
+	const handleImageError = useCallback(() => {
 		logFrontendEvent({
 			event_name: "placeImageLoadError",
 			error_level: "error",

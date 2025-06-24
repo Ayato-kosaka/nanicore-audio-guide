@@ -59,10 +59,10 @@ export default function PlaceGuideScreen() {
 		initializePlaceGuide();
 	}, [params.placeId]);
 
-        /**
-         * 🚀 初期画像とガイドを読み込む
-         */
-        const initializePlaceGuide = withLoading(async () => {
+	/**
+	 * 🚀 初期画像とガイドを読み込む
+	 */
+	const initializePlaceGuide = withLoading(async () => {
 		try {
 			// Mock initial place image and guide
 			const initialImage: PlaceImage = {
@@ -90,10 +90,10 @@ export default function PlaceGuideScreen() {
 		}
 	});
 
-        /**
-         * 📸 新しい写真を撮影してガイドを追加
-         */
-        const handleCameraPress = useCallback(() => {
+	/**
+	 * 📸 新しい写真を撮影してガイドを追加
+	 */
+	const handleCameraPress = useCallback(() => {
 		// Mock photo capture - replace with actual camera implementation
 		const mockImageUri = `https://picsum.photos/400/600?random=${Date.now()}`;
 
@@ -126,39 +126,39 @@ export default function PlaceGuideScreen() {
 		});
 	}, [placeImages.length, logFrontendEvent]);
 
-        /**
-         * 🖊 撮影画像の情報を更新
-         */
-        const updatePlaceImage = useCallback((imageId: string, updates: Partial<PlaceImage>) => {
-                setPlaceImages((prev) => prev.map((image) => (image.id === imageId ? { ...image, ...updates } : image)));
-        }, []);
+	/**
+	 * 🖊 撮影画像の情報を更新
+	 */
+	const updatePlaceImage = useCallback((imageId: string, updates: Partial<PlaceImage>) => {
+		setPlaceImages((prev) => prev.map((image) => (image.id === imageId ? { ...image, ...updates } : image)));
+	}, []);
 
 	const handleSnapToItem = useCallback((index: number) => {
 		setCurrentIndex(index);
 	}, []);
 
-        /**
-         * ◀️ 前の写真へ移動
-         */
-        const handlePrevious = useCallback(() => {
-                if (currentIndex > 0) {
-                        carouselRef.current?.scrollTo({ index: currentIndex - 1, animated: true });
-                }
-        }, [currentIndex]);
+	/**
+	 * ◀️ 前の写真へ移動
+	 */
+	const handlePrevious = useCallback(() => {
+		if (currentIndex > 0) {
+			carouselRef.current?.scrollTo({ index: currentIndex - 1, animated: true });
+		}
+	}, [currentIndex]);
 
-        /**
-         * ▶️ 次の写真へ移動
-         */
-        const handleNext = useCallback(() => {
-                if (currentIndex < placeImages.length - 1) {
-                        carouselRef.current?.scrollTo({ index: currentIndex + 1, animated: true });
-                }
+	/**
+	 * ▶️ 次の写真へ移動
+	 */
+	const handleNext = useCallback(() => {
+		if (currentIndex < placeImages.length - 1) {
+			carouselRef.current?.scrollTo({ index: currentIndex + 1, animated: true });
+		}
 	}, [currentIndex, placeImages.length]);
 
-        /**
-         * カルーセル内のカードを描画
-         */
-        const renderItem = useCallback(
+	/**
+	 * カルーセル内のカードを描画
+	 */
+	const renderItem = useCallback(
 		({ item, index }: { item: PlaceImage; index: number }) => (
 			<View style={styles.cardContainer}>
 				<PlaceGuideCard
