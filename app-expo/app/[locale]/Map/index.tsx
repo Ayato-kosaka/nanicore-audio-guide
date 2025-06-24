@@ -9,6 +9,7 @@ import { useLogger } from "@/hooks/useLogger";
 import { useLocale } from "@/hooks/useLocale";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
+import { useCloudFunction } from "@/hooks/useCloudFunction";
 
 type MapLocation = {
 	latitude: number;
@@ -27,7 +28,9 @@ const INITIAL_REGION: Region = {
 export default function MapScreen() {
 	const router = useRouter();
 	const locale = useLocale();
+	const { callCloudFunction } = useCloudFunction();
 	const { logFrontendEvent } = useLogger();
+	const { isLoading, withLoading } = useWithLoading();
 
 	const [region, setRegion] = useState<Region>(INITIAL_REGION);
 	const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);
@@ -143,23 +146,29 @@ export default function MapScreen() {
 		[logFrontendEvent],
 	);
 
-	const handleLocationSelect = useCallback(() => {
+	const handleLocationSelect = withLoading(async () => {
 		if (!selectedLocation) return;
 
 		// Generate a mock place ID for navigation
-		const mockPlaceId = `place_${selectedLocation.latitude}_${selectedLocation.longitude}`;
+		const placeId = `place_${selectedLocation.latitude}_${selectedLocation.longitude}`;
+
+		// const { extPlaces } = await callCloudFunction<{ placeId: string }, FindOrCreatePlaceFromIdResponse>(
+		// 	"findOrCreatePlaceFromId",
+		// 	{ placeId },
+		// 	"v1",
+		// );
 
 		router.push({
 			pathname: "/[locale]/PlaceGuide",
 			params: {
 				locale,
-				placeId: mockPlaceId,
+				placeId,
 				placeName: selectedLocation.name || "Selected Location",
 				latitude: selectedLocation.latitude.toString(),
 				longitude: selectedLocation.longitude.toString(),
 			},
 		});
-	}, [selectedLocation, router, locale]);
+	});
 
 	const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
