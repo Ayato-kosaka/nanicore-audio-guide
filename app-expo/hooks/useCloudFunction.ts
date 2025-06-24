@@ -78,12 +78,11 @@ export const useCloudFunction = () => {
 					// レスポンスボディがJSONでない場合はスキップ
 				}
 
-
 				// 特定エラーコードによる分岐
 				if (response.status === 403) {
 					switch (errorPayload.error) {
 						case "Service maintenance":
-							showDialog(i18n.t("Error.maintenanceMessage"));// 🧃 表示のみ（アプリ全体は操作制限済み想定）
+							showDialog(i18n.t("Error.maintenanceMessage")); // 🧃 表示のみ（アプリ全体は操作制限済み想定）
 							throw {
 								code: "maintenance_mode",
 								message: errorPayload.message || errorMessage,
@@ -94,7 +93,8 @@ export const useCloudFunction = () => {
 								ios: Env.APP_STORE_URL, // iOS の App Store URL
 								android: Env.PLAY_STORE_URL, // Android の Play Store URL
 							});
-							showDialog(i18n.t("Error.unsupportedVersion"), { // 🧃 表示のみ（アプリ全体は操作制限済み想定）
+							showDialog(i18n.t("Error.unsupportedVersion"), {
+								// 🧃 表示のみ（アプリ全体は操作制限済み想定）
 								okLabel: i18n.t("Common.goStore"),
 								onConfirm: () => storeUrl && Linking.openURL(storeUrl),
 							});
@@ -125,8 +125,7 @@ export const useCloudFunction = () => {
 				event_name: `callCloudFunction:${version}-${functionName}`,
 				error_level: "info",
 				payload: {
-					requestPayload:
-						isMultipart || requestPayload instanceof FormData ? "[multipart/form-data]" : requestPayload,
+					requestPayload: isMultipart || requestPayload instanceof FormData ? "[multipart/form-data]" : requestPayload,
 					requestId,
 				},
 			});

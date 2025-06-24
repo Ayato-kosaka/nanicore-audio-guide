@@ -1,108 +1,333 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
-import { Chip } from "react-native-paper";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { View, StyleSheet, Dimensions, Platform } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { IconButton, Text } from "react-native-paper";
+import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 
-import PlaceGuideCard from "./PlaceGuideCard";
-import { useWithLoading } from "@/hooks/useWithLoading";
-import { useCloudFunction } from "@/hooks/useCloudFunction";
 import { useLogger } from "@/hooks/useLogger";
 import { useLocale } from "@/hooks/useLocale";
-import type { ListPlaceGuidesRequest, ListPlaceGuidesResponse } from "@shared/api/listPlaceGuides.schema";
-import type { GeneratePlaceGuideRequest, GeneratePlaceGuideResponse } from "@shared/api/generatePlaceGuide.schema";
-import { PlaceGuideParams, PlaceGuideSerializedParams } from "@/types/navigation";
-import { deserializePlaceGuideParams } from "@/utils/navigation";
-import { convertSupabaseToPrisma_PlaceGuides, PrismaPlaceGuides } from "@shared/converters/convert_place_guides";
+import { useWithLoading } from "@/hooks/useWithLoading";
+import i18n from "@/lib/i18n";
+
+import { PlaceGuideCard } from "./PlaceGuideCard";
+import { BannerAdView } from "@/components/BannerAdView";
+import { PlaceGuideParams } from "@/types/navigation";
+
+/**
+ * 🗺️ PlaceGuideScreen
+ *
+ * 撮影写真やカスタムガイドを含むスライドショーを表示。
+ * - 画像ごとに生成されたガイドをカルーセルで閲覧
+ * - 追加撮影やナビゲーションを提供
+ */
+
+const { width, height } = Dimensions.get("window");
+
+type PlaceGuide = {
+	id: string;
+	title: string;
+	content: string;
+	category: string;
+};
+
+type PlaceImage = {
+	id: string;
+	imageUri: string;
+	guides: PlaceGuide[];
+	isInitial: boolean;
+};
 
 export default function PlaceGuideScreen() {
+	const params = useLocalSearchParams<PlaceGuideParams>();
 	const router = useRouter();
-	const { callCloudFunction } = useCloudFunction();
-	const { withLoading, isLoading } = useWithLoading();
-	const { logFrontendEvent } = useLogger();
 	const locale = useLocale();
-	const serializedParams = useLocalSearchParams<PlaceGuideSerializedParams>();
-	const { extPlaces, imageUri, takenPhotoStoragePath }: PlaceGuideParams = useMemo(
-		() => deserializePlaceGuideParams(serializedParams),
-		[serializedParams],
-	);
+	const { logFrontendEvent } = useLogger();
+	const { isLoading, withLoading } = useWithLoading();
 
-	const [guides, setGuides] = useState<(PrismaPlaceGuides & { audioUrl: string })[]>([]);
-	const [selectedTag, setSelectedTag] = useState<string | null>(null);
-
-	const tags = useMemo(() => {
-		const setTag = new Set<string>();
-		guides.forEach((g) => g.tags?.forEach((t: string) => setTag.add(t)));
-		return Array.from(setTag);
-	}, [guides]);
+	const [placeImages, setPlaceImages] = useState<PlaceImage[]>([]);
+	const [currentIndex, setCurrentIndex] = useState(0);
+	const carouselRef = useRef<ICarouselInstance>(null);
 
 	useEffect(() => {
-		if (!extPlaces) {
-			router.replace(`/${locale}/PlaceMapSelect`);
-			return;
+		logFrontendEvent({
+			event_name: "PlaceGuideMounted",
+			error_level: "info",
+			payload: { placeId: params.placeId, placeName: params.placeName },
+		});
+
+		// Initialize with place image and initial guide
+		initializePlaceGuide();
+	}, [params.placeId]);
+
+	/**
+	 * 🚀 初期画像とガイドを読み込む
+	 */
+	const initializePlaceGuide = withLoading(async () => {
+		try {
+			// Mock initial place image and guide
+			const initialImage: PlaceImage = {
+				id: "initial",
+				imageUri: `https://picsum.photos/400/600?random=${Date.now()}`,
+				isInitial: true,
+				guides: [
+					{
+						id: "initial_guide",
+						title: `Welcome to ${params.placeName}`,
+						content:
+							"This is a beautiful location with rich history and culture. Explore the area to discover hidden gems and local attractions.",
+						category: "general",
+					},
+				],
+			};
+
+			setPlaceImages([initialImage]);
+		} catch (error: any) {
+			logFrontendEvent({
+				event_name: "initializePlaceGuideFailed",
+				error_level: "error",
+				payload: { error: error.message },
+			});
 		}
-		withLoading(async () => {
-			try {
-				logFrontendEvent({
-					event_name: "PlaceGuideMounted",
-					error_level: "info",
-					payload: { placeId: extPlaces.id },
-				});
-				const res = await callCloudFunction<ListPlaceGuidesRequest, ListPlaceGuidesResponse>(
-					"listPlaceGuides",
-					{ placeId: extPlaces.id, languageTag: locale },
-					"v1",
-				);
-				let list = res.placeGuides.map((g) => ({ ...convertSupabaseToPrisma_PlaceGuides(g), audioUrl: g.audioUrl }));
-				if (list.length === 0) {
-					const gen = await callCloudFunction<GeneratePlaceGuideRequest, GeneratePlaceGuideResponse>(
-						"generatePlaceGuide",
-						{ extPlace: { id: extPlaces.id, title: extPlaces.title }, languageTag: locale },
-						"v1",
-					);
-					list = [{ ...convertSupabaseToPrisma_PlaceGuides(gen.placeGuide), audioUrl: gen.audioUrl }];
-				}
-				setGuides(list);
-			} catch (error: any) {
-				logFrontendEvent({
-					event_name: "PlaceGuideLoadFailed",
-					error_level: "error",
-					payload: { message: error.message },
-				});
-			}
-		})();
+	});
+
+	/**
+	 * 📸 新しい写真を撮影してガイドを追加
+	 */
+	const handleCameraPress = useCallback(() => {
+		// Mock photo capture - replace with actual camera implementation
+		const mockImageUri = `https://picsum.photos/400/600?random=${Date.now()}`;
+
+		const newImage: PlaceImage = {
+			id: `photo_${Date.now()}`,
+			imageUri: mockImageUri,
+			isInitial: false,
+			guides: [
+				{
+					id: `guide_${Date.now()}`,
+					title: "Photo Analysis",
+					content:
+						"This is an analysis of your captured photo. The AI has identified interesting elements and can provide detailed information about what's visible in the image.",
+					category: "photo_analysis",
+				},
+			],
+		};
+
+		setPlaceImages((prev) => [...prev, newImage]);
+
+		// Navigate to the new image
+		setTimeout(() => {
+			carouselRef.current?.scrollTo({ index: placeImages.length, animated: true });
+		}, 100);
+
+		logFrontendEvent({
+			event_name: "placeGuideCameraPressed",
+			error_level: "info",
+			payload: { imageId: newImage.id },
+		});
+	}, [placeImages.length, logFrontendEvent]);
+
+	/**
+	 * 🖊 撮影画像の情報を更新
+	 */
+	const updatePlaceImage = useCallback((imageId: string, updates: Partial<PlaceImage>) => {
+		setPlaceImages((prev) => prev.map((image) => (image.id === imageId ? { ...image, ...updates } : image)));
 	}, []);
 
-	const filteredGuides = useMemo(() => {
-		if (!selectedTag) return guides;
-		return guides.filter((g) => g.tags?.includes(selectedTag));
-	}, [guides, selectedTag]);
+	const handleSnapToItem = useCallback((index: number) => {
+		setCurrentIndex(index);
+	}, []);
 
-	if (!extPlaces || isLoading) return <ActivityIndicator size="large" style={{ flex: 1 }} />;
+	/**
+	 * ◀️ 前の写真へ移動
+	 */
+	const handlePrevious = useCallback(() => {
+		if (currentIndex > 0) {
+			carouselRef.current?.scrollTo({ index: currentIndex - 1, animated: true });
+		}
+	}, [currentIndex]);
+
+	/**
+	 * ▶️ 次の写真へ移動
+	 */
+	const handleNext = useCallback(() => {
+		if (currentIndex < placeImages.length - 1) {
+			carouselRef.current?.scrollTo({ index: currentIndex + 1, animated: true });
+		}
+	}, [currentIndex, placeImages.length]);
+
+	/**
+	 * カルーセル内のカードを描画
+	 */
+	const renderItem = useCallback(
+		({ item, index }: { item: PlaceImage; index: number }) => (
+			<View style={styles.cardContainer}>
+				<PlaceGuideCard
+					placeImage={item}
+					placeName={params.placeName}
+					onUpdate={(updates) => updatePlaceImage(item.id, updates)}
+					onBackPress={() => router.back()}
+				/>
+			</View>
+		),
+		[params.placeName, updatePlaceImage, router],
+	);
+
+	if (placeImages.length === 0) {
+		return (
+			<View style={styles.container}>
+				<BannerAdView />
+				<View style={styles.loadingContainer}>
+					<Text variant="bodyLarge">{i18n.t("PlaceGuide.loading")}</Text>
+				</View>
+			</View>
+		);
+	}
 
 	return (
 		<View style={styles.container}>
-			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chips}>
-				<Chip selected={!selectedTag} onPress={() => setSelectedTag(null)} style={styles.chip}>
-					All
-				</Chip>
-				{tags.map((tag) => (
-					<Chip key={tag} selected={selectedTag === tag} onPress={() => setSelectedTag(tag)} style={styles.chip}>
-						{tag}
-					</Chip>
-				))}
-			</ScrollView>
-			<PlaceGuideCard
-				place={extPlaces}
-				initialGuides={filteredGuides}
-				imageUri={imageUri ?? extPlaces.image_url ?? ""}
-				takenPhotoStoragePath={takenPhotoStoragePath}
+			{/* Banner Ad */}
+			<BannerAdView />
+
+			{/* Image Carousel */}
+			<Carousel
+				ref={carouselRef}
+				loop={false}
+				data={placeImages}
+				pagingEnabled={true}
+				snapEnabled={true}
+				modeConfig={{
+					parallaxScrollingScale: 0.95,
+					parallaxScrollingOffset: 30,
+				}}
+				scrollAnimationDuration={300}
+				renderItem={renderItem}
+				width={width}
+				onSnapToItem={handleSnapToItem}
+				containerStyle={styles.carouselContainer}
+				mode="parallax"
+				testID="place-images-carousel"
 			/>
+
+			{/* Navigation Arrows */}
+			{placeImages.length > 1 && (
+				<>
+					{currentIndex > 0 && (
+						<IconButton
+							icon="chevron-left"
+							size={28}
+							iconColor="white"
+							onPress={handlePrevious}
+							style={[styles.navigationArrow, styles.leftArrow]}
+							testID="previous-button"
+						/>
+					)}
+					{currentIndex < placeImages.length - 1 && (
+						<IconButton
+							icon="chevron-right"
+							size={28}
+							iconColor="white"
+							onPress={handleNext}
+							style={[styles.navigationArrow, styles.rightArrow]}
+							testID="next-button"
+						/>
+					)}
+				</>
+			)}
+
+			{/* Camera Button */}
+			<IconButton
+				icon="camera"
+				size={44}
+				mode="contained"
+				containerColor="#fe3764"
+				iconColor="white"
+				onPress={handleCameraPress}
+				style={styles.cameraButton}
+				testID="camera-fab"
+			/>
+
+			{/* Page Indicator */}
+			{placeImages.length > 1 && (
+				<View style={styles.pageIndicator}>
+					{placeImages.map((_, index) => (
+						<View key={index} style={[styles.dot, index === currentIndex ? styles.activeDot : styles.inactiveDot]} />
+					))}
+				</View>
+			)}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: { flex: 1, backgroundColor: "#f1f1f1" },
-	chips: { paddingHorizontal: 8, paddingVertical: 12 },
-	chip: { marginRight: 8 },
+	container: {
+		flex: 1,
+		backgroundColor: "#fafafa",
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	carouselContainer: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	cardContainer: {
+		height: "100%",
+		borderRadius: 12,
+		alignItems: "center",
+		backgroundColor: "#fff",
+		overflow: "hidden",
+	},
+	navigationArrow: {
+		position: "absolute",
+		top: "50%",
+		marginTop: -24,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		borderRadius: 24,
+		zIndex: 5,
+	},
+	leftArrow: {
+		left: 20,
+	},
+	rightArrow: {
+		right: 20,
+	},
+	cameraButton: {
+		position: "absolute",
+		bottom: 90,
+		right: 30,
+		elevation: 12,
+		shadowColor: "#fe3764",
+		shadowOpacity: 0.4,
+		shadowRadius: 16,
+		shadowOffset: { width: 0, height: 6 },
+		borderRadius: 28,
+	},
+	pageIndicator: {
+		position: "absolute",
+		bottom: 24,
+		left: 0,
+		right: 0,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		gap: 6,
+		paddingHorizontal: 20,
+		paddingVertical: 12,
+	},
+	dot: {
+		width: 6,
+		height: 6,
+		borderRadius: 3,
+	},
+	activeDot: {
+		backgroundColor: "#fe3764",
+		width: 20,
+		borderRadius: 3,
+	},
+	inactiveDot: {
+		backgroundColor: "rgba(255, 255, 255, 0.6)",
+	},
 });

@@ -24,13 +24,17 @@ export const useWithLoading = () => {
 	 * @returns ラップされた async 関数
 	 */
 	const withLoading = useCallback(
-		(fn: () => Promise<any>) => async () => {
-			setIsLoading(true);
-			try {
-				await fn();
-			} finally {
-				setIsLoading(false);
-			}
+		<Args extends any[], ReturnType>(
+			fn: (...args: Args) => Promise<ReturnType>,
+		): ((...args: Args) => Promise<ReturnType>) => {
+			return async (...args: Args): Promise<ReturnType> => {
+				setIsLoading(true);
+				try {
+					return await fn(...args);
+				} finally {
+					setIsLoading(false);
+				}
+			};
 		},
 		[],
 	);

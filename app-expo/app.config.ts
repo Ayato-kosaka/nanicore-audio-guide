@@ -1,13 +1,13 @@
 import * as dotenv from "dotenv";
 import { ExpoConfig, ConfigContext } from "@expo/config";
-import { version } from "./package.json"
+import { version } from "./package.json";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
 	name: "nanicore-audio-guide",
 	slug: "nanicore",
 	owner: "nanicore-audio-guide",
-	runtimeVersion: version.split('.').slice(0, 2).join('.'), // e.g. "1.1"
+	runtimeVersion: version.split(".").slice(0, 2).join("."), // e.g. "1.1"
 	version,
 	orientation: "portrait",
 	icon: "./assets/images/icon.png",
@@ -52,14 +52,27 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		[
 			"expo-camera",
 			{
-				cameraPermission: "$(PRODUCT_NAME) uses the camera to identify spots and give audio guides."
-			}
+				cameraPermission: "$(PRODUCT_NAME) uses the camera to identify spots and give audio guides.",
+			},
 		],
 		[
 			"expo-image-picker",
 			{
-				photosPermission: "Used to save captured spot photos to your library."
-			}
+				photosPermission: "Used to save captured spot photos to your library.",
+			},
+		],
+		[
+			"expo-location",
+			{
+				locationAlwaysAndWhenInUsePermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationAlwaysPermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationWhenInUsePermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				isIosBackgroundLocationEnabled: false,
+				isAndroidBackgroundLocationEnabled: false,
+			},
 		],
 		[
 			"react-native-google-mobile-ads",
