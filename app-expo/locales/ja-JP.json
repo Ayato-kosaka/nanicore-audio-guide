@@ -7,7 +7,7 @@
 		"maintenanceMessage": "ただいまメンテナンス中です。",
 		"unsupportedVersion": "古いバージョンのため利用できません。"
 	},
-	"Map": {
+	"PlaceMapSelect": {
 		"searchPlaceholder": "場所を検索...",
 		"noResultsFound": "検索結果が見つかりませんでした",
 		"searchError": "場所の検索に失敗しました",

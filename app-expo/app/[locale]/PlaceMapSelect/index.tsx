@@ -296,7 +296,7 @@ export default function MapScreen() {
 								/>
 							</View>
 							<Searchbar
-								placeholder={i18n.t("Map.searchPlaceholder")}
+								placeholder={i18n.t("PlaceMapSelect.searchPlaceholder")}
 								onChangeText={setSearchQuery}
 								value={searchQuery}
 								onSubmitEditing={handleSearch}
@@ -324,7 +324,7 @@ export default function MapScreen() {
 									testID="marker-icon"
 								/>
 								<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
-									{selectedLocation?.name || i18n.t("Map.searchPlaceholder")}
+									{selectedLocation?.name || i18n.t("PlaceMapSelect.searchPlaceholder")}
 								</Text>
 								<IconButton icon="magnify" size={20} iconColor="#666" style={styles.searchIcon} testID="search-icon" />
 							</View>
