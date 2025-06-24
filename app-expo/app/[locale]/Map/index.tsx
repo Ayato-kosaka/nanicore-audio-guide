@@ -10,6 +10,15 @@ import { useLocale } from "@/hooks/useLocale";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
 
+/**
+ * 🗺️ MapScreen
+ *
+ * 現在地取得や場所検索、地点選択を行い PlaceGuide 画面へ遷移する地図画面。
+ * - 位置情報サービスから現在地を取得して初期表示
+ * - キーワード検索や地図タップで地点を選択
+ * - 選択した地点から PlaceGuide へ移動
+ */
+
 type MapLocation = {
 	latitude: number;
 	longitude: number;
@@ -39,12 +48,18 @@ export default function MapScreen() {
 	const [isSearching, setIsSearching] = useState(false);
 	const mapRef = useRef<ComponentRef<typeof MapView> | null>(null);
 
-	// Initialize with user's current location
-	React.useEffect(() => {
-		getCurrentLocation();
-	}, []);
+        // Initialize with user's current location
+        React.useEffect(() => {
+                getCurrentLocation();
+        }, []);
 
-	const getCurrentLocation = useCallback(async () => {
+        /**
+         * 📍 現在地を取得して地図を更新
+         *
+         * - 位置情報の許可を確認
+         * - 成功時は地図を現在地へ移動
+         */
+        const getCurrentLocation = useCallback(async () => {
 		try {
 			const { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== "granted") {
@@ -81,7 +96,13 @@ export default function MapScreen() {
 		}
 	}, [logFrontendEvent]);
 
-	const handleSearch = useCallback(async () => {
+        /**
+         * 🔎 地名検索を実行
+         *
+         * - 入力キーワードをジオコーディング
+         * - 成功時は地図を移動し選択地点を更新
+         */
+        const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
 
 		setIsSearching(true);
@@ -126,7 +147,13 @@ export default function MapScreen() {
 		}
 	}, [searchQuery, logFrontendEvent]);
 
-	const handleMapPress = useCallback(
+        /**
+         * 🗺️ 地図上をタップしたときの処理
+         *
+         * - 座標を選択し選択地点として保存
+         * - ログに位置を記録
+         */
+        const handleMapPress = useCallback(
 		(event: any) => {
 			const { coordinate } = event.nativeEvent;
 			const location: MapLocation = {
@@ -146,7 +173,10 @@ export default function MapScreen() {
 		[logFrontendEvent],
 	);
 
-	const handleLocationSelect = useCallback(() => {
+        /**
+         * 🎯 選択した地点から PlaceGuide へ遷移
+         */
+        const handleLocationSelect = useCallback(() => {
 		if (!selectedLocation) return;
 
 		// Generate a mock place ID for navigation
@@ -164,7 +194,10 @@ export default function MapScreen() {
 		});
 	}, [selectedLocation, router, locale]);
 
-	const handleCameraPress = useCallback(() => {
+        /**
+         * 📸 撮影画面へ遷移
+         */
+        const handleCameraPress = useCallback(() => {
 		router.push(`/${locale}/SpotCapture`);
 
 		logFrontendEvent({
@@ -174,14 +207,20 @@ export default function MapScreen() {
 		});
 	}, [router, locale, logFrontendEvent]);
 
-	const handleSearchBoxPress = useCallback(() => {
-		setIsSearchExpanded(true);
-	}, []);
+        /**
+         * 🔍 検索ボックス押下時に検索UIを展開
+         */
+        const handleSearchBoxPress = useCallback(() => {
+                setIsSearchExpanded(true);
+        }, []);
 
-	const handleSearchCollapse = useCallback(() => {
-		setIsSearchExpanded(false);
-		setSearchQuery("");
-	}, []);
+        /**
+         * ❌ 検索UIを閉じる
+         */
+        const handleSearchCollapse = useCallback(() => {
+                setIsSearchExpanded(false);
+                setSearchQuery("");
+        }, []);
 
 	return (
 		<View style={styles.container}>

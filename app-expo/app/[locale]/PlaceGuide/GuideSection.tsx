@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 
+/**
+ * 📚 GuideSection
+ *
+ * PlaceGuideCard 内でガイドテキストを表示し、
+ * いいねや音声再生の操作を提供する小さなコンポーネント。
+ */
+
 type PlaceGuide = {
 	id: string;
 	title: string;
@@ -18,15 +25,21 @@ export const GuideSection: React.FC<GuideSectionProps> = ({ guide, isFirst = fal
 	const [isLiked, setIsLiked] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 
-	const handleLikePress = () => {
-		setIsLiked(!isLiked);
-	};
+        /**
+         * 💖 いいねボタンのトグル
+         */
+        const handleLikePress = () => {
+                setIsLiked(!isLiked);
+        };
 
-	const handlePlayPress = () => {
-		setIsPlaying(!isPlaying);
-		// Mock audio playback toggle
-		setTimeout(() => setIsPlaying(false), 2000);
-	};
+        /**
+         * ▶️ 音声再生のトグル
+         */
+        const handlePlayPress = () => {
+                setIsPlaying(!isPlaying);
+                // Mock audio playback toggle
+                setTimeout(() => setIsPlaying(false), 2000);
+        };
 
 	return (
 		<View style={[styles.container, isFirst && styles.firstGuide]}>
