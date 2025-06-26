@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { View, ActivityIndicator, StyleSheet, Platform, Linking, TouchableOpacity } from "react-native";
 import { CameraType, CameraView, FlashMode, useCameraPermissions } from "expo-camera";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
@@ -14,7 +14,7 @@ import { convertSupabaseToPrisma_ExtSpots } from "@shared/converters/convert_ext
 import i18n from "@/lib/i18n";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import { useDialog } from "@/contexts/DialogProvider";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import {
 	GestureEvent,
 	PinchGestureHandler,
@@ -128,6 +128,17 @@ export default function SpotCapture() {
 		}
 	});
 
+	/**
+	 * ❌ カメラ画面を閉じ、地図選択へ戻す
+	 *   - ユーザーが撮影を途中でやめたい場合の導線を確保するため
+	 */
+	const handleClose = useCallback(() => {
+		router.replace({
+			pathname: "/[locale]/PlaceMapSelect",
+			params: { locale: i18n.locale },
+		});
+	}, [router]);
+
 	const onPinchGestureEvent = (event: GestureEvent<PinchGestureHandlerEventPayload>) => {
 		const { scale, state } = event.nativeEvent;
 
@@ -189,6 +200,14 @@ export default function SpotCapture() {
 					flash={flash}
 				/>
 			</PinchGestureHandler>
+			<IconButton
+				icon="close"
+				size={24}
+				iconColor="white"
+				style={styles.closeButton}
+				onPress={handleClose}
+				testID="close-button"
+			/>
 			<View style={styles.controls}>
 				<TouchableOpacity onPress={() => setFacing(facing === "back" ? "front" : "back")} style={styles.iconButton}>
 					<Ionicons name="camera-reverse" size={24} color="white" />
@@ -273,6 +292,12 @@ const styles = StyleSheet.create({
 		right: 20,
 		flexDirection: "column",
 		gap: 16,
+	},
+	closeButton: {
+		position: "absolute",
+		top: 20,
+		right: 20,
+		backgroundColor: "rgba(0,0,0,0.5)",
 	},
 	iconButton: {
 		backgroundColor: "rgba(0,0,0,0.5)",
