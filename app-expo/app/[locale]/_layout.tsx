@@ -60,7 +60,7 @@ export default function LocalLayout() {
 					<DialogProvider>
 						<AuthProvider>
 							<SplashHandler>
-								<Stack initialRouteName="SpotCapture/index" screenOptions={{ headerShown: false }} />
+								<Stack initialRouteName="PlaceMapSelect/index" screenOptions={{ headerShown: false }} />
 							</SplashHandler>
 						</AuthProvider>
 					</DialogProvider>
