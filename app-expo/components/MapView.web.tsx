@@ -79,7 +79,7 @@ const MapView = forwardRef<MapViewHandle | null, MapViewProps>(
 				if (placeId && onPoiClick) {
 					onPoiClick({
 						nativeEvent: {
-							id: placeId,
+							placeId,
 							action: "poi-click",
 							coordinate: {
 								latitude: e.latLng.lat(),
