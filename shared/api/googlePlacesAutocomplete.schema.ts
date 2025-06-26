@@ -12,12 +12,12 @@ export const googlePlacesAutocompleteRequestSchema = z.object({
 /**
  * googlePlacesAutocomplete API のリクエスト型
  */
-export type GooglePlacesAutocompleteRequest = z.infer<typeof googlePlacesAutocompleteRequestSchema>;
+export type PlacesAutocompleteRequest = z.infer<typeof googlePlacesAutocompleteRequestSchema>;
 
 /**
  * googlePlacesAutocomplete API のレスポンス型
  */
-export type GooglePlacesAutocompleteResponse = {
+export type PlacesAutocompleteResponse = {
 	predictions: {
 		placeId: string;
 		name: string;

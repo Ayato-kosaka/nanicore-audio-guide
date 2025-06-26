@@ -1,53 +1,89 @@
+import { PlacesApiClient } from "@googlemaps/places";
 import { env } from "../lib/env";
-import { callExternalApi } from "../lib/backendUtils";
+import { logExternalApi } from "../lib/logger";
 
-/** Google Places Autocomplete(New) を呼び出して候補を取得する */
+const client = new PlacesApiClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
+
+/**
+ * 🔍 Google Places Autocomplete(New)
+ *
+ * サーバー側から呼び出してAPIキーを隠蔽しつつログを残す。
+ */
 export const fetchAutocompletePredictions = async (
-	input: string,
-	requestId: string,
-	userId: string,
+        input: string,
+        requestId: string,
+        userId: string,
 ): Promise<{ placeId: string; text: string }[]> => {
-	const endpoint = `https://places.googleapis.com/v1/places:autocomplete?input=${encodeURIComponent(
-		input,
-	)}&languageCode=ja&key=${env.FUNCTIONS_GOOGLE_PLACE_API_KEY}`;
-
-	const response = await callExternalApi<{ predictions: { placeId: string; text: string }[] }>({
-		requestId,
-		functionName: "fetchAutocompletePredictions",
-		apiName: "GooglePlacesAPI",
-		endpoint,
-		method: "GET",
-		userId,
-	});
-
-	return response.predictions || [];
+        const start = Date.now();
+        let status = 0;
+        let payload: any = null;
+        let errorMessage: string | null = null;
+        try {
+                const response = await client.autocomplete({ input, languageCode: "ja" });
+                payload = response;
+                status = 200;
+                return (
+                        response.predictions?.map((p) => ({ placeId: p.placeId ?? "", text: p.text ?? "" })) || []
+                );
+        } catch (error: any) {
+                errorMessage = error.message;
+                status = error.code || 500;
+                throw new Error(`Places autocomplete failed: ${errorMessage}`);
+        } finally {
+                logExternalApi({
+                        request_id: requestId,
+                        function_name: "fetchAutocompletePredictions",
+                        api_name: "GooglePlaces",
+                        endpoint: "autocomplete",
+                        request_payload: JSON.stringify({ input }),
+                        response_payload: JSON.stringify(payload),
+                        status_code: status,
+                        error_message: errorMessage,
+                        response_time_ms: Date.now() - start,
+                        user_id: userId,
+                });
+        }
 };
 
-/** Place ID から名前と緯度経度を取得する */
+/**
+ * 📍 Place ID から詳細座標を取得
+ */
 export const fetchPlaceDetails = async (
-	placeId: string,
-	requestId: string,
-	userId: string,
+        placeId: string,
+        requestId: string,
+        userId: string,
 ): Promise<{ placeId: string; name: string; latitude: number; longitude: number }> => {
-	const endpoint = `https://places.googleapis.com/v1/${placeId}?fields=location,displayName&key=${env.FUNCTIONS_GOOGLE_PLACE_API_KEY}`;
-
-	const response = await callExternalApi<{
-		id: string;
-		location?: { latitude: number; longitude: number };
-		displayName?: { text: string };
-	}>({
-		requestId,
-		functionName: "fetchPlaceDetails",
-		apiName: "GooglePlacesAPI",
-		endpoint,
-		method: "GET",
-		userId,
-	});
-
-	return {
-		placeId: response.id,
-		name: response.displayName?.text ?? "",
-		latitude: response.location?.latitude ?? 0,
-		longitude: response.location?.longitude ?? 0,
-	};
+        const start = Date.now();
+        let status = 0;
+        let payload: any = null;
+        let errorMessage: string | null = null;
+        try {
+                const response = await client.place({ name: placeId, languageCode: "ja", fields: ["id", "displayName", "location"] });
+                payload = response;
+                status = 200;
+                return {
+                        placeId: response.id,
+                        name: response.displayName?.text ?? "",
+                        latitude: response.location?.latitude ?? 0,
+                        longitude: response.location?.longitude ?? 0,
+                };
+        } catch (error: any) {
+                errorMessage = error.message;
+                status = error.code || 500;
+                throw new Error(`Places details failed: ${errorMessage}`);
+        } finally {
+                logExternalApi({
+                        request_id: requestId,
+                        function_name: "fetchPlaceDetails",
+                        api_name: "GooglePlaces",
+                        endpoint: "place",
+                        request_payload: JSON.stringify({ placeId }),
+                        response_payload: JSON.stringify(payload),
+                        status_code: status,
+                        error_message: errorMessage,
+                        response_time_ms: Date.now() - start,
+                        user_id: userId,
+                });
+        }
 };
+

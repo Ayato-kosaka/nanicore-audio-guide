@@ -12,12 +12,12 @@ export const googlePlacesDetailsRequestSchema = z.object({
 /**
  * googlePlacesDetails API のリクエスト型
  */
-export type GooglePlacesDetailsRequest = z.infer<typeof googlePlacesDetailsRequestSchema>;
+export type PlacesDetailsRequest = z.infer<typeof googlePlacesDetailsRequestSchema>;
 
 /**
  * googlePlacesDetails API のレスポンス型
  */
-export type GooglePlacesDetailsResponse = {
+export type PlacesDetailsResponse = {
 	placeId: string;
 	name: string;
 	latitude: number;

@@ -1,8 +1,8 @@
 import { withValidatedAuthHandler } from "../lib/handler";
 import { logBackendEvent } from "../lib/logger";
 import {
-	googlePlacesAutocompleteRequestSchema,
-	GooglePlacesAutocompleteResponse,
+       googlePlacesAutocompleteRequestSchema,
+       PlacesAutocompleteResponse,
 } from "../../../../shared/api/googlePlacesAutocomplete.schema";
 import { fetchAutocompletePredictions, fetchPlaceDetails } from "../services/googlePlaces";
 
@@ -20,7 +20,7 @@ export const googlePlacesAutocomplete = withValidatedAuthHandler(
 			predictions.slice(0, 5).map((p) => fetchPlaceDetails(p.placeId, requestId, userId)),
 		);
 
-		const response: GooglePlacesAutocompleteResponse = { predictions: detailed };
+               const response: PlacesAutocompleteResponse = { predictions: detailed };
 
 		logBackendEvent({
 			event_name: "googlePlacesAutocompleteSuccess",
