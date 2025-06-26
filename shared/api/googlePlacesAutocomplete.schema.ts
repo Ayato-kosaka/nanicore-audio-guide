@@ -1,0 +1,27 @@
+import { z } from "zod";
+
+/**
+ * 📝 googlePlacesAutocomplete API のリクエストスキーマ
+ *
+ * - 入力キーワードを元に Google Places Autocomplete(New) を実行
+ */
+export const googlePlacesAutocompleteRequestSchema = z.object({
+	input: z.string().min(1, "input is required"),
+});
+
+/**
+ * googlePlacesAutocomplete API のリクエスト型
+ */
+export type PlacesAutocompleteRequest = z.infer<typeof googlePlacesAutocompleteRequestSchema>;
+
+/**
+ * googlePlacesAutocomplete API のレスポンス型
+ */
+export type PlacesAutocompleteResponse = {
+	predictions: {
+		placeId: string;
+		name: string;
+		latitude: number;
+		longitude: number;
+	}[];
+};

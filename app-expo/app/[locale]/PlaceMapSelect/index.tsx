@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, ComponentRef } from "react";
-import { View, StyleSheet, Platform, Dimensions } from "react-native";
+import { View, StyleSheet, Platform, Dimensions, FlatList } from "react-native";
 import { useRouter } from "expo-router";
-import { Text, Button, IconButton, Searchbar } from "react-native-paper";
+import { Text, Button, IconButton, Searchbar, List } from "react-native-paper";
 import MapView, { Marker, Region } from "@/components/MapView";
 import * as Location from "expo-location";
 
@@ -10,6 +10,11 @@ import { useLocale } from "@/hooks/useLocale";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
+import type {
+       PlacesAutocompleteRequest,
+       PlacesAutocompleteResponse,
+} from "@shared/api/googlePlacesAutocomplete.schema";
+import type { PlacesDetailsRequest, PlacesDetailsResponse } from "@shared/api/googlePlacesDetails.schema";
 
 type MapLocation = {
 	placeId: string;
@@ -45,6 +50,7 @@ export default function MapScreen() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 	const [isSearching, setIsSearching] = useState(false);
+	const [predictions, setPredictions] = useState<MapLocation[]>([]);
 	const mapRef = useRef<ComponentRef<typeof MapView> | null>(null);
 
 	// Initialize with user's current location
@@ -98,7 +104,8 @@ export default function MapScreen() {
 	/**
 	 * 🔎 地名検索を実行
 	 *
-	 * - Google Places Autocomplete (new) APIを使用して検索
+	 * - APIキーを保持しないため、Cloud Functions 経由でプレイス候補を取得
+	 * - 検索結果は選択時まで確定しないため、地点状態はここでは更新しない
 	 */
 	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
@@ -111,7 +118,13 @@ export default function MapScreen() {
 				payload: { query: searchQuery },
 			});
 
-			setSelectedLocation({});
+                       const { predictions } = await callCloudFunction<PlacesAutocompleteRequest, PlacesAutocompleteResponse>(
+                               "googlePlacesAutocomplete",
+                               { input: searchQuery },
+                               "v1",
+                       );
+
+			setPredictions(predictions);
 		} catch (error: any) {
 			logFrontendEvent({
 				event_name: "mapSearchFailed",
@@ -121,23 +134,82 @@ export default function MapScreen() {
 		} finally {
 			setIsSearching(false);
 		}
-	}, [searchQuery, logFrontendEvent]);
+	}, [searchQuery, logFrontendEvent, callCloudFunction]);
 
 	/**
 	 * 🗺️ 地図ピン押下した場合
 	 *
-	 * - Google Places Details (New) APIを使用して地点情報を取得
+	 * - MapView からは placeId しか得られないため、Cloud Functions で詳細座標を取得
 	 */
 	const handlePoiPress = useCallback(
-		(event: any) => {
-			const { placeId, coordinate } = event.nativeEvent;
+		async (event: any) => {
+			const { placeId } = event.nativeEvent;
+			if (!placeId) return;
 
-			setSelectedLocation({});
+                       try {
+                               const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+                                       "googlePlacesDetails",
+                                       { placeId },
+                                       "v1",
+                               );
+
+				const newRegion: Region = {
+					latitude: place.latitude,
+					longitude: place.longitude,
+					latitudeDelta: 0.002,
+					longitudeDelta: 0.002,
+				};
+				setRegion(newRegion);
+				mapRef.current?.animateToRegion(newRegion, 1000);
+
+				setSelectedLocation({
+					placeId: place.placeId,
+					name: place.name,
+					latitude: place.latitude,
+					longitude: place.longitude,
+				});
+
+				logFrontendEvent({
+					event_name: "mapLocationSelected",
+					error_level: "info",
+					payload: { placeId },
+				});
+			} catch (error: any) {
+				logFrontendEvent({
+					event_name: "mapLocationSelectFailed",
+					error_level: "error",
+					payload: { error: error.message, placeId },
+				});
+			}
+		},
+		[logFrontendEvent, callCloudFunction],
+	);
+
+	/**
+	 * 📑 オートコンプリート候補を選択したときの処理
+	 *
+	 * - 候補の緯度経度へ地図を移動し、次画面遷移のため選択状態を保持
+	 */
+	// 検索結果をユーザーが選択したタイミングで地点を確定させる
+	const handlePredictionSelect = useCallback(
+		(location: MapLocation) => {
+			const newRegion: Region = {
+				latitude: location.latitude,
+				longitude: location.longitude,
+				latitudeDelta: 0.002,
+				longitudeDelta: 0.002,
+			};
+			setRegion(newRegion);
+			mapRef.current?.animateToRegion(newRegion, 1000);
+
+			setSelectedLocation(location);
+			setIsSearchExpanded(false);
+			setPredictions([]);
 
 			logFrontendEvent({
-				event_name: "mapLocationSelected",
+				event_name: "mapLocationSelectedFromSearch",
 				error_level: "info",
-				payload: { location },
+				payload: { placeId: location.placeId },
 			});
 		},
 		[logFrontendEvent],
@@ -178,7 +250,9 @@ export default function MapScreen() {
 	 * 🔍 検索ボックス押下時に検索UIを展開
 	 */
 	const handleSearchBoxPress = useCallback(() => {
+		// ユーザーに入力欄を広げるため展開。前回の候補はクリアする
 		setIsSearchExpanded(true);
+		setPredictions([]);
 	}, []);
 
 	/**
@@ -187,6 +261,7 @@ export default function MapScreen() {
 	const handleSearchCollapse = useCallback(() => {
 		setIsSearchExpanded(false);
 		setSearchQuery("");
+		setPredictions([]);
 	}, []);
 
 	return (
@@ -267,6 +342,22 @@ export default function MapScreen() {
 								inputStyle={styles.searchInput}
 								testID="expanded-search-bar"
 							/>
+                                                       <FlatList
+                                                               data={predictions}
+                                                               keyExtractor={(item) => item.placeId}
+                                                               renderItem={({ item }) => (
+                                                                       <List.Item
+                                                                               title={item.name}
+                                                                               onPress={() => handlePredictionSelect(item)}
+                                                                               style={styles.predictionItem}
+                                                                               titleStyle={styles.predictionTitle}
+                                                                               testID="prediction-item"
+                                                                       />
+                                                               )}
+                                                               ItemSeparatorComponent={() => <View style={styles.predictionSeparator} />}
+                                                               contentContainerStyle={styles.predictionsContent}
+                                                               style={styles.predictionsList}
+                                                       />
 						</View>
 					) : (
 						// Collapsed Bottom Sheet UI
@@ -445,6 +536,24 @@ const styles = StyleSheet.create({
 	searchInput: {
 		fontSize: 16,
 	},
+        predictionsList: {
+                flex: 1,
+        },
+       predictionsContent: {
+               paddingVertical: 8,
+       },
+       predictionItem: {
+               backgroundColor: "#fff",
+               paddingVertical: 8,
+       },
+       predictionTitle: {
+               fontSize: 16,
+       },
+       predictionSeparator: {
+               height: StyleSheet.hairlineWidth,
+               backgroundColor: "#e5e5e5",
+               marginLeft: 16,
+       },
 	instructionText: {
 		textAlign: "center",
 		color: "#666",
