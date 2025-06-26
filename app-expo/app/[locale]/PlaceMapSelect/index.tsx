@@ -12,10 +12,10 @@ import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 
 type MapLocation = {
+	placeId: string;
+	name: string;
 	latitude: number;
 	longitude: number;
-	name?: string;
-	placeId?: string;
 };
 
 const INITIAL_REGION: Region = {
@@ -98,8 +98,7 @@ export default function MapScreen() {
 	/**
 	 * 🔎 地名検索を実行
 	 *
-	 * - 入力キーワードをジオコーディング
-	 * - 成功時は地図を移動し選択地点を更新
+	 * - Google Places Autocomplete (new) APIを使用して検索
 	 */
 	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
@@ -112,29 +111,7 @@ export default function MapScreen() {
 				payload: { query: searchQuery },
 			});
 
-			// Use Expo Location for geocoding
-			const geocoded = await Location.geocodeAsync(searchQuery);
-
-			if (geocoded.length > 0) {
-				const location = geocoded[0];
-				const newRegion: Region = {
-					latitude: location.latitude,
-					longitude: location.longitude,
-					latitudeDelta: 0.01,
-					longitudeDelta: 0.01,
-				};
-
-				setRegion(newRegion);
-				mapRef.current?.animateToRegion(newRegion, 1000);
-
-				setSelectedLocation({
-					latitude: location.latitude,
-					longitude: location.longitude,
-					name: searchQuery,
-				});
-
-				setIsSearchExpanded(false);
-			}
+			setSelectedLocation({});
 		} catch (error: any) {
 			logFrontendEvent({
 				event_name: "mapSearchFailed",
@@ -149,19 +126,13 @@ export default function MapScreen() {
 	/**
 	 * 🗺️ 地図ピン押下した場合
 	 *
-	 * - 座標を選択し選択地点として保存
-	 * - ログに位置を記録
+	 * - Google Places Details (New) APIを使用して地点情報を取得
 	 */
 	const handlePoiPress = useCallback(
 		(event: any) => {
-			const { coordinate } = event.nativeEvent;
-			const location: MapLocation = {
-				latitude: coordinate.latitude,
-				longitude: coordinate.longitude,
-				name: `${coordinate.latitude.toFixed(4)}, ${coordinate.longitude.toFixed(4)}`,
-			};
+			const { placeId, coordinate } = event.nativeEvent;
 
-			setSelectedLocation(location);
+			setSelectedLocation({});
 
 			logFrontendEvent({
 				event_name: "mapLocationSelected",
@@ -178,20 +149,11 @@ export default function MapScreen() {
 	const handleNanicorePress = withLoading(async () => {
 		if (!selectedLocation) return;
 
-		// Generate a mock place ID for navigation
-		const placeId = `place_${selectedLocation.latitude}_${selectedLocation.longitude}`;
-
-		// const { extPlaces } = await callCloudFunction<{ placeId: string }, FindOrCreatePlaceFromIdResponse>(
-		// 	"findOrCreatePlaceFromId",
-		// 	{ placeId },
-		// 	"v1",
-		// );
-
 		router.push({
 			pathname: "/[locale]/PlaceGuide",
 			params: {
 				locale,
-				placeId,
+				placeId: selectedLocation.placeId,
 				placeName: selectedLocation.name || "Selected Location",
 				latitude: selectedLocation.latitude.toString(),
 				longitude: selectedLocation.longitude.toString(),
