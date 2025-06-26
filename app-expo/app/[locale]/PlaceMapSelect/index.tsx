@@ -11,8 +11,8 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 import type {
-       PlacesAutocompleteRequest,
-       PlacesAutocompleteResponse,
+	GooglePlacesAutocompleteRequest,
+	GooglePlacesAutocompleteResponse,
 } from "@shared/api/googlePlacesAutocomplete.schema";
 import type { PlacesDetailsRequest, PlacesDetailsResponse } from "@shared/api/googlePlacesDetails.schema";
 
@@ -118,11 +118,10 @@ export default function MapScreen() {
 				payload: { query: searchQuery },
 			});
 
-                       const { predictions } = await callCloudFunction<PlacesAutocompleteRequest, PlacesAutocompleteResponse>(
-                               "googlePlacesAutocomplete",
-                               { input: searchQuery },
-                               "v1",
-                       );
+			const { predictions } = await callCloudFunction<
+				GooglePlacesAutocompleteRequest,
+				GooglePlacesAutocompleteResponse
+			>("googlePlacesAutocomplete", { input: searchQuery }, "v1");
 
 			setPredictions(predictions);
 		} catch (error: any) {
@@ -146,12 +145,12 @@ export default function MapScreen() {
 			const { placeId } = event.nativeEvent;
 			if (!placeId) return;
 
-                       try {
-                               const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
-                                       "googlePlacesDetails",
-                                       { placeId },
-                                       "v1",
-                               );
+			try {
+				const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+					"googlePlacesDetails",
+					{ placeId },
+					"v1",
+				);
 
 				const newRegion: Region = {
 					latitude: place.latitude,
@@ -342,22 +341,22 @@ export default function MapScreen() {
 								inputStyle={styles.searchInput}
 								testID="expanded-search-bar"
 							/>
-                                                       <FlatList
-                                                               data={predictions}
-                                                               keyExtractor={(item) => item.placeId}
-                                                               renderItem={({ item }) => (
-                                                                       <List.Item
-                                                                               title={item.name}
-                                                                               onPress={() => handlePredictionSelect(item)}
-                                                                               style={styles.predictionItem}
-                                                                               titleStyle={styles.predictionTitle}
-                                                                               testID="prediction-item"
-                                                                       />
-                                                               )}
-                                                               ItemSeparatorComponent={() => <View style={styles.predictionSeparator} />}
-                                                               contentContainerStyle={styles.predictionsContent}
-                                                               style={styles.predictionsList}
-                                                       />
+							<FlatList
+								data={predictions}
+								keyExtractor={(item) => item.placeId}
+								renderItem={({ item }) => (
+									<List.Item
+										title={item.name}
+										onPress={() => handlePredictionSelect(item)}
+										style={styles.predictionItem}
+										titleStyle={styles.predictionTitle}
+										testID="prediction-item"
+									/>
+								)}
+								ItemSeparatorComponent={() => <View style={styles.predictionSeparator} />}
+								contentContainerStyle={styles.predictionsContent}
+								style={styles.predictionsList}
+							/>
 						</View>
 					) : (
 						// Collapsed Bottom Sheet UI
@@ -536,24 +535,24 @@ const styles = StyleSheet.create({
 	searchInput: {
 		fontSize: 16,
 	},
-        predictionsList: {
-                flex: 1,
-        },
-       predictionsContent: {
-               paddingVertical: 8,
-       },
-       predictionItem: {
-               backgroundColor: "#fff",
-               paddingVertical: 8,
-       },
-       predictionTitle: {
-               fontSize: 16,
-       },
-       predictionSeparator: {
-               height: StyleSheet.hairlineWidth,
-               backgroundColor: "#e5e5e5",
-               marginLeft: 16,
-       },
+	predictionsList: {
+		flex: 1,
+	},
+	predictionsContent: {
+		paddingVertical: 8,
+	},
+	predictionItem: {
+		backgroundColor: "#fff",
+		paddingVertical: 8,
+	},
+	predictionTitle: {
+		fontSize: 16,
+	},
+	predictionSeparator: {
+		height: StyleSheet.hairlineWidth,
+		backgroundColor: "#e5e5e5",
+		marginLeft: 16,
+	},
 	instructionText: {
 		textAlign: "center",
 		color: "#666",
