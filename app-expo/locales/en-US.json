@@ -7,7 +7,7 @@
 		"maintenanceMessage": "We are currently undergoing maintenance.",
 		"unsupportedVersion": "This version is no longer supported."
 	},
-	"Map": {
+	"PlaceMapSelect": {
 		"searchPlaceholder": "Search for a place...",
 		"noResultsFound": "No results found for your search",
 		"searchError": "Failed to search location",
