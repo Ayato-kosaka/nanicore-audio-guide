@@ -5,3 +5,5 @@ export { generateSpotGuide } from "./routes/generateSpotGuide";
 export { listRecommendedSpotsByVisitHistory } from "./routes/listRecommendedSpotsByVisitHistory";
 export { listSpotGuides } from "./routes/listSpotGuides";
 export { pingDb } from "./routes/pingDb";
+export { googlePlacesAutocomplete } from "./routes/googlePlacesAutocomplete";
+export { googlePlacesDetails } from "./routes/googlePlacesDetails";
