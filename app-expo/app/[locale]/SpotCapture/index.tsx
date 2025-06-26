@@ -200,15 +200,11 @@ export default function SpotCapture() {
 					flash={flash}
 				/>
 			</PinchGestureHandler>
-			<IconButton
-				icon="close"
-				size={24}
-				iconColor="white"
-				style={styles.closeButton}
-				onPress={handleClose}
-				testID="close-button"
-			/>
 			<View style={styles.controls}>
+				<TouchableOpacity onPress={handleClose} style={styles.iconButton} testID="close-button">
+					<Ionicons name="close" size={24} color="white" />
+				</TouchableOpacity>
+
 				<TouchableOpacity onPress={() => setFacing(facing === "back" ? "front" : "back")} style={styles.iconButton}>
 					<Ionicons name="camera-reverse" size={24} color="white" />
 				</TouchableOpacity>
@@ -292,12 +288,7 @@ const styles = StyleSheet.create({
 		right: 20,
 		flexDirection: "column",
 		gap: 16,
-	},
-	closeButton: {
-		position: "absolute",
-		top: 20,
-		right: 20,
-		backgroundColor: "rgba(0,0,0,0.5)",
+		zIndex: 10,
 	},
 	iconButton: {
 		backgroundColor: "rgba(0,0,0,0.5)",
