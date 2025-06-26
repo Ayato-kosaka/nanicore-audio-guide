@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleMap, Marker as GoogleMarker, LoadScript } from "@react-google-maps/api";
 import type { MapViewProps, MarkerProps } from "./MapView";
 import type { MapPressEvent, MarkerPressEvent, PoiClickEvent } from "react-native-maps";
+import { Env } from "@/constants/Env";
 
 interface RegionChangeDetails {
 	isGesture: boolean;
@@ -111,7 +112,7 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 		};
 
 		return (
-			<LoadScript googleMapsApiKey="">
+			<LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_API_KEY}>
 				<GoogleMap
 					onLoad={handleLoad}
 					center={{ lat: region?.latitude ?? 0, lng: region?.longitude ?? 0 }}
