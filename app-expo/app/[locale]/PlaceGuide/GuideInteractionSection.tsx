@@ -3,10 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 
 /**
- * 📚 GuideSection
+ * 📚 GuideInteractionSection
  *
- * PlaceGuideCard 内でガイドテキストを表示し、
- * いいねや音声再生の操作を提供する小さなコンポーネント。
+ * ガイドテキストを表示し、いいねや音声再生など
+ * ユーザーのリアクションをまとめて扱う小さなコンポーネント。
  */
 
 type PlaceGuide = {
@@ -16,12 +16,12 @@ type PlaceGuide = {
 	category: string;
 };
 
-type GuideSectionProps = {
+type GuideInteractionSectionProps = {
 	guide: PlaceGuide;
 	isFirst?: boolean;
 };
 
-export const GuideSection: React.FC<GuideSectionProps> = ({ guide, isFirst = false }) => {
+export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({ guide, isFirst = false }) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 
