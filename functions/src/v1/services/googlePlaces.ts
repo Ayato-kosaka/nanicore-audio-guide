@@ -58,7 +58,6 @@ export const fetchPlaceDetails = async (
         let payload: any = null;
         let errorMessage: string | null = null;
         try {
-                const fieldMask = "places.id,places.displayName,places.location";
                 const [response] = await client.getPlace(
                         {
                                 name: `places/${placeId}`,
@@ -66,7 +65,7 @@ export const fetchPlaceDetails = async (
                         },
                         {
                                 otherArgs: {
-                                        headers: { "X-Goog-FieldMask": fieldMask },
+                                        headers: { "X-Goog-FieldMask": "id,displayName,location" },
                                 },
                         },
                 );
