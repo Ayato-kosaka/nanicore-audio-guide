@@ -11,11 +11,11 @@ import { Audio } from "expo-av";
  */
 
 type PlaceGuide = {
-        id: string;
-        title: string;
-        content: string;
-        category: string;
-        audioUrl: string;
+	id: string;
+	title: string;
+	content: string;
+	category: string;
+	audioUrl: string;
 };
 
 type GuideInteractionSectionProps = {
@@ -24,9 +24,9 @@ type GuideInteractionSectionProps = {
 };
 
 export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({ guide, isFirst = false }) => {
-        const [isLiked, setIsLiked] = useState(false);
-        const [isPlaying, setIsPlaying] = useState(false);
-        const [sound, setSound] = useState<Audio.Sound | null>(null);
+	const [isLiked, setIsLiked] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(false);
+	const [sound, setSound] = useState<Audio.Sound | null>(null);
 
 	/**
 	 * 💖 いいねボタンのトグル
@@ -38,33 +38,33 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 	/**
 	 * ▶️ 音声再生のトグル
 	 */
-        const handlePlayPress = useCallback(async () => {
-                if (isPlaying || !guide.audioUrl) return;
-                setIsPlaying(true);
-                try {
-                        const { sound: newSound } = await Audio.Sound.createAsync({ uri: guide.audioUrl }, { shouldPlay: true });
-                        setSound(newSound);
-                        newSound.setOnPlaybackStatusUpdate((status) => {
-                                if (!status.isLoaded) {
-                                        setIsPlaying(false);
-                                        newSound.unloadAsync();
-                                        return;
-                                }
-                                if (status.didJustFinish) {
-                                        setIsPlaying(false);
-                                        newSound.unloadAsync();
-                                }
-                        });
-                } catch {
-                        setIsPlaying(false);
-                }
-        }, [isPlaying, guide.audioUrl]);
+	const handlePlayPress = useCallback(async () => {
+		if (isPlaying || !guide.audioUrl) return;
+		setIsPlaying(true);
+		try {
+			const { sound: newSound } = await Audio.Sound.createAsync({ uri: guide.audioUrl }, { shouldPlay: true });
+			setSound(newSound);
+			newSound.setOnPlaybackStatusUpdate((status) => {
+				if (!status.isLoaded) {
+					setIsPlaying(false);
+					newSound.unloadAsync();
+					return;
+				}
+				if (status.didJustFinish) {
+					setIsPlaying(false);
+					newSound.unloadAsync();
+				}
+			});
+		} catch {
+			setIsPlaying(false);
+		}
+	}, [isPlaying, guide.audioUrl]);
 
-        useEffect(() => {
-                return () => {
-                        sound?.unloadAsync();
-                };
-        }, [sound]);
+	useEffect(() => {
+		return () => {
+			sound?.unloadAsync();
+		};
+	}, [sound]);
 
 	return (
 		<View style={[styles.container, isFirst && styles.firstGuide]}>

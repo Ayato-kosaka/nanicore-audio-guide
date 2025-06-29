@@ -10,20 +10,20 @@ import { CustomQueryModal } from "./CustomQueryModal";
 import { GuideBaseCard } from "./components/GuideBaseCard";
 
 export type PlaceGuide = {
-        id: string;
-        title: string;
-        content: string;
-        category: string;
-        audioUrl: string;
+	id: string;
+	title: string;
+	content: string;
+	category: string;
+	audioUrl: string;
 };
 
 export type PlaceGuideCardProps = {
-        imageUri: string;
-        guides: PlaceGuide[];
-        placeName: string;
-        onCategorySelect: (categoryId: string) => Promise<void>;
-        onCustomQuestion: (query: string) => Promise<void>;
-        onBackPress: () => void;
+	imageUri: string;
+	guides: PlaceGuide[];
+	placeName: string;
+	onCategorySelect: (categoryId: string) => Promise<void>;
+	onCustomQuestion: (query: string) => Promise<void>;
+	onBackPress: () => void;
 };
 
 const GUIDE_CATEGORIES = [
@@ -44,12 +44,12 @@ const GUIDE_CATEGORIES = [
  * 追加のガイド生成を呼び出す。
  */
 export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
-        imageUri,
-        guides,
-        placeName,
-        onCategorySelect,
-        onCustomQuestion,
-        onBackPress,
+	imageUri,
+	guides,
+	placeName,
+	onCategorySelect,
+	onCustomQuestion,
+	onBackPress,
 }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
@@ -92,8 +92,8 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 		[onCustomQuestion],
 	);
 
-        return (
-                <GuideBaseCard imageUri={imageUri} placeName={placeName} onBack={onBackPress}>
+	return (
+		<GuideBaseCard imageUri={imageUri} placeName={placeName} onBack={onBackPress}>
 			<ScrollView
 				ref={guidesScrollViewRef}
 				style={styles.guidesScrollView}

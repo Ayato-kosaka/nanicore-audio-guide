@@ -213,7 +213,7 @@ export type Database = {
 					llm_model: string;
 					metadata: Json | null;
 					target_id: string;
-                                        target_type: string;
+					target_type: string;
 					temperature: number | null;
 					used_prompt_text: string;
 					variant_id: string;
@@ -229,7 +229,7 @@ export type Database = {
 					llm_model: string;
 					metadata?: Json | null;
 					target_id: string;
-                                        target_type: string;
+					target_type: string;
 					temperature?: number | null;
 					used_prompt_text: string;
 					variant_id: string;
@@ -245,7 +245,7 @@ export type Database = {
 					llm_model?: string;
 					metadata?: Json | null;
 					target_id?: string;
-                                        target_type?: string;
+					target_type?: string;
 					temperature?: number | null;
 					used_prompt_text?: string;
 					variant_id?: string;
@@ -467,7 +467,7 @@ export type Database = {
 			ext_spots_vision_detection_type: "LANDMARK_DETECTION" | "WEB_DETECTION";
 			frontend_event_logs_error_level: "trace" | "debug" | "info" | "warn" | "error";
 			prompt_families_purpose: "spot_guide_manuscript";
-                        prompt_usages_target_type: string;
+			prompt_usages_target_type: string;
 			reactions_action_type: "like" | "disLike" | "regenerate";
 			reactions_target_type: "spot_guides";
 		};

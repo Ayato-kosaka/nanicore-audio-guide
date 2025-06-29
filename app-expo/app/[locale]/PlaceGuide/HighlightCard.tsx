@@ -10,17 +10,17 @@ import { CustomQueryModal } from "./CustomQueryModal";
 import { GuideBaseCard } from "./components/GuideBaseCard";
 
 export type HighlightGuide = {
-        id: string;
-        title: string;
-        content: string;
-        category: string;
-        audioUrl: string;
+	id: string;
+	title: string;
+	content: string;
+	category: string;
+	audioUrl: string;
 };
 
 export type Highlight = {
-        id: string;
-        imageUri: string;
-        highlightGuides: HighlightGuide[];
+	id: string;
+	imageUri: string;
+	highlightGuides: HighlightGuide[];
 };
 
 export type HighlightCardProps = {
