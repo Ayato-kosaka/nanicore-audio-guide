@@ -156,73 +156,76 @@ export default function PlaceScreen() {
 
 	/**
 	 * 📸 カメラ画面からの撮影完了処理
-	 * 
+	 *
 	 * 撮影された画像を新しいハイライトとして追加し、
 	 * カルーセルを新しいハイライトに移動する
 	 */
-	const handleCameraCapture = useCallback(async (imageUri: string) => {
-		try {
-			logFrontendEvent({
-				event_name: "placeCameraCapture",
-				error_level: "info",
-				payload: { placeId: params.placeId },
-			});
+	const handleCameraCapture = useCallback(
+		async (imageUri: string) => {
+			try {
+				logFrontendEvent({
+					event_name: "placeCameraCapture",
+					error_level: "info",
+					payload: { placeId: params.placeId },
+				});
 
-			// 新しいハイライトを作成
-			const newHighlight: Highlight = {
-				id: `highlight_${Date.now()}`,
-				imageUri,
-				highlightGuides: [
-					{
-						id: `guide_${Date.now()}`,
-						title: "Photo Analysis",
-						content: `This is an analysis of your captured photo at ${params.placeName}. The AI has identified interesting elements and can provide detailed information about what's visible in the image.`,
-						category: "photo_analysis",
-						audioUrl: "",
+				// 新しいハイライトを作成
+				const newHighlight: Highlight = {
+					id: `highlight_${Date.now()}`,
+					imageUri,
+					highlightGuides: [
+						{
+							id: `guide_${Date.now()}`,
+							title: "Photo Analysis",
+							content: `This is an analysis of your captured photo at ${params.placeName}. The AI has identified interesting elements and can provide detailed information about what's visible in the image.`,
+							category: "photo_analysis",
+							audioUrl: "",
+						},
+					],
+				};
+
+				// ハイライトリストに追加
+				setHighlights((prev) => [...prev, newHighlight]);
+
+				// カメラ画面を閉じる
+				setShowCamera(false);
+
+				// 新しいハイライトにカルーセルを移動（少し遅延を入れて確実に移動）
+				setTimeout(() => {
+					const newIndex = highlights.length + 1; // place + existing highlights + new highlight
+					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
+				}, 100);
+
+				// 成功メッセージを表示
+				showSnackbar(i18n.t("PlaceGuide.photoAdded"));
+
+				logFrontendEvent({
+					event_name: "placeCameraCaptureSuccess",
+					error_level: "info",
+					payload: {
+						placeId: params.placeId,
+						highlightId: newHighlight.id,
+						totalHighlights: highlights.length + 1,
 					},
-				],
-			};
-
-			// ハイライトリストに追加
-			setHighlights((prev) => [...prev, newHighlight]);
-			
-			// カメラ画面を閉じる
-			setShowCamera(false);
-			
-			// 新しいハイライトにカルーセルを移動（少し遅延を入れて確実に移動）
-			setTimeout(() => {
-				const newIndex = highlights.length + 1; // place + existing highlights + new highlight
-				carouselRef.current?.scrollTo({ index: newIndex, animated: true });
-			}, 100);
-
-			// 成功メッセージを表示
-			showSnackbar(i18n.t("PlaceGuide.photoAdded"));
-
-			logFrontendEvent({
-				event_name: "placeCameraCaptureSuccess",
-				error_level: "info",
-				payload: { 
-					placeId: params.placeId,
-					highlightId: newHighlight.id,
-					totalHighlights: highlights.length + 1
-				},
-			});
-		} catch (error: any) {
-			logFrontendEvent({
-				event_name: "placeCameraCaptureFailed",
-				error_level: "error",
-				payload: { 
-					error: error.message,
-					placeId: params.placeId
-				},
-			});
-			showSnackbar(i18n.t("PlaceGuide.captureError"));
-		}
-	}, [params.placeId, params.placeName, highlights.length, showSnackbar]);
+				});
+			} catch (error: any) {
+				logFrontendEvent({
+					event_name: "placeCameraCaptureFailed",
+					error_level: "error",
+					payload: {
+						error: error.message,
+						placeId: params.placeId,
+					},
+				});
+				showSnackbar(i18n.t("PlaceGuide.captureError"));
+			}
+		},
+		[params.placeId, params.placeName, highlights.length, showSnackbar],
+	);
 
 	/**
 	 * 📷 カメラボタン押下処理
-	 * 
+	 *
 	 * カメラ画面を表示する
 	 */
 	const handleCameraPress = useCallback(() => {
@@ -348,11 +351,7 @@ export default function PlaceScreen() {
 			/>
 
 			{/* 📸 カメラ画面 */}
-			<CameraScreen
-				visible={showCamera}
-				onClose={() => setShowCamera(false)}
-				onCapture={handleCameraCapture}
-			/>
+			<CameraScreen visible={showCamera} onClose={() => setShowCamera(false)} onCapture={handleCameraCapture} />
 		</View>
 	);
 }

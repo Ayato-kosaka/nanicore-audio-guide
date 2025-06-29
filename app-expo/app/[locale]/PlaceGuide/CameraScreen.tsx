@@ -136,7 +136,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	 * 🔄 カメラ切り替え
 	 */
 	const handleFlipCamera = useCallback(() => {
-		setFacing(current => current === "back" ? "front" : "back");
+		setFacing((current) => (current === "back" ? "front" : "back"));
 		logFrontendEvent({
 			event_name: "placeCameraFlip",
 			error_level: "info",
@@ -148,7 +148,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	 * ⚡ フラッシュ切り替え
 	 */
 	const handleFlashToggle = useCallback(() => {
-		setFlash(current => current === "off" ? "on" : "off");
+		setFlash((current) => (current === "off" ? "on" : "off"));
 		logFrontendEvent({
 			event_name: "placeCameraFlash",
 			error_level: "info",
@@ -160,11 +160,11 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	 * 🎨 フィルター切り替え
 	 */
 	const handleFilterChange = useCallback(() => {
-		const filters: typeof filter[] = ["none", "sepia", "mono", "chrome"];
+		const filters: (typeof filter)[] = ["none", "sepia", "mono", "chrome"];
 		const currentIndex = filters.indexOf(filter);
 		const nextFilter = filters[(currentIndex + 1) % filters.length];
 		setFilter(nextFilter);
-		
+
 		logFrontendEvent({
 			event_name: "placeCameraFilter",
 			error_level: "info",
@@ -175,27 +175,33 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	/**
 	 * 🔍 ピンチズーム処理
 	 */
-	const onPinchGestureEvent = useCallback((event: GestureEvent<PinchGestureHandlerEventPayload>) => {
-		const { scale, state } = event.nativeEvent;
+	const onPinchGestureEvent = useCallback(
+		(event: GestureEvent<PinchGestureHandlerEventPayload>) => {
+			const { scale, state } = event.nativeEvent;
 
-		if (state === State.BEGAN || state === State.ACTIVE) {
-			const SENSITIVITY = 0.2;
-			let delta = (scale - 1) * SENSITIVITY;
-			let newZoom = startZoomRef.current + delta;
-			newZoom = Math.min(Math.max(newZoom, MIN_ZOOM), MAX_ZOOM);
-			setZoom(newZoom);
-		}
+			if (state === State.BEGAN || state === State.ACTIVE) {
+				const SENSITIVITY = 0.2;
+				let delta = (scale - 1) * SENSITIVITY;
+				let newZoom = startZoomRef.current + delta;
+				newZoom = Math.min(Math.max(newZoom, MIN_ZOOM), MAX_ZOOM);
+				setZoom(newZoom);
+			}
 
-		if (state === State.END || state === State.CANCELLED || state === State.FAILED) {
-			startZoomRef.current = zoom;
-		}
-	}, [zoom]);
+			if (state === State.END || state === State.CANCELLED || state === State.FAILED) {
+				startZoomRef.current = zoom;
+			}
+		},
+		[zoom],
+	);
 
-	const onPinchHandlerStateChange = useCallback(({ nativeEvent }: GestureEvent<PinchGestureHandlerEventPayload>) => {
-		if (nativeEvent.state === State.BEGAN) {
-			startZoomRef.current = zoom;
-		}
-	}, [zoom]);
+	const onPinchHandlerStateChange = useCallback(
+		({ nativeEvent }: GestureEvent<PinchGestureHandlerEventPayload>) => {
+			if (nativeEvent.state === State.BEGAN) {
+				startZoomRef.current = zoom;
+			}
+		},
+		[zoom],
+	);
 
 	/**
 	 * 🔐 権限処理
@@ -217,11 +223,16 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	 */
 	const getFilterDisplayName = (filterType: typeof filter): string => {
 		switch (filterType) {
-			case "none": return "Normal";
-			case "sepia": return "Sepia";
-			case "mono": return "B&W";
-			case "chrome": return "Vivid";
-			default: return "Normal";
+			case "none":
+				return "Normal";
+			case "sepia":
+				return "Sepia";
+			case "mono":
+				return "B&W";
+			case "chrome":
+				return "Vivid";
+			default:
+				return "Normal";
 		}
 	};
 
@@ -238,20 +249,14 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 					<Text variant="bodyMedium" style={styles.permissionMessage}>
 						{i18n.t("PlaceGuide.cameraPermissionMessage")}
 					</Text>
-					<Button 
-						mode="contained" 
+					<Button
+						mode="contained"
 						onPress={handlePermissionRequest}
 						style={styles.permissionButton}
-						buttonColor="#fe3764"
-					>
+						buttonColor="#fe3764">
 						{i18n.t("PlaceGuide.allowCamera")}
 					</Button>
-					<Button 
-						mode="text" 
-						onPress={onClose}
-						style={styles.permissionCloseButton}
-						textColor="rgba(255,255,255,0.7)"
-					>
+					<Button mode="text" onPress={onClose} style={styles.permissionCloseButton} textColor="rgba(255,255,255,0.7)">
 						{i18n.t("Common.cancel")}
 					</Button>
 				</LinearGradient>
@@ -280,16 +285,12 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 					<TouchableOpacity onPress={onClose} style={styles.closeButton} testID="close-camera-button">
 						<Ionicons name="close" size={28} color="white" />
 					</TouchableOpacity>
-					
+
 					<View style={styles.headerRightControls}>
 						<TouchableOpacity onPress={handleFlashToggle} style={styles.controlButton}>
-							<Ionicons 
-								name={flash === "on" ? "flash" : "flash-off"} 
-								size={24} 
-								color="white" 
-							/>
+							<Ionicons name={flash === "on" ? "flash" : "flash-off"} size={24} color="white" />
 						</TouchableOpacity>
-						
+
 						<TouchableOpacity onPress={handleFlipCamera} style={styles.controlButton}>
 							<Ionicons name="camera-reverse" size={24} color="white" />
 						</TouchableOpacity>
@@ -308,12 +309,11 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 					</TouchableOpacity>
 
 					{/* 撮影ボタン */}
-					<TouchableOpacity 
-						onPress={handleCapture} 
+					<TouchableOpacity
+						onPress={handleCapture}
 						disabled={isLoading || !isCameraReady}
 						style={[styles.captureButton, (isLoading || !isCameraReady) && styles.captureButtonDisabled]}
-						testID="place-capture-button"
-					>
+						testID="place-capture-button">
 						<View style={styles.captureButtonInner}>
 							<Text style={styles.captureButtonText}>なにこれ</Text>
 						</View>
@@ -339,6 +339,12 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 
 const styles = StyleSheet.create({
 	container: {
+		position: "absolute",
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		zIndex: 100,
 		flex: 1,
 		backgroundColor: "black",
 	},
