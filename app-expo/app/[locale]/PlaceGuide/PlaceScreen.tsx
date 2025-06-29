@@ -39,7 +39,6 @@ export default function PlaceScreen() {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 	const { callCloudFunction } = useCloudFunction();
-	const { showSnackbar } = useSnackbar();
 
 	const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 	const [placeGuides, setPlaceGuides] = useState<PlaceGuide[]>([]);
@@ -196,9 +195,6 @@ export default function PlaceScreen() {
 					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
 				}, 100);
 
-				// 成功メッセージを表示
-				showSnackbar(i18n.t("PlaceGuide.photoAdded"));
-
 				logFrontendEvent({
 					event_name: "placeCameraCaptureSuccess",
 					error_level: "info",
@@ -217,10 +213,9 @@ export default function PlaceScreen() {
 						placeId: params.placeId,
 					},
 				});
-				showSnackbar(i18n.t("PlaceGuide.captureError"));
 			}
 		},
-		[params.placeId, params.placeName, highlights.length, showSnackbar],
+		[params.placeId, params.placeName, highlights.length],
 	);
 
 	/**
