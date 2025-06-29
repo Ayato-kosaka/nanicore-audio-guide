@@ -75,7 +75,7 @@ export const fetchPlaceDetails = async (
 			},
 		);
 
-		if (!response.id || !response.displayName?.text || !response.location) {
+		if (!response.id || !response.displayName?.text || !response.location?.latitude || !response.location?.longitude) {
 			throw new Error("Incomplete place details");
 		}
 
