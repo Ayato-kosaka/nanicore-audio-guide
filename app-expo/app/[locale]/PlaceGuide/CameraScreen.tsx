@@ -251,6 +251,8 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			{/* フッターコントロール */}
 			<LinearGradient colors={["transparent", "rgba(0,0,0,0.6)"]} style={styles.footerGradient}>
 				<View style={styles.footerControls}>
+					<View style={styles.zoomIndicator}></View>
+
 					{/* 撮影ボタン */}
 					<TouchableOpacity
 						onPress={handleCapture}
