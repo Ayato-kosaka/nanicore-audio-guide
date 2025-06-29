@@ -234,43 +234,6 @@ export default function PlaceScreen() {
 		});
 	}, [params.placeId]);
 
-	/**
-	 * 📸 従来のImagePicker撮影処理（フォールバック用）
-	 * 
-	 * カメラ画面が利用できない場合の代替手段として保持
-	 */
-	const handleCapture = withLoading(async () => {
-		const { status } = await ImagePicker.requestCameraPermissionsAsync();
-		if (status !== "granted") return;
-		const result = await ImagePicker.launchCameraAsync({ quality: 0.7 });
-		if (result.canceled || !result.assets?.[0]) return;
-
-		// const manipulated = await ImageManipulator.manipulateAsync(
-		//   result.assets[0].uri,
-		//   [{ resize: { width: 1024 } }],
-		//   { compress: 0.7, format: SaveFormat.JPEG }
-		// );
-
-		const newHighlight: Highlight = {
-			id: `h_${Date.now()}`,
-			imageUri: result.assets[0].uri,
-			highlightGuides: [
-				{
-					id: `guide_${Date.now()}`,
-					title: "Photo Analysis",
-					content:
-						"This is an analysis of your captured photo. The AI has identified interesting elements and can provide detailed information about what's visible in the image.",
-					category: "photo_analysis",
-					audioUrl: "",
-				},
-			],
-		};
-		setHighlights((prev) => [...prev, newHighlight]);
-		setTimeout(() => {
-			carouselRef.current?.scrollTo({ index: highlights.length + 1, animated: true });
-		}, 100);
-	});
-
 	const handleSnapToItem = (index: number) => {
 		setCurrentIndex(index);
 	};
