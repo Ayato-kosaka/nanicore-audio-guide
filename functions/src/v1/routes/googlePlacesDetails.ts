@@ -14,7 +14,7 @@ import { fetchPlaceDetails } from "../services/googlePlaces";
 export const googlePlacesDetails = withValidatedAuthHandler(
 	googlePlacesDetailsRequestSchema,
 	async function googlePlacesDetails({ res, input, requestId, userId, functionName }) {
-		const detail = await fetchPlaceDetails(input.placeId, requestId, userId);
+		const detail = await fetchPlaceDetails(input.placeId, input.languageCode, requestId, userId);
 
 		const response: PlacesDetailsResponse = detail;
 

@@ -78,7 +78,7 @@ export default function PlaceScreen() {
 			const place: PlaceData = {
 				id: params.placeId,
 				name: params.placeName,
-				imageUrl: `https://picsum.photos/400/600?random=${Date.now()}`,
+				imageUrl: params.imageUrl,
 			};
 
 			const guides: PlaceGuide[] = [

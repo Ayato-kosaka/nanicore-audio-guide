@@ -5,6 +5,7 @@ export type PlaceGuideParams = {
 	placeName: string;
 	latitude: string;
 	longitude: string;
+	imageUrl: string;
 };
 
 /**

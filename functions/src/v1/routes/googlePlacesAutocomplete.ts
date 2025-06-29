@@ -4,7 +4,7 @@ import {
 	googlePlacesAutocompleteRequestSchema,
 	GooglePlacesAutocompleteResponse,
 } from "../../../../shared/api/googlePlacesAutocomplete.schema";
-import { fetchAutocompletePredictions, fetchPlaceDetails } from "../services/googlePlaces";
+import { fetchAutocompletePredictions } from "../services/googlePlaces";
 
 /**
  * 🔎 ユーザー入力から候補地点を検索する Cloud Function
@@ -15,12 +15,17 @@ import { fetchAutocompletePredictions, fetchPlaceDetails } from "../services/goo
 export const googlePlacesAutocomplete = withValidatedAuthHandler(
 	googlePlacesAutocompleteRequestSchema,
 	async function googlePlacesAutocomplete({ res, input, requestId, userId, functionName }) {
-		const predictions = await fetchAutocompletePredictions(input.input, requestId, userId);
-		const detailed = await Promise.all(
-			predictions.slice(0, 5).map((p) => fetchPlaceDetails(p.placeId, requestId, userId)),
-		);
+		const predictions = await fetchAutocompletePredictions(input.input, input.languageCode, requestId, userId);
 
-		const response: GooglePlacesAutocompleteResponse = { predictions: detailed };
+		const response: GooglePlacesAutocompleteResponse = {
+			predictions: predictions
+				.map((p) => ({
+					placeId: p.placeId,
+					name: p?.structuredFormat?.mainText?.text,
+					types: p.types ?? null,
+				}))
+				.filter((p) => !!p.placeId && !!p.name) as GooglePlacesAutocompleteResponse["predictions"],
+		};
 
 		logBackendEvent({
 			event_name: "googlePlacesAutocompleteSuccess",
@@ -28,7 +33,7 @@ export const googlePlacesAutocomplete = withValidatedAuthHandler(
 			function_name: functionName,
 			user_id: userId,
 			request_id: requestId,
-			payload: { query: input.input, count: detailed.length },
+			payload: { query: input.input, count: predictions.length },
 		});
 
 		res.status(200).json(response);

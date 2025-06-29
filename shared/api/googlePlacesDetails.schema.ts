@@ -7,6 +7,7 @@ import { z } from "zod";
  */
 export const googlePlacesDetailsRequestSchema = z.object({
 	placeId: z.string().min(1, "placeId is required"),
+	languageCode: z.string().min(1, "languageCode is required"),
 });
 
 /**
@@ -22,4 +23,5 @@ export type PlacesDetailsResponse = {
 	name: string;
 	latitude: number;
 	longitude: number;
+	imageUrl: string;
 };

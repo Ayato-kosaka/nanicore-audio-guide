@@ -7,6 +7,7 @@ import { z } from "zod";
  */
 export const googlePlacesAutocompleteRequestSchema = z.object({
 	input: z.string().min(1, "input is required"),
+	languageCode: z.string().min(1, "languageCode is required"),
 });
 
 /**
@@ -21,7 +22,6 @@ export type GooglePlacesAutocompleteResponse = {
 	predictions: {
 		placeId: string;
 		name: string;
-		latitude: number;
-		longitude: number;
+		types?: string[] | null;
 	}[];
 };
