@@ -231,3 +231,69 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 		temperature,
 	};
 };
+
+// 観光地ガイド生成レスポンス型のスキーマ
+const PlaceGuideManuscriptResponseSchema = z.object({
+	title: z.string(),
+	manuscript: z.string(),
+	tags: z.array(z.string()),
+	ssmlGender: z.enum(["FEMALE", "MALE", "NEUTRAL"]),
+});
+export const generateGeneratePlaceGuideContent = async (
+	placeName: string,
+	latitude: number,
+	longitude: number,
+	languageTag: string,
+	requestId: string,
+	userId: string,
+): Promise<
+	SpotGuideManuscriptResponse & {
+		familyId: string;
+		variantId: string;
+		promptText: string;
+		generatedText: string;
+		promptInput: Record<string, any>;
+		llmModel: string;
+		temperature: number;
+	}
+> => {
+	const llmModel = "claude-3-haiku-20240307";
+	const temperature = 0.7;
+	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). Output the guide in ${languageTag}.`;
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+	const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+		llmModel,
+		temperature,
+		promptPurpose: "general_place_guide_manuscript",
+		variablePromptPart: variablePrompt,
+		outputFormatHint: outputHint,
+		requestId,
+		userId,
+	});
+
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
+	if (!validatedResponse.success) {
+		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+	}
+
+	return {
+		...validatedResponse.data,
+		familyId,
+		variantId,
+		promptText: fullPrompt,
+		generatedText: responseText,
+		promptInput: { placeName, latitude, longitude, languageTag },
+		llmModel,
+		temperature,
+	};
+};

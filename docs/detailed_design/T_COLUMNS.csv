@@ -90,7 +90,7 @@
 "prompt_usages","id","text",true,false,false,true,"","","利用ログの一意なID（UUID）","","","",false
 "prompt_usages","family_id","text",false,false,false,true,"",true,"使用されたプロンプトファミリーID","","","",false
 "prompt_usages","variant_id","text",false,false,false,true,"",true,"使用されたプロンプトバリエーションID","","","",false
-"prompt_usages","target_type","enum ('spot_guides')",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
+"prompt_usages","target_type","text",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
 "prompt_usages","target_id","text",false,false,false,true,"",true,"対象レコードのID","","","",false
 "prompt_usages","generated_text","text",false,false,false,true,"","","実際に生成されたガイド原稿","","","",false
 "prompt_usages","used_prompt_text","text",false,false,false,true,"","","使用されたプロンプトテンプレートのスナップショット","","","",false

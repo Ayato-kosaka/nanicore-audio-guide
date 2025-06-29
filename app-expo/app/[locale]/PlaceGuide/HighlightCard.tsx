@@ -14,6 +14,7 @@ export type HighlightGuide = {
 	title: string;
 	content: string;
 	category: string;
+	audioUrl: string;
 };
 
 export type Highlight = {
