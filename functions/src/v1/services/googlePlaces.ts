@@ -1,8 +1,8 @@
-import { PlacesApiClient } from "@googlemaps/places";
+import { PlacesClient } from "@googlemaps/places";
 import { env } from "../lib/env";
 import { logExternalApi } from "../lib/logger";
 
-const client = new PlacesApiClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
+const client = new PlacesClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
 
 /**
  * 🔍 Google Places Autocomplete(New)
@@ -19,11 +19,11 @@ export const fetchAutocompletePredictions = async (
         let payload: any = null;
         let errorMessage: string | null = null;
         try {
-                const response = await client.autocomplete({ input, languageCode: "ja" });
+                const [response] = await client.autocompletePlaces({ input, languageCode: "ja" });
                 payload = response;
                 status = 200;
                 return (
-                        response.predictions?.map((p) => ({ placeId: p.placeId ?? "", text: p.text ?? "" })) || []
+                        response.suggestions?.map((s) => s.placePrediction).map((p) => ({ placeId: p?.placeId ?? "", text: p?.text?.text ?? "" })) || []
                 );
         } catch (error: any) {
                 errorMessage = error.message;
@@ -58,11 +58,21 @@ export const fetchPlaceDetails = async (
         let payload: any = null;
         let errorMessage: string | null = null;
         try {
-                const response = await client.place({ name: placeId, languageCode: "ja", fields: ["id", "displayName", "location"] });
+                const [response] = await client.getPlace(
+                        {
+                                name: `places/${placeId}`,
+                                languageCode: "ja",
+                        },
+                        {
+                                otherArgs: {
+                                        headers: { "X-Goog-FieldMask": "id,displayName,location" },
+                                },
+                        },
+                );
                 payload = response;
                 status = 200;
                 return {
-                        placeId: response.id,
+                        placeId: response.id ?? "",
                         name: response.displayName?.text ?? "",
                         latitude: response.location?.latitude ?? 0,
                         longitude: response.location?.longitude ?? 0,

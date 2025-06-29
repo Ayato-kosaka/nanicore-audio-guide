@@ -1,14 +1,21 @@
-import React from "react";
+// components/MapView.web.tsx
+import React, { forwardRef, useRef, useCallback, useImperativeHandle } from "react";
 import { GoogleMap, Marker as GoogleMarker, LoadScript } from "@react-google-maps/api";
 import type { MapViewProps, MarkerProps } from "./MapView";
-import type { MapPressEvent, MarkerPressEvent, PoiClickEvent } from "react-native-maps";
+import type { MapPressEvent, MarkerPressEvent, PoiClickEvent, Region } from "react-native-maps";
+import { Env } from "@/constants/Env";
 
-interface RegionChangeDetails {
-	isGesture: boolean;
+/** ─────────────────────────────────────────────────────────────
+ *  ネイティブと API 互換にするためのハンドル
+ *  ──────────────────────────────────────────────────────────── */
+export interface MapViewHandle {
+	/** iOS/Android 版だけで実装されるため、Web では no-op */
+	animateToRegion: (region: Region, duration?: number) => void;
 }
 
+/* ─────────────────────────────── Marker ──────────────────────────────── */
 export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, testID }) => {
-	const handleClick = React.useCallback(
+	const handleClick = useCallback(
 		(e: google.maps.MapMouseEvent) => {
 			if (!onPress || !e.latLng) return;
 			const event = {
@@ -31,65 +38,60 @@ export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, test
 			position={{ lat: coordinate.latitude, lng: coordinate.longitude }}
 			title={title}
 			onClick={handleClick}
-			options={{}}
 		/>
 	);
 };
 
-const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
+/* ─────────────────────────────── MapView ──────────────────────────────── */
+const MapView = forwardRef<MapViewHandle | null, MapViewProps>(
 	({ style, region, onRegionChangeComplete, onPress, onPoiClick, children }, ref) => {
-		const handleLoad = React.useCallback(
-			(map: google.maps.Map) => {
-				if (typeof ref === "function") {
-					ref(map);
-				} else if (ref) {
-					(ref as React.MutableRefObject<google.maps.Map | null>).current = map;
-				}
-			},
-			[ref],
-		);
+		/* Google Maps 本体を保持（外部には晒さない） */
+		const innerMapRef = useRef<google.maps.Map | null>(null);
 
-		const handleIdle = React.useCallback(() => {
-			if (onRegionChangeComplete && ref && typeof ref !== "function") {
-				const map = (ref as React.MutableRefObject<google.maps.Map | null>).current;
-				if (map) {
-					const center = map.getCenter();
-					if (center) {
-						const eventRegion = {
-							latitude: center.lat(),
-							longitude: center.lng(),
-							latitudeDelta: region?.latitudeDelta ?? 0,
-							longitudeDelta: region?.longitudeDelta ?? 0,
-						};
-						const details: RegionChangeDetails = { isGesture: false };
-						onRegionChangeComplete(eventRegion, details);
-					}
-				}
-			}
-		}, [onRegionChangeComplete, region, ref]);
+		/* Google Maps 読み込み完了時 */
+		const handleLoad = useCallback((map: google.maps.Map) => {
+			innerMapRef.current = map;
+		}, []);
 
-		const handleClick = React.useCallback(
+		/* パン／ズーム完了時に Region を返す */
+		const handleIdle = useCallback(() => {
+			if (!onRegionChangeComplete || !innerMapRef.current) return;
+			const center = innerMapRef.current.getCenter();
+			if (!center) return;
+
+			onRegionChangeComplete(
+				{
+					latitude: center.lat(),
+					longitude: center.lng(),
+					latitudeDelta: region?.latitudeDelta ?? 0,
+					longitudeDelta: region?.longitudeDelta ?? 0,
+				},
+				{ isGesture: false } as any,
+			);
+		}, [onRegionChangeComplete, region]);
+
+		/* タップ／POI 押下 */
+		const handleClick = useCallback(
 			(e: google.maps.MapMouseEvent) => {
 				if (!e.latLng) return;
-				const { placeId } = e as unknown as { placeId: string | undefined };
+				// POI をタップした場合
+				const { placeId } = e as unknown as { placeId?: string };
 				if (placeId && onPoiClick) {
-					// If the event has a placeId, it's a POI click
-					const poiClockEvent = {
+					onPoiClick({
 						nativeEvent: {
-							id: placeId,
+							placeId,
 							action: "poi-click",
 							coordinate: {
 								latitude: e.latLng.lat(),
 								longitude: e.latLng.lng(),
 							},
 						},
-					} as unknown as PoiClickEvent;
-					onPoiClick(poiClockEvent);
+					} as unknown as PoiClickEvent);
 					return;
 				}
+				// 通常の地図タップ
 				if (onPress) {
-					// Handle map press event
-					const pressEvent = {
+					onPress({
 						nativeEvent: {
 							coordinate: {
 								latitude: e.latLng.lat(),
@@ -97,13 +99,24 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 							},
 							position: { x: 0, y: 0 },
 						},
-					} as unknown as MapPressEvent;
-					onPress(pressEvent);
+					} as unknown as MapPressEvent);
 				}
 			},
-			[onPress],
+			[onPoiClick, onPress],
 		);
 
+		/* ───────── ネイティブ互換メソッドを ref に注入 ───────── */
+		useImperativeHandle(
+			ref,
+			(): MapViewHandle => ({
+				animateToRegion: () => {
+					/* Web では無視 (no-op) */
+				},
+			}),
+			[],
+		);
+
+		/* スタイルを React Native ライクに許容 */
 		const containerStyle: React.CSSProperties = {
 			width: "100%",
 			height: "100%",
@@ -111,7 +124,7 @@ const MapView = React.forwardRef<google.maps.Map | null, MapViewProps>(
 		};
 
 		return (
-			<LoadScript googleMapsApiKey="">
+			<LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_API_KEY}>
 				<GoogleMap
 					onLoad={handleLoad}
 					center={{ lat: region?.latitude ?? 0, lng: region?.longitude ?? 0 }}
