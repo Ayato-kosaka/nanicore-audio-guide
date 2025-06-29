@@ -1,6 +1,7 @@
 {
 	"Common": {
 		"cancel": "キャンセル",
+		"ok": "OK",
 		"goStore": "アプリストアを開く"
 	},
 	"Error": {
@@ -26,7 +27,12 @@
 		"loadError": "場所ガイドの読み込みに失敗しました",
 		"generateError": "ガイドの生成に失敗しました",
 		"photoAdded": "写真が追加されました！新しい画像を探索してください。",
-		"guidesGenerated": "ガイドが正常に生成されました！"
+		"guidesGenerated": "ガイドが正常に生成されました！",
+		"cameraNotReady": "カメラの準備ができていません",
+		"captureError": "撮影に失敗しました。もう一度お試しください。",
+		"cameraPermissionTitle": "カメラへのアクセス",
+		"cameraPermissionMessage": "この場所の写真を撮影するには、カメラへのアクセスを許可してください。",
+		"allowCamera": "カメラを許可"
 	},
 	"SpotCapture": {
 		"captureButton": "なにこれ",
