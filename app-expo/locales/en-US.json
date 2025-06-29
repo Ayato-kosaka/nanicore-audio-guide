@@ -1,6 +1,7 @@
 {
 	"Common": {
 		"cancel": "Cancel",
+		"ok": "OK",
 		"goStore": "Open App Store"
 	},
 	"Error": {
@@ -26,7 +27,12 @@
 		"loadError": "Failed to load place guides",
 		"generateError": "Failed to generate guides",
 		"photoAdded": "Photo added! Explore the new image.",
-		"guidesGenerated": "Guide generated successfully!"
+		"guidesGenerated": "Guide generated successfully!",
+		"cameraNotReady": "Camera is not ready",
+		"captureError": "Failed to capture photo. Please try again.",
+		"cameraPermissionTitle": "Camera Access",
+		"cameraPermissionMessage": "Please allow camera access to take photos of this location.",
+		"allowCamera": "Allow Camera"
 	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
