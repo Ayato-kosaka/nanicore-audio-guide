@@ -10,11 +10,12 @@ import { generateGeneratePlaceGuideContent } from "../lib/claude";
 import { synthesizeTextToSpeech } from "../lib/textToSpeech";
 import { randomUUID } from "crypto";
 import { getRemoteConfigValue } from "../lib/remoteConfig";
+import { getCurrentVersionFromRequest } from "../lib/backendUtils";
 
 export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 	generateGeneralPlaceGuideRequestSchema,
 	async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
-		const { placeName, latitude, longitude, languageTag } = input;
+		const { placeId, placeName, latitude, longitude, languageTag } = input;
 		const guideId = randomUUID();
 
 		const defaultPlaceGuideCreatedUserId = await getRemoteConfigValue("v1_place_guides_default_created_user_id");
@@ -45,10 +46,10 @@ export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 			mimeType: "audio/mpeg",
 			resourceType: "system-generated",
 			usageType: "audio-guides",
-			identifier: guideId,
-			fileName: "place",
+			identifier: placeId,
+			fileName: guideId,
 			requestId,
-			createdVersion: req.headers["x-app-version"] as string,
+			createdVersion: getCurrentVersionFromRequest(req),
 		});
 
 		// TODO: insert into place_guides table
@@ -59,7 +60,7 @@ export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 				family_id: familyId,
 				variant_id: variantId,
 				target_type: "place_guides",
-				target_id: randomUUID(),
+				target_id: guideId,
 				generated_text: generatedText,
 				used_prompt_text: promptText,
 				input_data: promptInput,

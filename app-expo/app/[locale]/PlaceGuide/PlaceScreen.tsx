@@ -70,6 +70,7 @@ export default function PlaceScreen() {
 			>(
 				"generateGeneralPlaceGuide",
 				{
+					placeId: params.placeId,
 					placeName: params.placeName,
 					latitude: parseFloat(params.latitude),
 					longitude: parseFloat(params.longitude),
