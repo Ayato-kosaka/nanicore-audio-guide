@@ -53,11 +53,11 @@ export default function PlaceScreen() {
 			payload: { placeId: params.placeId },
 		});
 		// Mock API responses
-               const place: PlaceData = {
-                       id: params.placeId,
-                       name: params.placeName,
-                       imageUrl: params.imageUrl,
-               };
+		const place: PlaceData = {
+			id: params.placeId,
+			name: params.placeName,
+			imageUrl: params.imageUrl,
+		};
 		const guides: PlaceGuide[] = [
 			{
 				id: "initial_guide",

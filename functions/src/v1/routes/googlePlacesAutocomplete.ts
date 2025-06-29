@@ -15,17 +15,10 @@ import { fetchAutocompletePredictions, fetchPlaceDetails } from "../services/goo
 export const googlePlacesAutocomplete = withValidatedAuthHandler(
 	googlePlacesAutocompleteRequestSchema,
 	async function googlePlacesAutocomplete({ res, input, requestId, userId, functionName }) {
-       const predictions = await fetchAutocompletePredictions(
-               input.input,
-               input.languageCode,
-               requestId,
-               userId,
-       );
-       const detailed = await Promise.all(
-               predictions.slice(0, 5).map((p) =>
-                       fetchPlaceDetails(p.placeId, input.languageCode, requestId, userId),
-               ),
-       );
+		const predictions = await fetchAutocompletePredictions(input.input, input.languageCode, requestId, userId);
+		const detailed = await Promise.all(
+			predictions.slice(0, 5).map((p) => fetchPlaceDetails(p.placeId, input.languageCode, requestId, userId)),
+		);
 
 		const response: GooglePlacesAutocompleteResponse = { predictions: detailed };
 

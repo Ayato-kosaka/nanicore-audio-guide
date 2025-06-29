@@ -6,8 +6,8 @@ import { z } from "zod";
  * - 入力キーワードを元に Google Places Autocomplete(New) を実行
  */
 export const googlePlacesAutocompleteRequestSchema = z.object({
-        input: z.string().min(1, "input is required"),
-        languageCode: z.string().min(1, "languageCode is required"),
+	input: z.string().min(1, "input is required"),
+	languageCode: z.string().min(1, "languageCode is required"),
 });
 
 /**
@@ -19,11 +19,11 @@ export type GooglePlacesAutocompleteRequest = z.infer<typeof googlePlacesAutocom
  * googlePlacesAutocomplete API のレスポンス型
  */
 export type GooglePlacesAutocompleteResponse = {
-        predictions: {
-                placeId: string;
-                name: string;
-                latitude: number;
-                longitude: number;
-                imageUrl: string;
-        }[];
+	predictions: {
+		placeId: string;
+		name: string;
+		latitude: number;
+		longitude: number;
+		imageUrl: string;
+	}[];
 };

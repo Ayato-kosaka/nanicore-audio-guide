@@ -17,11 +17,11 @@ import type {
 import type { PlacesDetailsRequest, PlacesDetailsResponse } from "@shared/api/googlePlacesDetails.schema";
 
 type MapLocation = {
-        placeId: string;
-        name: string;
-        latitude: number;
-        longitude: number;
-        imageUrl: string;
+	placeId: string;
+	name: string;
+	latitude: number;
+	longitude: number;
+	imageUrl: string;
 };
 
 const INITIAL_REGION: Region = {
@@ -108,7 +108,7 @@ export default function MapScreen() {
 	 * - APIキーを保持しないため、Cloud Functions 経由でプレイス候補を取得
 	 * - 検索結果は選択時まで確定しないため、地点状態はここでは更新しない
 	 */
-const handleSearch = useCallback(async () => {
+	const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
 
 		setIsSearching(true);
@@ -119,10 +119,10 @@ const handleSearch = useCallback(async () => {
 				payload: { query: searchQuery },
 			});
 
-                       const { predictions } = await callCloudFunction<
-                               GooglePlacesAutocompleteRequest,
-                               GooglePlacesAutocompleteResponse
-                       >("googlePlacesAutocomplete", { input: searchQuery, languageCode: locale }, "v1");
+			const { predictions } = await callCloudFunction<
+				GooglePlacesAutocompleteRequest,
+				GooglePlacesAutocompleteResponse
+			>("googlePlacesAutocomplete", { input: searchQuery, languageCode: locale }, "v1");
 
 			setPredictions(predictions);
 		} catch (error: any) {
@@ -134,22 +134,22 @@ const handleSearch = useCallback(async () => {
 		} finally {
 			setIsSearching(false);
 		}
-}, [searchQuery, logFrontendEvent, callCloudFunction]);
+	}, [searchQuery, logFrontendEvent, callCloudFunction]);
 
-       // 📝 検索欄が展開されている間は入力のたびに候補を取得する
-       // - 空文字の場合は候補をクリア
-       // - 300ms デバウンスでリクエスト数を抑制
-       useEffect(() => {
-               if (!isSearchExpanded) return;
-               if (!searchQuery.trim()) {
-                       setPredictions([]);
-                       return;
-               }
-               const t = setTimeout(() => {
-                       handleSearch();
-               }, 300);
-               return () => clearTimeout(t);
-       }, [searchQuery, isSearchExpanded, handleSearch]);
+	// 📝 検索欄が展開されている間は入力のたびに候補を取得する
+	// - 空文字の場合は候補をクリア
+	// - 300ms デバウンスでリクエスト数を抑制
+	useEffect(() => {
+		if (!isSearchExpanded) return;
+		if (!searchQuery.trim()) {
+			setPredictions([]);
+			return;
+		}
+		const t = setTimeout(() => {
+			handleSearch();
+		}, 300);
+		return () => clearTimeout(t);
+	}, [searchQuery, isSearchExpanded, handleSearch]);
 
 	/**
 	 * 🗺️ 地図ピン押下した場合
@@ -163,11 +163,11 @@ const handleSearch = useCallback(async () => {
 				if (!placeId) return;
 
 				try {
-                                       const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
-                                               "googlePlacesDetails",
-                                               { placeId, languageCode: locale },
-                                               "v1",
-                                       );
+					const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+						"googlePlacesDetails",
+						{ placeId, languageCode: locale },
+						"v1",
+					);
 
 					const newRegion: Region = {
 						latitude: place.latitude,
@@ -213,11 +213,11 @@ const handleSearch = useCallback(async () => {
 		(location: MapLocation) => {
 			withLoading(async () => {
 				try {
-                                       const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
-                                               "googlePlacesDetails",
-                                               { placeId: location.placeId, languageCode: locale },
-                                               "v1",
-                                       );
+					const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+						"googlePlacesDetails",
+						{ placeId: location.placeId, languageCode: locale },
+						"v1",
+					);
 
 					const newRegion: Region = {
 						latitude: place.latitude,
@@ -261,18 +261,18 @@ const handleSearch = useCallback(async () => {
 	const handleNanicorePress = withLoading(async () => {
 		if (!selectedLocation) return;
 
-               router.push({
-                       pathname: "/[locale]/PlaceGuide",
-                       params: {
-                               locale,
-                               placeId: selectedLocation.placeId,
-                               placeName: selectedLocation.name || "Selected Location",
-                               latitude: selectedLocation.latitude.toString(),
-                               longitude: selectedLocation.longitude.toString(),
-                               imageUrl: selectedLocation.imageUrl,
-                       },
-               });
-       });
+		router.push({
+			pathname: "/[locale]/PlaceGuide",
+			params: {
+				locale,
+				placeId: selectedLocation.placeId,
+				placeName: selectedLocation.name || "Selected Location",
+				latitude: selectedLocation.latitude.toString(),
+				longitude: selectedLocation.longitude.toString(),
+				imageUrl: selectedLocation.imageUrl,
+			},
+		});
+	});
 
 	/**
 	 * 📸 カメラボタンを押下した時の処理

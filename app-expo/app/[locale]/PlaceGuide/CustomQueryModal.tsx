@@ -18,39 +18,36 @@ type CustomQueryModalProps = {
 };
 
 export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onDismiss, onSubmit, loading }) => {
-       const [query, setQuery] = useState("");
+	const [query, setQuery] = useState("");
 
-       // Cloud Function 側で処理できる文字数の上限（全角 35 文字相当）
-       const MAX_VISUAL_LENGTH = 70;
+	// Cloud Function 側で処理できる文字数の上限（全角 35 文字相当）
+	const MAX_VISUAL_LENGTH = 70;
 
-       const getVisualLength = useCallback(
-               (text: string) =>
-                       // 半角1、全角2として見た目の文字数を計算する
-                       Array.from(text).reduce(
-                               (len, ch) => len + (/[\u0020-\u007E]/.test(ch) ? 1 : 2),
-                               0,
-                       ),
-               [],
-       );
+	const getVisualLength = useCallback(
+		(text: string) =>
+			// 半角1、全角2として見た目の文字数を計算する
+			Array.from(text).reduce((len, ch) => len + (/[\u0020-\u007E]/.test(ch) ? 1 : 2), 0),
+		[],
+	);
 
-       const handleChangeText = useCallback(
-               (text: string) => {
-                       // 入力途中で上限を超えた分を即座に切り捨てる
-                       let len = 0;
-                       let result = "";
-                       for (const ch of Array.from(text)) {
-                               const charLen = /[\u0020-\u007E]/.test(ch) ? 1 : 2;
-                               if (len + charLen > MAX_VISUAL_LENGTH) break;
-                               result += ch;
-                               len += charLen;
-                       }
-                       setQuery(result);
-               },
-               [setQuery],
-       );
+	const handleChangeText = useCallback(
+		(text: string) => {
+			// 入力途中で上限を超えた分を即座に切り捨てる
+			let len = 0;
+			let result = "";
+			for (const ch of Array.from(text)) {
+				const charLen = /[\u0020-\u007E]/.test(ch) ? 1 : 2;
+				if (len + charLen > MAX_VISUAL_LENGTH) break;
+				result += ch;
+				len += charLen;
+			}
+			setQuery(result);
+		},
+		[setQuery],
+	);
 
-       // カウンター表示用に見た目の文字数をメモ化して保持
-       const queryLength = useMemo(() => getVisualLength(query), [query, getVisualLength]);
+	// カウンター表示用に見た目の文字数をメモ化して保持
+	const queryLength = useMemo(() => getVisualLength(query), [query, getVisualLength]);
 
 	/**
 	 * ✅ 入力された質問を送信
@@ -91,18 +88,18 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onD
 
 				<TextInput
 					label={i18n.t("PlaceGuide.customQueryPlaceholder")}
-                                       value={query}
-                                       onChangeText={handleChangeText}
-                                       mode="outlined"
-                                       multiline
-                                       numberOfLines={4}
-                                       style={styles.textInput}
-                                       disabled={loading}
-                                       testID="custom-query-input"
-                               />
+					value={query}
+					onChangeText={handleChangeText}
+					mode="outlined"
+					multiline
+					numberOfLines={4}
+					style={styles.textInput}
+					disabled={loading}
+					testID="custom-query-input"
+				/>
 
-                               {/* 現在の入力長をユーザーに示す */}
-                               <Text style={styles.charCounter}>{`${queryLength} / ${MAX_VISUAL_LENGTH}`}</Text>
+				{/* 現在の入力長をユーザーに示す */}
+				<Text style={styles.charCounter}>{`${queryLength} / ${MAX_VISUAL_LENGTH}`}</Text>
 
 				<View style={styles.buttonContainer}>
 					<Button
@@ -159,20 +156,20 @@ const styles = StyleSheet.create({
 		backgroundColor: "#f5f5f5",
 		borderRadius: 20,
 	},
-        textInput: {
-                marginBottom: 24,
-                backgroundColor: "#fafafa",
-        },
-       charCounter: {
-               alignSelf: "flex-end",
-               marginBottom: 12,
-               color: "#777",
-               fontSize: 12,
-       },
-        buttonContainer: {
-                flexDirection: "row",
-                gap: 12,
-        },
+	textInput: {
+		marginBottom: 24,
+		backgroundColor: "#fafafa",
+	},
+	charCounter: {
+		alignSelf: "flex-end",
+		marginBottom: 12,
+		color: "#777",
+		fontSize: 12,
+	},
+	buttonContainer: {
+		flexDirection: "row",
+		gap: 12,
+	},
 	cancelButton: {
 		flex: 1,
 		borderColor: "#e0e0e0",
