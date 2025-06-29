@@ -2,6 +2,7 @@ import { PlacesClient } from "@googlemaps/places";
 import { env } from "../lib/env";
 import { logExternalApi } from "../lib/logger";
 import { google } from "@googlemaps/places/build/protos/protos";
+import { callExternalApi } from "../lib/backendUtils";
 
 const client = new PlacesClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
 
@@ -81,11 +82,25 @@ export const fetchPlaceDetails = async (
 
 		let imageUrl = "";
 		if (photoRef) {
-			const [photoResponse] = await client.getPhotoMedia({
-				name: photoRef,
-				maxWidthPx: 800,
+			const photoResponse = await callExternalApi<{
+				name?: string;
+				photoUri?: string;
+			}>({
+				requestId,
+				functionName: "fetchPlaceDetails",
+				apiName: "places.googleapis",
+				endpoint: `https://places.googleapis.com/v1/${photoRef}/media?maxWidthPx=800&key=${env.FUNCTIONS_GOOGLE_PLACE_API_KEY}`,
+				method: "GET",
+				customHeaders: {
+					Accept: "application/json",
+				},
+				redirect: "manual",
+				userId,
 			});
-			imageUrl = (photoResponse as any).photoUri ?? "";
+			if (!photoResponse.photoUri) {
+				throw new Error(`Place Details API response missing 'photoUri' for placeId: ${placeId}`);
+			}
+			imageUrl = photoResponse.photoUri;
 		}
 
 		const result = {
