@@ -9,12 +9,15 @@ import {
 import { generateGeneratePlaceGuideContent } from "../lib/claude";
 import { synthesizeTextToSpeech } from "../lib/textToSpeech";
 import { randomUUID } from "crypto";
+import { getRemoteConfigValue } from "../lib/remoteConfig";
 
 export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 	generateGeneralPlaceGuideRequestSchema,
 	async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
 		const { placeName, latitude, longitude, languageTag } = input;
 		const guideId = randomUUID();
+
+		const defaultPlaceGuideCreatedUserId = await getRemoteConfigValue("v1_place_guides_default_created_user_id");
 
 		const {
 			title,
@@ -37,7 +40,7 @@ export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 			userId,
 		});
 
-		const { path: audioPath, signedUrl: audioUrl } = await uploadFile({
+		const { signedUrl: audioUrl } = await uploadFile({
 			buffer: audioBuffer,
 			mimeType: "audio/mpeg",
 			resourceType: "system-generated",
@@ -62,7 +65,7 @@ export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 				input_data: promptInput,
 				llm_model: llmModel,
 				temperature,
-				generated_user: "00000000-0000-0000-0000-000000000000",
+				generated_user: defaultPlaceGuideCreatedUserId,
 				created_at: new Date(),
 				created_request_id: requestId,
 			},

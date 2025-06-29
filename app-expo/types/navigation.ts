@@ -3,8 +3,8 @@ import { PrismaExtSpots } from "@shared/converters/convert_ext_spots";
 export type PlaceGuideParams = {
 	placeId: string;
 	placeName: string;
-	latitude?: string;
-	longitude?: string;
+	latitude: string;
+	longitude: string;
 };
 
 /**
