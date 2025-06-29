@@ -121,7 +121,7 @@ model prompt_usages {
   id                 String                    @id
   family_id          String
   variant_id         String
-  target_type        prompt_usages_target_type
+  target_type        String
   target_id          String
   generated_text     String
   used_prompt_text   String
@@ -263,11 +263,6 @@ enum prompt_families_purpose {
   @@schema("dev")
 }
 
-enum prompt_usages_target_type {
-  spot_guides
-
-  @@schema("dev")
-}
 
 enum reactions_action_type {
   like

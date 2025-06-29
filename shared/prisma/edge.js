@@ -280,9 +280,7 @@ exports.prompt_families_purpose = exports.$Enums.prompt_families_purpose = {
   spot_guide_manuscript: 'spot_guide_manuscript'
 };
 
-exports.prompt_usages_target_type = exports.$Enums.prompt_usages_target_type = {
-  spot_guides: 'spot_guides'
-};
+exports.prompt_usages_target_type = exports.$Enums.prompt_usages_target_type = {};
 
 exports.reactions_action_type = exports.$Enums.reactions_action_type = {
   like: 'like',

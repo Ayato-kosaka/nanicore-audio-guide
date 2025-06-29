@@ -10,45 +10,45 @@ import { LinearGradient } from "expo-linear-gradient";
  * 子要素としてガイド表示や入力欄を受け取り、責務を分離する。
  */
 export type GuideBaseCardProps = {
-	imageUri: string;
-	placeName?: string;
-	onBack: () => void;
-	children: React.ReactNode;
-	onImageError?: () => void;
+        imageUri: string;
+        placeName?: string;
+        onBack: () => void;
+        children: React.ReactNode;
+        onImageError?: () => void;
 };
 
 export const GuideBaseCard: React.FC<GuideBaseCardProps> = ({
-	imageUri,
-	placeName,
-	onBack,
-	children,
-	onImageError,
+        imageUri,
+        placeName,
+        onBack,
+        children,
+        onImageError,
 }) => (
-	<View style={styles.container}>
-		<ImageBackground
-			source={{ uri: imageUri }}
-			style={styles.imageBackground}
-			resizeMode="cover"
-			onError={onImageError}>
-			<LinearGradient colors={["rgba(0,0,0,0.85)", "rgba(0,0,0,0)"]} style={styles.headerOverlay}>
-				<Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
-					{placeName}
-				</Text>
-				<IconButton
-					icon="close"
-					size={20}
-					iconColor="white"
-					onPress={onBack}
-					style={styles.closeButton}
-					testID="close-button"
-				/>
-			</LinearGradient>
+        <View style={styles.container}>
+                <ImageBackground
+                        source={{ uri: imageUri }}
+                        style={styles.imageBackground}
+                        resizeMode="cover"
+                        onError={onImageError}>
+                        <LinearGradient colors={["rgba(0,0,0,0.85)", "rgba(0,0,0,0)"]} style={styles.headerOverlay}>
+                                <Text variant="titleMedium" style={styles.placeName} numberOfLines={1}>
+                                        {placeName}
+                                </Text>
+                                <IconButton
+                                        icon="close"
+                                        size={20}
+                                        iconColor="white"
+                                        onPress={onBack}
+                                        style={styles.closeButton}
+                                        testID="close-button"
+                                />
+                        </LinearGradient>
 
-			<LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} style={styles.contentOverlay}>
-				{children}
-			</LinearGradient>
-		</ImageBackground>
-	</View>
+                        <LinearGradient colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.85)"]} style={styles.contentOverlay}>
+                                {children}
+                        </LinearGradient>
+                </ImageBackground>
+        </View>
 );
 
 const styles = StyleSheet.create({
@@ -68,15 +68,16 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 		fontSize: 16,
 	},
-	closeButton: {
-		margin: 0,
-		backgroundColor: "rgba(255, 255, 255, 0.2)",
-		borderRadius: 20,
-	},
-	contentOverlay: {
-		justifyContent: "flex-end",
-		paddingHorizontal: 20,
-		paddingBottom: 24,
-		height: "40%",
+        closeButton: {
+                margin: 0,
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: 20,
+        },
+
+        contentOverlay: {
+                justifyContent: "flex-end",
+                paddingHorizontal: 20,
+                paddingBottom: 24,
+                height: "40%",
 	},
 });

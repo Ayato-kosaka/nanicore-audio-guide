@@ -229,6 +229,62 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 		generatedText: responseText,
 		promptInput: { spotTitle, languageTag },
 		llmModel,
-		temperature,
-	};
+        temperature,
+        };
+};
+
+export const generateGeneratePlaceGuideContent = async (
+        placeName: string,
+        latitude: number,
+        longitude: number,
+        languageTag: string,
+        requestId: string,
+        userId: string,
+): Promise<
+        SpotGuideManuscriptResponse & {
+                familyId: string;
+                variantId: string;
+                promptText: string;
+                generatedText: string;
+                promptInput: Record<string, any>;
+                llmModel: string;
+                temperature: number;
+        }
+> => {
+        const llmModel = "claude-3-haiku-20240307";
+        const temperature = 0.7;
+        const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}).`;
+        const outputHint = `Use the following JSON format. All newline characters in the \"manuscript\" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+        const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+                llmModel,
+                temperature,
+                promptPurpose: "general_place_guide_manuscript",
+                variablePromptPart: variablePrompt,
+                outputFormatHint: outputHint,
+                requestId,
+                userId,
+        });
+
+        const validatedResponse = SpotGuideManuscriptResponseSchema.safeParse(parsedJson);
+        if (!validatedResponse.success) {
+                throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+        }
+
+        return {
+                ...validatedResponse.data,
+                familyId,
+                variantId,
+                promptText: fullPrompt,
+                generatedText: responseText,
+                promptInput: { placeName, latitude, longitude, languageTag },
+                llmModel,
+                temperature,
+        };
 };
