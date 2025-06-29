@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback, ComponentRef } from "react";
-import { View, StyleSheet, Platform, Dimensions, FlatList } from "react-native";
+import React, { useState, useRef, useCallback, ComponentRef, useEffect } from "react";
+import { View, StyleSheet, Platform, Dimensions, FlatList, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Text, Button, IconButton, Searchbar, List } from "react-native-paper";
 import MapView, { Marker, Region } from "@/components/MapView";
@@ -17,10 +17,11 @@ import type {
 import type { PlacesDetailsRequest, PlacesDetailsResponse } from "@shared/api/googlePlacesDetails.schema";
 
 type MapLocation = {
-	placeId: string;
-	name: string;
-	latitude: number;
-	longitude: number;
+        placeId: string;
+        name: string;
+        latitude: number;
+        longitude: number;
+        imageUrl: string;
 };
 
 const INITIAL_REGION: Region = {
@@ -107,7 +108,7 @@ export default function MapScreen() {
 	 * - APIキーを保持しないため、Cloud Functions 経由でプレイス候補を取得
 	 * - 検索結果は選択時まで確定しないため、地点状態はここでは更新しない
 	 */
-	const handleSearch = useCallback(async () => {
+const handleSearch = useCallback(async () => {
 		if (!searchQuery.trim()) return;
 
 		setIsSearching(true);
@@ -118,10 +119,10 @@ export default function MapScreen() {
 				payload: { query: searchQuery },
 			});
 
-			const { predictions } = await callCloudFunction<
-				GooglePlacesAutocompleteRequest,
-				GooglePlacesAutocompleteResponse
-			>("googlePlacesAutocomplete", { input: searchQuery }, "v1");
+                       const { predictions } = await callCloudFunction<
+                               GooglePlacesAutocompleteRequest,
+                               GooglePlacesAutocompleteResponse
+                       >("googlePlacesAutocomplete", { input: searchQuery, languageCode: locale }, "v1");
 
 			setPredictions(predictions);
 		} catch (error: any) {
@@ -133,7 +134,22 @@ export default function MapScreen() {
 		} finally {
 			setIsSearching(false);
 		}
-	}, [searchQuery, logFrontendEvent, callCloudFunction]);
+}, [searchQuery, logFrontendEvent, callCloudFunction]);
+
+       // 📝 検索欄が展開されている間は入力のたびに候補を取得する
+       // - 空文字の場合は候補をクリア
+       // - 300ms デバウンスでリクエスト数を抑制
+       useEffect(() => {
+               if (!isSearchExpanded) return;
+               if (!searchQuery.trim()) {
+                       setPredictions([]);
+                       return;
+               }
+               const t = setTimeout(() => {
+                       handleSearch();
+               }, 300);
+               return () => clearTimeout(t);
+       }, [searchQuery, isSearchExpanded, handleSearch]);
 
 	/**
 	 * 🗺️ 地図ピン押下した場合
@@ -141,47 +157,50 @@ export default function MapScreen() {
 	 * - MapView からは placeId しか得られないため、Cloud Functions で詳細座標を取得
 	 */
 	const handlePoiPress = useCallback(
-		async (event: any) => {
-			const { placeId } = event.nativeEvent;
-			if (!placeId) return;
+		(event: any) => {
+			withLoading(async () => {
+				const { placeId } = event.nativeEvent;
+				if (!placeId) return;
 
-			try {
-				const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
-					"googlePlacesDetails",
-					{ placeId },
-					"v1",
-				);
+				try {
+                                       const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+                                               "googlePlacesDetails",
+                                               { placeId, languageCode: locale },
+                                               "v1",
+                                       );
 
-				const newRegion: Region = {
-					latitude: place.latitude,
-					longitude: place.longitude,
-					latitudeDelta: 0.002,
-					longitudeDelta: 0.002,
-				};
-				setRegion(newRegion);
-				mapRef.current?.animateToRegion(newRegion, 1000);
+					const newRegion: Region = {
+						latitude: place.latitude,
+						longitude: place.longitude,
+						latitudeDelta: 0.002,
+						longitudeDelta: 0.002,
+					};
+					setRegion(newRegion);
+					mapRef.current?.animateToRegion(newRegion, 1000);
 
-				setSelectedLocation({
-					placeId: place.placeId,
-					name: place.name,
-					latitude: place.latitude,
-					longitude: place.longitude,
-				});
+					setSelectedLocation({
+						placeId: place.placeId,
+						name: place.name,
+						latitude: place.latitude,
+						longitude: place.longitude,
+						imageUrl: place.imageUrl,
+					});
 
-				logFrontendEvent({
-					event_name: "mapLocationSelected",
-					error_level: "info",
-					payload: { placeId },
-				});
-			} catch (error: any) {
-				logFrontendEvent({
-					event_name: "mapLocationSelectFailed",
-					error_level: "error",
-					payload: { error: error.message, placeId },
-				});
-			}
+					logFrontendEvent({
+						event_name: "mapLocationSelected",
+						error_level: "info",
+						payload: { placeId },
+					});
+				} catch (error: any) {
+					logFrontendEvent({
+						event_name: "mapLocationSelectFailed",
+						error_level: "error",
+						payload: { error: error.message, placeId },
+					});
+				}
+			})();
 		},
-		[logFrontendEvent, callCloudFunction],
+		[logFrontendEvent, callCloudFunction, withLoading],
 	);
 
 	/**
@@ -192,26 +211,48 @@ export default function MapScreen() {
 	// 検索結果をユーザーが選択したタイミングで地点を確定させる
 	const handlePredictionSelect = useCallback(
 		(location: MapLocation) => {
-			const newRegion: Region = {
-				latitude: location.latitude,
-				longitude: location.longitude,
-				latitudeDelta: 0.002,
-				longitudeDelta: 0.002,
-			};
-			setRegion(newRegion);
-			mapRef.current?.animateToRegion(newRegion, 1000);
+			withLoading(async () => {
+				try {
+                                       const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
+                                               "googlePlacesDetails",
+                                               { placeId: location.placeId, languageCode: locale },
+                                               "v1",
+                                       );
 
-			setSelectedLocation(location);
-			setIsSearchExpanded(false);
-			setPredictions([]);
+					const newRegion: Region = {
+						latitude: place.latitude,
+						longitude: place.longitude,
+						latitudeDelta: 0.002,
+						longitudeDelta: 0.002,
+					};
+					setRegion(newRegion);
+					mapRef.current?.animateToRegion(newRegion, 1000);
 
-			logFrontendEvent({
-				event_name: "mapLocationSelectedFromSearch",
-				error_level: "info",
-				payload: { placeId: location.placeId },
-			});
+					setSelectedLocation({
+						placeId: place.placeId,
+						name: place.name,
+						latitude: place.latitude,
+						longitude: place.longitude,
+						imageUrl: place.imageUrl,
+					});
+					setIsSearchExpanded(false);
+					setPredictions([]);
+
+					logFrontendEvent({
+						event_name: "mapLocationSelectedFromSearch",
+						error_level: "info",
+						payload: { placeId: location.placeId },
+					});
+				} catch (error: any) {
+					logFrontendEvent({
+						event_name: "mapLocationSelectFromSearchFailed",
+						error_level: "error",
+						payload: { error: error.message, placeId: location.placeId },
+					});
+				}
+			})();
 		},
-		[logFrontendEvent],
+		[logFrontendEvent, callCloudFunction, withLoading],
 	);
 
 	/**
@@ -220,17 +261,18 @@ export default function MapScreen() {
 	const handleNanicorePress = withLoading(async () => {
 		if (!selectedLocation) return;
 
-		router.push({
-			pathname: "/[locale]/PlaceGuide",
-			params: {
-				locale,
-				placeId: selectedLocation.placeId,
-				placeName: selectedLocation.name || "Selected Location",
-				latitude: selectedLocation.latitude.toString(),
-				longitude: selectedLocation.longitude.toString(),
-			},
-		});
-	});
+               router.push({
+                       pathname: "/[locale]/PlaceGuide",
+                       params: {
+                               locale,
+                               placeId: selectedLocation.placeId,
+                               placeName: selectedLocation.name || "Selected Location",
+                               latitude: selectedLocation.latitude.toString(),
+                               longitude: selectedLocation.longitude.toString(),
+                               imageUrl: selectedLocation.imageUrl,
+                       },
+               });
+       });
 
 	/**
 	 * 📸 カメラボタンを押下した時の処理
@@ -287,6 +329,12 @@ export default function MapScreen() {
 					/>
 				)}
 			</MapView>
+
+			{isLoading && (
+				<View style={styles.loadingOverlay}>
+					<ActivityIndicator size="large" color="#fff" />
+				</View>
+			)}
 
 			{/* Bottom Container */}
 			<View style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
@@ -609,5 +657,12 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: "600",
 		letterSpacing: 0.5,
+	},
+	loadingOverlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 10,
 	},
 });

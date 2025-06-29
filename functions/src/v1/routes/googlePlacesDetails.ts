@@ -1,8 +1,8 @@
 import { withValidatedAuthHandler } from "../lib/handler";
 import { logBackendEvent } from "../lib/logger";
 import {
-       googlePlacesDetailsRequestSchema,
-       PlacesDetailsResponse,
+	googlePlacesDetailsRequestSchema,
+	PlacesDetailsResponse,
 } from "../../../../shared/api/googlePlacesDetails.schema";
 import { fetchPlaceDetails } from "../services/googlePlaces";
 
@@ -13,10 +13,10 @@ import { fetchPlaceDetails } from "../services/googlePlaces";
  */
 export const googlePlacesDetails = withValidatedAuthHandler(
 	googlePlacesDetailsRequestSchema,
-	async function googlePlacesDetails({ res, input, requestId, userId, functionName }) {
-		const detail = await fetchPlaceDetails(input.placeId, requestId, userId);
+       async function googlePlacesDetails({ res, input, requestId, userId, functionName }) {
+               const detail = await fetchPlaceDetails(input.placeId, input.languageCode, requestId, userId);
 
-               const response: PlacesDetailsResponse = detail;
+		const response: PlacesDetailsResponse = detail;
 
 		logBackendEvent({
 			event_name: "googlePlacesDetailsSuccess",

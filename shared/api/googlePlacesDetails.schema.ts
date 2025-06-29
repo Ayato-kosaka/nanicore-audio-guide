@@ -6,7 +6,8 @@ import { z } from "zod";
  * - Place ID に基づき地点の詳細情報を取得
  */
 export const googlePlacesDetailsRequestSchema = z.object({
-	placeId: z.string().min(1, "placeId is required"),
+    placeId: z.string().min(1, "placeId is required"),
+    languageCode: z.string().min(1, "languageCode is required"),
 });
 
 /**
@@ -18,8 +19,9 @@ export type PlacesDetailsRequest = z.infer<typeof googlePlacesDetailsRequestSche
  * googlePlacesDetails API のレスポンス型
  */
 export type PlacesDetailsResponse = {
-	placeId: string;
-	name: string;
-	latitude: number;
-	longitude: number;
+        placeId: string;
+        name: string;
+        latitude: number;
+        longitude: number;
+        imageUrl: string;
 };
