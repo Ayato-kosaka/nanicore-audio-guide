@@ -21,7 +21,7 @@ export const googlePlacesAutocomplete = withValidatedAuthHandler(
 			predictions: predictions
 				.map((p) => ({
 					placeId: p.placeId,
-					name: p?.text?.text,
+					name: p?.structuredFormat?.mainText?.text,
 					types: p.types ?? null,
 				}))
 				.filter((p) => !!p.placeId && !!p.name) as GooglePlacesAutocompleteResponse["predictions"],
