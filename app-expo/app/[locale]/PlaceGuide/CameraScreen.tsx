@@ -43,7 +43,6 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 	const [facing, setFacing] = useState<CameraType>("back");
 	const [flash, setFlash] = useState<FlashMode>("off");
 	const [zoom, setZoom] = useState(0.01);
-	const [filter, setFilter] = useState<"none" | "sepia" | "mono" | "chrome">("none");
 	const startZoomRef = useRef(0);
 
 	const { logFrontendEvent } = useLogger();
@@ -72,7 +71,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 		logFrontendEvent({
 			event_name: "onPressPlaceCapture",
 			error_level: "info",
-			payload: { filter, facing, flash },
+			payload: { facing, flash },
 		});
 
 		try {
@@ -94,21 +93,6 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			const imageManipulatorContext = ImageManipulator.manipulate(photo.uri);
 			imageManipulatorContext.resize({ width: 1024 });
 
-			// フィルター適用
-			if (filter !== "none") {
-				switch (filter) {
-					case "sepia":
-						imageManipulatorContext.sepia();
-						break;
-					case "mono":
-						imageManipulatorContext.grayscale();
-						break;
-					case "chrome":
-						imageManipulatorContext.saturate(1.5);
-						break;
-				}
-			}
-
 			const imageRef = await imageManipulatorContext.renderAsync();
 			const manipulated = await imageRef.saveAsync({
 				format: SaveFormat.JPEG,
@@ -120,13 +104,13 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			logFrontendEvent({
 				event_name: "placeCaptureSuccess",
 				error_level: "info",
-				payload: { filter, facing, flash },
+				payload: { facing, flash },
 			});
 		} catch (error: any) {
 			logFrontendEvent({
 				event_name: "placeCaptureFailed",
 				error_level: "error",
-				payload: { message: error.message, filter, facing, flash },
+				payload: { message: error.message, facing, flash },
 			});
 			showSnackbar(i18n.t("PlaceGuide.captureError"));
 		}
@@ -155,22 +139,6 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			payload: { newFlash: flash === "off" ? "on" : "off" },
 		});
 	}, [flash]);
-
-	/**
-	 * 🎨 フィルター切り替え
-	 */
-	const handleFilterChange = useCallback(() => {
-		const filters: (typeof filter)[] = ["none", "sepia", "mono", "chrome"];
-		const currentIndex = filters.indexOf(filter);
-		const nextFilter = filters[(currentIndex + 1) % filters.length];
-		setFilter(nextFilter);
-
-		logFrontendEvent({
-			event_name: "placeCameraFilter",
-			error_level: "info",
-			payload: { newFilter: nextFilter },
-		});
-	}, [filter]);
 
 	/**
 	 * 🔍 ピンチズーム処理
@@ -215,24 +183,6 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 				onConfirm: onClose,
 				okLabel: i18n.t("Common.ok"),
 			});
-		}
-	};
-
-	/**
-	 * フィルター名の表示用
-	 */
-	const getFilterDisplayName = (filterType: typeof filter): string => {
-		switch (filterType) {
-			case "none":
-				return "Normal";
-			case "sepia":
-				return "Sepia";
-			case "mono":
-				return "B&W";
-			case "chrome":
-				return "Vivid";
-			default:
-				return "Normal";
 		}
 	};
 
@@ -301,13 +251,6 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			{/* フッターコントロール */}
 			<LinearGradient colors={["transparent", "rgba(0,0,0,0.6)"]} style={styles.footerGradient}>
 				<View style={styles.footerControls}>
-					{/* フィルター選択 */}
-					<TouchableOpacity onPress={handleFilterChange} style={styles.filterButton}>
-						<View style={[styles.filterPreview, { opacity: filter === "none" ? 0.5 : 1 }]}>
-							<Text style={styles.filterText}>{getFilterDisplayName(filter)}</Text>
-						</View>
-					</TouchableOpacity>
-
 					{/* 撮影ボタン */}
 					<TouchableOpacity
 						onPress={handleCapture}
@@ -432,23 +375,6 @@ const styles = StyleSheet.create({
 		alignItems: "flex-end",
 		paddingBottom: Platform.select({ ios: 40, android: 30, default: 30 }),
 		paddingHorizontal: 30,
-	},
-	filterButton: {
-		alignItems: "center",
-		minWidth: 60,
-	},
-	filterPreview: {
-		backgroundColor: "rgba(255,255,255,0.2)",
-		borderRadius: 20,
-		paddingHorizontal: 12,
-		paddingVertical: 8,
-		borderWidth: 1,
-		borderColor: "rgba(255,255,255,0.3)",
-	},
-	filterText: {
-		color: "white",
-		fontSize: 12,
-		fontWeight: "500",
 	},
 	captureButton: {
 		backgroundColor: "#fe3764",
