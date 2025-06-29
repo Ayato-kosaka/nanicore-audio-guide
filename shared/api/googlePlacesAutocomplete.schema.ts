@@ -22,6 +22,6 @@ export type GooglePlacesAutocompleteResponse = {
 	predictions: {
 		placeId: string;
 		name: string;
-		types?: (string[] | null);
+		types?: string[] | null;
 	}[];
 };

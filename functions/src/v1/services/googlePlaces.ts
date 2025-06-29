@@ -15,7 +15,7 @@ export const fetchAutocompletePredictions = async (
 	languageCode: string,
 	requestId: string,
 	userId: string,
-): Promise<(google.maps.places.v1.AutocompletePlacesResponse.Suggestion.IPlacePrediction)[]> => {
+): Promise<google.maps.places.v1.AutocompletePlacesResponse.Suggestion.IPlacePrediction[]> => {
 	const start = Date.now();
 	let status = 0;
 	let payload: any = null;
@@ -24,11 +24,7 @@ export const fetchAutocompletePredictions = async (
 		const [response] = await client.autocompletePlaces({ input, languageCode });
 		payload = response;
 		status = 200;
-		return (
-			response.suggestions
-				?.map((s) => s.placePrediction)
-				.filter((p) => !!p) ?? []
-		);
+		return response.suggestions?.map((s) => s.placePrediction).filter((p) => !!p) ?? [];
 	} catch (error: any) {
 		errorMessage = error.message;
 		status = error.code || 500;

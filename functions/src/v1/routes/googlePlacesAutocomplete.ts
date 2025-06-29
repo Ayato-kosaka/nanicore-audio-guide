@@ -18,11 +18,13 @@ export const googlePlacesAutocomplete = withValidatedAuthHandler(
 		const predictions = await fetchAutocompletePredictions(input.input, input.languageCode, requestId, userId);
 
 		const response: GooglePlacesAutocompleteResponse = {
-			predictions: predictions.map((p) => ({
-				placeId: p.placeId,
-				name: p?.text?.text,
-				types: p.types ?? null,
-			})).filter((p) => !!p.placeId && !!p.name) as GooglePlacesAutocompleteResponse["predictions"],
+			predictions: predictions
+				.map((p) => ({
+					placeId: p.placeId,
+					name: p?.text?.text,
+					types: p.types ?? null,
+				}))
+				.filter((p) => !!p.placeId && !!p.name) as GooglePlacesAutocompleteResponse["predictions"],
 		};
 
 		logBackendEvent({
