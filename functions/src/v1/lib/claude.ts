@@ -13,15 +13,15 @@ interface ClaudeMessageResponse {
 		type: "text";
 		text: string;
 		citations:
-			| {
-					type: "char_location";
-					cited_text: string;
-					document_index: number; // x > 0
-					document_title: string | null;
-					start_char_index: number; // x > 0
-					end_char_index: number;
-			  }[]
-			| null;
+		| {
+			type: "char_location";
+			cited_text: string;
+			document_index: number; // x > 0
+			document_title: string | null;
+			start_char_index: number; // x > 0
+			end_char_index: number;
+		}[]
+		| null;
 	}[];
 	stop_reason: "end_turn" | "max_tokens" | "stop_sequence" | "tool_use";
 	stop_sequence: string | null;
@@ -232,6 +232,14 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 	};
 };
 
+
+// 観光地ガイド生成レスポンス型のスキーマ
+const PlaceGuideManuscriptResponseSchema = z.object({
+	title: z.string(),
+	manuscript: z.string(),
+	tags: z.array(z.string()),
+	ssmlGender: z.enum(["FEMALE", "MALE", "NEUTRAL"]),
+});
 export const generateGeneratePlaceGuideContent = async (
 	placeName: string,
 	latitude: number,
@@ -252,8 +260,11 @@ export const generateGeneratePlaceGuideContent = async (
 > => {
 	const llmModel = "claude-3-haiku-20240307";
 	const temperature = 0.7;
-	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}).`;
-	const outputHint = `Use the following JSON format. All newline characters in the \"manuscript\" field must be escaped as \\n.
+	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). Output the guide in ${languageTag}.`;
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -271,7 +282,7 @@ export const generateGeneratePlaceGuideContent = async (
 		userId,
 	});
 
-	const validatedResponse = SpotGuideManuscriptResponseSchema.safeParse(parsedJson);
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
 	if (!validatedResponse.success) {
 		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
 	}
