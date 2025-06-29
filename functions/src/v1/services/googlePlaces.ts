@@ -1,6 +1,7 @@
 import { PlacesClient } from "@googlemaps/places";
 import { env } from "../lib/env";
 import { logExternalApi } from "../lib/logger";
+import { google } from "@googlemaps/places/build/protos/protos";
 
 const client = new PlacesClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
 
@@ -14,7 +15,7 @@ export const fetchAutocompletePredictions = async (
 	languageCode: string,
 	requestId: string,
 	userId: string,
-): Promise<{ placeId: string; text: string }[]> => {
+): Promise<(google.maps.places.v1.AutocompletePlacesResponse.Suggestion.IPlacePrediction)[]> => {
 	const start = Date.now();
 	let status = 0;
 	let payload: any = null;
@@ -26,7 +27,7 @@ export const fetchAutocompletePredictions = async (
 		return (
 			response.suggestions
 				?.map((s) => s.placePrediction)
-				.map((p) => ({ placeId: p?.placeId ?? "", text: p?.text?.text ?? "" })) || []
+				.filter((p) => !!p) ?? []
 		);
 	} catch (error: any) {
 		errorMessage = error.message;

@@ -22,8 +22,6 @@ export type GooglePlacesAutocompleteResponse = {
 	predictions: {
 		placeId: string;
 		name: string;
-		latitude: number;
-		longitude: number;
-		imageUrl: string;
+		types?: (string[] | null);
 	}[];
 };

@@ -24,6 +24,12 @@ type MapLocation = {
 	imageUrl: string;
 };
 
+type PlacePrediction = {
+	placeId: string;
+	name: string;
+	types?: string[] | null;
+};
+
 const INITIAL_REGION: Region = {
 	latitude: 35.6762,
 	longitude: 139.6503,
@@ -51,7 +57,7 @@ export default function MapScreen() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 	const [isSearching, setIsSearching] = useState(false);
-	const [predictions, setPredictions] = useState<MapLocation[]>([]);
+	const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
 	const mapRef = useRef<ComponentRef<typeof MapView> | null>(null);
 
 	// Initialize with user's current location
@@ -210,7 +216,7 @@ export default function MapScreen() {
 	 */
 	// 検索結果をユーザーが選択したタイミングで地点を確定させる
 	const handlePredictionSelect = useCallback(
-		(location: MapLocation) => {
+		(location: PlacePrediction) => {
 			withLoading(async () => {
 				try {
 					const place = await callCloudFunction<PlacesDetailsRequest, PlacesDetailsResponse>(
