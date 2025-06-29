@@ -3,13 +3,10 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import * as ImagePicker from "expo-image-picker";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLocale } from "@/hooks/useLocale";
-import { useSnackbar } from "@/contexts/SnackbarProvider";
 import i18n from "@/lib/i18n";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 
