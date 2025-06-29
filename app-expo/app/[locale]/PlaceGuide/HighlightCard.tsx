@@ -99,8 +99,8 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 };
 
 const styles = StyleSheet.create({
-	guidesScrollView: { maxHeight: "30%" },
-	guidesContent: { gap: 16, paddingBottom: 20 },
+	guidesScrollView: {},
+	guidesContent: { gap: 16 },
 	questionField: {
 		marginTop: 16,
 		paddingTop: 16,
