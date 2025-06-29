@@ -121,13 +121,6 @@ export const prompt_families_purpose: {
 export type prompt_families_purpose = (typeof prompt_families_purpose)[keyof typeof prompt_families_purpose]
 
 
-export const prompt_usages_target_type: {
-  spot_guides: 'spot_guides'
-};
-
-export type prompt_usages_target_type = (typeof prompt_usages_target_type)[keyof typeof prompt_usages_target_type]
-
-
 export const reactions_action_type: {
   like: 'like',
   disLike: 'disLike',
@@ -160,10 +153,6 @@ export const frontend_event_logs_error_level: typeof $Enums.frontend_event_logs_
 export type prompt_families_purpose = $Enums.prompt_families_purpose
 
 export const prompt_families_purpose: typeof $Enums.prompt_families_purpose
-
-export type prompt_usages_target_type = $Enums.prompt_usages_target_type
-
-export const prompt_usages_target_type: typeof $Enums.prompt_usages_target_type
 
 export type reactions_action_type = $Enums.reactions_action_type
 
@@ -465,8 +454,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.9.0
-   * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
+   * Prisma Client JS version: 6.10.1
+   * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
    */
   export type PrismaVersion = {
     client: string
@@ -8529,7 +8518,7 @@ export namespace Prisma {
     id: string | null
     family_id: string | null
     variant_id: string | null
-    target_type: $Enums.prompt_usages_target_type | null
+    target_type: string | null
     target_id: string | null
     generated_text: string | null
     used_prompt_text: string | null
@@ -8544,7 +8533,7 @@ export namespace Prisma {
     id: string | null
     family_id: string | null
     variant_id: string | null
-    target_type: $Enums.prompt_usages_target_type | null
+    target_type: string | null
     target_id: string | null
     generated_text: string | null
     used_prompt_text: string | null
@@ -8720,7 +8709,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -8829,7 +8818,7 @@ export namespace Prisma {
       id: string
       family_id: string
       variant_id: string
-      target_type: $Enums.prompt_usages_target_type
+      target_type: string
       target_id: string
       generated_text: string
       used_prompt_text: string
@@ -9266,7 +9255,7 @@ export namespace Prisma {
     readonly id: FieldRef<"prompt_usages", 'String'>
     readonly family_id: FieldRef<"prompt_usages", 'String'>
     readonly variant_id: FieldRef<"prompt_usages", 'String'>
-    readonly target_type: FieldRef<"prompt_usages", 'prompt_usages_target_type'>
+    readonly target_type: FieldRef<"prompt_usages", 'String'>
     readonly target_id: FieldRef<"prompt_usages", 'String'>
     readonly generated_text: FieldRef<"prompt_usages", 'String'>
     readonly used_prompt_text: FieldRef<"prompt_usages", 'String'>
@@ -14716,20 +14705,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'prompt_usages_target_type'
-   */
-  export type Enumprompt_usages_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_target_type'>
-    
-
-
-  /**
-   * Reference to a field of type 'prompt_usages_target_type[]'
-   */
-  export type ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_target_type[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -15201,7 +15176,7 @@ export namespace Prisma {
     id?: StringFilter<"prompt_usages"> | string
     family_id?: StringFilter<"prompt_usages"> | string
     variant_id?: StringFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringFilter<"prompt_usages"> | string
     target_id?: StringFilter<"prompt_usages"> | string
     generated_text?: StringFilter<"prompt_usages"> | string
     used_prompt_text?: StringFilter<"prompt_usages"> | string
@@ -15238,7 +15213,7 @@ export namespace Prisma {
     NOT?: prompt_usagesWhereInput | prompt_usagesWhereInput[]
     family_id?: StringFilter<"prompt_usages"> | string
     variant_id?: StringFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringFilter<"prompt_usages"> | string
     target_id?: StringFilter<"prompt_usages"> | string
     generated_text?: StringFilter<"prompt_usages"> | string
     used_prompt_text?: StringFilter<"prompt_usages"> | string
@@ -15280,7 +15255,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"prompt_usages"> | string
     family_id?: StringWithAggregatesFilter<"prompt_usages"> | string
     variant_id?: StringWithAggregatesFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeWithAggregatesFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringWithAggregatesFilter<"prompt_usages"> | string
     target_id?: StringWithAggregatesFilter<"prompt_usages"> | string
     generated_text?: StringWithAggregatesFilter<"prompt_usages"> | string
     used_prompt_text?: StringWithAggregatesFilter<"prompt_usages"> | string
@@ -16125,7 +16100,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16142,7 +16117,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16159,7 +16134,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16176,7 +16151,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16193,7 +16168,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16210,7 +16185,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16227,7 +16202,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -17210,13 +17185,6 @@ export namespace Prisma {
     _max?: NestedEnumprompt_families_purposeFilter<$PrismaModel>
   }
 
-  export type Enumprompt_usages_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-  }
-
   export type DecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -17293,16 +17261,6 @@ export namespace Prisma {
 
   export type prompt_usagesSumOrderByAggregateInput = {
     temperature?: SortOrder
-  }
-
-  export type Enumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17861,10 +17819,6 @@ export namespace Prisma {
     deleteMany?: prompt_variantsScalarWhereInput | prompt_variantsScalarWhereInput[]
   }
 
-  export type Enumprompt_usages_target_typeFieldUpdateOperationsInput = {
-    set?: $Enums.prompt_usages_target_type
-  }
-
   export type NullableDecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string | null
     increment?: Decimal | DecimalJsLike | number | string
@@ -18322,13 +18276,6 @@ export namespace Prisma {
     _max?: NestedEnumprompt_families_purposeFilter<$PrismaModel>
   }
 
-  export type NestedEnumprompt_usages_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-  }
-
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -18349,16 +18296,6 @@ export namespace Prisma {
     gt?: string | StringFieldRefInput<$PrismaModel>
     gte?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
-  export type NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
   }
 
   export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
