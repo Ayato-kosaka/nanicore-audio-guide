@@ -61,6 +61,9 @@ export default function PlaceScreen() {
 		});
 
 		try {
+			// TODO: listPlaceGuides を呼び出して、既存のガイドを取得する
+			// TODO: listPlaceHighlights を呼び出して、既存のハイライトを取得する
+
 			const { guide, audioUrl } = await callCloudFunction<
 				GenerateGeneralPlaceGuideRequest,
 				GenerateGeneralPlaceGuideResponse
@@ -86,7 +89,7 @@ export default function PlaceScreen() {
 					id: guide.id,
 					title: guide.title,
 					content: guide.content,
-					category: "general",
+					category: guide.category,
 					audioUrl,
 				},
 			];
