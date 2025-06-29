@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
  */
 export type GuideBaseCardProps = {
 	imageUri: string;
-	placeName: string;
+	placeName?: string;
 	onBack: () => void;
 	children: React.ReactNode;
 	onImageError?: () => void;

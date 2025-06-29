@@ -183,7 +183,6 @@ export default function PlaceScreen() {
 				<View style={styles.cardContainer}>
 					<HighlightCard
 						highlight={highlight}
-						placeName={placeData.name}
 						onCustomQuestion={generateHighlightGuidesFromQuestion}
 						onBackPress={() => router.back()}
 					/>
