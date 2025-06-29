@@ -14,6 +14,7 @@ export type PlaceGuide = {
 	title: string;
 	content: string;
 	category: string;
+	audioUrl: string;
 };
 
 export type PlaceGuideCardProps = {

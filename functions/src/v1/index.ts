@@ -7,3 +7,4 @@ export { listSpotGuides } from "./routes/listSpotGuides";
 export { pingDb } from "./routes/pingDb";
 export { googlePlacesAutocomplete } from "./routes/googlePlacesAutocomplete";
 export { googlePlacesDetails } from "./routes/googlePlacesDetails";
+export { generateGeneralPlaceGuide } from "./routes/generateGeneralPlaceGuide";

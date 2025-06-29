@@ -124,38 +124,38 @@ const SpotGuideCard = ({
 	 *
 	 * - Supabase の reactions テーブルを更新
 	 */
-       const handleToggleLike = useCallback(async () => {
-               if (!currentGuide?.id) return;
+	const handleToggleLike = useCallback(async () => {
+		if (!currentGuide?.id) return;
 
-               const guideId = currentGuide.id;
-               const willLike = !isLiked;
-               setIsLiked(willLike);
+		const guideId = currentGuide.id;
+		const willLike = !isLiked;
+		setIsLiked(willLike);
 
-               logFrontendEvent({
-                       event_name: "toggleLike",
-                       payload: { guideId, willLike },
-                       error_level: "info",
-               });
+		logFrontendEvent({
+			event_name: "toggleLike",
+			payload: { guideId, willLike },
+			error_level: "info",
+		});
 
-               try {
-                       await toggleReaction({
-                               willReact: willLike,
-                               target_type: "spot_guides",
-                               target_id: guideId,
-                               action_type: "like",
-                       });
-               } catch (err: any) {
-                       logFrontendEvent({
-                               event_name: "toggleLikeFailed",
-                               error_level: "error",
-                               payload: {
-                                       guideId,
-                                       willLike,
-                                       error: err.message ?? "Failed to update like status.",
-                               },
-                       });
-               }
-       }, [currentGuide?.id, isLiked]);
+		try {
+			await toggleReaction({
+				willReact: willLike,
+				target_type: "spot_guides",
+				target_id: guideId,
+				action_type: "like",
+			});
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "toggleLikeFailed",
+				error_level: "error",
+				payload: {
+					guideId,
+					willLike,
+					error: err.message ?? "Failed to update like status.",
+				},
+			});
+		}
+	}, [currentGuide?.id, isLiked]);
 
 	/**
 	 * 🪄 新しいガイドを生成してリストに追加する。

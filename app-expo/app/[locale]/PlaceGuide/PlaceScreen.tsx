@@ -10,6 +10,12 @@ import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLocale } from "@/hooks/useLocale";
 import i18n from "@/lib/i18n";
+import { useCloudFunction } from "@/hooks/useCloudFunction";
+
+import type {
+	GenerateGeneralPlaceGuideRequest,
+	GenerateGeneralPlaceGuideResponse,
+} from "@shared/api/generateGeneralPlaceGuide.schema";
 
 import { PlaceGuideCard, PlaceGuide } from "./PlaceGuideCard";
 import { HighlightCard, Highlight } from "./HighlightCard";
@@ -30,6 +36,7 @@ export default function PlaceScreen() {
 	const locale = useLocale();
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
+	const { callCloudFunction } = useCloudFunction();
 
 	const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 	const [placeGuides, setPlaceGuides] = useState<PlaceGuide[]>([]);
@@ -52,23 +59,48 @@ export default function PlaceScreen() {
 			error_level: "info",
 			payload: { placeId: params.placeId },
 		});
-		// Mock API responses
-		const place: PlaceData = {
-			id: params.placeId,
-			name: params.placeName,
-			imageUrl: `https://picsum.photos/400/600?random=${Date.now()}`,
-		};
-		const guides: PlaceGuide[] = [
-			{
-				id: "initial_guide",
-				title: `Welcome to ${params.placeName}`,
-				content: "This area has a rich history. Enjoy your visit!",
-				category: "general",
-			},
-		];
-		setPlaceData(place);
-		setPlaceGuides(guides);
-		setHighlights([]);
+
+		try {
+			const { guide, audioUrl } = await callCloudFunction<
+				GenerateGeneralPlaceGuideRequest,
+				GenerateGeneralPlaceGuideResponse
+			>(
+				"generateGeneralPlaceGuide",
+				{
+					placeName: params.placeName,
+					latitude: parseFloat(params.latitude),
+					longitude: parseFloat(params.longitude),
+					languageTag: locale,
+				},
+				"v1",
+			);
+
+			const place: PlaceData = {
+				id: params.placeId,
+				name: params.placeName,
+				imageUrl: `https://picsum.photos/400/600?random=${Date.now()}`,
+			};
+
+			const guides: PlaceGuide[] = [
+				{
+					id: guide.id,
+					title: guide.title,
+					content: guide.content,
+					category: "general",
+					audioUrl,
+				},
+			];
+
+			setPlaceData(place);
+			setPlaceGuides(guides);
+			setHighlights([]);
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generateGeneralPlaceGuideFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+		}
 	};
 
 	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
@@ -77,6 +109,7 @@ export default function PlaceScreen() {
 			title: `${categoryId} Guide`,
 			content: `Information about ${categoryId} in ${params.placeName}`,
 			category: categoryId,
+			audioUrl: "",
 		};
 		setPlaceGuides((prev) => [...prev, newGuide]);
 	};
@@ -87,6 +120,7 @@ export default function PlaceScreen() {
 			title: question,
 			content: `Answer for "${question}" about ${params.placeName}`,
 			category: "custom",
+			audioUrl: "",
 		};
 		setPlaceGuides((prev) => [...prev, newGuide]);
 	};
@@ -104,6 +138,7 @@ export default function PlaceScreen() {
 									title: question,
 									content: `Answer for "${question}"`,
 									category: "custom",
+									audioUrl: "",
 								},
 							],
 						}
@@ -134,6 +169,7 @@ export default function PlaceScreen() {
 					content:
 						"This is an analysis of your captured photo. The AI has identified interesting elements and can provide detailed information about what's visible in the image.",
 					category: "photo_analysis",
+					audioUrl: "",
 				},
 			],
 		};
