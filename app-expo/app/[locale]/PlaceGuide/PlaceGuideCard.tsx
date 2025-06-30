@@ -40,16 +40,16 @@ export const GUIDE_CATEGORIES = [
 		icon: "palette-outline",
 	},
 	{
-		id: "food",
-		label: "Food",
-		description: "famous foods and cuisine",
-		icon: "food-outline",
-	},
-	{
 		id: "architecture",
 		label: "Architecture",
 		description: "buildings and architectural style",
 		icon: "home-city-outline",
+	},
+	{
+		id: "food",
+		label: "Food",
+		description: "famous foods and cuisine",
+		icon: "food-outline",
 	},
 	{
 		id: "nature",
