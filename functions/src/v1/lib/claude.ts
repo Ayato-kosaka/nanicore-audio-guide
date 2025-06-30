@@ -100,31 +100,30 @@ export const callClaudeWithPrompt = async ({
 
 	const fullPrompt = `${systemPrompt}\n\n${userText}`;
 
+	const userContent = imageBase64
+		? [
+				{
+					type: "image",
+					source: {
+						type: "base64",
+						media_type: mimeType,
+						data: imageBase64.replace(/^data:[^,]+,/, ""),
+					},
+				},
+				{ type: "text", text: userText },
+			]
+		: userText;
+
 	const requestPayload = {
 		model: llmModel,
 		max_tokens: 512,
 		temperature,
 		system: systemPrompt,
 		messages: [
-			imageBase64
-				? {
-						role: "user",
-						content: [
-							{
-								type: "image",
-								source: {
-									type: "base64",
-									media_type: mimeType,
-									data: imageBase64.replace(/^data:[^,]+,/, ""),
-								},
-							},
-							{ type: "text", text: userText },
-						],
-					}
-				: {
-						role: "user",
-						content: userText,
-					},
+			{
+				role: "user",
+				content: userContent,
+			},
 		],
 	};
 
