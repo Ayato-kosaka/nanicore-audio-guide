@@ -127,13 +127,17 @@ export default function PlaceScreen() {
 	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
 		if (!placeData) return;
 		try {
-			const description = CATEGORY_DESCRIPTION_MAP[categoryId] || categoryId;
+			const description = CATEGORY_DESCRIPTION_MAP[categoryId];
+			if (!description) {
+				throw new Error(`Unknown categoryId: ${categoryId}`);
+			}
 			const { guide, audioUrl } = await callCloudFunction<
 				GeneratePlaceGuideFromCategoryRequest,
 				GeneratePlaceGuideFromCategoryResponse
 			>(
 				"generatePlaceGuideFromCategory",
 				{
+					categoryId,
 					placeId: placeData.id,
 					placeName: placeData.name,
 					latitude: parseFloat(params.latitude),
