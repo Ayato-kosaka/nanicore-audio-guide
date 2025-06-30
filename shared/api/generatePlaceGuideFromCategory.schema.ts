@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const generatePlaceGuideFromCategoryRequestSchema = z.object({
+        categoryId: z.string().min(1, "categoryId is required"),
         placeId: z.string().min(1, "placeId is required"),
         placeName: z.string().min(1, "placeName is required"),
         latitude: z.number(),

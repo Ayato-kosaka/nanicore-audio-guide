@@ -15,7 +15,7 @@ import { getCurrentVersionFromRequest } from "../lib/backendUtils";
 export const generatePlaceGuideFromCategory = withValidatedAuthHandler(
         generatePlaceGuideFromCategoryRequestSchema,
         async function ({ req, res, input, requestId, userId, functionName }) {
-                const { placeId, placeName, latitude, longitude, categoryDescription, languageTag } = input;
+                const { categoryId, placeId, placeName, latitude, longitude, categoryDescription, languageTag } = input;
                 const guideId = randomUUID();
 
                 const defaultPlaceGuideCreatedUserId = await getRemoteConfigValue("v1_place_guides_default_created_user_id");
@@ -86,11 +86,11 @@ export const generatePlaceGuideFromCategory = withValidatedAuthHandler(
                         request_id: requestId,
                         user_id: userId,
                         error_level: "info",
-                        payload: { placeName, guideId, categoryDescription, languageTag },
+                        payload: { placeName, guideId, categoryId, categoryDescription, languageTag },
                 });
 
                 const response: GeneratePlaceGuideFromCategoryResponse = {
-                        guide: { id: guideId, title, content: manuscript, category: "category" },
+                        guide: { id: guideId, title, content: manuscript, category: categoryId },
                         audioUrl,
                 };
                 res.status(200).json(response);
