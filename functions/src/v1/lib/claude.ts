@@ -259,7 +259,10 @@ export const generateGeneratePlaceGuideContent = async (
 > => {
 	const llmModel = "claude-3-haiku-20240307";
 	const temperature = 0.7;
-	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). Output the guide in ${languageTag}.`;
+	const variablePrompt = `The Input is ${JSON.stringify({
+		placeName,
+		located: `(${latitude}, ${longitude})`,
+	})}. Output the guide in ${languageTag}.`;
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
@@ -381,7 +384,11 @@ export const generatePlaceGuideFromQuestionContent = async (
 > => {
 	const llmModel = "claude-3-haiku-20240307";
 	const temperature = 0.7;
-	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). The user question is "${question}". Answer in ${languageTag}.`;
+	const variablePrompt = `The Input is ${JSON.stringify({
+		placeName,
+		located: `(${latitude}, ${longitude})`,
+		question,
+	})}. Output the guide in ${languageTag}.`;
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
@@ -443,7 +450,13 @@ export const generateHighlightGuideFromQuestionContent = async (
 > => {
 	const llmModel = "claude-3-haiku-20240307";
 	const temperature = 0.7;
-	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). There is a highlight titled "${generalHighlightGuideTitle}" described as "${generalHighlightGuideManuscript}". The user question is "${question}". Provide an answer in ${languageTag}.`;
+	const variablePrompt = `The Input is ${JSON.stringify({
+		placeName,
+		located: `(${latitude}, ${longitude})`,
+		generalHighlightGuideTitle,
+		generalHighlightGuideManuscript,
+		question,
+	})}. Output the guide in ${languageTag}.`;
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
