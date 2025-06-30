@@ -82,7 +82,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 
 			const photo = await cameraRef.current.takePictureAsync({
 				quality: 0.8,
-				base64: false,
+				base64: true,
 			});
 
 			if (!photo) {
