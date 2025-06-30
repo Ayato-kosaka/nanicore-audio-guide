@@ -22,7 +22,7 @@ import { convertPrismaToSupabase_SpotGuides } from "../../../../shared/converter
  */
 export const generateSpotGuide = withValidatedAuthHandler(
 	generateSpotGuideRequestSchema,
-	async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
+	async function generateSpotGuide({ req, res, input, requestId, userId, functionName }) {
 		const { extSpot, languageTag } = input;
 		const spotGuideId = randomUUID();
 

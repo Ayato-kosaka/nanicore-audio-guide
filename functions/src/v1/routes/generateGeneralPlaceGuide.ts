@@ -14,7 +14,7 @@ import { getCurrentVersionFromRequest } from "../lib/backendUtils";
 
 export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 	generateGeneralPlaceGuideRequestSchema,
-	async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
+	async function generateGeneralPlaceGuide({ req, res, input, requestId, userId, functionName }) {
 		const { placeId, placeName, latitude, longitude, languageTag } = input;
 		const guideId = randomUUID();
 

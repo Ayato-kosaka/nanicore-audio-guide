@@ -14,7 +14,7 @@ import { getCurrentVersionFromRequest } from "../lib/backendUtils";
 
 export const generateHighlightGuideFromQuestion = withValidatedAuthHandler(
 	generateHighlightGuideFromQuestionRequestSchema,
-	async function ({ req, res, input, requestId, userId, functionName }) {
+	async function generateHighlightGuideFromQuestion({ req, res, input, requestId, userId, functionName }) {
 		const {
 			placeId,
 			placeName,
