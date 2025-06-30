@@ -8,3 +8,6 @@ export { pingDb } from "./routes/pingDb";
 export { googlePlacesAutocomplete } from "./routes/googlePlacesAutocomplete";
 export { googlePlacesDetails } from "./routes/googlePlacesDetails";
 export { generateGeneralPlaceGuide } from "./routes/generateGeneralPlaceGuide";
+export { generatePlaceGuideFromCategory } from "./routes/generatePlaceGuideFromCategory";
+export { generatePlaceGuideFromQuestion } from "./routes/generatePlaceGuideFromQuestion";
+export { generateHighlightGuideFromQuestion } from "./routes/generateHighlightGuideFromQuestion";
