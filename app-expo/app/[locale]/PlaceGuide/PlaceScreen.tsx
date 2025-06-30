@@ -26,6 +26,7 @@ import type {
 	GenerateHighlightGuideFromQuestionRequest,
 	GenerateHighlightGuideFromQuestionResponse,
 } from "@shared/api/generateHighlightGuideFromQuestion.schema";
+import type { CreateHighlightRequest, CreateHighlightResponse } from "@shared/api/createHighlight.schema";
 
 import { PlaceGuideCard, PlaceGuide, GUIDE_CATEGORIES } from "./PlaceGuideCard";
 import { HighlightCard, Highlight } from "./HighlightCard";
@@ -261,7 +262,7 @@ export default function PlaceScreen() {
 	 * カルーセルを新しいハイライトに移動する
 	 */
 	const handleCameraCapture = useCallback(
-		async (imageUri: string) => {
+		async (image: { uri: string; base64: string }) => {
 			try {
 				logFrontendEvent({
 					event_name: "placeCameraCapture",
@@ -269,28 +270,34 @@ export default function PlaceScreen() {
 					payload: { placeId: params.placeId },
 				});
 
-				// 新しいハイライトを作成
-				const newHighlight: Highlight = {
-					id: `highlight_${Date.now()}`,
-					imageUri,
-					highlightGuides: [
-						{
-							id: `guide_${Date.now()}`,
-							title: "Photo Analysis",
-							content: `This is an analysis of your captured photo at ${params.placeName}. The AI has identified interesting elements and can provide detailed information about what's visible in the image.`,
-							category: "photo_analysis",
-							audioUrl: "",
-						},
-					],
-				};
+				// Cloud Function へハイライト作成リクエスト
+				const { highlight } = await callCloudFunction<CreateHighlightRequest, CreateHighlightResponse>(
+					"createHighlight",
+					{
+						placeId: params.placeId,
+						placeName: params.placeName,
+						latitude: parseFloat(params.latitude),
+						longitude: parseFloat(params.longitude),
+						imageBase64: image.base64,
+						languageTag: locale,
+					},
+					"v1",
+				);
 
 				// ハイライトリストに追加
-				setHighlights((prev) => [...prev, newHighlight]);
+				setHighlights((prev) => [
+					...prev,
+					{
+						id: highlight.id,
+						imageUri: highlight.imageUrl,
+						highlightGuides: highlight.highlightGuides,
+					},
+				]);
 
 				// カメラ画面を閉じる
 				setShowCamera(false);
 
-				// 新しいハイライトにカルーセルを移動（少し遅延を入れて確実に移動）
+				// 新しいハイライトにカルーセルを移動
 				setTimeout(() => {
 					const newIndex = highlights.length + 1; // place + existing highlights + new highlight
 					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
@@ -301,7 +308,7 @@ export default function PlaceScreen() {
 					error_level: "info",
 					payload: {
 						placeId: params.placeId,
-						highlightId: newHighlight.id,
+						highlightId: highlight.id,
 						totalHighlights: highlights.length + 1,
 					},
 				});
@@ -316,7 +323,7 @@ export default function PlaceScreen() {
 				});
 			}
 		},
-		[params.placeId, params.placeName, highlights.length],
+		[params.placeId, params.placeName, highlights.length, locale, callCloudFunction],
 	);
 
 	/**

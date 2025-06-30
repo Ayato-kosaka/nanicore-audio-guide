@@ -33,7 +33,13 @@ const MIN_ZOOM = 0;
 export type CameraScreenProps = {
 	visible: boolean;
 	onClose: () => void;
-	onCapture: (imageUri: string) => Promise<void>;
+	/**
+	 * 撮影後の画像データを通知するハンドラー
+	 *
+	 * - uri: 保存先のローカルファイルパス
+	 * - base64: Base64エンコードされた画像データ
+	 */
+	onCapture: (image: { uri: string; base64: string }) => Promise<void>;
 };
 
 export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, onCapture }) => {
@@ -97,9 +103,10 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 			const manipulated = await imageRef.saveAsync({
 				format: SaveFormat.JPEG,
 				compress: 0.7,
+				base64: true,
 			});
 
-			await onCapture(manipulated.uri);
+			await onCapture(manipulated);
 
 			logFrontendEvent({
 				event_name: "placeCaptureSuccess",
