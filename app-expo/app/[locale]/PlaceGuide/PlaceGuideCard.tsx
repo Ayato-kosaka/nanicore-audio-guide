@@ -27,54 +27,54 @@ export type PlaceGuideCardProps = {
 };
 
 export const GUIDE_CATEGORIES = [
-        {
-                id: "history",
-                label: "History",
-                description: "historical background of the place",
-                icon: "book-open-outline",
-        },
-        {
-                id: "culture",
-                label: "Culture",
-                description: "local culture, art and traditions",
-                icon: "palette-outline",
-        },
-        {
-                id: "food",
-                label: "Food",
-                description: "famous foods and cuisine",
-                icon: "food-outline",
-        },
-        {
-                id: "architecture",
-                label: "Architecture",
-                description: "buildings and architectural style",
-                icon: "home-city-outline",
-        },
-        {
-                id: "nature",
-                label: "Nature",
-                description: "surrounding nature and scenery",
-                icon: "leaf-outline",
-        },
-        {
-                id: "people",
-                label: "People",
-                description: "local people and society",
-                icon: "account-group-outline",
-        },
-        {
-                id: "cost",
-                label: "Cost",
-                description: "typical expenses and prices",
-                icon: "currency-usd",
-        },
-        {
-                id: "safety",
-                label: "Safety",
-                description: "travel safety tips",
-                icon: "shield-check-outline",
-        },
+	{
+		id: "history",
+		label: "History",
+		description: "historical background of the place",
+		icon: "book-open-outline",
+	},
+	{
+		id: "culture",
+		label: "Culture",
+		description: "local culture, art and traditions",
+		icon: "palette-outline",
+	},
+	{
+		id: "food",
+		label: "Food",
+		description: "famous foods and cuisine",
+		icon: "food-outline",
+	},
+	{
+		id: "architecture",
+		label: "Architecture",
+		description: "buildings and architectural style",
+		icon: "home-city-outline",
+	},
+	{
+		id: "nature",
+		label: "Nature",
+		description: "surrounding nature and scenery",
+		icon: "leaf-outline",
+	},
+	{
+		id: "people",
+		label: "People",
+		description: "local people and society",
+		icon: "account-group-outline",
+	},
+	{
+		id: "cost",
+		label: "Cost",
+		description: "typical expenses and prices",
+		icon: "currency-usd",
+	},
+	{
+		id: "safety",
+		label: "Safety",
+		description: "travel safety tips",
+		icon: "shield-check-outline",
+	},
 ];
 
 /**
