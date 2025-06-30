@@ -13,15 +13,15 @@ interface ClaudeMessageResponse {
 		type: "text";
 		text: string;
 		citations:
-			| {
-					type: "char_location";
-					cited_text: string;
-					document_index: number; // x > 0
-					document_title: string | null;
-					start_char_index: number; // x > 0
-					end_char_index: number;
-			  }[]
-			| null;
+		| {
+			type: "char_location";
+			cited_text: string;
+			document_index: number; // x > 0
+			document_title: string | null;
+			start_char_index: number; // x > 0
+			end_char_index: number;
+		}[]
+		| null;
 	}[];
 	stop_reason: "end_turn" | "max_tokens" | "stop_sequence" | "tool_use";
 	stop_sequence: string | null;
@@ -293,6 +293,198 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 		promptText: fullPrompt,
 		generatedText: responseText,
 		promptInput: { placeName, latitude, longitude, languageTag },
+		llmModel,
+		temperature,
+	};
+};
+
+export const generatePlaceGuideFromCategoryContent = async (
+	placeName: string,
+	latitude: number,
+	longitude: number,
+	categoryDescription: string,
+	languageTag: string,
+	requestId: string,
+	userId: string,
+): Promise<
+	SpotGuideManuscriptResponse & {
+		familyId: string;
+		variantId: string;
+		promptText: string;
+		generatedText: string;
+		promptInput: Record<string, any>;
+		llmModel: string;
+		temperature: number;
+	}
+> => {
+	const llmModel = "claude-3-haiku-20240307";
+	const temperature = 0.7;
+	const variablePrompt = `The Input is ${JSON.stringify({ placeName, located: `(${latitude}, ${longitude})`, categoryDescription, })} Output the guide in ${languageTag}.
+**HARD RULES**: The content **MUST focus on ${categoryDescription}**
+`;
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+	const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+		llmModel,
+		temperature,
+		promptPurpose: "place_guide_from_category_manuscript",
+		variablePromptPart: variablePrompt,
+		outputFormatHint: outputHint,
+		requestId,
+		userId,
+	});
+
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
+	if (!validatedResponse.success) {
+		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+	}
+
+	return {
+		...validatedResponse.data,
+		familyId,
+		variantId,
+		promptText: fullPrompt,
+		generatedText: responseText,
+		promptInput: { placeName, latitude, longitude, categoryDescription, languageTag },
+		llmModel,
+		temperature,
+	};
+};
+
+export const generatePlaceGuideFromQuestionContent = async (
+	placeName: string,
+	latitude: number,
+	longitude: number,
+	question: string,
+	languageTag: string,
+	requestId: string,
+	userId: string,
+): Promise<
+	SpotGuideManuscriptResponse & {
+		familyId: string;
+		variantId: string;
+		promptText: string;
+		generatedText: string;
+		promptInput: Record<string, any>;
+		llmModel: string;
+		temperature: number;
+	}
+> => {
+	const llmModel = "claude-3-haiku-20240307";
+	const temperature = 0.7;
+	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). The user question is "${question}". Answer in ${languageTag}.`;
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+	const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+		llmModel,
+		temperature,
+		promptPurpose: "place_guide_from_question_manuscript",
+		variablePromptPart: variablePrompt,
+		outputFormatHint: outputHint,
+		requestId,
+		userId,
+	});
+
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
+	if (!validatedResponse.success) {
+		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+	}
+
+	return {
+		...validatedResponse.data,
+		familyId,
+		variantId,
+		promptText: fullPrompt,
+		generatedText: responseText,
+		promptInput: { placeName, latitude, longitude, question, languageTag },
+		llmModel,
+		temperature,
+	};
+};
+
+export const generateHighlightGuideFromQuestionContent = async (
+	placeName: string,
+	latitude: number,
+	longitude: number,
+	question: string,
+	generalHighlightGuideTitle: string,
+	generalHighlightGuideManuscript: string,
+	languageTag: string,
+	requestId: string,
+	userId: string,
+): Promise<
+	SpotGuideManuscriptResponse & {
+		familyId: string;
+		variantId: string;
+		promptText: string;
+		generatedText: string;
+		promptInput: Record<string, any>;
+		llmModel: string;
+		temperature: number;
+	}
+> => {
+	const llmModel = "claude-3-haiku-20240307";
+	const temperature = 0.7;
+	const variablePrompt = `The place is "${placeName}" located at (${latitude}, ${longitude}). There is a highlight titled "${generalHighlightGuideTitle}" described as "${generalHighlightGuideManuscript}". The user question is "${question}". Provide an answer in ${languageTag}.`;
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+	const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+		llmModel,
+		temperature,
+		promptPurpose: "highlight_guide_from_question_manuscript",
+		variablePromptPart: variablePrompt,
+		outputFormatHint: outputHint,
+		requestId,
+		userId,
+	});
+
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
+	if (!validatedResponse.success) {
+		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+	}
+
+	return {
+		...validatedResponse.data,
+		familyId,
+		variantId,
+		promptText: fullPrompt,
+		generatedText: responseText,
+		promptInput: {
+			placeName,
+			latitude,
+			longitude,
+			question,
+			generalHighlightGuideTitle,
+			generalHighlightGuideManuscript,
+			languageTag,
+		},
 		llmModel,
 		temperature,
 	};

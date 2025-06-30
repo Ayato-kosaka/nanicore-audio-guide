@@ -14,14 +14,31 @@ import type {
 	GenerateGeneralPlaceGuideRequest,
 	GenerateGeneralPlaceGuideResponse,
 } from "@shared/api/generateGeneralPlaceGuide.schema";
+import type {
+	GeneratePlaceGuideFromCategoryRequest,
+	GeneratePlaceGuideFromCategoryResponse,
+} from "@shared/api/generatePlaceGuideFromCategory.schema";
+import type {
+	GeneratePlaceGuideFromQuestionRequest,
+	GeneratePlaceGuideFromQuestionResponse,
+} from "@shared/api/generatePlaceGuideFromQuestion.schema";
+import type {
+	GenerateHighlightGuideFromQuestionRequest,
+	GenerateHighlightGuideFromQuestionResponse,
+} from "@shared/api/generateHighlightGuideFromQuestion.schema";
 
-import { PlaceGuideCard, PlaceGuide } from "./PlaceGuideCard";
+import { PlaceGuideCard, PlaceGuide, GUIDE_CATEGORIES } from "./PlaceGuideCard";
 import { HighlightCard, Highlight } from "./HighlightCard";
 import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
 
 const { width } = Dimensions.get("window");
+
+const CATEGORY_DESCRIPTION_MAP = GUIDE_CATEGORIES.reduce<Record<string, string>>((acc, c) => {
+	acc[c.id] = c.description;
+	return acc;
+}, {});
 
 type PlaceData = {
 	id: string;
@@ -108,47 +125,133 @@ export default function PlaceScreen() {
 	};
 
 	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
-		const newGuide: PlaceGuide = {
-			id: `${categoryId}_${Date.now()}`,
-			title: `${categoryId} Guide`,
-			content: `Information about ${categoryId} in ${params.placeName}`,
-			category: categoryId,
-			audioUrl: "",
-		};
-		setPlaceGuides((prev) => [...prev, newGuide]);
+		if (!placeData) return;
+		try {
+			const description = CATEGORY_DESCRIPTION_MAP[categoryId];
+			if (!description) {
+				throw new Error(`Unknown categoryId: ${categoryId}`);
+			}
+			const { guide, audioUrl } = await callCloudFunction<
+				GeneratePlaceGuideFromCategoryRequest,
+				GeneratePlaceGuideFromCategoryResponse
+			>(
+				"generatePlaceGuideFromCategory",
+				{
+					categoryId,
+					placeId: placeData.id,
+					placeName: placeData.name,
+					latitude: parseFloat(params.latitude),
+					longitude: parseFloat(params.longitude),
+					categoryDescription: description,
+					languageTag: locale,
+				},
+				"v1",
+			);
+
+			const newGuide: PlaceGuide = {
+				id: guide.id,
+				title: guide.title,
+				content: guide.content,
+				category: categoryId,
+				audioUrl,
+			};
+			setPlaceGuides((prev) => [...prev, newGuide]);
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generatePlaceGuideFromCategoryFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+		}
 	};
 
 	const generatePlaceGuidesFromQuestion = async (question: string) => {
-		const newGuide: PlaceGuide = {
-			id: `custom_${Date.now()}`,
-			title: question,
-			content: `Answer for "${question}" about ${params.placeName}`,
-			category: "custom",
-			audioUrl: "",
-		};
-		setPlaceGuides((prev) => [...prev, newGuide]);
+		if (!placeData) return;
+		try {
+			const { guide, audioUrl } = await callCloudFunction<
+				GeneratePlaceGuideFromQuestionRequest,
+				GeneratePlaceGuideFromQuestionResponse
+			>(
+				"generatePlaceGuideFromQuestion",
+				{
+					placeId: placeData.id,
+					placeName: placeData.name,
+					latitude: parseFloat(params.latitude),
+					longitude: parseFloat(params.longitude),
+					question,
+					languageTag: locale,
+				},
+				"v1",
+			);
+
+			const newGuide: PlaceGuide = {
+				id: guide.id,
+				title: guide.title,
+				content: guide.content,
+				category: "custom",
+				audioUrl,
+			};
+			setPlaceGuides((prev) => [...prev, newGuide]);
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generatePlaceGuideFromQuestionFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+		}
 	};
 
 	const generateHighlightGuidesFromQuestion = async (id: string, question: string) => {
-		setHighlights((prev) =>
-			prev.map((h) =>
-				h.id === id
-					? {
-							...h,
-							highlightGuides: [
-								...h.highlightGuides,
-								{
-									id: `${id}_${Date.now()}`,
-									title: question,
-									content: `Answer for "${question}"`,
-									category: "custom",
-									audioUrl: "",
-								},
-							],
-						}
-					: h,
-			),
-		);
+		if (!placeData) return;
+		const highlight = highlights.find((h) => h.id === id);
+		if (!highlight) return;
+		const generalGuide = highlight.highlightGuides[0];
+
+		try {
+			const { guide, audioUrl } = await callCloudFunction<
+				GenerateHighlightGuideFromQuestionRequest,
+				GenerateHighlightGuideFromQuestionResponse
+			>(
+				"generateHighlightGuideFromQuestion",
+				{
+					placeId: placeData.id,
+					placeName: placeData.name,
+					latitude: parseFloat(params.latitude),
+					longitude: parseFloat(params.longitude),
+					question,
+					generalHighlightGuideTitle: generalGuide.title,
+					generalHighlightGuideManuscript: generalGuide.content,
+					languageTag: locale,
+				},
+				"v1",
+			);
+
+			setHighlights((prev) =>
+				prev.map((h) =>
+					h.id === id
+						? {
+								...h,
+								highlightGuides: [
+									...h.highlightGuides,
+									{
+										id: guide.id,
+										title: guide.title,
+										content: guide.content,
+										category: "custom",
+										audioUrl,
+									},
+								],
+							}
+						: h,
+				),
+			);
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generateHighlightGuideFromQuestionFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+		}
 	};
 
 	/**

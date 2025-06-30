@@ -22,6 +22,7 @@ export const remoteConfigSchema = z.object({
 	v1_show_next_button: z.string(),
 	v1_spot_guides_default_created_user_id: z.string(),
 	v1_place_guides_default_created_user_id: z.string(),
+	v1_highlight_guides_default_created_user_id: z.string(),
 });
 
 export type RemoteConfigValues = z.infer<typeof remoteConfigSchema>;
