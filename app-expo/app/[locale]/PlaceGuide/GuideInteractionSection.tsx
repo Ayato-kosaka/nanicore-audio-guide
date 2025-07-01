@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { Audio } from "expo-av";
+import { toggleReaction, insertReaction } from "@/lib/reactions";
 
 /**
  * 📚 GuideInteractionSection
@@ -10,7 +11,7 @@ import { Audio } from "expo-av";
  * ユーザーのリアクションをまとめて扱う小さなコンポーネント。
  */
 
-type PlaceGuide = {
+type Guide = {
 	id: string;
 	title: string;
 	content: string;
@@ -19,11 +20,16 @@ type PlaceGuide = {
 };
 
 type GuideInteractionSectionProps = {
-	guide: PlaceGuide;
+	guide: Guide;
 	isFirst?: boolean;
+	targetType: "place_guides" | "highlight_guides";
 };
 
-export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({ guide, isFirst = false }) => {
+export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({
+	guide,
+	isFirst = false,
+	targetType,
+}) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -31,34 +37,73 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 	/**
 	 * 💖 いいねボタンのトグル
 	 */
-	const handleLikePress = () => {
-		setIsLiked(!isLiked);
+	const handleLikePress = async () => {
+		const willLike = !isLiked;
+		setIsLiked(willLike);
+		try {
+			await toggleReaction({
+				willReact: willLike,
+				target_type: targetType,
+				target_id: guide.id,
+				action_type: "like",
+			});
+		} catch {
+			// ignore
+		}
 	};
 
 	/**
 	 * ▶️ 音声再生のトグル
 	 */
 	const handlePlayPress = useCallback(async () => {
-		if (isPlaying || !guide.audioUrl) return;
+		if (isPlaying) {
+			setIsPlaying(false);
+			if (sound) {
+				try {
+					await sound.stopAsync();
+					await sound.unloadAsync();
+					await insertReaction({
+						target_type: targetType,
+						target_id: guide.id,
+						action_type: "pause",
+					});
+				} catch {}
+				setSound(null);
+			}
+			return;
+		}
+		if (!guide.audioUrl) return;
 		setIsPlaying(true);
 		try {
+			await insertReaction({
+				target_type: targetType,
+				target_id: guide.id,
+				action_type: "play",
+			});
 			const { sound: newSound } = await Audio.Sound.createAsync({ uri: guide.audioUrl }, { shouldPlay: true });
 			setSound(newSound);
-			newSound.setOnPlaybackStatusUpdate((status) => {
+			newSound.setOnPlaybackStatusUpdate(async (status) => {
 				if (!status.isLoaded) {
 					setIsPlaying(false);
-					newSound.unloadAsync();
+					await newSound.unloadAsync();
 					return;
 				}
 				if (status.didJustFinish) {
 					setIsPlaying(false);
-					newSound.unloadAsync();
+					await newSound.unloadAsync();
+					try {
+						await insertReaction({
+							target_type: targetType,
+							target_id: guide.id,
+							action_type: "finish",
+						});
+					} catch {}
 				}
 			});
 		} catch {
 			setIsPlaying(false);
 		}
-	}, [isPlaying, guide.audioUrl]);
+	}, [isPlaying, guide.audioUrl, sound]);
 
 	useEffect(() => {
 		return () => {

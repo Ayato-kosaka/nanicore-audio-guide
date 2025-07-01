@@ -292,33 +292,33 @@ export type Database = {
 			};
 			reactions: {
 				Row: {
-					action_type: Database["dev"]["Enums"]["reactions_action_type"];
+					action_type: string;
 					created_at: string;
 					created_version: string;
 					id: string;
 					lock_no: number;
 					target_id: string;
-					target_type: Database["dev"]["Enums"]["reactions_target_type"];
+					target_type: string;
 					user_id: string;
 				};
 				Insert: {
-					action_type: Database["dev"]["Enums"]["reactions_action_type"];
+					action_type: string;
 					created_at: string;
 					created_version: string;
 					id: string;
 					lock_no: number;
 					target_id: string;
-					target_type: Database["dev"]["Enums"]["reactions_target_type"];
+					target_type: string;
 					user_id: string;
 				};
 				Update: {
-					action_type?: Database["dev"]["Enums"]["reactions_action_type"];
+					action_type?: string;
 					created_at?: string;
 					created_version?: string;
 					id?: string;
 					lock_no?: number;
 					target_id?: string;
-					target_type?: Database["dev"]["Enums"]["reactions_target_type"];
+					target_type?: string;
 					user_id?: string;
 				};
 				Relationships: [];
@@ -467,8 +467,6 @@ export type Database = {
 			ext_spots_vision_detection_type: "LANDMARK_DETECTION" | "WEB_DETECTION";
 			frontend_event_logs_error_level: "trace" | "debug" | "info" | "warn" | "error";
 			prompt_families_purpose: "spot_guide_manuscript";
-			reactions_action_type: "like" | "disLike" | "regenerate";
-			reactions_target_type: "spot_guides";
 		};
 		CompositeTypes: {
 			[_ in never]: never;
@@ -578,8 +576,6 @@ export const Constants = {
 			ext_spots_vision_detection_type: ["LANDMARK_DETECTION", "WEB_DETECTION"],
 			frontend_event_logs_error_level: ["trace", "debug", "info", "warn", "error"],
 			prompt_families_purpose: ["spot_guide_manuscript"],
-			reactions_action_type: ["like", "disLike", "regenerate"],
-			reactions_target_type: ["spot_guides"],
 		},
 	},
 } as const;

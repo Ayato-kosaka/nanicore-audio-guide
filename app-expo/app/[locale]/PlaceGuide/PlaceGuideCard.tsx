@@ -140,7 +140,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={styles.guidesContent}>
 				{guides.map((guide, index) => (
-					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} />
+					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
 				))}
 			</ScrollView>
 
