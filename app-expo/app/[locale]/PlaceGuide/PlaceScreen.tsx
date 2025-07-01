@@ -33,6 +33,7 @@ import { HighlightCard, Highlight } from "./HighlightCard";
 import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
+import { useSnackbar } from "@/contexts/SnackbarProvider";
 
 const { width } = Dimensions.get("window");
 
@@ -54,6 +55,7 @@ export default function PlaceScreen() {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 	const { callCloudFunction } = useCloudFunction();
+	const { showSnackbar } = useSnackbar();
 
 	const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 	const [placeGuides, setPlaceGuides] = useState<PlaceGuide[]>([]);
