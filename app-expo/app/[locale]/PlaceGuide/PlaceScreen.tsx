@@ -265,6 +265,8 @@ export default function PlaceScreen() {
 	 */
 	const handleCameraCapture = useCallback(
 		async (image: { uri: string; base64?: string }) => {
+			const tempHighlightId = `temp_${Date.now()}`;
+			const tempGuideId = `temp_guide_${Date.now()}`;
 			try {
 				logFrontendEvent({
 					event_name: "placeCameraCapture",
@@ -276,8 +278,7 @@ export default function PlaceScreen() {
 					throw new Error("Image base64 data is missing");
 				}
 
-				const tempHighlightId = `temp_${Date.now()}`;
-				const tempGuideId = `temp_guide_${Date.now()}`;
+				// ガイド生成中は「生成中」と表示するための一時的なハイライトを追加
 				setHighlights((prev) => [
 					...prev,
 					{
@@ -287,7 +288,7 @@ export default function PlaceScreen() {
 							{
 								id: tempGuideId,
 								title: "",
-								content: "",
+								content: i18n.t("SpotGuideCard.generating"),
 								category: "general",
 								audioUrl: "",
 							},
@@ -302,6 +303,7 @@ export default function PlaceScreen() {
 					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
 				}, 100);
 
+				// ハイライトを生成するためのAPIを呼び出す
 				const { highlight } = await callCloudFunction<CreateHighlightRequest, CreateHighlightResponse>(
 					"createHighlight",
 					{
@@ -316,6 +318,7 @@ export default function PlaceScreen() {
 					"v1",
 				);
 
+				// 一時的なハイライトを実際のハイライトに置き換える
 				setHighlights((prev) =>
 					prev.map((h) =>
 						h.id === tempHighlightId
@@ -339,6 +342,9 @@ export default function PlaceScreen() {
 				});
 			} catch (error: any) {
 				showSnackbar(i18n.t("PlaceGuide.generateError"));
+				setShowCamera(false);
+				// 生成中の一時的なハイライトを削除
+				setHighlights((prev) => prev.filter((h) => h.id !== tempHighlightId));
 				logFrontendEvent({
 					event_name: "placeCameraCaptureFailed",
 					error_level: "error",

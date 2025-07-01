@@ -75,7 +75,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 						{guide.title}
 					</Text>
 					<Text style={[styles.content, isFirst && styles.firstContent]} numberOfLines={6}>
-						{guide.content || i18n.t("SpotGuideCard.generating")}
+						{guide.content}
 					</Text>
 				</View>
 				<View style={styles.actionsContainer}>
