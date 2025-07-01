@@ -4,6 +4,7 @@ import { IconButton, Text } from "react-native-paper";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
+import i18n from "@/lib/i18n";
 
 import { GuideInteractionSection } from "./GuideInteractionSection";
 import { CustomQueryModal } from "./CustomQueryModal";
@@ -85,7 +86,7 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 						style={styles.customQueryButton}
 						testID="custom-query-button"
 					/>
-					<Text style={styles.categoryLabel}>Custom</Text>
+					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom")}</Text>
 				</View>
 			</View>
 
