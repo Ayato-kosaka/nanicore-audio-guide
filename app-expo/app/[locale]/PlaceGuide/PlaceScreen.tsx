@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Platform } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -26,12 +26,14 @@ import type {
 	GenerateHighlightGuideFromQuestionRequest,
 	GenerateHighlightGuideFromQuestionResponse,
 } from "@shared/api/generateHighlightGuideFromQuestion.schema";
+import type { CreateHighlightRequest, CreateHighlightResponse } from "@shared/api/createHighlight.schema";
 
 import { PlaceGuideCard, PlaceGuide, GUIDE_CATEGORIES } from "./PlaceGuideCard";
 import { HighlightCard, Highlight } from "./HighlightCard";
 import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
+import { useSnackbar } from "@/contexts/SnackbarProvider";
 
 const { width } = Dimensions.get("window");
 
@@ -53,6 +55,7 @@ export default function PlaceScreen() {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 	const { callCloudFunction } = useCloudFunction();
+	const { showSnackbar } = useSnackbar();
 
 	const [placeData, setPlaceData] = useState<PlaceData | null>(null);
 	const [placeGuides, setPlaceGuides] = useState<PlaceGuide[]>([]);
@@ -261,7 +264,9 @@ export default function PlaceScreen() {
 	 * カルーセルを新しいハイライトに移動する
 	 */
 	const handleCameraCapture = useCallback(
-		async (imageUri: string) => {
+		async (image: { uri: string; base64?: string }) => {
+			const tempHighlightId = `temp_${Date.now()}`;
+			const tempGuideId = `temp_guide_${Date.now()}`;
 			try {
 				logFrontendEvent({
 					event_name: "placeCameraCapture",
@@ -269,43 +274,77 @@ export default function PlaceScreen() {
 					payload: { placeId: params.placeId },
 				});
 
-				// 新しいハイライトを作成
-				const newHighlight: Highlight = {
-					id: `highlight_${Date.now()}`,
-					imageUri,
-					highlightGuides: [
-						{
-							id: `guide_${Date.now()}`,
-							title: "Photo Analysis",
-							content: `This is an analysis of your captured photo at ${params.placeName}. The AI has identified interesting elements and can provide detailed information about what's visible in the image.`,
-							category: "photo_analysis",
-							audioUrl: "",
-						},
-					],
-				};
+				if (!image.base64) {
+					throw new Error("Image base64 data is missing");
+				}
 
-				// ハイライトリストに追加
-				setHighlights((prev) => [...prev, newHighlight]);
+				// ガイド生成中は「生成中」と表示するための一時的なハイライトを追加
+				setHighlights((prev) => [
+					...prev,
+					{
+						id: tempHighlightId,
+						imageUri: image.uri,
+						highlightGuides: [
+							{
+								id: tempGuideId,
+								title: "",
+								content: i18n.t("SpotGuideCard.generating"),
+								category: "general",
+								audioUrl: "",
+							},
+						],
+					},
+				]);
 
-				// カメラ画面を閉じる
 				setShowCamera(false);
 
-				// 新しいハイライトにカルーセルを移動（少し遅延を入れて確実に移動）
+				const newIndex = highlights.length + 1;
 				setTimeout(() => {
-					const newIndex = highlights.length + 1; // place + existing highlights + new highlight
 					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
 				}, 100);
+
+				// ハイライトを生成するためのAPIを呼び出す
+				const { highlight } = await callCloudFunction<CreateHighlightRequest, CreateHighlightResponse>(
+					"createHighlight",
+					{
+						placeId: params.placeId,
+						placeName: params.placeName,
+						latitude: parseFloat(params.latitude),
+						longitude: parseFloat(params.longitude),
+						imageBase64: image.base64,
+						mimeType: Platform.OS === "web" ? "image/png" : "image/jpeg",
+						languageTag: locale,
+					},
+					"v1",
+				);
+
+				// 一時的なハイライトを実際のハイライトに置き換える
+				setHighlights((prev) =>
+					prev.map((h) =>
+						h.id === tempHighlightId
+							? {
+									id: highlight.id,
+									imageUri: image.uri,
+									highlightGuides: highlight.highlightGuides,
+								}
+							: h,
+					),
+				);
 
 				logFrontendEvent({
 					event_name: "placeCameraCaptureSuccess",
 					error_level: "info",
 					payload: {
 						placeId: params.placeId,
-						highlightId: newHighlight.id,
+						highlightId: highlight.id,
 						totalHighlights: highlights.length + 1,
 					},
 				});
 			} catch (error: any) {
+				showSnackbar(i18n.t("PlaceGuide.generateError"));
+				setShowCamera(false);
+				// 生成中の一時的なハイライトを削除
+				setHighlights((prev) => prev.filter((h) => h.id !== tempHighlightId));
 				logFrontendEvent({
 					event_name: "placeCameraCaptureFailed",
 					error_level: "error",
@@ -316,7 +355,7 @@ export default function PlaceScreen() {
 				});
 			}
 		},
-		[params.placeId, params.placeName, highlights.length],
+		[params.placeId, params.placeName, highlights.length, locale, callCloudFunction],
 	);
 
 	/**

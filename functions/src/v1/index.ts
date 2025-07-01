@@ -11,3 +11,4 @@ export { generateGeneralPlaceGuide } from "./routes/generateGeneralPlaceGuide";
 export { generatePlaceGuideFromCategory } from "./routes/generatePlaceGuideFromCategory";
 export { generatePlaceGuideFromQuestion } from "./routes/generatePlaceGuideFromQuestion";
 export { generateHighlightGuideFromQuestion } from "./routes/generateHighlightGuideFromQuestion";
+export { createHighlight } from "./routes/createHighlight";
