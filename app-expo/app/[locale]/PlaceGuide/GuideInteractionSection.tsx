@@ -115,12 +115,8 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 		<View style={[styles.container, isFirst && styles.firstGuide]}>
 			<View style={styles.contentContainer}>
 				<View style={styles.textContainer}>
-					<Text style={[styles.title, isFirst && styles.firstTitle]} numberOfLines={2}>
-						{guide.title}
-					</Text>
-					<Text style={[styles.manuscript, isFirst && styles.firstContent]} numberOfLines={6}>
-						{guide.manuscript}
-					</Text>
+					<Text style={[styles.title, isFirst && styles.firstTitle]}>{guide.title}</Text>
+					<Text style={[styles.manuscript, isFirst && styles.firstContent]}>{guide.manuscript}</Text>
 				</View>
 				<View style={styles.actionsContainer}>
 					<IconButton
