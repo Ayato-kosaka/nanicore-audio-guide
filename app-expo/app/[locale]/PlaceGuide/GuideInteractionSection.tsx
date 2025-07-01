@@ -11,7 +11,7 @@ import { toggleReaction, insertReaction } from "@/lib/reactions";
  * ユーザーのリアクションをまとめて扱う小さなコンポーネント。
  */
 
-type PlaceGuide = {
+type Guide = {
 	id: string;
 	title: string;
 	content: string;
@@ -20,11 +20,16 @@ type PlaceGuide = {
 };
 
 type GuideInteractionSectionProps = {
-	guide: PlaceGuide;
+	guide: Guide;
 	isFirst?: boolean;
+	targetType: "place_guides" | "highlight_guides";
 };
 
-export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({ guide, isFirst = false }) => {
+export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = ({
+	guide,
+	isFirst = false,
+	targetType,
+}) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -38,7 +43,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 		try {
 			await toggleReaction({
 				willReact: willLike,
-				target_type: "place_guides",
+				target_type: targetType,
 				target_id: guide.id,
 				action_type: "like",
 			});
@@ -58,7 +63,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 					await sound.stopAsync();
 					await sound.unloadAsync();
 					await insertReaction({
-						target_type: "place_guides",
+						target_type: targetType,
 						target_id: guide.id,
 						action_type: "pause",
 					});
@@ -71,7 +76,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 		setIsPlaying(true);
 		try {
 			await insertReaction({
-				target_type: "place_guides",
+				target_type: targetType,
 				target_id: guide.id,
 				action_type: "play",
 			});
@@ -88,7 +93,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 					await newSound.unloadAsync();
 					try {
 						await insertReaction({
-							target_type: "place_guides",
+							target_type: targetType,
 							target_id: guide.id,
 							action_type: "finish",
 						});
