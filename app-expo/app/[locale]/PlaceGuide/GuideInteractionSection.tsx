@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { Audio } from "expo-av";
-import i18n from "@/lib/i18n";
 
 /**
  * 📚 GuideInteractionSection
