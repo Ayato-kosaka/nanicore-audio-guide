@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { Audio } from "expo-av";
+import { toggleReaction, insertReaction } from "@/lib/reactions";
 
 /**
  * 📚 GuideInteractionSection
@@ -31,34 +32,76 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 	/**
 	 * 💖 いいねボタンのトグル
 	 */
-	const handleLikePress = () => {
-		setIsLiked(!isLiked);
-	};
+        const handleLikePress = async () => {
+                const willLike = !isLiked;
+                setIsLiked(willLike);
+                try {
+                        await toggleReaction({
+                                willReact: willLike,
+                                target_type: "place_guides",
+                                target_id: guide.id,
+                                action_type: "like",
+                        });
+                } catch {
+                        // ignore
+                }
+        };
 
 	/**
 	 * ▶️ 音声再生のトグル
 	 */
-	const handlePlayPress = useCallback(async () => {
-		if (isPlaying || !guide.audioUrl) return;
-		setIsPlaying(true);
-		try {
-			const { sound: newSound } = await Audio.Sound.createAsync({ uri: guide.audioUrl }, { shouldPlay: true });
-			setSound(newSound);
-			newSound.setOnPlaybackStatusUpdate((status) => {
-				if (!status.isLoaded) {
-					setIsPlaying(false);
-					newSound.unloadAsync();
-					return;
-				}
-				if (status.didJustFinish) {
-					setIsPlaying(false);
-					newSound.unloadAsync();
-				}
-			});
-		} catch {
-			setIsPlaying(false);
-		}
-	}, [isPlaying, guide.audioUrl]);
+        const handlePlayPress = useCallback(async () => {
+                if (isPlaying) {
+                        setIsPlaying(false);
+                        if (sound) {
+                                try {
+                                        await sound.stopAsync();
+                                        await sound.unloadAsync();
+                                        await insertReaction({
+                                                target_type: "place_guides",
+                                                target_id: guide.id,
+                                                action_type: "pause",
+                                        });
+                                } catch {}
+                                setSound(null);
+                        }
+                        return;
+                }
+                if (!guide.audioUrl) return;
+                setIsPlaying(true);
+                try {
+                        await insertReaction({
+                                target_type: "place_guides",
+                                target_id: guide.id,
+                                action_type: "play",
+                        });
+                        const { sound: newSound } = await Audio.Sound.createAsync(
+                                { uri: guide.audioUrl },
+                                { shouldPlay: true },
+                        );
+                        setSound(newSound);
+                        newSound.setOnPlaybackStatusUpdate(async (status) => {
+                                if (!status.isLoaded) {
+                                        setIsPlaying(false);
+                                        await newSound.unloadAsync();
+                                        return;
+                                }
+                                if (status.didJustFinish) {
+                                        setIsPlaying(false);
+                                        await newSound.unloadAsync();
+                                        try {
+                                                await insertReaction({
+                                                        target_type: "place_guides",
+                                                        target_id: guide.id,
+                                                        action_type: "finish",
+                                                });
+                                        } catch {}
+                                }
+                        });
+                } catch {
+                        setIsPlaying(false);
+                }
+        }, [isPlaying, guide.audioUrl, sound]);
 
 	useEffect(() => {
 		return () => {
