@@ -16,7 +16,8 @@
 		"locationError": "現在地の取得に失敗しました",
 		"dragToSelect": "地図をドラッグして地点を選択してください",
 		"searchPlaces": "場所を検索",
-		"selectedLocation": "選択した場所"
+		"selectedLocation": "選択した場所",
+		"nanicore": "なにこれ"
 	},
 	"PlaceGuide": {
 		"loading": "場所ガイドを読み込み中...",
@@ -34,7 +35,18 @@
 		"cameraPermissionTitle": "カメラへのアクセス",
 		"cameraPermissionMessage": "この場所の写真を撮影するには、カメラへのアクセスを許可してください。",
 		"allowCamera": "カメラを許可",
-		"custom": "カスタム"
+		"captureButton": "なにこれ",
+		"custom": {
+			"label": "カスタム",
+			"history": "歴史",
+			"culture": "文化",
+			"architecture": "建築",
+			"food": "食べ物",
+			"nature": "自然",
+			"people": "人々",
+			"cost": "費用",
+			"safety": "安全"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "なにこれ",
@@ -55,13 +67,5 @@
 	},
 	"SpotRecommend": {
 		"nanicore": "なにこれ"
-	},
-	"history": "歴史",
-	"culture": "文化",
-	"architecture": "建築",
-	"food": "食べ物",
-	"nature": "自然",
-	"people": "人々",
-	"cost": "費用",
-	"safety": "安全"
+	}
 }

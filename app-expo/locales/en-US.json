@@ -16,7 +16,8 @@
 		"locationError": "Failed to get current location",
 		"dragToSelect": "Drag the map to select a location",
 		"searchPlaces": "Search Places",
-		"selectedLocation": "Selected Location"
+		"selectedLocation": "Selected Location",
+		"nanicore": "What's this?"
 	},
 	"PlaceGuide": {
 		"loading": "Loading place guide...",
@@ -34,7 +35,18 @@
 		"cameraPermissionTitle": "Camera Access",
 		"cameraPermissionMessage": "Please allow camera access to take photos of this location.",
 		"allowCamera": "Allow Camera",
-		"custom": "Custom"
+		"captureButton": "What's this?",
+		"custom": {
+			"label": "Custom",
+			"history": "History",
+			"culture": "Culture",
+			"architecture": "Architecture",
+			"food": "Food",
+			"nature": "Nature",
+			"people": "People",
+			"cost": "Cost",
+			"safety": "Safety"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
@@ -55,13 +67,5 @@
 	},
 	"SpotRecommend": {
 		"nanicore": "What's this?"
-	},
-	"history": "History",
-	"culture": "Culture",
-	"architecture": "Architecture",
-	"food": "Food",
-	"nature": "Nature",
-	"people": "People",
-	"cost": "Cost",
-	"safety": "Safety"
+	}
 }

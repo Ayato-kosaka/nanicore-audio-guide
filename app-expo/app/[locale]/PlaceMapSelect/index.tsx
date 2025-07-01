@@ -445,7 +445,7 @@ export default function MapScreen() {
 								labelStyle={styles.nanicoreButtonLabel}
 								contentStyle={styles.nanicoreButtonContent}
 								testID="nanicore-button">
-								{i18n.t("SpotRecommend.nanicore")}
+								{i18n.t("PlaceMapSelect.nanicore")}
 							</Button>
 						</>
 					)}
