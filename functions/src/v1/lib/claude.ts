@@ -13,15 +13,15 @@ interface ClaudeMessageResponse {
 		type: "text";
 		text: string;
 		citations:
-		| {
-			type: "char_location";
-			cited_text: string;
-			document_index: number; // x > 0
-			document_title: string | null;
-			start_char_index: number; // x > 0
-			end_char_index: number;
-		}[]
-		| null;
+			| {
+					type: "char_location";
+					cited_text: string;
+					document_index: number; // x > 0
+					document_title: string | null;
+					start_char_index: number; // x > 0
+					end_char_index: number;
+			  }[]
+			| null;
 	}[];
 	stop_reason: "end_turn" | "max_tokens" | "stop_sequence" | "tool_use";
 	stop_sequence: string | null;
@@ -59,6 +59,8 @@ export const callClaudeWithPrompt = async ({
 	promptPurpose,
 	variablePromptPart,
 	outputFormatHint,
+	imageBase64,
+	mimeType = "image/jpeg",
 	requestId,
 	userId,
 }: {
@@ -67,6 +69,8 @@ export const callClaudeWithPrompt = async ({
 	promptPurpose: string;
 	variablePromptPart: string;
 	outputFormatHint: string;
+	imageBase64?: string;
+	mimeType?: string;
 	requestId: string;
 	userId: string;
 }): Promise<{
@@ -89,25 +93,36 @@ export const callClaudeWithPrompt = async ({
 		.sort((a, b) => b.variant_number - a.variant_number)[0];
 	if (!selectedVariant) throw new Error("No eligible prompt variants found.");
 
-	const basePrompt = selectedVariant.prompt_text;
+	const systemPrompt = `${selectedVariant.prompt_text}\n\n${outputFormatHint}`.trim();
 
-	// 🧠 プロンプト構築
-	const fullPrompt = `
-${basePrompt}
+	// 🧠 ユーザー向けメッセージ
+	const userText = variablePromptPart.trim();
 
-${variablePromptPart}
+	const fullPrompt = `${systemPrompt}\n\n${userText}`;
 
-${outputFormatHint}
-`.trim();
+	const userContent = imageBase64
+		? [
+				{
+					type: "image",
+					source: {
+						type: "base64",
+						media_type: mimeType,
+						data: imageBase64.replace(/^data:[^,]+,/, ""),
+					},
+				},
+				{ type: "text", text: userText },
+			]
+		: userText;
 
 	const requestPayload = {
 		model: llmModel,
 		max_tokens: 512,
 		temperature,
+		system: systemPrompt,
 		messages: [
 			{
 				role: "user",
-				content: fullPrompt,
+				content: userContent,
 			},
 		],
 	};
@@ -322,7 +337,7 @@ export const generatePlaceGuideFromCategoryContent = async (
 > => {
 	const llmModel = "claude-3-haiku-20240307";
 	const temperature = 0.7;
-	const variablePrompt = `The Input is ${JSON.stringify({ placeName, located: `(${latitude}, ${longitude})`, categoryDescription, })} Output the guide in ${languageTag}.
+	const variablePrompt = `The Input is ${JSON.stringify({ placeName, located: `(${latitude}, ${longitude})`, categoryDescription })} Output the guide in ${languageTag}.
 **HARD RULES**: The content **MUST focus on ${categoryDescription}**
 `;
 	const outputHint = `
@@ -498,6 +513,73 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 			generalHighlightGuideManuscript,
 			languageTag,
 		},
+		llmModel,
+		temperature,
+	};
+};
+
+export const generateGeneralHighlightGuideContent = async (
+	placeName: string,
+	latitude: number,
+	longitude: number,
+	imageBase64: string,
+	mimeType: string,
+	languageTag: string,
+	requestId: string,
+	userId: string,
+): Promise<
+	SpotGuideManuscriptResponse & {
+		familyId: string;
+		variantId: string;
+		promptText: string;
+		generatedText: string;
+		promptInput: Record<string, any>;
+		llmModel: string;
+		temperature: number;
+	}
+> => {
+	const llmModel = "claude-3-haiku-20240307";
+	const temperature = 0.7;
+	const variablePrompt = JSON.stringify({
+		placeName,
+		located: `(${latitude}, ${longitude})`,
+		languageTag,
+	});
+	const outputHint = `
+Use the following JSON format.
+Make sure the value of "tags" is a string array (not a string).
+All newline characters in the "manuscript" field must be escaped as \\n.
+{
+  title: string;
+  manuscript: string;
+  tags: string[];
+  ssmlGender: 'FEMALE' | 'MALE' | 'NEUTRAL';
+}`;
+
+	const { responseText, parsedJson, fullPrompt, familyId, variantId } = await callClaudeWithPrompt({
+		llmModel,
+		temperature,
+		promptPurpose: "general_highlight_guide_manuscript",
+		variablePromptPart: variablePrompt,
+		outputFormatHint: outputHint,
+		imageBase64,
+		mimeType,
+		requestId,
+		userId,
+	});
+
+	const validatedResponse = PlaceGuideManuscriptResponseSchema.safeParse(parsedJson);
+	if (!validatedResponse.success) {
+		throw new Error(`Claude API failed: JSON schema validation error - ${JSON.stringify(validatedResponse.error)}`);
+	}
+
+	return {
+		...validatedResponse.data,
+		familyId,
+		variantId,
+		promptText: fullPrompt,
+		generatedText: responseText,
+		promptInput: { placeName, latitude, longitude, languageTag },
 		llmModel,
 		temperature,
 	};
