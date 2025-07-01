@@ -86,7 +86,7 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 						style={styles.customQueryButton}
 						testID="custom-query-button"
 					/>
-					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom.label")}</Text>
+					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom")}</Text>
 				</View>
 			</View>
 

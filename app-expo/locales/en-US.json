@@ -36,8 +36,8 @@
 		"cameraPermissionMessage": "Please allow camera access to take photos of this location.",
 		"allowCamera": "Allow Camera",
 		"captureButton": "What's this?",
-		"custom": {
-			"label": "Custom",
+		"custom": "Custom",
+		"category": {
 			"history": "History",
 			"culture": "Culture",
 			"architecture": "Architecture",

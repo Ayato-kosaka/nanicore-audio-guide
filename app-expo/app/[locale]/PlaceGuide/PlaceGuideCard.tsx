@@ -155,7 +155,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 						style={styles.customQueryButton}
 						testID="custom-query-button"
 					/>
-					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom.label")}</Text>
+					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom")}</Text>
 				</View>
 				{availableCategories.slice(0, 4).map((category) => (
 					<View key={category.id} style={styles.categoryButtonWrapper}>
@@ -168,7 +168,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 							disabled={isLoading}
 							testID={`category-button-${category.id}`}
 						/>
-						<Text style={styles.categoryLabel}>{i18n.t(`PlaceGuide.custom.${category.id}`)}</Text>
+						<Text style={styles.categoryLabel}>{i18n.t(`PlaceGuide.category.${category.id}`)}</Text>
 					</View>
 				))}
 			</View>

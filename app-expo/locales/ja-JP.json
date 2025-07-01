@@ -36,8 +36,8 @@
 		"cameraPermissionMessage": "この場所の写真を撮影するには、カメラへのアクセスを許可してください。",
 		"allowCamera": "カメラを許可",
 		"captureButton": "なにこれ",
-		"custom": {
-			"label": "カスタム",
+		"custom": "カスタム",
+		"category": {
 			"history": "歴史",
 			"culture": "文化",
 			"architecture": "建築",
