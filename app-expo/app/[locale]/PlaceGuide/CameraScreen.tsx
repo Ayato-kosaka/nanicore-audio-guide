@@ -261,7 +261,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, on
 						style={[styles.captureButton, (isLoading || !isCameraReady) && styles.captureButtonDisabled]}
 						testID="place-capture-button">
 						<View style={styles.captureButtonInner}>
-							<Text style={styles.captureButtonText}>なにこれ</Text>
+							<Text style={styles.captureButtonText}>{i18n.t("SpotCapture.captureButton")}</Text>
 						</View>
 					</TouchableOpacity>
 

@@ -4,6 +4,7 @@ import { IconButton, Text } from "react-native-paper";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
+import i18n from "@/lib/i18n";
 
 import { GuideInteractionSection } from "./GuideInteractionSection";
 import { CustomQueryModal } from "./CustomQueryModal";
@@ -154,7 +155,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 						style={styles.customQueryButton}
 						testID="custom-query-button"
 					/>
-					<Text style={styles.categoryLabel}>Custom</Text>
+					<Text style={styles.categoryLabel}>{i18n.t("PlaceGuide.custom")}</Text>
 				</View>
 				{availableCategories.slice(0, 4).map((category) => (
 					<View key={category.id} style={styles.categoryButtonWrapper}>
@@ -167,7 +168,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 							disabled={isLoading}
 							testID={`category-button-${category.id}`}
 						/>
-						<Text style={styles.categoryLabel}>{category.label}</Text>
+						<Text style={styles.categoryLabel}>{i18n.t(category.id)}</Text>
 					</View>
 				))}
 			</View>

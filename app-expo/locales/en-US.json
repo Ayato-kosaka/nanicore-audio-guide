@@ -15,7 +15,8 @@
 		"locationPermissionDenied": "Location permission denied",
 		"locationError": "Failed to get current location",
 		"dragToSelect": "Drag the map to select a location",
-		"searchPlaces": "Search Places"
+		"searchPlaces": "Search Places",
+		"selectedLocation": "Selected Location"
 	},
 	"PlaceGuide": {
 		"loading": "Loading place guide...",
@@ -32,7 +33,8 @@
 		"captureError": "Failed to capture photo. Please try again.",
 		"cameraPermissionTitle": "Camera Access",
 		"cameraPermissionMessage": "Please allow camera access to take photos of this location.",
-		"allowCamera": "Allow Camera"
+		"allowCamera": "Allow Camera",
+		"custom": "Custom"
 	},
 	"SpotCapture": {
 		"captureButton": "What's this?",
@@ -53,5 +55,13 @@
 	},
 	"SpotRecommend": {
 		"nanicore": "What's this?"
-	}
+	},
+	"history": "History",
+	"culture": "Culture",
+	"architecture": "Architecture",
+	"food": "Food",
+	"nature": "Nature",
+	"people": "People",
+	"cost": "Cost",
+	"safety": "Safety"
 }

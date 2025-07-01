@@ -272,7 +272,7 @@ export default function MapScreen() {
 			params: {
 				locale,
 				placeId: selectedLocation.placeId,
-				placeName: selectedLocation.name || "Selected Location",
+				placeName: selectedLocation.name || i18n.t("PlaceMapSelect.selectedLocation"),
 				latitude: selectedLocation.latitude.toString(),
 				longitude: selectedLocation.longitude.toString(),
 				imageUrl: selectedLocation.imageUrl,
@@ -375,7 +375,7 @@ export default function MapScreen() {
 						<View style={styles.expandedSearchContainer}>
 							<View style={styles.searchHeader}>
 								<Text variant="titleMedium" style={styles.searchTitle}>
-									Search Places
+									{i18n.t("PlaceMapSelect.searchPlaces")}
 								</Text>
 								<IconButton
 									icon="close"
@@ -417,7 +417,7 @@ export default function MapScreen() {
 						<>
 							{/* Instruction Text */}
 							<Text variant="bodySmall" style={styles.instructionText}>
-								地図をドラッグして地点を選択してください
+								{i18n.t("PlaceMapSelect.dragToSelect")}
 							</Text>
 
 							{/* Location Display Box */}
@@ -430,7 +430,7 @@ export default function MapScreen() {
 									testID="marker-icon"
 								/>
 								<Text variant="bodyMedium" style={styles.locationText} numberOfLines={1}>
-									{selectedLocation?.name || i18n.t("PlaceMapSelect.searchPlaceholder")}
+									{selectedLocation?.name || i18n.t("PlaceMapSelect.selectedLocation")}
 								</Text>
 								<IconButton icon="magnify" size={20} iconColor="#666" style={styles.searchIcon} testID="search-icon" />
 							</View>
@@ -445,7 +445,7 @@ export default function MapScreen() {
 								labelStyle={styles.nanicoreButtonLabel}
 								contentStyle={styles.nanicoreButtonContent}
 								testID="nanicore-button">
-								なにこれ
+								{i18n.t("SpotRecommend.nanicore")}
 							</Button>
 						</>
 					)}
