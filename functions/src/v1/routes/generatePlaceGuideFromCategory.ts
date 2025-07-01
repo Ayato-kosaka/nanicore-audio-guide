@@ -90,7 +90,7 @@ export const generatePlaceGuideFromCategory = withValidatedAuthHandler(
 		});
 
 		const response: GeneratePlaceGuideFromCategoryResponse = {
-			guide: { id: guideId, title, content: manuscript, category: categoryId },
+			guide: { id: guideId, title, manuscript, category: categoryId },
 			audioUrl,
 		};
 		res.status(200).json(response);

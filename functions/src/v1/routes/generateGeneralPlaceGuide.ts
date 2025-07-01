@@ -82,7 +82,7 @@ export const generateGeneralPlaceGuide = withValidatedAuthHandler(
 		});
 
 		const response: GenerateGeneralPlaceGuideResponse = {
-			guide: { id: guideId, title, content: manuscript, category: "general" },
+			guide: { id: guideId, title, manuscript, category: "general" },
 			audioUrl,
 		};
 		res.status(200).json(response);

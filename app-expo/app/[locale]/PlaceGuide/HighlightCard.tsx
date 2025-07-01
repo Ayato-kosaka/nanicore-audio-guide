@@ -12,7 +12,7 @@ import { GuideBaseCard } from "./components/GuideBaseCard";
 export type HighlightGuide = {
 	id: string;
 	title: string;
-	content: string;
+	manuscript: string;
 	category: string;
 	audioUrl: string;
 };

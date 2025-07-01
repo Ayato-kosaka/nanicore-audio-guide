@@ -14,6 +14,6 @@ export const generateHighlightGuideFromQuestionRequestSchema = z.object({
 export type GenerateHighlightGuideFromQuestionRequest = z.infer<typeof generateHighlightGuideFromQuestionRequestSchema>;
 
 export type GenerateHighlightGuideFromQuestionResponse = {
-	guide: { id: string; title: string; content: string; category: string };
+	guide: { id: string; title: string; manuscript: string; category: string };
 	audioUrl: string;
 };

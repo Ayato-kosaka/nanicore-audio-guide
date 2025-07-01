@@ -101,7 +101,7 @@ export const generateHighlightGuideFromQuestion = withValidatedAuthHandler(
 		});
 
 		const response: GenerateHighlightGuideFromQuestionResponse = {
-			guide: { id: guideId, title, content: manuscript, category: "custom" },
+			guide: { id: guideId, title, manuscript, category: "custom" },
 			audioUrl,
 		};
 		res.status(200).json(response);

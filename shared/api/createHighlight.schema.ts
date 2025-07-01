@@ -25,7 +25,7 @@ export type CreateHighlightResponse = {
 		highlightGuides: {
 			id: string;
 			title: string;
-			content: string;
+			manuscript: string;
 			category: string;
 			audioUrl: string;
 		}[];

@@ -14,7 +14,7 @@ import { toggleReaction, insertReaction } from "@/lib/reactions";
 type Guide = {
 	id: string;
 	title: string;
-	content: string;
+	manuscript: string;
 	category: string;
 	audioUrl: string;
 };
@@ -118,8 +118,8 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 					<Text style={[styles.title, isFirst && styles.firstTitle]} numberOfLines={2}>
 						{guide.title}
 					</Text>
-					<Text style={[styles.content, isFirst && styles.firstContent]} numberOfLines={6}>
-						{guide.content}
+					<Text style={[styles.manuscript, isFirst && styles.firstContent]} numberOfLines={6}>
+						{guide.manuscript}
 					</Text>
 				</View>
 				<View style={styles.actionsContainer}>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
 		fontWeight: "700",
 		marginBottom: 8,
 	},
-	content: {
+	manuscript: {
 		fontSize: 12,
 		color: "rgba(255, 255, 255, 0.95)",
 		lineHeight: 16,

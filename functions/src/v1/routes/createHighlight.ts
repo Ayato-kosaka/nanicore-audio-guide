@@ -105,7 +105,7 @@ export const createHighlight = withValidatedAuthHandler(
 			highlight: {
 				id: highlightId,
 				imageUrl,
-				highlightGuides: [{ id: guideId, title, content: manuscript, category: "general", audioUrl }],
+				highlightGuides: [{ id: guideId, title, manuscript, category: "general", audioUrl }],
 			},
 		};
 

@@ -14,6 +14,6 @@ export const generateGeneralPlaceGuideRequestSchema = z.object({
 export type GenerateGeneralPlaceGuideRequest = z.infer<typeof generateGeneralPlaceGuideRequestSchema>;
 
 export type GenerateGeneralPlaceGuideResponse = {
-	guide: { id: string; title: string; content: string; category: string };
+	guide: { id: string; title: string; manuscript: string; category: string };
 	audioUrl: string;
 };

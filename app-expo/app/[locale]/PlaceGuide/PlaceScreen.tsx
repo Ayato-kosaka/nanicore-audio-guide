@@ -109,7 +109,7 @@ export default function PlaceScreen() {
 				{
 					id: guide.id,
 					title: guide.title,
-					content: guide.content,
+					manuscript: guide.manuscript,
 					category: guide.category,
 					audioUrl,
 				},
@@ -154,7 +154,7 @@ export default function PlaceScreen() {
 			const newGuide: PlaceGuide = {
 				id: guide.id,
 				title: guide.title,
-				content: guide.content,
+				manuscript: guide.manuscript,
 				category: categoryId,
 				audioUrl,
 			};
@@ -190,7 +190,7 @@ export default function PlaceScreen() {
 			const newGuide: PlaceGuide = {
 				id: guide.id,
 				title: guide.title,
-				content: guide.content,
+				manuscript: guide.manuscript,
 				category: "custom",
 				audioUrl,
 			};
@@ -223,7 +223,7 @@ export default function PlaceScreen() {
 					longitude: parseFloat(params.longitude),
 					question,
 					generalHighlightGuideTitle: generalGuide.title,
-					generalHighlightGuideManuscript: generalGuide.content,
+					generalHighlightGuideManuscript: generalGuide.manuscript,
 					languageTag: locale,
 				},
 				"v1",
@@ -239,7 +239,7 @@ export default function PlaceScreen() {
 									{
 										id: guide.id,
 										title: guide.title,
-										content: guide.content,
+										manuscript: guide.manuscript,
 										category: "custom",
 										audioUrl,
 									},
@@ -288,7 +288,7 @@ export default function PlaceScreen() {
 							{
 								id: tempGuideId,
 								title: "",
-								content: i18n.t("SpotGuideCard.generating"),
+								manuscript: i18n.t("SpotGuideCard.generating"),
 								category: "general",
 								audioUrl: "",
 							},
