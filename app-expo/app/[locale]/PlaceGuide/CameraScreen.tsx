@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { View, StyleSheet, Platform, TouchableOpacity, Dimensions } from "react-native";
 import { CameraType, CameraView, FlashMode, useCameraPermissions } from "expo-camera";
-import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
+import { ImageManipulator, SaveFormat, ImageResult } from "expo-image-manipulator";
 import { IconButton, Text, Button } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -33,13 +33,7 @@ const MIN_ZOOM = 0;
 export type CameraScreenProps = {
 	visible: boolean;
 	onClose: () => void;
-	/**
-	 * 撮影後の画像データを通知するハンドラー
-	 *
-	 * - uri: 保存先のローカルファイルパス
-	 * - base64: Base64エンコードされた画像データ
-	 */
-	onCapture: (image: { uri: string; base64: string }) => Promise<void>;
+	onCapture: (image: ImageResult) => Promise<void>;
 };
 
 export const CameraScreen: React.FC<CameraScreenProps> = ({ visible, onClose, onCapture }) => {

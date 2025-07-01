@@ -12,7 +12,7 @@ import { getCurrentVersionFromRequest } from "../lib/backendUtils";
 export const createHighlight = withValidatedAuthHandler(
 	createHighlightRequestSchema,
 	async function createHighlight({ req, res, input, requestId, userId, functionName }) {
-		const { placeId, placeName, latitude, longitude, imageBase64, languageTag } = input;
+		const { placeId, placeName, latitude, longitude, imageBase64, mimeType, languageTag } = input;
 		const highlightId = randomUUID();
 		const guideId = randomUUID();
 
@@ -21,7 +21,7 @@ export const createHighlight = withValidatedAuthHandler(
 		const imageBuffer = Buffer.from(imageBase64, "base64");
 		const { signedUrl: imageUrl } = await uploadFile({
 			buffer: imageBuffer,
-			mimeType: "image/jpeg",
+			mimeType,
 			resourceType: "user-uploads",
 			usageType: "photos",
 			identifier: userId,
@@ -46,6 +46,7 @@ export const createHighlight = withValidatedAuthHandler(
 			latitude,
 			longitude,
 			imageBase64,
+			mimeType,
 			languageTag,
 			requestId,
 			userId,

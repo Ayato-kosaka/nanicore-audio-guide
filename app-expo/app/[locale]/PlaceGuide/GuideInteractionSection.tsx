@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { Audio } from "expo-av";
+import i18n from "@/lib/i18n";
 
 /**
  * 📚 GuideInteractionSection
@@ -74,7 +75,7 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 						{guide.title}
 					</Text>
 					<Text style={[styles.content, isFirst && styles.firstContent]} numberOfLines={6}>
-						{guide.content}
+						{guide.content || i18n.t("SpotGuideCard.generating")}
 					</Text>
 				</View>
 				<View style={styles.actionsContainer}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Platform } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -262,7 +262,7 @@ export default function PlaceScreen() {
 	 * カルーセルを新しいハイライトに移動する
 	 */
 	const handleCameraCapture = useCallback(
-		async (image: { uri: string; base64: string }) => {
+		async (image: { uri: string; base64?: string }) => {
 			try {
 				logFrontendEvent({
 					event_name: "placeCameraCapture",
@@ -270,7 +270,36 @@ export default function PlaceScreen() {
 					payload: { placeId: params.placeId },
 				});
 
-				// Cloud Function へハイライト作成リクエスト
+				if (!image.base64) {
+					throw new Error("Image base64 data is missing");
+				}
+
+				const tempHighlightId = `temp_${Date.now()}`;
+				const tempGuideId = `temp_guide_${Date.now()}`;
+				setHighlights((prev) => [
+					...prev,
+					{
+						id: tempHighlightId,
+						imageUri: image.uri,
+						highlightGuides: [
+							{
+								id: tempGuideId,
+								title: "",
+								content: "",
+								category: "general",
+								audioUrl: "",
+							},
+						],
+					},
+				]);
+
+				setShowCamera(false);
+
+				const newIndex = highlights.length + 1;
+				setTimeout(() => {
+					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
+				}, 100);
+
 				const { highlight } = await callCloudFunction<CreateHighlightRequest, CreateHighlightResponse>(
 					"createHighlight",
 					{
@@ -279,29 +308,23 @@ export default function PlaceScreen() {
 						latitude: parseFloat(params.latitude),
 						longitude: parseFloat(params.longitude),
 						imageBase64: image.base64,
+						mimeType: Platform.OS === "web" ? "image/png" : "image/jpeg",
 						languageTag: locale,
 					},
 					"v1",
 				);
 
-				// ハイライトリストに追加
-				setHighlights((prev) => [
-					...prev,
-					{
-						id: highlight.id,
-						imageUri: highlight.imageUrl,
-						highlightGuides: highlight.highlightGuides,
-					},
-				]);
-
-				// カメラ画面を閉じる
-				setShowCamera(false);
-
-				// 新しいハイライトにカルーセルを移動
-				setTimeout(() => {
-					const newIndex = highlights.length + 1; // place + existing highlights + new highlight
-					carouselRef.current?.scrollTo({ index: newIndex, animated: true });
-				}, 100);
+				setHighlights((prev) =>
+					prev.map((h) =>
+						h.id === tempHighlightId
+							? {
+									id: highlight.id,
+									imageUri: image.uri,
+									highlightGuides: highlight.highlightGuides,
+								}
+							: h,
+					),
+				);
 
 				logFrontendEvent({
 					event_name: "placeCameraCaptureSuccess",
@@ -313,6 +336,7 @@ export default function PlaceScreen() {
 					},
 				});
 			} catch (error: any) {
+				showSnackbar(i18n.t("PlaceGuide.generateError"));
 				logFrontendEvent({
 					event_name: "placeCameraCaptureFailed",
 					error_level: "error",

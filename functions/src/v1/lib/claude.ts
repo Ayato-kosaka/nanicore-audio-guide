@@ -523,6 +523,7 @@ export const generateGeneralHighlightGuideContent = async (
 	latitude: number,
 	longitude: number,
 	imageBase64: string,
+	mimeType: string,
 	languageTag: string,
 	requestId: string,
 	userId: string,
@@ -562,6 +563,7 @@ All newline characters in the "manuscript" field must be escaped as \\n.
 		variablePromptPart: variablePrompt,
 		outputFormatHint: outputHint,
 		imageBase64,
+		mimeType,
 		requestId,
 		userId,
 	});

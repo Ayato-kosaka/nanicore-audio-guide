@@ -9,6 +9,7 @@ export const createHighlightRequestSchema = z.object({
 	latitude: z.number(),
 	longitude: z.number(),
 	imageBase64: z.string().min(1, "imageBase64 is required"),
+	mimeType: z.string().min(1, "mimeType is required"),
 	languageTag: z.string().min(1, "languageTag is required"),
 });
 
