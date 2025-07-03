@@ -24,6 +24,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		infoPlist: {
 			ITSAppUsesNonExemptEncryption: false,
 		},
+		config: {
+			googleMapsApiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+		},
 	},
 	android: {
 		package: "com.nanicore.audio.guide",
@@ -31,6 +34,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		adaptiveIcon: {
 			foregroundImage: "./assets/images/adaptive-icon.png",
 			backgroundColor: "#ffffff",
+		},
+		config: {
+			googleMaps: {
+				apiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+			},
 		},
 	},
 	web: {
