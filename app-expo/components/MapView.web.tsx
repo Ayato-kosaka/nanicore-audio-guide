@@ -124,7 +124,7 @@ const MapView = forwardRef<MapViewHandle | null, MapViewProps>(
 		};
 
 		return (
-			<LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_API_KEY}>
+			<LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_WEB_API_KEY}>
 				<GoogleMap
 					onLoad={handleLoad}
 					center={{ lat: region?.latitude ?? 0, lng: region?.longitude ?? 0 }}

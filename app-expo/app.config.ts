@@ -25,7 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			ITSAppUsesNonExemptEncryption: false,
 		},
 		config: {
-			googleMapsApiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+			googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_IOS_API_KEY,
 		},
 	},
 	android: {
@@ -37,7 +37,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		},
 		config: {
 			googleMaps: {
-				apiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+				apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_API_KEY,
 			},
 		},
 	},
@@ -154,7 +154,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		EXPO_PUBLIC_APP_STORE_URL: process.env.EXPO_PUBLIC_APP_STORE_URL,
 		EXPO_PUBLIC_PLAY_STORE_URL: process.env.EXPO_PUBLIC_PLAY_STORE_URL,
 		EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL: process.env.EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL,
-		EXPO_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+		EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY,
 		EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
 		EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
 		EXPO_PUBLIC_DB_SCHEMA: process.env.EXPO_PUBLIC_DB_SCHEMA,
