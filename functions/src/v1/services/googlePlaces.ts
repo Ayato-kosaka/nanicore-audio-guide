@@ -9,7 +9,7 @@ const client = new PlacesClient({ key: env.FUNCTIONS_GOOGLE_PLACE_API_KEY });
 /**
  * 🔍 Google Places Autocomplete(New)
  *
- * サーバー側から呼び出してAPIキーを隠蔽しつつログを残す。
+ * サーバー側から呼び出してAPIキーを隠蔽する。
  */
 export const fetchAutocompletePredictions = async (
 	input: string,
@@ -30,19 +30,6 @@ export const fetchAutocompletePredictions = async (
 		errorMessage = error.message;
 		status = error.code || 500;
 		throw new Error(`Places autocomplete failed: ${errorMessage}`);
-	} finally {
-		logExternalApi({
-			request_id: requestId,
-			function_name: "fetchAutocompletePredictions",
-			api_name: "GooglePlaces",
-			endpoint: "autocomplete",
-			request_payload: JSON.stringify({ input }),
-			response_payload: JSON.stringify(payload),
-			status_code: status,
-			error_message: errorMessage,
-			response_time_ms: Date.now() - start,
-			user_id: userId,
-		});
 	}
 };
 

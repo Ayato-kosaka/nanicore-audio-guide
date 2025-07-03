@@ -1,5 +1,4 @@
 import { withValidatedAuthHandler } from "../lib/handler";
-import { logBackendEvent } from "../lib/logger";
 import {
 	googlePlacesAutocompleteRequestSchema,
 	GooglePlacesAutocompleteResponse,
@@ -26,15 +25,6 @@ export const googlePlacesAutocomplete = withValidatedAuthHandler(
 				}))
 				.filter((p) => !!p.placeId && !!p.name) as GooglePlacesAutocompleteResponse["predictions"],
 		};
-
-		logBackendEvent({
-			event_name: "googlePlacesAutocompleteSuccess",
-			error_level: "info",
-			function_name: functionName,
-			user_id: userId,
-			request_id: requestId,
-			payload: { query: input.input, count: predictions.length },
-		});
 
 		res.status(200).json(response);
 	},

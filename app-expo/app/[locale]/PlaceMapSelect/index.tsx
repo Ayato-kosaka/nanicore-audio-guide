@@ -47,12 +47,12 @@ const INITIAL_REGION: Region = {
  * - 選択した地点から PlaceGuide へ移動
  */
 export default function MapScreen() {
-        const router = useRouter();
-        const locale = useLocale();
-        const { callCloudFunction } = useCloudFunction();
-        const { logFrontendEvent } = useLogger();
-        const { isLoading, withLoading } = useWithLoading();
-        const { showSnackbar } = useSnackbar();
+	const router = useRouter();
+	const locale = useLocale();
+	const { callCloudFunction } = useCloudFunction();
+	const { logFrontendEvent } = useLogger();
+	const { isLoading, withLoading } = useWithLoading();
+	const { showSnackbar } = useSnackbar();
 
 	const [region, setRegion] = useState<Region>(INITIAL_REGION);
 	const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(null);
@@ -76,15 +76,15 @@ export default function MapScreen() {
 	const getCurrentLocation = useCallback(async () => {
 		try {
 			const { status } = await Location.requestForegroundPermissionsAsync();
-                        if (status !== "granted") {
-                                logFrontendEvent({
-                                        event_name: "locationPermissionDenied",
-                                        error_level: "warn",
-                                        payload: {},
-                                });
-                                showSnackbar(i18n.t("PlaceMapSelect.locationPermissionDenied"));
-                                return;
-                        }
+			if (status !== "granted") {
+				logFrontendEvent({
+					event_name: "locationPermissionDenied",
+					error_level: "warn",
+					payload: {},
+				});
+				showSnackbar(i18n.t("PlaceMapSelect.locationPermissionDenied"));
+				return;
+			}
 
 			const location = await Location.getCurrentPositionAsync({});
 			const newRegion: Region = {
@@ -102,15 +102,15 @@ export default function MapScreen() {
 				error_level: "info",
 				payload: { location: newRegion },
 			});
-                } catch (error: any) {
-                        logFrontendEvent({
-                                event_name: "getCurrentLocationFailed",
-                                error_level: "error",
-                                payload: { error: error.message },
-                        });
-                        showSnackbar(i18n.t("PlaceMapSelect.locationError"));
-                }
-        }, [logFrontendEvent]);
+		} catch (error: any) {
+			logFrontendEvent({
+				event_name: "getCurrentLocationFailed",
+				error_level: "error",
+				payload: { error: error.message },
+			});
+			showSnackbar(i18n.t("PlaceMapSelect.locationError"));
+		}
+	}, [logFrontendEvent]);
 
 	/**
 	 * 🔎 地名検索を実行
@@ -123,26 +123,20 @@ export default function MapScreen() {
 
 		setIsSearching(true);
 		try {
-			logFrontendEvent({
-				event_name: "mapSearch",
-				error_level: "info",
-				payload: { query: searchQuery },
-			});
-
 			const { predictions } = await callCloudFunction<
 				GooglePlacesAutocompleteRequest,
 				GooglePlacesAutocompleteResponse
 			>("googlePlacesAutocomplete", { input: searchQuery, languageCode: locale }, "v1");
 
 			setPredictions(predictions);
-                } catch (error: any) {
-                        logFrontendEvent({
-                                event_name: "mapSearchFailed",
-                                error_level: "error",
-                                payload: { error: error.message, query: searchQuery },
-                        });
-                        showSnackbar(i18n.t("PlaceMapSelect.searchError"));
-                } finally {
+		} catch (error: any) {
+			logFrontendEvent({
+				event_name: "mapSearchFailed",
+				error_level: "error",
+				payload: { error: error.message, query: searchQuery },
+			});
+			showSnackbar(i18n.t("PlaceMapSelect.searchError"));
+		} finally {
 			setIsSearching(false);
 		}
 	}, [searchQuery, logFrontendEvent, callCloudFunction]);
@@ -202,14 +196,14 @@ export default function MapScreen() {
 						error_level: "info",
 						payload: { placeId },
 					});
-                               } catch (error: any) {
-                                       logFrontendEvent({
-                                               event_name: "mapLocationSelectFailed",
-                                               error_level: "error",
-                                               payload: { error: error.message, placeId },
-                                       });
-                                        showSnackbar(i18n.t("PlaceMapSelect.searchError"));
-                               }
+				} catch (error: any) {
+					logFrontendEvent({
+						event_name: "mapLocationSelectFailed",
+						error_level: "error",
+						payload: { error: error.message, placeId },
+					});
+					showSnackbar(i18n.t("PlaceMapSelect.searchError"));
+				}
 			})();
 		},
 		[logFrontendEvent, callCloudFunction, withLoading],
@@ -255,14 +249,14 @@ export default function MapScreen() {
 						error_level: "info",
 						payload: { placeId: location.placeId },
 					});
-                               } catch (error: any) {
-                                       logFrontendEvent({
-                                               event_name: "mapLocationSelectFromSearchFailed",
-                                               error_level: "error",
-                                               payload: { error: error.message, placeId: location.placeId },
-                                       });
-                                        showSnackbar(i18n.t("PlaceMapSelect.searchError"));
-                               }
+				} catch (error: any) {
+					logFrontendEvent({
+						event_name: "mapLocationSelectFromSearchFailed",
+						error_level: "error",
+						payload: { error: error.message, placeId: location.placeId },
+					});
+					showSnackbar(i18n.t("PlaceMapSelect.searchError"));
+				}
 			})();
 		},
 		[logFrontendEvent, callCloudFunction, withLoading],
