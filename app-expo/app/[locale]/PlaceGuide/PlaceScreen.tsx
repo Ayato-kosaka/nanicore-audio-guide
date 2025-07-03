@@ -34,7 +34,7 @@ import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
-import { PlaceGuideLoading } from "@/components/PlaceGuideLoading";
+import { PlaceGuideLoading } from "@/app/[locale]/PlaceGuide/components/PlaceGuideLoading";
 
 const { width } = Dimensions.get("window");
 
