@@ -29,7 +29,7 @@ export interface PlaceGuideLoadingProps {
  */
 interface SkeletonBoxProps {
 	width: number | string;
-	height: number;
+	height: number | string;
 	borderRadius?: number;
 	style?: any;
 	testID?: string;
@@ -214,14 +214,26 @@ export const PlaceGuideLoading: React.FC<PlaceGuideLoadingProps> = ({
 								{/* Custom query button */}
 								<View style={styles.categoryButtonWrapper}>
 									<SkeletonBox width={40} height={40} borderRadius={20} testID="custom-button" />
-									<SkeletonBox width={30} height={10} borderRadius={5} style={styles.categoryLabelSkeleton} testID="custom-label" />
+									<SkeletonBox
+										width={30}
+										height={10}
+										borderRadius={5}
+										style={styles.categoryLabelSkeleton}
+										testID="custom-label"
+									/>
 								</View>
 
 								{/* Category buttons (4 buttons) */}
 								{[1, 2, 3, 4].map((index) => (
 									<View key={index} style={styles.categoryButtonWrapper}>
 										<SkeletonBox width={40} height={40} borderRadius={20} testID={`category-button-${index}`} />
-										<SkeletonBox width={25} height={10} borderRadius={5} style={styles.categoryLabelSkeleton} testID={`category-label-${index}`} />
+										<SkeletonBox
+											width={25}
+											height={10}
+											borderRadius={5}
+											style={styles.categoryLabelSkeleton}
+											testID={`category-label-${index}`}
+										/>
 									</View>
 								))}
 							</View>
@@ -450,6 +462,11 @@ const createStyles = (isDark: boolean) =>
 
 		// Loading message
 		messageContainer: {
+			position: "absolute",
+			top: height / 2 - 20,
+			right: 0,
+			left: 0,
+			justifyContent: "center",
 			alignItems: "center",
 			paddingVertical: 16,
 		},
@@ -462,6 +479,10 @@ const createStyles = (isDark: boolean) =>
 
 		// Loading dots
 		dotsContainer: {
+			position: "absolute",
+			bottom: 20,
+			right: 0,
+			left: 0,
 			flexDirection: "row",
 			justifyContent: "center",
 			alignItems: "center",
