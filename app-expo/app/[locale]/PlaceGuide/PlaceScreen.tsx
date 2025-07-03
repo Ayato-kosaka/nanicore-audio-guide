@@ -34,6 +34,7 @@ import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
+import { PlaceGuideLoading } from "@/app/[locale]/PlaceGuide/components/PlaceGuideLoading";
 
 const { width } = Dimensions.get("window");
 
@@ -429,9 +430,7 @@ export default function PlaceScreen() {
 		return (
 			<View style={styles.container}>
 				<BannerAdView />
-				<View style={styles.loadingContainer}>
-					<Text variant="bodyLarge">{i18n.t("PlaceGuide.loading")}</Text>
-				</View>
+				<PlaceGuideLoading message={i18n.t("PlaceGuide.loading")} showLogo={true} testID="place-guide-loading" />
 			</View>
 		);
 	}
@@ -497,7 +496,6 @@ export default function PlaceScreen() {
 
 const styles = StyleSheet.create({
 	container: { flex: 1, backgroundColor: "#fafafa" },
-	loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
 	carouselContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
 	cardContainer: {
 		height: "100%",
