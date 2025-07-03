@@ -34,6 +34,7 @@ import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
 import { PlaceGuideParams } from "@/types/navigation";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
+import { PlaceGuideLoading } from "@/components/PlaceGuideLoading";
 
 const { width } = Dimensions.get("window");
 
@@ -118,15 +119,15 @@ export default function PlaceScreen() {
 			setPlaceData(place);
 			setPlaceGuides(guides);
 			setHighlights([]);
-                } catch (err: any) {
-                        logFrontendEvent({
-                                event_name: "generateGeneralPlaceGuideFailed",
-                                error_level: "error",
-                                payload: { error: err.message },
-                        });
-                        showSnackbar(i18n.t("PlaceGuide.loadError"));
-                }
-        };
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generateGeneralPlaceGuideFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+			showSnackbar(i18n.t("PlaceGuide.loadError"));
+		}
+	};
 
 	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
 		if (!placeData) return;
@@ -160,15 +161,15 @@ export default function PlaceScreen() {
 				audioUrl,
 			};
 			setPlaceGuides((prev) => [...prev, newGuide]);
-                } catch (err: any) {
-                        logFrontendEvent({
-                                event_name: "generatePlaceGuideFromCategoryFailed",
-                                error_level: "error",
-                                payload: { error: err.message },
-                        });
-                        showSnackbar(i18n.t("PlaceGuide.generateError"));
-                }
-        };
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generatePlaceGuideFromCategoryFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+			showSnackbar(i18n.t("PlaceGuide.generateError"));
+		}
+	};
 
 	const generatePlaceGuidesFromQuestion = async (question: string) => {
 		if (!placeData) return;
@@ -197,15 +198,15 @@ export default function PlaceScreen() {
 				audioUrl,
 			};
 			setPlaceGuides((prev) => [...prev, newGuide]);
-                } catch (err: any) {
-                        logFrontendEvent({
-                                event_name: "generatePlaceGuideFromQuestionFailed",
-                                error_level: "error",
-                                payload: { error: err.message },
-                        });
-                        showSnackbar(i18n.t("PlaceGuide.generateError"));
-                }
-        };
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generatePlaceGuideFromQuestionFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+			showSnackbar(i18n.t("PlaceGuide.generateError"));
+		}
+	};
 
 	const generateHighlightGuidesFromQuestion = async (id: string, question: string) => {
 		if (!placeData) return;
@@ -251,15 +252,15 @@ export default function PlaceScreen() {
 						: h,
 				),
 			);
-                } catch (err: any) {
-                        logFrontendEvent({
-                                event_name: "generateHighlightGuideFromQuestionFailed",
-                                error_level: "error",
-                                payload: { error: err.message },
-                        });
-                        showSnackbar(i18n.t("PlaceGuide.generateError"));
-                }
-        };
+		} catch (err: any) {
+			logFrontendEvent({
+				event_name: "generateHighlightGuideFromQuestionFailed",
+				error_level: "error",
+				payload: { error: err.message },
+			});
+			showSnackbar(i18n.t("PlaceGuide.generateError"));
+		}
+	};
 
 	/**
 	 * 📸 カメラ画面からの撮影完了処理
@@ -429,9 +430,7 @@ export default function PlaceScreen() {
 		return (
 			<View style={styles.container}>
 				<BannerAdView />
-				<View style={styles.loadingContainer}>
-					<Text variant="bodyLarge">{i18n.t("PlaceGuide.loading")}</Text>
-				</View>
+				<PlaceGuideLoading message={i18n.t("PlaceGuide.loading")} showLogo={true} testID="place-guide-loading" />
 			</View>
 		);
 	}
@@ -497,7 +496,6 @@ export default function PlaceScreen() {
 
 const styles = StyleSheet.create({
 	container: { flex: 1, backgroundColor: "#fafafa" },
-	loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
 	carouselContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
 	cardContainer: {
 		height: "100%",
