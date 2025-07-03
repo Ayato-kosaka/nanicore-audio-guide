@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, ComponentRef, useEffect } from "r
 import { View, StyleSheet, Platform, Dimensions, FlatList, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Text, Button, IconButton, Searchbar, List } from "react-native-paper";
+import { convertGooglePlacePredictionTypeToMaterialCommunityIcon } from "../PlaceGuide/GooglePlaceIcon";
 import MapView, { Marker, Region } from "@/components/MapView";
 import * as Location from "expo-location";
 
@@ -399,15 +400,26 @@ export default function MapScreen() {
 							<FlatList
 								data={predictions}
 								keyExtractor={(item) => item.placeId}
-								renderItem={({ item }) => (
-									<List.Item
-										title={item.name}
-										onPress={() => handlePredictionSelect(item)}
-										style={styles.predictionItem}
-										titleStyle={styles.predictionTitle}
-										testID="prediction-item"
-									/>
-								)}
+                                                                renderItem={({ item }) => {
+                                                                        const icon = convertGooglePlacePredictionTypeToMaterialCommunityIcon(
+                                                                                item.types ?? [],
+                                                                        );
+                                                                        return (
+                                                                                <List.Item
+                                                                                        title={item.name}
+                                                                                        onPress={() => handlePredictionSelect(item)}
+                                                                                        style={styles.predictionItem}
+                                                                                        titleStyle={styles.predictionTitle}
+                                                                                        left={(props) => (
+                                                                                                <List.Icon
+                                                                                                        {...props}
+                                                                                                        icon={icon}
+                                                                                                />
+                                                                                        )}
+                                                                                        testID="prediction-item"
+                                                                                />
+                                                                        );
+                                                                }}
 								ItemSeparatorComponent={() => <View style={styles.predictionSeparator} />}
 								contentContainerStyle={styles.predictionsContent}
 								style={styles.predictionsList}
