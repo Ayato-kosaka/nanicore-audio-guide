@@ -9,6 +9,7 @@ import i18n from "@/lib/i18n";
 import { GuideInteractionSection } from "./GuideInteractionSection";
 import { CustomQueryModal } from "./CustomQueryModal";
 import { GuideBaseCard } from "./components/GuideBaseCard";
+import { getFallbackImageUri } from "@/utils/image";
 
 export type PlaceGuide = {
 	id: string;
@@ -95,9 +96,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 
-	const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
-	const [showCustomModal, setShowCustomModal] = useState(false);
-	const guidesScrollViewRef = useRef<ScrollView>(null);
+       const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
+       const [showCustomModal, setShowCustomModal] = useState(false);
+       const [imageSrc, setImageSrc] = useState(imageUri);
+       const guidesScrollViewRef = useRef<ScrollView>(null);
 
 	useEffect(() => {
 		if (guides.length > 1) {
@@ -124,17 +126,32 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 		[availableCategories, onCategorySelect, logFrontendEvent],
 	);
 
-	const handleCustomQuery = useCallback(
-		withLoading(async (query: string) => {
-			if (!query.trim()) return;
-			await onCustomQuestion(query);
-			setShowCustomModal(false);
-		}),
-		[onCustomQuestion],
-	);
+       const handleCustomQuery = useCallback(
+               withLoading(async (query: string) => {
+                       if (!query.trim()) return;
+                       await onCustomQuestion(query);
+                       setShowCustomModal(false);
+               }),
+               [onCustomQuestion],
+       );
 
-	return (
-		<GuideBaseCard imageUri={imageUri} placeName={placeName} onBack={onBackPress}>
+       /**
+        * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
+        */
+       const handleImageError = useCallback(() => {
+               setImageSrc(getFallbackImageUri());
+               logFrontendEvent({
+                       event_name: "placeImageLoadError",
+                       error_level: "error",
+                       payload: {
+                               place_name: placeName,
+                               failed_url: imageUri,
+                       },
+               });
+       }, [imageUri, placeName, logFrontendEvent]);
+
+       return (
+               <GuideBaseCard imageUri={imageSrc} placeName={placeName} onBack={onBackPress} onImageError={handleImageError}>
 			<ScrollView
 				ref={guidesScrollViewRef}
 				style={styles.guidesScrollView}

@@ -9,6 +9,7 @@ import i18n from "@/lib/i18n";
 import { GuideInteractionSection } from "./GuideInteractionSection";
 import { CustomQueryModal } from "./CustomQueryModal";
 import { GuideBaseCard } from "./components/GuideBaseCard";
+import { getFallbackImageUri } from "@/utils/image";
 
 export type HighlightGuide = {
 	id: string;
@@ -39,8 +40,9 @@ export type HighlightCardProps = {
 export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCustomQuestion, onBackPress }) => {
 	const { isLoading, withLoading } = useWithLoading();
 	const { logFrontendEvent } = useLogger();
-	const [showCustomModal, setShowCustomModal] = useState(false);
-	const scrollRef = useRef<ScrollView>(null);
+       const [showCustomModal, setShowCustomModal] = useState(false);
+       const [imageSrc, setImageSrc] = useState(highlight.imageUri);
+       const scrollRef = useRef<ScrollView>(null);
 
 	useEffect(() => {
 		if (highlight.highlightGuides.length > 1) {
@@ -50,22 +52,37 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 		}
 	}, [highlight.highlightGuides.length]);
 
-	const handleCustomQuery = useCallback(
-		withLoading(async (query: string) => {
-			if (!query.trim()) return;
-			await onCustomQuestion(highlight.id, query);
-			setShowCustomModal(false);
-			logFrontendEvent({
-				event_name: "highlightCustomQuery",
-				error_level: "info",
-				payload: { highlightId: highlight.id },
-			});
-		}),
-		[highlight.id, onCustomQuestion, logFrontendEvent],
-	);
+       const handleCustomQuery = useCallback(
+               withLoading(async (query: string) => {
+                       if (!query.trim()) return;
+                       await onCustomQuestion(highlight.id, query);
+                       setShowCustomModal(false);
+                       logFrontendEvent({
+                               event_name: "highlightCustomQuery",
+                               error_level: "info",
+                               payload: { highlightId: highlight.id },
+                       });
+               }),
+               [highlight.id, onCustomQuestion, logFrontendEvent],
+       );
 
-	return (
-		<GuideBaseCard imageUri={highlight.imageUri} onBack={onBackPress}>
+       /**
+        * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
+        */
+       const handleImageError = useCallback(() => {
+               setImageSrc(getFallbackImageUri());
+               logFrontendEvent({
+                       event_name: "highlightImageLoadError",
+                       error_level: "error",
+                       payload: {
+                               highlight_id: highlight.id,
+                               failed_url: highlight.imageUri,
+                       },
+               });
+       }, [highlight.id, highlight.imageUri, logFrontendEvent]);
+
+       return (
+               <GuideBaseCard imageUri={imageSrc} onBack={onBackPress} onImageError={handleImageError}>
 			<ScrollView
 				ref={scrollRef}
 				style={styles.guidesScrollView}
