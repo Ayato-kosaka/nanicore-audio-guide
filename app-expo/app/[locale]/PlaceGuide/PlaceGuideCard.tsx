@@ -53,30 +53,30 @@ export const GUIDE_CATEGORIES = [
 		description: "famous foods and cuisine",
 		icon: "food-outline",
 	},
-	{
-		id: "nature",
-		label: "Nature",
-		description: "surrounding nature and scenery",
-		icon: "leaf-outline",
-	},
-	{
-		id: "people",
-		label: "People",
-		description: "local people and society",
-		icon: "account-group-outline",
-	},
-	{
-		id: "cost",
-		label: "Cost",
-		description: "typical expenses and prices",
-		icon: "currency-usd",
-	},
-	{
-		id: "safety",
-		label: "Safety",
-		description: "travel safety tips",
-		icon: "shield-check-outline",
-	},
+	// {
+	// 	id: "nature",
+	// 	label: "Nature",
+	// 	description: "surrounding nature and scenery",
+	// 	icon: "leaf-outline",
+	// },
+	// {
+	// 	id: "people",
+	// 	label: "People",
+	// 	description: "local people and society",
+	// 	icon: "account-group-outline",
+	// },
+	// {
+	// 	id: "cost",
+	// 	label: "Cost",
+	// 	description: "typical expenses and prices",
+	// 	icon: "currency-usd",
+	// },
+	// {
+	// 	id: "safety",
+	// 	label: "Safety",
+	// 	description: "travel safety tips",
+	// 	icon: "shield-check-outline",
+	// },
 ];
 
 /**
