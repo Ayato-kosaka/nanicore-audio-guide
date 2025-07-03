@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Image, Platform } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 
 import { useLogger } from "@/hooks/useLogger";
@@ -95,9 +95,10 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 
-	const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
-	const [showCustomModal, setShowCustomModal] = useState(false);
-	const guidesScrollViewRef = useRef<ScrollView>(null);
+       const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
+       const [showCustomModal, setShowCustomModal] = useState(false);
+       const [imageSrc, setImageSrc] = useState(imageUri);
+       const guidesScrollViewRef = useRef<ScrollView>(null);
 
 	useEffect(() => {
 		if (guides.length > 1) {
@@ -124,17 +125,34 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 		[availableCategories, onCategorySelect, logFrontendEvent],
 	);
 
-	const handleCustomQuery = useCallback(
-		withLoading(async (query: string) => {
-			if (!query.trim()) return;
-			await onCustomQuestion(query);
-			setShowCustomModal(false);
-		}),
-		[onCustomQuestion],
-	);
+       const handleCustomQuery = useCallback(
+               withLoading(async (query: string) => {
+                       if (!query.trim()) return;
+                       await onCustomQuestion(query);
+                       setShowCustomModal(false);
+               }),
+               [onCustomQuestion],
+       );
 
-	return (
-		<GuideBaseCard imageUri={imageUri} placeName={placeName} onBack={onBackPress}>
+       /**
+        * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
+        */
+       const handleImageError = useCallback(() => {
+               const placeholderImage = require("@/assets/images/no_image_logo.png");
+               const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
+               setImageSrc(resolvedAsset.uri);
+               logFrontendEvent({
+                       event_name: "placeImageLoadError",
+                       error_level: "error",
+                       payload: {
+                               place_name: placeName,
+                               failed_url: imageUri,
+                       },
+               });
+       }, [imageUri, placeName, logFrontendEvent]);
+
+       return (
+               <GuideBaseCard imageUri={imageSrc} placeName={placeName} onBack={onBackPress} onImageError={handleImageError}>
 			<ScrollView
 				ref={guidesScrollViewRef}
 				style={styles.guidesScrollView}
