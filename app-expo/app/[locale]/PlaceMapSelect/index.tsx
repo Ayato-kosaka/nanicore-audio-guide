@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, ComponentRef, useEffect } from "r
 import { View, StyleSheet, Platform, Dimensions, FlatList, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Text, Button, IconButton, Searchbar, List } from "react-native-paper";
+import { convertGooglePlacePredictionTypeToMaterialCommunityIcon } from "../PlaceGuide/GooglePlaceIcon";
 import MapView, { Marker, Region } from "@/components/MapView";
 import * as Location from "expo-location";
 
@@ -312,6 +313,68 @@ export default function MapScreen() {
 		setPredictions([]);
 	}, []);
 
+	/**
+	 * 🎨 Prediction Item Renderer with Modern Design
+	 */
+	const renderPredictionItem = useCallback(
+		({ item, index }: { item: PlacePrediction; index: number }) => {
+			const icon = convertGooglePlacePredictionTypeToMaterialCommunityIcon(item.types ?? []);
+
+			return (
+				<View style={styles.predictionItemContainer}>
+					<List.Item
+						title={item.name}
+						onPress={() => handlePredictionSelect(item)}
+						style={[
+							styles.predictionItem,
+							index === 0 && styles.firstPredictionItem,
+							index === predictions.length - 1 && styles.lastPredictionItem,
+						]}
+						titleStyle={styles.predictionTitle}
+						titleNumberOfLines={2}
+						left={(props) => (
+							<View style={styles.predictionIconContainer}>
+								<List.Icon {...props} icon={icon} color="#666" style={styles.predictionIcon} />
+							</View>
+						)}
+						right={(props) => (
+							<View style={styles.predictionArrowContainer}>
+								<List.Icon {...props} icon="chevron-right" color="#ccc" style={styles.predictionArrow} />
+							</View>
+						)}
+						testID="prediction-item"
+					/>
+				</View>
+			);
+		},
+		[handlePredictionSelect, predictions.length],
+	);
+
+	/**
+	 * 🎨 Empty State Component
+	 */
+	const renderEmptyState = useCallback(() => {
+		if (isSearching) {
+			return (
+				<View style={styles.emptyStateContainer}>
+					<ActivityIndicator size="small" color="#666" />
+					<Text style={styles.emptyStateText}>検索中...</Text>
+				</View>
+			);
+		}
+
+		if (searchQuery.trim() && !isSearching && predictions.length === 0) {
+			return (
+				<View style={styles.emptyStateContainer}>
+					<List.Icon icon="map-marker-off" color="#ccc" />
+					<Text style={styles.emptyStateText}>{i18n.t("PlaceMapSelect.noResultsFound")}</Text>
+				</View>
+			);
+		}
+
+		return null;
+	}, [isSearching, searchQuery, predictions.length]);
+
 	return (
 		<View style={styles.container}>
 			{/* Map with minimal styling */}
@@ -391,27 +454,36 @@ export default function MapScreen() {
 								onChangeText={setSearchQuery}
 								value={searchQuery}
 								onSubmitEditing={handleSearch}
-								loading={isSearching}
 								style={styles.expandedSearchBar}
 								inputStyle={styles.searchInput}
 								testID="expanded-search-bar"
 							/>
-							<FlatList
-								data={predictions}
-								keyExtractor={(item) => item.placeId}
-								renderItem={({ item }) => (
-									<List.Item
-										title={item.name}
-										onPress={() => handlePredictionSelect(item)}
-										style={styles.predictionItem}
-										titleStyle={styles.predictionTitle}
-										testID="prediction-item"
-									/>
-								)}
-								ItemSeparatorComponent={() => <View style={styles.predictionSeparator} />}
-								contentContainerStyle={styles.predictionsContent}
-								style={styles.predictionsList}
-							/>
+
+							{/* Modern Predictions List */}
+							<View style={styles.predictionsContainer}>
+								<FlatList
+									data={predictions}
+									keyExtractor={(item) => item.placeId}
+									renderItem={renderPredictionItem}
+									ListEmptyComponent={renderEmptyState}
+									contentContainerStyle={[
+										styles.predictionsContent,
+										predictions.length === 0 && styles.predictionsContentEmpty,
+									]}
+									style={styles.predictionsList}
+									showsVerticalScrollIndicator={false}
+									keyboardShouldPersistTaps="handled"
+									removeClippedSubviews={true}
+									maxToRenderPerBatch={10}
+									windowSize={10}
+									initialNumToRender={8}
+									getItemLayout={(data, index) => ({
+										length: 72,
+										offset: 72 * index,
+										index,
+									})}
+								/>
+							</View>
 						</View>
 					) : (
 						// Collapsed Bottom Sheet UI
@@ -586,9 +658,18 @@ const styles = StyleSheet.create({
 		backgroundColor: "#f8f9fa",
 		borderRadius: 16,
 		elevation: 0,
+		marginBottom: 16,
 	},
 	searchInput: {
 		fontSize: 16,
+	},
+
+	// Modern Predictions List Styles
+	predictionsContainer: {
+		flex: 1,
+		backgroundColor: "#fafafa",
+		borderRadius: 16,
+		overflow: "hidden",
 	},
 	predictionsList: {
 		flex: 1,
@@ -596,18 +677,74 @@ const styles = StyleSheet.create({
 	predictionsContent: {
 		paddingVertical: 8,
 	},
+	predictionsContentEmpty: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		paddingVertical: 40,
+	},
+	predictionItemContainer: {
+		marginHorizontal: 12,
+		marginVertical: 2,
+	},
 	predictionItem: {
 		backgroundColor: "#fff",
-		paddingVertical: 8,
+		borderRadius: 12,
+		paddingVertical: 12,
+		paddingHorizontal: 16,
+		minHeight: 72,
+		elevation: 2,
+		shadowColor: "#000",
+		shadowOpacity: 0.08,
+		shadowRadius: 4,
+		shadowOffset: { width: 0, height: 2 },
+	},
+	firstPredictionItem: {
+		marginTop: 4,
+	},
+	lastPredictionItem: {
+		marginBottom: 4,
 	},
 	predictionTitle: {
 		fontSize: 16,
+		fontWeight: "500",
+		color: "#1a1a1a",
+		lineHeight: 22,
 	},
-	predictionSeparator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: "#e5e5e5",
-		marginLeft: 16,
+	predictionIconContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+		width: 40,
+		height: 40,
+		backgroundColor: "#f0f0f0",
+		borderRadius: 20,
+		marginRight: 4,
 	},
+	predictionIcon: {
+		margin: 0,
+	},
+	predictionArrowContainer: {
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	predictionArrow: {
+		margin: 0,
+	},
+
+	// Empty State Styles
+	emptyStateContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		paddingVertical: 40,
+	},
+	emptyStateText: {
+		fontSize: 16,
+		color: "#666",
+		marginTop: 12,
+		textAlign: "center",
+	},
+
 	instructionText: {
 		textAlign: "center",
 		color: "#666",

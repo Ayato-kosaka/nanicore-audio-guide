@@ -3,25 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 /** Google Place の type 文字列。必要なら union 型で絞っても OK */
 type PlaceType = string;
 /** icon 名 = glyphMap のキー。型安全にしておくと拡張が楽 */
-type MCIName = keyof typeof MaterialCommunityIcons.glyphMap | keyof MCIIconMap;
-
-type MCIIconMap = {
-	museum: number;
-	takeout: number;
-	"food-sushi": number;
-	pharmacy: number;
-	hotel: number;
-	"hotel-outline": number;
-	"temple-hindu": number;
-	synagogue: number;
-	graveyard: number;
-	"home-currency-usd": number;
-	"dog-service-bell": number;
-	"wine-bottle": number;
-	"truck-cargo": number;
-	swing: number;
-	sport: number;
-};
+type MCIName = keyof typeof MaterialCommunityIcons.glyphMap;
 
 /**
  * Google Place prediction の type(s) から最適な MCI 名を返す。
@@ -30,28 +12,61 @@ type MCIIconMap = {
  * @returns     - MaterialCommunityIcons の glyph 名
  *
  * アルゴリズム
- *  1. 厳密一致テーブルで最初にヒットしたもの
- *  2. 正規表現パターンマッチ
- *  3. Table A の大カテゴリ → アイコン
- *  4. 最後は 'map-marker'
+ *  1. Table B（汎用タイプ）に厳密一致するものがあれば、それを最優先で返す
+ *  2. Table A（固有タイプ）に厳密一致するものがあれば返す
+ *  3. パターン（正規表現）にマッチするものがあれば返す
+ *  4. Table A のカテゴリ情報から対応アイコンを返す
+ *  5. 上記すべてに該当しない場合は 'map-marker' を返す（デフォルト）
  */
 export function convertGooglePlacePredictionTypeToMaterialCommunityIcon(types: PlaceType | PlaceType[]): MCIName {
 	const tArr = Array.isArray(types) ? types : [types];
 
-	// 1️⃣ 厳密一致
+	// Table B の type 候補一覧
+	const TABLE_B_TYPES: Set<PlaceType> = new Set([
+		"establishment",
+		"finance",
+		"food",
+		"general_contractor",
+		"geocode",
+		"health",
+		"intersection",
+		"landmark",
+		"natural_feature",
+		"neighborhood",
+		"place_of_worship",
+		"point_of_interest",
+		"political",
+		"premise",
+		"route",
+		"street_address",
+		"town_square",
+		"plus_code",
+	]);
+
+	// 1️⃣ Table B（汎用タイプ）から優先して厳密一致チェック
 	for (const t of tArr) {
-		const exact = TYPE_ICON_MAP[t];
-		if (exact) return exact;
+		if (TABLE_B_TYPES.has(t)) {
+			const exactB = TYPE_ICON_MAP[t];
+			if (exactB) return exactB;
+		}
 	}
 
-	// 2️⃣ パターン一致
+	// 2️⃣ Table A（残りのタイプ）で厳密一致チェック
+	for (const t of tArr) {
+		if (!TABLE_B_TYPES.has(t)) {
+			const exactA = TYPE_ICON_MAP[t];
+			if (exactA) return exactA;
+		}
+	}
+
+	// 3️⃣ パターン一致
 	for (const t of tArr) {
 		for (const [pattern, icon] of PATTERN_ICON_MAP) {
 			if (pattern.test(t)) return icon;
 		}
 	}
 
-	// 3️⃣ カテゴリ fallback
+	// 4️⃣ カテゴリ fallback
 	for (const t of tArr) {
 		const cat = CATEGORY_BY_TYPE[t];
 		if (cat) {
@@ -60,7 +75,7 @@ export function convertGooglePlacePredictionTypeToMaterialCommunityIcon(types: P
 		}
 	}
 
-	// 4️⃣ 最終デフォルト
+	// 5️⃣ 最終デフォルト
 	return "map-marker";
 }
 
@@ -68,7 +83,7 @@ export function convertGooglePlacePredictionTypeToMaterialCommunityIcon(types: P
 /*  ↓↓↓ 以下は──必要に応じて拡張・自動生成できる定数セクション ──  */
 /* ------------------------------------------------------------------ */
 
-/** 1️⃣ Table A/B の各 type → MCI 名（厳密一致） */
+/** 1️⃣、2️⃣ Table A/B の各 type → MCI 名（厳密一致） */
 const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	/* ▶ Automotive */
 	car_dealer: "car-sports",
@@ -92,7 +107,7 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	cultural_landmark: "bank",
 	historical_place: "castle",
 	monument: "pillar",
-	museum: "museum",
+	museum: "bank",
 	performing_arts_theater: "drama-masks",
 	sculpture: "shape",
 
@@ -166,10 +181,10 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	fast_food_restaurant: "hamburger",
 	ice_cream_shop: "ice-cream",
 	meal_delivery: "truck-delivery",
-	meal_takeaway: "takeout",
+	meal_takeaway: "silverware-fork-knife",
 	pizza_restaurant: "pizza",
 	restaurant: "silverware-fork-knife",
-	sushi_restaurant: "food-sushi",
+	sushi_restaurant: "food",
 	wine_bar: "glass-wine",
 
 	/* ▶ Geographical Areas */
@@ -197,7 +212,7 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	hospital: "hospital-building",
 	massage: "hand-heart",
 	medical_lab: "microscope",
-	pharmacy: "pharmacy",
+	pharmacy: "pill",
 	physiotherapist: "run",
 	sauna: "hot-tub",
 	spa: "spa",
@@ -215,9 +230,9 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	campground: "tent",
 	camping_cabin: "cabin-a-frame",
 	hostel: "bed-king-outline",
-	hotel: "hotel",
-	lodging: "hotel",
-	motel: "hotel-outline",
+	hotel: "bed",
+	lodging: "bed",
+	motel: "bed",
 	resort_hotel: "beach",
 	rv_park: "caravan",
 
@@ -226,14 +241,14 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 
 	/* ▶ Places of Worship */
 	church: "church",
-	hindu_temple: "temple-hindu",
+	hindu_temple: "bank",
 	mosque: "mosque",
-	synagogue: "synagogue",
+	synagogue: "church",
 
 	/* ▶ Services */
 	barber_shop: "content-cut",
 	beauty_salon: "face-woman-outline",
-	cemetery: "graveyard",
+	cemetery: "coffin",
 	child_care_agency: "baby-face",
 	consultant: "account-tie",
 	courier_service: "truck-fast",
@@ -249,13 +264,13 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	nail_salon: "hand-back-left",
 	painter: "format-paint",
 	plumber: "pipe-wrench",
-	real_estate_agency: "home-currency-usd",
+	real_estate_agency: "home",
 	roofing_contractor: "home-roof",
 	storage: "warehouse",
 	tailor: "tape-measure",
 	telecommunications_service_provider: "lan",
 	travel_agency: "map",
-	veterinary_care: "dog-service-bell",
+	veterinary_care: "paw",
 
 	/* ▶ Shopping */
 	auto_parts_store: "car-cog",
@@ -273,7 +288,7 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	hardware_store: "hammer",
 	home_goods_store: "sofa",
 	jewelry_store: "diamond-stone",
-	liquor_store: "wine-bottle",
+	liquor_store: "glass-wine",
 	market: "basket",
 	pet_store: "dog",
 	shoe_store: "shoe-sneaker",
@@ -281,7 +296,7 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	sporting_goods_store: "basketball",
 	supermarket: "cart",
 	warehouse_store: "warehouse",
-	wholesaler: "truck-cargo",
+	wholesaler: "truck-delivery",
 
 	/* ▶ Sports */
 	arena: "stadium",
@@ -292,9 +307,9 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	golf_course: "golf",
 	gym: "dumbbell",
 	ice_skating_rink: "skate",
-	playground: "swing",
+	playground: "basketball",
 	ski_resort: "ski",
-	sports_club: "sport",
+	sports_club: "basketball",
 	sports_complex: "stadium-variant",
 	stadium: "stadium",
 	swimming_pool: "pool",
@@ -337,7 +352,7 @@ const TYPE_ICON_MAP: Record<PlaceType, MCIName> = {
 	plus_code: "map-marker-plus",
 } as const;
 
-/** 2️⃣ 名前パターン → アイコン名 */
+/** 3️⃣ 名前パターン → アイコン名 */
 const PATTERN_ICON_MAP: Array<[RegExp, MCIName]> = [
 	[/restaurant|_restaurant$/, "silverware-fork-knife"],
 	[/_shop$|_store$/, "store"],
@@ -346,7 +361,7 @@ const PATTERN_ICON_MAP: Array<[RegExp, MCIName]> = [
 	[/_cafe$/, "coffee"],
 	[/(doctor|dentist)/, "stethoscope"],
 	[/school|university/, "school"],
-	[/hotel|lodging|motel|hostel|resort/, "hotel"],
+	[/hotel|lodging|motel|hostel|resort/, "bed"],
 	[/airport|airstrip/, "airplane"],
 	[/bus_|bus_|_station|bus-stop/, "bus"],
 	[/train_|subway_|rail/, "train"],
@@ -356,7 +371,7 @@ const PATTERN_ICON_MAP: Array<[RegExp, MCIName]> = [
 	[/museum|art|gallery/, "palette"],
 ];
 
-/** 3️⃣ Table A のカテゴリ → アイコン   */
+/** 4️⃣ Table A のカテゴリ → アイコン   */
 type Category =
 	| "Automotive"
 	| "Business"
@@ -391,7 +406,7 @@ const CATEGORY_ICON_MAP: Record<Category, MCIName> = {
 	Government: "town-hall",
 	"Health and Wellness": "heart-pulse",
 	Housing: "home-city",
-	Lodging: "hotel",
+	Lodging: "bed",
 	"Natural Features": "pine-tree",
 	"Places of Worship": "church",
 	Services: "account-wrench",
@@ -400,7 +415,7 @@ const CATEGORY_ICON_MAP: Record<Category, MCIName> = {
 	Transportation: "bus",
 };
 
-/** 3️⃣-補足 type → カテゴリ   ※頻出のみ、足りなければ随時追加 */
+/** 4️⃣-補足 type → カテゴリ   ※頻出のみ、足りなければ随時追加 */
 const CATEGORY_BY_TYPE: Record<PlaceType, Category> = {
 	car_dealer: "Automotive",
 	car_rental: "Automotive",
