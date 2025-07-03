@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import { View, StyleSheet, ScrollView, Image, Platform } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -9,6 +9,7 @@ import i18n from "@/lib/i18n";
 import { GuideInteractionSection } from "./GuideInteractionSection";
 import { CustomQueryModal } from "./CustomQueryModal";
 import { GuideBaseCard } from "./components/GuideBaseCard";
+import { getFallbackImageUri } from "@/utils/image";
 
 export type HighlightGuide = {
 	id: string;
@@ -69,9 +70,7 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
         * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
         */
        const handleImageError = useCallback(() => {
-               const placeholderImage = require("@/assets/images/no_image_logo.png");
-               const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
-               setImageSrc(resolvedAsset.uri);
+               setImageSrc(getFallbackImageUri());
                logFrontendEvent({
                        event_name: "highlightImageLoadError",
                        error_level: "error",

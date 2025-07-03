@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { View, Image, StyleSheet, Platform, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
 import { Audio, InterruptionModeIOS } from "expo-av";
 import { IconButton } from "react-native-paper";
@@ -21,6 +21,7 @@ import type { SupabaseSpotVisits } from "@shared/converters/convert_spot_visits"
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
+import { getFallbackImageUri } from "@/utils/image";
 
 /**
  * 🧭 SpotGuideCard
@@ -235,19 +236,17 @@ const SpotGuideCard = ({
 	/**
 	 * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
 	 */
-	const handleImageError = useCallback(() => {
-		const placeholderImage = require("@/assets/images/no_image_logo.png");
-		const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
-		setImageSrc(resolvedAsset.uri);
-		logFrontendEvent({
-			event_name: "imageLoadError",
-			error_level: "error",
-			payload: {
-				spot_id: spot.id,
-				failed_url: imageUri,
-			},
-		});
-	}, [imageUri, spot.id]);
+       const handleImageError = useCallback(() => {
+               setImageSrc(getFallbackImageUri());
+               logFrontendEvent({
+                       event_name: "imageLoadError",
+                       error_level: "error",
+                       payload: {
+                               spot_id: spot.id,
+                               failed_url: imageUri,
+                       },
+               });
+       }, [imageUri, spot.id]);
 
 	/**
 	 * 🔄 初期化処理：最初のガイド生成と訪問記録
