@@ -118,14 +118,15 @@ export default function PlaceScreen() {
 			setPlaceData(place);
 			setPlaceGuides(guides);
 			setHighlights([]);
-		} catch (err: any) {
-			logFrontendEvent({
-				event_name: "generateGeneralPlaceGuideFailed",
-				error_level: "error",
-				payload: { error: err.message },
-			});
-		}
-	};
+                } catch (err: any) {
+                        logFrontendEvent({
+                                event_name: "generateGeneralPlaceGuideFailed",
+                                error_level: "error",
+                                payload: { error: err.message },
+                        });
+                        showSnackbar(i18n.t("PlaceGuide.loadError"));
+                }
+        };
 
 	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
 		if (!placeData) return;
@@ -159,14 +160,15 @@ export default function PlaceScreen() {
 				audioUrl,
 			};
 			setPlaceGuides((prev) => [...prev, newGuide]);
-		} catch (err: any) {
-			logFrontendEvent({
-				event_name: "generatePlaceGuideFromCategoryFailed",
-				error_level: "error",
-				payload: { error: err.message },
-			});
-		}
-	};
+                } catch (err: any) {
+                        logFrontendEvent({
+                                event_name: "generatePlaceGuideFromCategoryFailed",
+                                error_level: "error",
+                                payload: { error: err.message },
+                        });
+                        showSnackbar(i18n.t("PlaceGuide.generateError"));
+                }
+        };
 
 	const generatePlaceGuidesFromQuestion = async (question: string) => {
 		if (!placeData) return;
@@ -195,14 +197,15 @@ export default function PlaceScreen() {
 				audioUrl,
 			};
 			setPlaceGuides((prev) => [...prev, newGuide]);
-		} catch (err: any) {
-			logFrontendEvent({
-				event_name: "generatePlaceGuideFromQuestionFailed",
-				error_level: "error",
-				payload: { error: err.message },
-			});
-		}
-	};
+                } catch (err: any) {
+                        logFrontendEvent({
+                                event_name: "generatePlaceGuideFromQuestionFailed",
+                                error_level: "error",
+                                payload: { error: err.message },
+                        });
+                        showSnackbar(i18n.t("PlaceGuide.generateError"));
+                }
+        };
 
 	const generateHighlightGuidesFromQuestion = async (id: string, question: string) => {
 		if (!placeData) return;
@@ -248,14 +251,15 @@ export default function PlaceScreen() {
 						: h,
 				),
 			);
-		} catch (err: any) {
-			logFrontendEvent({
-				event_name: "generateHighlightGuideFromQuestionFailed",
-				error_level: "error",
-				payload: { error: err.message },
-			});
-		}
-	};
+                } catch (err: any) {
+                        logFrontendEvent({
+                                event_name: "generateHighlightGuideFromQuestionFailed",
+                                error_level: "error",
+                                payload: { error: err.message },
+                        });
+                        showSnackbar(i18n.t("PlaceGuide.generateError"));
+                }
+        };
 
 	/**
 	 * 📸 カメラ画面からの撮影完了処理
