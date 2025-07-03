@@ -29,14 +29,14 @@ const SpotRecommendCard = React.memo(function SpotRecommendCard({ spot }: { spot
 	/**
 	 * 📸 画像読み込み失敗時にローカル画像へフォールバック。
 	 */
-        const handleImageError = useCallback(() => {
-                setImageSrc(getFallbackImageUri());
-                logFrontendEvent({
-                        event_name: "imageLoadError",
-                        error_level: "error",
-                        payload: { spot_id: spot.id, failed_url: spot.image_url },
-                });
-        }, [spot.id, spot.image_url]);
+	const handleImageError = useCallback(() => {
+		setImageSrc(getFallbackImageUri());
+		logFrontendEvent({
+			event_name: "imageLoadError",
+			error_level: "error",
+			payload: { spot_id: spot.id, failed_url: spot.image_url },
+		});
+	}, [spot.id, spot.image_url]);
 
 	/**
 	 * 🧭 ボタン押下でスポットガイド画面へ遷移する。

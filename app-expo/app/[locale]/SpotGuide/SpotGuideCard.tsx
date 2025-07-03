@@ -236,17 +236,17 @@ const SpotGuideCard = ({
 	/**
 	 * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
 	 */
-       const handleImageError = useCallback(() => {
-               setImageSrc(getFallbackImageUri());
-               logFrontendEvent({
-                       event_name: "imageLoadError",
-                       error_level: "error",
-                       payload: {
-                               spot_id: spot.id,
-                               failed_url: imageUri,
-                       },
-               });
-       }, [imageUri, spot.id]);
+	const handleImageError = useCallback(() => {
+		setImageSrc(getFallbackImageUri());
+		logFrontendEvent({
+			event_name: "imageLoadError",
+			error_level: "error",
+			payload: {
+				spot_id: spot.id,
+				failed_url: imageUri,
+			},
+		});
+	}, [imageUri, spot.id]);
 
 	/**
 	 * 🔄 初期化処理：最初のガイド生成と訪問記録
