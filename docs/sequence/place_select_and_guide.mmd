@@ -1,0 +1,79 @@
+sequenceDiagram
+    actor User
+    participant PA as React Native App
+    participant BL as Backend
+    participant DB as Database
+    participant API as 外部API
+    participant Storage as Cloud Storage
+
+    %% PlaceMapSelect
+    Note over User,PA: PlaceMapSelect 初期表示
+        PA ->> PA: getCurrentLocation()
+    User ->> PA: 🗺️ 地図ピン押下
+        PA ->> API: Google Places Details (New) (placeId)
+        API -->> PA: Place
+        PA ->> PA: setSelectedLocation
+    User ->> PA: 🔎 地名検索
+        PA ->> API: Google Places Autocomplete (New) (searchQuery)
+        API -->> PA: placePrediction[]
+        PA ->> API: Google Places Details (New) (placeId)
+        API -->> PA: Place
+        PA ->> PA: setSelectedLocation
+    User ->> PA: 🎯 「なにこれ」押下
+        PA ->> PA: navigate(PlaceGuide, {placeId, placeName})
+    User ->> PA: 📸 カメラボタンを押下
+        PA ->> PA: navigate(SpotCapture)<br>※暫定※
+
+
+    %% Place
+    Note over User,PA: Place 初期表示
+        PA ->> BL: generateGenerarlPlaceGuide<br>(placeId)
+        BL -->> PA: placeGuides
+        PA ->> BL: GET /listPlaceGuides(placeId)
+        BL -->> PA: placeGuides[]
+        PA ->> BL: GET /listPlaceHighlights(placeId)
+        BL -->> PA: highlights{highlight_guides[]}[]
+
+    User ->> PA: ◀️ 前の写真へ
+        PA ->> PA: handlePrevious
+    User ->> PA: ▶️ 次の写真へ  
+        PA ->> PA: handleNext
+    User ->> PA: 📸 カメラボタンを押下
+        PA ->> PA: showCamera
+    User ->> PA: 📸 新しい写真撮影
+        PA ->> PA: 画像圧縮（1024px / JPEG 70%）
+        PA ->> BL: POST /createHighlight(imageBase64)
+            BL ->> Storage: ☁️ GCS へアップロードし URI を生成
+            BL ->> API: claude-3-haiku-20240307<br>general_highlight_guide_manuscript<br>imageBase64
+            API -->> BL: highlightGuide
+            BL ->> API: Google Cloud Text-to-Speech
+            API -->> BL: 音声ファイル(audio_file)
+            BL ->> Storage: 音声ファイルアップロード
+            Storage -->> BL: audioUri
+            BL ->> DB: INSERT highlights
+            BL ->> DB: INSERT highlight_guides
+        BL -->> PA: highlights{highlight_guides[]}
+
+    %% PlaceGuideCard
+    Note over User,PA: PlaceGuideCard 表示処理
+    User ->> PA: 🗂 カテゴリ選択 
+        PA ->> BL: generatePlaceGuidesFromCategory<br>(placeId, locale, catogory_id)
+        BL -->> PA: place_guides
+    User ->> PA: ✏️ カスタム質問
+        PA ->> BL: generatePlaceGuidesFromQuestion<br>(placeId, locale, question)
+        BL -->> PA: place_guides
+
+
+    %% GuideSection
+    User ->> PA: ▶️ 音声再生
+    PA ->> PA: toggleReaction(playAudio)
+    PA ->> PA: playAudioFromStorage()
+
+    User ->> PA: ❤️ ボタン（いいね）
+    PA ->> PA: toggleReaction(like)
+
+    %% PlaceHighlightCard
+    Note over User,PA: PlaceHighlightCard 表示処理
+    User ->> PA: ✏️ カスタム質問
+        PA ->> BL: generateHighlightGuidesFromQuestion<br>(hightlightId, locale, question)
+        BL -->> PA: highlight_guides
