@@ -1,11 +1,52 @@
 {
 	"Common": {
 		"cancel": "キャンセル",
+		"ok": "OK",
 		"goStore": "アプリストアを開く"
 	},
 	"Error": {
 		"maintenanceMessage": "ただいまメンテナンス中です。",
 		"unsupportedVersion": "古いバージョンのため利用できません。"
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "場所を検索...",
+		"noResultsFound": "検索結果が見つかりませんでした",
+		"searchError": "検索に失敗しました。再度お試しください。",
+		"locationPermissionDenied": "位置情報の利用が拒否されました。設定から有効にしてください。",
+		"locationError": "現在地を取得できませんでした。もう一度お試しください。",
+		"dragToSelect": "地図をドラッグして地点を選択してください",
+		"searchPlaces": "場所を検索",
+		"selectedLocation": "選択した場所",
+		"nanicore": "なにこれ"
+	},
+	"PlaceGuide": {
+		"loading": "場所ガイドを読み込み中...",
+		"takePhoto": "写真を撮る",
+		"askQuestion": "この場所について質問する",
+		"askCustomQuestion": "カスタム質問をする",
+		"customQueryPlaceholder": "この場所について何を知りたいですか？",
+		"generateGuides": "ガイドを生成",
+		"loadError": "ガイドの読み込みに失敗しました。もう一度お試しください。",
+		"generateError": "ガイドの生成に失敗しました。もう一度お試しください。",
+		"photoAdded": "写真が追加されました！新しい画像を探索してください。",
+		"guidesGenerated": "ガイドが正常に生成されました！",
+		"cameraNotReady": "カメラの準備ができていません",
+		"captureError": "撮影に失敗しました。もう一度お試しください。",
+		"cameraPermissionTitle": "カメラへのアクセス",
+		"cameraPermissionMessage": "この場所の写真を撮影するには、カメラへのアクセスを許可してください。",
+		"allowCamera": "カメラを許可",
+		"captureButton": "なにこれ",
+		"custom": "カスタム",
+		"category": {
+			"history": "歴史",
+			"culture": "文化",
+			"architecture": "建築",
+			"food": "食べ物",
+			"nature": "自然",
+			"people": "人々",
+			"cost": "費用",
+			"safety": "安全"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "なにこれ",

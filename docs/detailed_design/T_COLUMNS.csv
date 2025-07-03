@@ -38,9 +38,9 @@
 "spot_visits","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
 "reactions","id","text",true,false,false,true,"","","リアクションの一意なID（UUID）","",false,"",false
 "reactions","user_id","uuid","",false,true,true,"","","リアクションをしたユーザーのID（匿名可）","",false,"",false
-"reactions","target_type","enum ('spot_guides')","",false,true,true,"","","リアクション対象のテーブル（例：spot, spot_guide）","","","",false
+"reactions","target_type","text","",false,true,true,"","","リアクション対象のテーブル（例：spot, spot_guide）","","","",false
 "reactions","target_id","text","",false,true,true,"",true,"対象となるスポットやガイドのID","",false,"",false
-"reactions","action_type","enum ('like', 'disLike', 'regenerate')","",false,true,true,"","","実行されたアクションの種類（例：like, bookmark）","",false,"",false
+"reactions","action_type","text","",false,true,true,"","","実行されたアクションの種類（例：like, bookmark）","",false,"",false
 "reactions","created_at","timestamptz","",false,false,true,"","","リアクション作成日時","","","",false
 "reactions","created_version","text","",false,false,true,"","","実行時のアプリバージョン（バグ分析用途）","",false,"",false
 "reactions","lock_no","integer","",false,false,true,"","","楽観ロック用バージョン番号","","","",false
@@ -90,7 +90,7 @@
 "prompt_usages","id","text",true,false,false,true,"","","利用ログの一意なID（UUID）","","","",false
 "prompt_usages","family_id","text",false,false,false,true,"",true,"使用されたプロンプトファミリーID","","","",false
 "prompt_usages","variant_id","text",false,false,false,true,"",true,"使用されたプロンプトバリエーションID","","","",false
-"prompt_usages","target_type","enum ('spot_guides')",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
+"prompt_usages","target_type","text",false,false,false,true,"",true,"生成対象のモデル種別（例：Postなど）","","","",false
 "prompt_usages","target_id","text",false,false,false,true,"",true,"対象レコードのID","","","",false
 "prompt_usages","generated_text","text",false,false,false,true,"","","実際に生成されたガイド原稿","","","",false
 "prompt_usages","used_prompt_text","text",false,false,false,true,"","","使用されたプロンプトテンプレートのスナップショット","","","",false

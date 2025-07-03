@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Image, StyleSheet, Platform, ImageBackground } from "react-native";
+import { StyleSheet, ImageBackground } from "react-native";
 import { Button } from "react-native-paper";
 import { useRouter } from "expo-router";
 import { useLogger } from "@/hooks/useLogger";
@@ -7,6 +7,7 @@ import i18n from "@/lib/i18n";
 import { PrismaExtSpots } from "@shared/converters/convert_ext_spots";
 import { serializeSpotGuideParams } from "@/utils/navigation";
 import { useLocale } from "@/hooks/useLocale";
+import { getFallbackImageUri } from "@/utils/image";
 
 /**
  * 📍 SpotRecommendCard
@@ -29,9 +30,7 @@ const SpotRecommendCard = React.memo(function SpotRecommendCard({ spot }: { spot
 	 * 📸 画像読み込み失敗時にローカル画像へフォールバック。
 	 */
 	const handleImageError = useCallback(() => {
-		const placeholderImage = require("@/assets/images/no_image_logo.png");
-		const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
-		setImageSrc(resolvedAsset.uri);
+		setImageSrc(getFallbackImageUri());
 		logFrontendEvent({
 			event_name: "imageLoadError",
 			error_level: "error",

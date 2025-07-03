@@ -120,29 +120,6 @@ export const prompt_families_purpose: {
 
 export type prompt_families_purpose = (typeof prompt_families_purpose)[keyof typeof prompt_families_purpose]
 
-
-export const prompt_usages_target_type: {
-  spot_guides: 'spot_guides'
-};
-
-export type prompt_usages_target_type = (typeof prompt_usages_target_type)[keyof typeof prompt_usages_target_type]
-
-
-export const reactions_action_type: {
-  like: 'like',
-  disLike: 'disLike',
-  regenerate: 'regenerate'
-};
-
-export type reactions_action_type = (typeof reactions_action_type)[keyof typeof reactions_action_type]
-
-
-export const reactions_target_type: {
-  spot_guides: 'spot_guides'
-};
-
-export type reactions_target_type = (typeof reactions_target_type)[keyof typeof reactions_target_type]
-
 }
 
 export type backend_event_logs_error_level = $Enums.backend_event_logs_error_level
@@ -160,18 +137,6 @@ export const frontend_event_logs_error_level: typeof $Enums.frontend_event_logs_
 export type prompt_families_purpose = $Enums.prompt_families_purpose
 
 export const prompt_families_purpose: typeof $Enums.prompt_families_purpose
-
-export type prompt_usages_target_type = $Enums.prompt_usages_target_type
-
-export const prompt_usages_target_type: typeof $Enums.prompt_usages_target_type
-
-export type reactions_action_type = $Enums.reactions_action_type
-
-export const reactions_action_type: typeof $Enums.reactions_action_type
-
-export type reactions_target_type = $Enums.reactions_target_type
-
-export const reactions_target_type: typeof $Enums.reactions_target_type
 
 /**
  * ##  Prisma Client ʲˢ
@@ -465,8 +430,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.9.0
-   * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
+   * Prisma Client JS version: 6.11.0
+   * Query Engine version: 9c30299f5a0ea26a96790e13f796dc6094db3173
    */
   export type PrismaVersion = {
     client: string
@@ -8529,7 +8494,7 @@ export namespace Prisma {
     id: string | null
     family_id: string | null
     variant_id: string | null
-    target_type: $Enums.prompt_usages_target_type | null
+    target_type: string | null
     target_id: string | null
     generated_text: string | null
     used_prompt_text: string | null
@@ -8544,7 +8509,7 @@ export namespace Prisma {
     id: string | null
     family_id: string | null
     variant_id: string | null
-    target_type: $Enums.prompt_usages_target_type | null
+    target_type: string | null
     target_id: string | null
     generated_text: string | null
     used_prompt_text: string | null
@@ -8720,7 +8685,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -8829,7 +8794,7 @@ export namespace Prisma {
       id: string
       family_id: string
       variant_id: string
-      target_type: $Enums.prompt_usages_target_type
+      target_type: string
       target_id: string
       generated_text: string
       used_prompt_text: string
@@ -9266,7 +9231,7 @@ export namespace Prisma {
     readonly id: FieldRef<"prompt_usages", 'String'>
     readonly family_id: FieldRef<"prompt_usages", 'String'>
     readonly variant_id: FieldRef<"prompt_usages", 'String'>
-    readonly target_type: FieldRef<"prompt_usages", 'prompt_usages_target_type'>
+    readonly target_type: FieldRef<"prompt_usages", 'String'>
     readonly target_id: FieldRef<"prompt_usages", 'String'>
     readonly generated_text: FieldRef<"prompt_usages", 'String'>
     readonly used_prompt_text: FieldRef<"prompt_usages", 'String'>
@@ -10780,9 +10745,9 @@ export namespace Prisma {
   export type ReactionsMinAggregateOutputType = {
     id: string | null
     user_id: string | null
-    target_type: $Enums.reactions_target_type | null
+    target_type: string | null
     target_id: string | null
-    action_type: $Enums.reactions_action_type | null
+    action_type: string | null
     created_at: Date | null
     created_version: string | null
     lock_no: number | null
@@ -10791,9 +10756,9 @@ export namespace Prisma {
   export type ReactionsMaxAggregateOutputType = {
     id: string | null
     user_id: string | null
-    target_type: $Enums.reactions_target_type | null
+    target_type: string | null
     target_id: string | null
-    action_type: $Enums.reactions_action_type | null
+    action_type: string | null
     created_at: Date | null
     created_version: string | null
     lock_no: number | null
@@ -10943,9 +10908,9 @@ export namespace Prisma {
   export type ReactionsGroupByOutputType = {
     id: string
     user_id: string
-    target_type: $Enums.reactions_target_type
+    target_type: string
     target_id: string
-    action_type: $Enums.reactions_action_type
+    action_type: string
     created_at: Date
     created_version: string
     lock_no: number
@@ -11022,9 +10987,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       user_id: string
-      target_type: $Enums.reactions_target_type
+      target_type: string
       target_id: string
-      action_type: $Enums.reactions_action_type
+      action_type: string
       created_at: Date
       created_version: string
       lock_no: number
@@ -11453,9 +11418,9 @@ export namespace Prisma {
   interface reactionsFieldRefs {
     readonly id: FieldRef<"reactions", 'String'>
     readonly user_id: FieldRef<"reactions", 'String'>
-    readonly target_type: FieldRef<"reactions", 'reactions_target_type'>
+    readonly target_type: FieldRef<"reactions", 'String'>
     readonly target_id: FieldRef<"reactions", 'String'>
-    readonly action_type: FieldRef<"reactions", 'reactions_action_type'>
+    readonly action_type: FieldRef<"reactions", 'String'>
     readonly created_at: FieldRef<"reactions", 'DateTime'>
     readonly created_version: FieldRef<"reactions", 'String'>
     readonly lock_no: FieldRef<"reactions", 'Int'>
@@ -14716,20 +14681,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'prompt_usages_target_type'
-   */
-  export type Enumprompt_usages_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_target_type'>
-    
-
-
-  /**
-   * Reference to a field of type 'prompt_usages_target_type[]'
-   */
-  export type ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'prompt_usages_target_type[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -14740,34 +14691,6 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'reactions_target_type'
-   */
-  export type Enumreactions_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_target_type'>
-    
-
-
-  /**
-   * Reference to a field of type 'reactions_target_type[]'
-   */
-  export type ListEnumreactions_target_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_target_type[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'reactions_action_type'
-   */
-  export type Enumreactions_action_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_action_type'>
-    
-
-
-  /**
-   * Reference to a field of type 'reactions_action_type[]'
-   */
-  export type ListEnumreactions_action_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'reactions_action_type[]'>
     
   /**
    * Deep Input Types
@@ -15201,7 +15124,7 @@ export namespace Prisma {
     id?: StringFilter<"prompt_usages"> | string
     family_id?: StringFilter<"prompt_usages"> | string
     variant_id?: StringFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringFilter<"prompt_usages"> | string
     target_id?: StringFilter<"prompt_usages"> | string
     generated_text?: StringFilter<"prompt_usages"> | string
     used_prompt_text?: StringFilter<"prompt_usages"> | string
@@ -15238,7 +15161,7 @@ export namespace Prisma {
     NOT?: prompt_usagesWhereInput | prompt_usagesWhereInput[]
     family_id?: StringFilter<"prompt_usages"> | string
     variant_id?: StringFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringFilter<"prompt_usages"> | string
     target_id?: StringFilter<"prompt_usages"> | string
     generated_text?: StringFilter<"prompt_usages"> | string
     used_prompt_text?: StringFilter<"prompt_usages"> | string
@@ -15280,7 +15203,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"prompt_usages"> | string
     family_id?: StringWithAggregatesFilter<"prompt_usages"> | string
     variant_id?: StringWithAggregatesFilter<"prompt_usages"> | string
-    target_type?: Enumprompt_usages_target_typeWithAggregatesFilter<"prompt_usages"> | $Enums.prompt_usages_target_type
+    target_type?: StringWithAggregatesFilter<"prompt_usages"> | string
     target_id?: StringWithAggregatesFilter<"prompt_usages"> | string
     generated_text?: StringWithAggregatesFilter<"prompt_usages"> | string
     used_prompt_text?: StringWithAggregatesFilter<"prompt_usages"> | string
@@ -15367,9 +15290,9 @@ export namespace Prisma {
     NOT?: reactionsWhereInput | reactionsWhereInput[]
     id?: StringFilter<"reactions"> | string
     user_id?: UuidFilter<"reactions"> | string
-    target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
+    target_type?: StringFilter<"reactions"> | string
     target_id?: StringFilter<"reactions"> | string
-    action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
+    action_type?: StringFilter<"reactions"> | string
     created_at?: DateTimeFilter<"reactions"> | Date | string
     created_version?: StringFilter<"reactions"> | string
     lock_no?: IntFilter<"reactions"> | number
@@ -15392,9 +15315,9 @@ export namespace Prisma {
     OR?: reactionsWhereInput[]
     NOT?: reactionsWhereInput | reactionsWhereInput[]
     user_id?: UuidFilter<"reactions"> | string
-    target_type?: Enumreactions_target_typeFilter<"reactions"> | $Enums.reactions_target_type
+    target_type?: StringFilter<"reactions"> | string
     target_id?: StringFilter<"reactions"> | string
-    action_type?: Enumreactions_action_typeFilter<"reactions"> | $Enums.reactions_action_type
+    action_type?: StringFilter<"reactions"> | string
     created_at?: DateTimeFilter<"reactions"> | Date | string
     created_version?: StringFilter<"reactions"> | string
     lock_no?: IntFilter<"reactions"> | number
@@ -15422,9 +15345,9 @@ export namespace Prisma {
     NOT?: reactionsScalarWhereWithAggregatesInput | reactionsScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"reactions"> | string
     user_id?: UuidWithAggregatesFilter<"reactions"> | string
-    target_type?: Enumreactions_target_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_target_type
+    target_type?: StringWithAggregatesFilter<"reactions"> | string
     target_id?: StringWithAggregatesFilter<"reactions"> | string
-    action_type?: Enumreactions_action_typeWithAggregatesFilter<"reactions"> | $Enums.reactions_action_type
+    action_type?: StringWithAggregatesFilter<"reactions"> | string
     created_at?: DateTimeWithAggregatesFilter<"reactions"> | Date | string
     created_version?: StringWithAggregatesFilter<"reactions"> | string
     lock_no?: IntWithAggregatesFilter<"reactions"> | number
@@ -16125,7 +16048,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16142,7 +16065,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16159,7 +16082,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16176,7 +16099,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16193,7 +16116,7 @@ export namespace Prisma {
     id: string
     family_id: string
     variant_id: string
-    target_type: $Enums.prompt_usages_target_type
+    target_type: string
     target_id: string
     generated_text: string
     used_prompt_text: string
@@ -16210,7 +16133,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16227,7 +16150,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     family_id?: StringFieldUpdateOperationsInput | string
     variant_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumprompt_usages_target_typeFieldUpdateOperationsInput | $Enums.prompt_usages_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
     generated_text?: StringFieldUpdateOperationsInput | string
     used_prompt_text?: StringFieldUpdateOperationsInput | string
@@ -16312,9 +16235,9 @@ export namespace Prisma {
   export type reactionsCreateInput = {
     id: string
     user_id: string
-    target_type: $Enums.reactions_target_type
+    target_type: string
     target_id: string
-    action_type: $Enums.reactions_action_type
+    action_type: string
     created_at: Date | string
     created_version: string
     lock_no: number
@@ -16323,9 +16246,9 @@ export namespace Prisma {
   export type reactionsUncheckedCreateInput = {
     id: string
     user_id: string
-    target_type: $Enums.reactions_target_type
+    target_type: string
     target_id: string
-    action_type: $Enums.reactions_action_type
+    action_type: string
     created_at: Date | string
     created_version: string
     lock_no: number
@@ -16334,9 +16257,9 @@ export namespace Prisma {
   export type reactionsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
-    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    action_type?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_version?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16345,9 +16268,9 @@ export namespace Prisma {
   export type reactionsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
-    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    action_type?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_version?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16356,9 +16279,9 @@ export namespace Prisma {
   export type reactionsCreateManyInput = {
     id: string
     user_id: string
-    target_type: $Enums.reactions_target_type
+    target_type: string
     target_id: string
-    action_type: $Enums.reactions_action_type
+    action_type: string
     created_at: Date | string
     created_version: string
     lock_no: number
@@ -16367,9 +16290,9 @@ export namespace Prisma {
   export type reactionsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
-    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    action_type?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_version?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -16378,9 +16301,9 @@ export namespace Prisma {
   export type reactionsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    target_type?: Enumreactions_target_typeFieldUpdateOperationsInput | $Enums.reactions_target_type
+    target_type?: StringFieldUpdateOperationsInput | string
     target_id?: StringFieldUpdateOperationsInput | string
-    action_type?: Enumreactions_action_typeFieldUpdateOperationsInput | $Enums.reactions_action_type
+    action_type?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_version?: StringFieldUpdateOperationsInput | string
     lock_no?: IntFieldUpdateOperationsInput | number
@@ -17210,13 +17133,6 @@ export namespace Prisma {
     _max?: NestedEnumprompt_families_purposeFilter<$PrismaModel>
   }
 
-  export type Enumprompt_usages_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-  }
-
   export type DecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -17293,16 +17209,6 @@ export namespace Prisma {
 
   export type prompt_usagesSumOrderByAggregateInput = {
     temperature?: SortOrder
-  }
-
-  export type Enumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17382,20 +17288,6 @@ export namespace Prisma {
     variant_number?: SortOrder
   }
 
-  export type Enumreactions_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_target_typeFilter<$PrismaModel> | $Enums.reactions_target_type
-  }
-
-  export type Enumreactions_action_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_action_typeFilter<$PrismaModel> | $Enums.reactions_action_type
-  }
-
   export type reactionsCountOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
@@ -17435,26 +17327,6 @@ export namespace Prisma {
 
   export type reactionsSumOrderByAggregateInput = {
     lock_no?: SortOrder
-  }
-
-  export type Enumreactions_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumreactions_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumreactions_target_typeFilter<$PrismaModel>
-  }
-
-  export type Enumreactions_action_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_action_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumreactions_action_typeFilter<$PrismaModel>
-    _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
   }
 
   export type StringNullableListFilter<$PrismaModel = never> = {
@@ -17861,10 +17733,6 @@ export namespace Prisma {
     deleteMany?: prompt_variantsScalarWhereInput | prompt_variantsScalarWhereInput[]
   }
 
-  export type Enumprompt_usages_target_typeFieldUpdateOperationsInput = {
-    set?: $Enums.prompt_usages_target_type
-  }
-
   export type NullableDecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string | null
     increment?: Decimal | DecimalJsLike | number | string
@@ -17885,14 +17753,6 @@ export namespace Prisma {
     upsert?: prompt_familiesUpsertWithoutPrompt_variantsInput
     connect?: prompt_familiesWhereUniqueInput
     update?: XOR<XOR<prompt_familiesUpdateToOneWithWhereWithoutPrompt_variantsInput, prompt_familiesUpdateWithoutPrompt_variantsInput>, prompt_familiesUncheckedUpdateWithoutPrompt_variantsInput>
-  }
-
-  export type Enumreactions_target_typeFieldUpdateOperationsInput = {
-    set?: $Enums.reactions_target_type
-  }
-
-  export type Enumreactions_action_typeFieldUpdateOperationsInput = {
-    set?: $Enums.reactions_action_type
   }
 
   export type spot_guidesCreatetagsInput = {
@@ -18322,13 +18182,6 @@ export namespace Prisma {
     _max?: NestedEnumprompt_families_purposeFilter<$PrismaModel>
   }
 
-  export type NestedEnumprompt_usages_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-  }
-
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -18349,16 +18202,6 @@ export namespace Prisma {
     gt?: string | StringFieldRefInput<$PrismaModel>
     gte?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
-  export type NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.prompt_usages_target_type | Enumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.prompt_usages_target_type[] | ListEnumprompt_usages_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumprompt_usages_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.prompt_usages_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumprompt_usages_target_typeFilter<$PrismaModel>
   }
 
   export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18389,40 +18232,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedEnumreactions_target_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_target_typeFilter<$PrismaModel> | $Enums.reactions_target_type
-  }
-
-  export type NestedEnumreactions_action_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_action_typeFilter<$PrismaModel> | $Enums.reactions_action_type
-  }
-
-  export type NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_target_type | Enumreactions_target_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_target_type[] | ListEnumreactions_target_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_target_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_target_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumreactions_target_typeFilter<$PrismaModel>
-    _max?: NestedEnumreactions_target_typeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.reactions_action_type | Enumreactions_action_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.reactions_action_type[] | ListEnumreactions_action_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumreactions_action_typeWithAggregatesFilter<$PrismaModel> | $Enums.reactions_action_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumreactions_action_typeFilter<$PrismaModel>
-    _max?: NestedEnumreactions_action_typeFilter<$PrismaModel>
   }
 
   export type NestedDecimalFilter<$PrismaModel = never> = {

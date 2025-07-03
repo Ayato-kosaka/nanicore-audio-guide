@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.9.0
- * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
+ * Prisma Client JS version: 6.11.0
+ * Query Engine version: 9c30299f5a0ea26a96790e13f796dc6094db3173
  */
 Prisma.prismaVersion = {
-  client: "6.9.0",
-  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
+  client: "6.11.0",
+  engine: "9c30299f5a0ea26a96790e13f796dc6094db3173"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -306,20 +306,6 @@ exports.frontend_event_logs_error_level = exports.$Enums.frontend_event_logs_err
 
 exports.prompt_families_purpose = exports.$Enums.prompt_families_purpose = {
   spot_guide_manuscript: 'spot_guide_manuscript'
-};
-
-exports.prompt_usages_target_type = exports.$Enums.prompt_usages_target_type = {
-  spot_guides: 'spot_guides'
-};
-
-exports.reactions_target_type = exports.$Enums.reactions_target_type = {
-  spot_guides: 'spot_guides'
-};
-
-exports.reactions_action_type = exports.$Enums.reactions_action_type = {
-  like: 'like',
-  disLike: 'disLike',
-  regenerate: 'regenerate'
 };
 
 exports.Prisma.ModelName = {

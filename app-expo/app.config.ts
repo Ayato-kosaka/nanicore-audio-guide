@@ -1,13 +1,13 @@
 import * as dotenv from "dotenv";
 import { ExpoConfig, ConfigContext } from "@expo/config";
-import { version } from "./package.json"
+import { version } from "./package.json";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
 	name: "nanicore-audio-guide",
 	slug: "nanicore",
 	owner: "nanicore-audio-guide",
-	runtimeVersion: version.split('.').slice(0, 2).join('.'), // e.g. "1.1"
+	runtimeVersion: version.split(".").slice(0, 2).join("."), // e.g. "1.1"
 	version,
 	orientation: "portrait",
 	icon: "./assets/images/icon.png",
@@ -24,6 +24,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		infoPlist: {
 			ITSAppUsesNonExemptEncryption: false,
 		},
+		config: {
+			googleMapsApiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+		},
 	},
 	android: {
 		package: "com.nanicore.audio.guide",
@@ -31,6 +34,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		adaptiveIcon: {
 			foregroundImage: "./assets/images/adaptive-icon.png",
 			backgroundColor: "#ffffff",
+		},
+		config: {
+			googleMaps: {
+				apiKey: "process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY",
+			},
 		},
 	},
 	web: {
@@ -52,14 +60,27 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		[
 			"expo-camera",
 			{
-				cameraPermission: "$(PRODUCT_NAME) uses the camera to identify spots and give audio guides."
-			}
+				cameraPermission: "$(PRODUCT_NAME) uses the camera to identify spots and give audio guides.",
+			},
 		],
 		[
 			"expo-image-picker",
 			{
-				photosPermission: "Used to save captured spot photos to your library."
-			}
+				photosPermission: "Used to save captured spot photos to your library.",
+			},
+		],
+		[
+			"expo-location",
+			{
+				locationAlwaysAndWhenInUsePermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationAlwaysPermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				locationWhenInUsePermission:
+					"Allow $(PRODUCT_NAME) to use your location to find nearby places and provide location-based guides.",
+				isIosBackgroundLocationEnabled: false,
+				isAndroidBackgroundLocationEnabled: false,
+			},
 		],
 		[
 			"react-native-google-mobile-ads",
@@ -133,6 +154,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		EXPO_PUBLIC_APP_STORE_URL: process.env.EXPO_PUBLIC_APP_STORE_URL,
 		EXPO_PUBLIC_PLAY_STORE_URL: process.env.EXPO_PUBLIC_PLAY_STORE_URL,
 		EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL: process.env.EXPO_PUBLIC_CLOUD_FUNCTION_BASE_URL,
+		EXPO_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
 		EXPO_PUBLIC_SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL,
 		EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
 		EXPO_PUBLIC_DB_SCHEMA: process.env.EXPO_PUBLIC_DB_SCHEMA,

@@ -13,8 +13,6 @@ import { getRemoteConfigValue } from "../lib/remoteConfig";
 import { randomUUID } from "crypto";
 import { convertPrismaToSupabase_SpotGuides } from "../../../../shared/converters/convert_spot_guides";
 
-const DEFAULT_SPOT_GUIDE_CREATED_USER_ID = "00000000-0000-0000-0000-000000000000";
-
 /**
  * 🧠 Claude × TTS を用いて、観光ガイドを生成・保存する Cloud Function。
  *
@@ -24,12 +22,13 @@ const DEFAULT_SPOT_GUIDE_CREATED_USER_ID = "00000000-0000-0000-0000-000000000000
  */
 export const generateSpotGuide = withValidatedAuthHandler(
 	generateSpotGuideRequestSchema,
-	async function withValidatedAuthHandler({ req, res, input, requestId, userId, functionName }) {
+	async function generateSpotGuide({ req, res, input, requestId, userId, functionName }) {
 		const { extSpot, languageTag } = input;
 		const spotGuideId = randomUUID();
 
 		// 📦 Remote Config より対象バージョン上限を取得
 		const maxVersionMajor = parseInt(await getRemoteConfigValue("v1_spot_guides_max_version_major"));
+		const defaultSpotGuideCreatedUserId = await getRemoteConfigValue("v1_spot_guides_default_created_user_id");
 
 		// ✍️ Claude によるコンテンツ生成
 		const {
@@ -83,7 +82,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
 				min_version_major: 1,
 				max_version_major: maxVersionMajor,
 				// 【思想】登録未済のスポットでは、システムがその場で生成・登録する #17
-				created_user: DEFAULT_SPOT_GUIDE_CREATED_USER_ID,
+				created_user: defaultSpotGuideCreatedUserId,
 				created_at: new Date(),
 				created_request_id: requestId,
 				lock_no: 0,
@@ -103,7 +102,7 @@ export const generateSpotGuide = withValidatedAuthHandler(
 				input_data: promptInput,
 				llm_model: llmModel,
 				temperature,
-				generated_user: DEFAULT_SPOT_GUIDE_CREATED_USER_ID,
+				generated_user: defaultSpotGuideCreatedUserId,
 				created_at: new Date(),
 				created_request_id: requestId,
 			},

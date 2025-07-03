@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { View, Image, StyleSheet, Platform, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
 import { Audio, InterruptionModeIOS } from "expo-av";
 import { IconButton } from "react-native-paper";
@@ -7,6 +7,7 @@ import { useWithLoading } from "@/hooks/useWithLoading";
 import { useCloudFunction } from "@/hooks/useCloudFunction";
 import { useLogger } from "@/hooks/useLogger";
 import { supabase } from "@/lib/supabase";
+import { toggleReaction } from "@/lib/reactions";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/contexts/AuthProvider";
 import i18n from "@/lib/i18n";
@@ -20,6 +21,7 @@ import type { SupabaseSpotVisits } from "@shared/converters/convert_spot_visits"
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useSnackbar } from "@/contexts/SnackbarProvider";
+import { getFallbackImageUri } from "@/utils/image";
 
 /**
  * 🧭 SpotGuideCard
@@ -124,7 +126,7 @@ const SpotGuideCard = ({
 	 * - Supabase の reactions テーブルを更新
 	 */
 	const handleToggleLike = useCallback(async () => {
-		if (!user?.id || !currentGuide?.id) return;
+		if (!currentGuide?.id) return;
 
 		const guideId = currentGuide.id;
 		const willLike = !isLiked;
@@ -137,28 +139,12 @@ const SpotGuideCard = ({
 		});
 
 		try {
-			if (willLike) {
-				const { error } = await supabase.from("reactions").insert({
-					id: uuidv4(),
-					user_id: user.id,
-					target_type: "spot_guides",
-					target_id: guideId,
-					action_type: "like",
-					created_at: new Date().toISOString(),
-					created_version: Env.APP_VERSION,
-					lock_no: 0,
-				});
-				if (error) throw new Error(error.message);
-			} else {
-				const { error } = await supabase
-					.from("reactions")
-					.delete()
-					.eq("user_id", user.id)
-					.eq("target_type", "spot_guides")
-					.eq("target_id", guideId)
-					.eq("action_type", "like");
-				if (error) throw new Error(error.message);
-			}
+			await toggleReaction({
+				willReact: willLike,
+				target_type: "spot_guides",
+				target_id: guideId,
+				action_type: "like",
+			});
 		} catch (err: any) {
 			logFrontendEvent({
 				event_name: "toggleLikeFailed",
@@ -170,7 +156,7 @@ const SpotGuideCard = ({
 				},
 			});
 		}
-	}, [currentGuide?.id, isLiked, user?.id]);
+	}, [currentGuide?.id, isLiked]);
 
 	/**
 	 * 🪄 新しいガイドを生成してリストに追加する。
@@ -251,9 +237,7 @@ const SpotGuideCard = ({
 	 * 📸 画像読み込み失敗時にフォールバック画像へ切り替える。
 	 */
 	const handleImageError = useCallback(() => {
-		const placeholderImage = require("@/assets/images/no_image_logo.png");
-		const resolvedAsset = Platform.OS === "web" ? placeholderImage : Image.resolveAssetSource(placeholderImage);
-		setImageSrc(resolvedAsset.uri);
+		setImageSrc(getFallbackImageUri());
 		logFrontendEvent({
 			event_name: "imageLoadError",
 			error_level: "error",

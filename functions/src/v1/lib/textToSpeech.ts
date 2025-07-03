@@ -70,7 +70,7 @@ export const synthesizeTextToSpeech = async ({
 			api_name: "GoogleTextToSpeech",
 			endpoint: "synthesizeSpeech",
 			request_payload: JSON.stringify(requestPayload),
-			response_payload,
+			response_payload: response_payload.audioContent ? "音声データ" : "なし",
 			status_code,
 			response_time_ms,
 			user_id: userId,
