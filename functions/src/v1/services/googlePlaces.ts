@@ -17,18 +17,11 @@ export const fetchAutocompletePredictions = async (
 	requestId: string,
 	userId: string,
 ): Promise<google.maps.places.v1.AutocompletePlacesResponse.Suggestion.IPlacePrediction[]> => {
-	const start = Date.now();
-	let status = 0;
-	let payload: any = null;
 	let errorMessage: string | null = null;
 	try {
 		const [response] = await client.autocompletePlaces({ input, languageCode });
-		payload = response;
-		status = 200;
 		return response.suggestions?.map((s) => s.placePrediction).filter((p) => !!p) ?? [];
 	} catch (error: any) {
-		errorMessage = error.message;
-		status = error.code || 500;
 		throw new Error(`Places autocomplete failed: ${errorMessage}`);
 	}
 };
