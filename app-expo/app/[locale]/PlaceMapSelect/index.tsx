@@ -378,16 +378,17 @@ export default function MapScreen() {
 	return (
 		<View style={styles.container}>
 			{/* Map with minimal styling */}
-			<MapView
-				ref={mapRef}
-				style={styles.map}
-				region={region}
-				onRegionChangeComplete={setRegion}
-				onPoiClick={handlePoiPress}
-				showsUserLocation={true}
-				showsMyLocationButton={false}
-				customMapStyle={mapStyle}
-				testID="map-view">
+                        <MapView
+                                ref={mapRef}
+                                style={styles.map}
+                                region={region}
+                                onRegionChangeComplete={setRegion}
+                                onPoiClick={handlePoiPress}
+                                language={locale}
+                                showsUserLocation={true}
+                                showsMyLocationButton={false}
+                                customMapStyle={mapStyle}
+                                testID="map-view">
 				{selectedLocation && (
 					<Marker
 						coordinate={{
