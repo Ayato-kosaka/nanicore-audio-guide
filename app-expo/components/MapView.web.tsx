@@ -44,7 +44,10 @@ export const Marker: React.FC<MarkerProps> = ({ coordinate, title, onPress, test
 
 /* ─────────────────────────────── MapView ──────────────────────────────── */
 const MapView = forwardRef<MapViewHandle | null, MapViewProps>(
-	({ style, region, onRegionChangeComplete, onPress, onPoiClick, children }, ref) => {
+        (
+                { style, region, onRegionChangeComplete, onPress, onPoiClick, language, children },
+                ref,
+        ) => {
 		/* Google Maps 本体を保持（外部には晒さない） */
 		const innerMapRef = useRef<google.maps.Map | null>(null);
 
@@ -123,8 +126,8 @@ const MapView = forwardRef<MapViewHandle | null, MapViewProps>(
 			...(typeof style === "object" && style !== null ? (style as React.CSSProperties) : {}),
 		};
 
-		return (
-			<LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_WEB_API_KEY}>
+                return (
+                        <LoadScript googleMapsApiKey={Env.GOOGLE_MAPS_WEB_API_KEY} language={language}>
 				<GoogleMap
 					onLoad={handleLoad}
 					center={{ lat: region?.latitude ?? 0, lng: region?.longitude ?? 0 }}
