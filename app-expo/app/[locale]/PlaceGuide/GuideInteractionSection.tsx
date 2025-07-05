@@ -82,25 +82,25 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 			});
 			const { sound: newSound } = await Audio.Sound.createAsync({ uri: guide.audioUrl }, { shouldPlay: true });
 			setSound(newSound);
-                        newSound.setOnPlaybackStatusUpdate(async (status) => {
-                                if (!status.isLoaded) {
-                                        setIsPlaying(false);
-                                        setSound(null);
-                                        return;
-                                }
-                                if (status.didJustFinish) {
-                                        setIsPlaying(false);
-                                        await newSound.unloadAsync();
-                                        setSound(null);
-                                        try {
-                                                await insertReaction({
-                                                        target_type: targetType,
-                                                        target_id: guide.id,
-                                                        action_type: "finish",
-                                                });
-                                        } catch {}
-                                }
-                        });
+			newSound.setOnPlaybackStatusUpdate(async (status) => {
+				if (!status.isLoaded) {
+					setIsPlaying(false);
+					setSound(null);
+					return;
+				}
+				if (status.didJustFinish) {
+					setIsPlaying(false);
+					await newSound.unloadAsync();
+					setSound(null);
+					try {
+						await insertReaction({
+							target_type: targetType,
+							target_id: guide.id,
+							action_type: "finish",
+						});
+					} catch {}
+				}
+			});
 		} catch {
 			setIsPlaying(false);
 		}
