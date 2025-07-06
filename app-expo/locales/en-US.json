@@ -38,6 +38,7 @@
 		"captureButton": "What's this?",
 		"custom": "Custom",
 		"category": {
+			"must_do": "Must Do",
 			"history": "History",
 			"culture": "Culture",
 			"architecture": "Architecture",

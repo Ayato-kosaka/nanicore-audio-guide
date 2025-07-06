@@ -30,6 +30,12 @@ export type PlaceGuideCardProps = {
 
 export const GUIDE_CATEGORIES = [
 	{
+		id: "must_do",
+		label: "Must Do",
+		description: "must-do activities at the tourist spot",
+		icon: "check-circle-outline",
+	},
+	{
 		id: "history",
 		label: "History",
 		description: "historical background of the place",

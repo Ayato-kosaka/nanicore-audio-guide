@@ -38,6 +38,7 @@
 		"captureButton": "なにこれ",
 		"custom": "カスタム",
 		"category": {
+			"must_do": "To Do",
 			"history": "歴史",
 			"culture": "文化",
 			"architecture": "建築",
