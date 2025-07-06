@@ -83,13 +83,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			},
 		],
 		[
-			"react-native-maps",
-			{
-				iosGoogleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_IOS_API_KEY,
-				androidGoogleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_API_KEY,
-			},
-		],
-		[
 			"react-native-google-mobile-ads",
 			{
 				androidAppId: "ca-app-pub-8992436220024710~4233642482",
@@ -144,7 +137,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			"expo-build-properties",
 			{
 				ios: {
-					useFrameworks: "dynamic",
+					useFrameworks: "static",
 				},
 			},
 		],
