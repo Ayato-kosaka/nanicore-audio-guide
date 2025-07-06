@@ -378,17 +378,17 @@ export default function MapScreen() {
 	return (
 		<View style={styles.container}>
 			{/* Map with minimal styling */}
-                        <MapView
-                                ref={mapRef}
-                                style={styles.map}
-                                region={region}
-                                onRegionChangeComplete={setRegion}
-                                onPoiClick={handlePoiPress}
-                                language={locale}
-                                showsUserLocation={true}
-                                showsMyLocationButton={false}
-                                customMapStyle={mapStyle}
-                                testID="map-view">
+			<MapView
+				ref={mapRef}
+				style={styles.map}
+				region={region}
+				onRegionChangeComplete={setRegion}
+				onPoiClick={handlePoiPress}
+				language={locale}
+				showsUserLocation={true}
+				showsMyLocationButton={false}
+				customMapStyle={mapStyle}
+				testID="map-view">
 				{selectedLocation && (
 					<Marker
 						coordinate={{
@@ -408,10 +408,10 @@ export default function MapScreen() {
 			)}
 
 			{/* Bottom Container */}
-			<View style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
+			<View pointerEvents="box-none" style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
 				{/* FAB Container*/}
 				{!isSearchExpanded && (
-					<View style={styles.fabContainer}>
+					<View pointerEvents="box-none" style={styles.fabContainer}>
 						<IconButton
 							icon="crosshairs-gps"
 							size={32}
