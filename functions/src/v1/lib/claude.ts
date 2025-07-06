@@ -13,15 +13,15 @@ interface ClaudeMessageResponse {
 		type: "text";
 		text: string;
 		citations:
-			| {
-					type: "char_location";
-					cited_text: string;
-					document_index: number; // x > 0
-					document_title: string | null;
-					start_char_index: number; // x > 0
-					end_char_index: number;
-			  }[]
-			| null;
+		| {
+			type: "char_location";
+			cited_text: string;
+			document_index: number; // x > 0
+			document_title: string | null;
+			start_char_index: number; // x > 0
+			end_char_index: number;
+		}[]
+		| null;
 	}[];
 	stop_reason: "end_turn" | "max_tokens" | "stop_sequence" | "tool_use";
 	stop_sequence: string | null;
@@ -102,16 +102,16 @@ export const callClaudeWithPrompt = async ({
 
 	const userContent = imageBase64
 		? [
-				{
-					type: "image",
-					source: {
-						type: "base64",
-						media_type: mimeType,
-						data: imageBase64.replace(/^data:[^,]+,/, ""),
-					},
+			{
+				type: "image",
+				source: {
+					type: "base64",
+					media_type: mimeType,
+					data: imageBase64.replace(/^data:[^,]+,/, ""),
 				},
-				{ type: "text", text: userText },
-			]
+			},
+			{ type: "text", text: userText },
+		]
 		: userText;
 
 	const requestPayload = {
@@ -281,7 +281,6 @@ export const generateGeneratePlaceGuideContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -343,7 +342,6 @@ export const generatePlaceGuideFromCategoryContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -407,7 +405,6 @@ export const generatePlaceGuideFromQuestionContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -475,7 +472,6 @@ export const generateHighlightGuideFromQuestionContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -548,7 +544,6 @@ export const generateGeneralHighlightGuideContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
