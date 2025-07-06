@@ -30,21 +30,15 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onD
 		[],
 	);
 
-	const handleChangeText = useCallback(
-		(text: string) => {
-			// 入力途中で上限を超えた分を即座に切り捨てる
-			let len = 0;
-			let result = "";
-			for (const ch of Array.from(text)) {
-				const charLen = /[\u0020-\u007E]/.test(ch) ? 1 : 2;
-				if (len + charLen > MAX_VISUAL_LENGTH) break;
-				result += ch;
-				len += charLen;
-			}
-			setQuery(result);
-		},
-		[setQuery],
-	);
+       const handleChangeText = useCallback(
+               (text: string) => {
+                       // 変換途中の文字列を保持できるよう、上限を超えた場合は変更しない
+                       if (getVisualLength(text) <= MAX_VISUAL_LENGTH) {
+                               setQuery(text);
+                       }
+               },
+               [setQuery, getVisualLength],
+       );
 
 	// カウンター表示用に見た目の文字数をメモ化して保持
 	const queryLength = useMemo(() => getVisualLength(query), [query, getVisualLength]);
