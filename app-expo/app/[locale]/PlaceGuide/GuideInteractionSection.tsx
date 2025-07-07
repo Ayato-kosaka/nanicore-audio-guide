@@ -1,8 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, IconButton } from "react-native-paper";
-import { Audio } from "expo-av";
+import { Audio, InterruptionModeIOS } from "expo-av";
 import { toggleReaction, insertReaction } from "@/lib/reactions";
+import { useLogger } from "@/hooks/useLogger";
+import { useSnackbar } from "@/contexts/SnackbarProvider";
+import i18n from "@/lib/i18n";
 
 /**
  * 📚 GuideInteractionSection
@@ -30,9 +33,12 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 	isFirst = false,
 	targetType,
 }) => {
-	const [isLiked, setIsLiked] = useState(false);
-	const [isPlaying, setIsPlaying] = useState(false);
-	const [sound, setSound] = useState<Audio.Sound | null>(null);
+       const [isLiked, setIsLiked] = useState(false);
+       const [isPlaying, setIsPlaying] = useState(false);
+       const [sound, setSound] = useState<Audio.Sound | null>(null);
+
+       const { logFrontendEvent } = useLogger();
+       const { showSnackbar } = useSnackbar();
 
 	/**
 	 * 💖 いいねボタンのトグル
@@ -40,17 +46,22 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 	const handleLikePress = async () => {
 		const willLike = !isLiked;
 		setIsLiked(willLike);
-		try {
-			await toggleReaction({
-				willReact: willLike,
-				target_type: targetType,
-				target_id: guide.id,
-				action_type: "like",
-			});
-		} catch {
-			// ignore
-		}
-	};
+               try {
+                       await toggleReaction({
+                               willReact: willLike,
+                               target_type: targetType,
+                               target_id: guide.id,
+                               action_type: "like",
+                       });
+               } catch (err: any) {
+                       logFrontendEvent({
+                               event_name: "toggleLikeFailed",
+                               error_level: "error",
+                               payload: { error: err.message },
+                       });
+                       showSnackbar(i18n.t("PlaceGuide.reactionError"));
+               }
+       };
 
 	/**
 	 * ▶️ 音声再生のトグル
@@ -59,17 +70,24 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
 		if (isPlaying) {
 			setIsPlaying(false);
 			if (sound) {
-				try {
-					await sound.stopAsync();
-					await sound.unloadAsync();
-					await insertReaction({
-						target_type: targetType,
-						target_id: guide.id,
-						action_type: "pause",
-					});
-				} catch {}
-				setSound(null);
-			}
+                               try {
+                                       await sound.stopAsync();
+                                       await sound.unloadAsync();
+                                       await insertReaction({
+                                               target_type: targetType,
+                                               target_id: guide.id,
+                                               action_type: "pause",
+                                       });
+                               } catch (err: any) {
+                                       logFrontendEvent({
+                                               event_name: "pauseAudioFailed",
+                                               error_level: "error",
+                                               payload: { error: err.message },
+                                       });
+                                       showSnackbar(i18n.t("PlaceGuide.audioError"));
+                               }
+                               setSound(null);
+                       }
 			return;
 		}
 		if (!guide.audioUrl) return;
@@ -90,26 +108,53 @@ export const GuideInteractionSection: React.FC<GuideInteractionSectionProps> = (
                                 }
                                 if (status.didJustFinish) {
                                         setIsPlaying(false);
-                                        await newSound.unloadAsync();
-                                        setSound(null);
-                                        try {
-                                                await insertReaction({
-                                                        target_type: targetType,
-                                                        target_id: guide.id,
-                                                        action_type: "finish",
-                                                });
-                                        } catch {}
-                                }
-                        });
-		} catch {
-			setIsPlaying(false);
-		}
-	}, [isPlaying, guide.audioUrl, sound]);
+                                       await newSound.unloadAsync();
+                                       setSound(null);
+                                       try {
+                                               await insertReaction({
+                                                       target_type: targetType,
+                                                       target_id: guide.id,
+                                                       action_type: "finish",
+                                               });
+                                       } catch (err: any) {
+                                               logFrontendEvent({
+                                                       event_name: "finishAudioReactionFailed",
+                                                       error_level: "error",
+                                                       payload: { error: err.message },
+                                               });
+                                               showSnackbar(i18n.t("PlaceGuide.audioError"));
+                                       }
+                               }
+                       });
+               } catch (err: any) {
+                       setIsPlaying(false);
+                       logFrontendEvent({
+                               event_name: "playAudioFailed",
+                               error_level: "error",
+                               payload: { error: err.message },
+                       });
+                       showSnackbar(i18n.t("PlaceGuide.audioError"));
+               }
+       }, [isPlaying, guide.audioUrl, sound]);
 
-	useEffect(() => {
-		return () => {
-			sound?.unloadAsync();
-		};
+        useEffect(() => {
+               Audio.setAudioModeAsync({
+                       playsInSilentModeIOS: true,
+                       interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+               }).catch((err) => {
+                       logFrontendEvent({
+                               event_name: "audioModeSetupFailed",
+                               error_level: "error",
+                               payload: { error: err.message },
+                       });
+                       showSnackbar(i18n.t("PlaceGuide.audioError"));
+               });
+       }, []);
+
+        useEffect(() => {
+                return () => {
+                        sound?.unloadAsync();
+                };
 	}, [sound]);
 
 	return (
