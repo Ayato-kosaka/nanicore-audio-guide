@@ -30,15 +30,15 @@ export const CustomQueryModal: React.FC<CustomQueryModalProps> = ({ visible, onD
 		[],
 	);
 
-       const handleChangeText = useCallback(
-               (text: string) => {
-                       // 変換途中の文字列を保持できるよう、上限を超えた場合は変更しない
-                       if (getVisualLength(text) <= MAX_VISUAL_LENGTH) {
-                               setQuery(text);
-                       }
-               },
-               [setQuery, getVisualLength],
-       );
+	const handleChangeText = useCallback(
+		(text: string) => {
+			// 変換途中の文字列を保持できるよう、上限を超えた場合は変更しない
+			if (getVisualLength(text) <= MAX_VISUAL_LENGTH) {
+				setQuery(text);
+			}
+		},
+		[setQuery, getVisualLength],
+	);
 
 	// カウンター表示用に見た目の文字数をメモ化して保持
 	const queryLength = useMemo(() => getVisualLength(query), [query, getVisualLength]);
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 		margin: 20,
 		borderRadius: 20,
 		padding: 24,
-		maxHeight: "80%",
 		elevation: 8,
 		shadowColor: "#000",
 		shadowOpacity: 0.15,
