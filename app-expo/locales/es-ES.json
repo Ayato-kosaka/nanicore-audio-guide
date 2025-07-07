@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "Cancelar",
+		"ok": "Aceptar",
 		"goStore": "Abrir App Store"
 	},
 	"Error": {
 		"maintenanceMessage": "Actualmente estamos en mantenimiento.",
 		"unsupportedVersion": "Esta versión ya no es compatible."
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "Buscar un lugar...",
+		"noResultsFound": "No se encontraron resultados para tu búsqueda",
+		"searchError": "La búsqueda falló. Por favor, inténtalo de nuevo.",
+		"locationPermissionDenied": "Acceso a la ubicación denegado. Por favor, actívalo en la configuración.",
+		"locationError": "No se pudo determinar tu ubicación. Por favor, inténtalo de nuevo.",
+		"dragToSelect": "Arrastra el mapa para seleccionar una ubicación",
+		"searchPlaces": "Buscar lugares",
+		"selectedLocation": "Ubicación seleccionada",
+		"nanicore": "¿Qué es esto?"
+	},
+	"PlaceGuide": {
+		"loading": "Cargando guía del lugar...",
+		"takePhoto": "Tomar foto",
+		"askQuestion": "Preguntar sobre este lugar",
+		"askCustomQuestion": "Hacer una pregunta personalizada",
+		"customQueryPlaceholder": "¿Qué te gustaría saber de este lugar?",
+		"generateGuides": "Generar guía",
+		"loadError": "Lo sentimos, no pudimos cargar las guías. Por favor, inténtalo de nuevo.",
+		"generateError": "Lo sentimos, no pudimos generar la guía. Por favor, inténtalo de nuevo.",
+		"reactionError": "No se pudo actualizar el estado de Me gusta. Por favor, inténtalo de nuevo.",
+		"audioError": "Error al reproducir el audio. Por favor, inténtalo de nuevo.",
+		"photoAdded": "¡Foto agregada! Explora la nueva imagen.",
+		"guidesGenerated": "¡Guía generada correctamente!",
+		"cameraNotReady": "La cámara no está lista",
+		"captureError": "No se pudo capturar la foto. Por favor, inténtalo de nuevo.",
+		"cameraPermissionTitle": "Acceso a la cámara",
+		"cameraPermissionMessage": "Permite el acceso a la cámara para tomar fotos de este lugar.",
+		"allowCamera": "Permitir cámara",
+		"captureButton": "¿Qué es esto?",
+		"custom": "Personalizado",
+		"category": {
+			"must_do": "Imprescindible",
+			"history": "Historia",
+			"culture": "Cultura",
+			"architecture": "Arquitectura",
+			"food": "Comida",
+			"nature": "Naturaleza",
+			"people": "Personas",
+			"cost": "Costo",
+			"safety": "Seguridad"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "¿Qué es esto?",

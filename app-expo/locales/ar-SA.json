@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "إلغاء",
+		"ok": "موافق",
 		"goStore": "افتح متجر التطبيقات"
 	},
 	"Error": {
 		"maintenanceMessage": "نحن حالياً نقوم بأعمال صيانة.",
-		"unsupportedVersion": "لا يمكن استخدام هذا الإصدار القديم."
+		"unsupportedVersion": "هذا الإصدار لم يعد مدعومًا."
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "ابحث عن مكان...",
+		"noResultsFound": "لم يتم العثور على نتائج لبحثك",
+		"searchError": "فشل البحث. الرجاء المحاولة مرة أخرى.",
+		"locationPermissionDenied": "تم رفض الوصول إلى الموقع. الرجاء تمكينه من الإعدادات.",
+		"locationError": "تعذر تحديد موقعك. الرجاء المحاولة مرة أخرى.",
+		"dragToSelect": "اسحب الخريطة لتحديد موقع",
+		"searchPlaces": "ابحث عن أماكن",
+		"selectedLocation": "الموقع المختار",
+		"nanicore": "ما هذا؟"
+	},
+	"PlaceGuide": {
+		"loading": "جارٍ تحميل دليل المكان...",
+		"takePhoto": "التقاط صورة",
+		"askQuestion": "اسأل عن هذا المكان",
+		"askCustomQuestion": "اطرح سؤالاً مخصصًا",
+		"customQueryPlaceholder": "ماذا تريد أن تعرف عن هذا المكان؟",
+		"generateGuides": "إنشاء الدليل",
+		"loadError": "عذرًا، لم نتمكن من تحميل الأدلة. الرجاء المحاولة مرة أخرى.",
+		"generateError": "عذرًا، لم نتمكن من إنشاء الدليل. الرجاء المحاولة مرة أخرى.",
+		"reactionError": "فشل تحديث حالة الإعجاب. الرجاء المحاولة مرة أخرى.",
+		"audioError": "فشل تشغيل الصوت. الرجاء المحاولة مرة أخرى.",
+		"photoAdded": "تمت إضافة الصورة! استكشف الصورة الجديدة.",
+		"guidesGenerated": "تم إنشاء الدليل بنجاح!",
+		"cameraNotReady": "الكاميرا غير جاهزة",
+		"captureError": "فشل التقاط الصورة. الرجاء المحاولة مرة أخرى.",
+		"cameraPermissionTitle": "الوصول إلى الكاميرا",
+		"cameraPermissionMessage": "يرجى السماح بالوصول إلى الكاميرا لالتقاط صور لهذا الموقع.",
+		"allowCamera": "السماح بالكاميرا",
+		"captureButton": "ما هذا؟",
+		"custom": "مخصص",
+		"category": {
+			"must_do": "يجب القيام به",
+			"history": "التاريخ",
+			"culture": "الثقافة",
+			"architecture": "العمارة",
+			"food": "الطعام",
+			"nature": "الطبيعة",
+			"people": "الأشخاص",
+			"cost": "التكلفة",
+			"safety": "السلامة"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "ما هذا؟",

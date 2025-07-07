@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { IconButton, Text } from "react-native-paper";
+import { IconButton, Portal, Text } from "react-native-paper";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -23,12 +23,18 @@ export type PlaceGuideCardProps = {
 	imageUri: string;
 	guides: PlaceGuide[];
 	placeName: string;
-	onCategorySelect: (categoryId: string) => Promise<void>;
+	onCategorySelect: (category: GuideCategory) => Promise<void>;
 	onCustomQuestion: (query: string) => Promise<void>;
 	onBackPress: () => void;
 };
 
 export const GUIDE_CATEGORIES = [
+	{
+		id: "must_do",
+		label: "Must Do",
+		description: "must-do activities at the tourist spot",
+		icon: "check-circle-outline",
+	},
 	{
 		id: "history",
 		label: "History",
@@ -79,6 +85,8 @@ export const GUIDE_CATEGORIES = [
 	// },
 ];
 
+export type GuideCategory = (typeof GUIDE_CATEGORIES)[number];
+
 /**
  * 🏞️ PlaceGuideCard
  *
@@ -96,7 +104,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
 
-	const [availableCategories, setAvailableCategories] = useState(GUIDE_CATEGORIES);
+	const [availableCategories, setAvailableCategories] = useState<GuideCategory[]>(GUIDE_CATEGORIES);
 	const [showCustomModal, setShowCustomModal] = useState(false);
 	const [imageSrc, setImageSrc] = useState(imageUri);
 	const guidesScrollViewRef = useRef<ScrollView>(null);
@@ -110,17 +118,14 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	}, [guides.length]);
 
 	const handleCategoryPress = useCallback(
-		withLoading(async (categoryId: string) => {
-			const category = availableCategories.find((c) => c.id === categoryId);
-			if (!category) return;
-
-			await onCategorySelect(categoryId);
-			setAvailableCategories((prev) => prev.filter((c) => c.id !== categoryId));
+		withLoading(async (category: GuideCategory) => {
+			await onCategorySelect(category);
+			setAvailableCategories((prev) => prev.filter((c) => c.id !== category.id));
 
 			logFrontendEvent({
 				event_name: "placeGuideCategoryPressed",
 				error_level: "info",
-				payload: { categoryId },
+				payload: { category: category.id, place_name: placeName },
 			});
 		}),
 		[availableCategories, onCategorySelect, logFrontendEvent],
@@ -180,7 +185,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 							icon={category.icon}
 							size={20}
 							iconColor="white"
-							onPress={() => handleCategoryPress(category.id)}
+							onPress={() => handleCategoryPress(category)}
 							style={styles.categoryButton}
 							disabled={isLoading}
 							testID={`category-button-${category.id}`}
@@ -190,12 +195,14 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				))}
 			</View>
 
-			<CustomQueryModal
-				visible={showCustomModal}
-				onDismiss={() => setShowCustomModal(false)}
-				onSubmit={handleCustomQuery}
-				loading={isLoading}
-			/>
+			<Portal>
+				<CustomQueryModal
+					visible={showCustomModal}
+					onDismiss={() => setShowCustomModal(false)}
+					onSubmit={handleCustomQuery}
+					loading={isLoading}
+				/>
+			</Portal>
 		</GuideBaseCard>
 	);
 };

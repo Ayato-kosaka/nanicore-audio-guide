@@ -281,7 +281,6 @@ export const generateGeneratePlaceGuideContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -343,7 +342,6 @@ export const generatePlaceGuideFromCategoryContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -407,7 +405,6 @@ export const generatePlaceGuideFromQuestionContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -475,7 +472,6 @@ export const generateHighlightGuideFromQuestionContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;
@@ -548,7 +544,6 @@ export const generateGeneralHighlightGuideContent = async (
 	const outputHint = `
 Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
-All newline characters in the "manuscript" field must be escaped as \\n.
 {
   title: string;
   manuscript: string;

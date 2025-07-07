@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "रद्द करें",
+		"ok": "ओके",
 		"goStore": "ऐप स्टोर खोलें"
 	},
 	"Error": {
 		"maintenanceMessage": "हम वर्तमान में रखरखाव कर रहे हैं।",
 		"unsupportedVersion": "यह संस्करण अब समर्थित नहीं है।"
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "स्थान खोजें...",
+		"noResultsFound": "आपकी खोज के लिए कोई परिणाम नहीं मिला",
+		"searchError": "खोज विफल हुई। कृपया पुनः प्रयास करें।",
+		"locationPermissionDenied": "स्थान की अनुमति अस्वीकृत। कृपया सेटिंग्स में सक्षम करें।",
+		"locationError": "आपका स्थान निर्धारित नहीं हो पाया। कृपया फिर से प्रयास करें।",
+		"dragToSelect": "स्थान चुनने के लिए मानचित्र खींचें",
+		"searchPlaces": "स्थानों की खोज करें",
+		"selectedLocation": "चयनित स्थान",
+		"nanicore": "यह क्या है"
+	},
+	"PlaceGuide": {
+		"loading": "स्थान गाइड लोड हो रहा है...",
+		"takePhoto": "फोटो लें",
+		"askQuestion": "इस स्थान के बारे में पूछें",
+		"askCustomQuestion": "एक कस्टम प्रश्न पूछें",
+		"customQueryPlaceholder": "आप इस स्थान के बारे में क्या जानना चाहते हैं?",
+		"generateGuides": "गाइड जनरेट करें",
+		"loadError": "क्षमा करें, हम गाइड लोड नहीं कर सके। कृपया पुनः प्रयास करें।",
+		"generateError": "क्षमा करें, हम गाइड जनरेट नहीं कर सके। कृपया पुनः प्रयास करें।",
+		"reactionError": "लाइक स्थिति अपडेट नहीं हो सकी। कृपया पुनः प्रयास करें।",
+		"audioError": "ऑडियो चलाने में विफल। कृपया पुनः प्रयास करें।",
+		"photoAdded": "फोटो जोड़ा गया! नई छवि देखें।",
+		"guidesGenerated": "गाइड सफलतापूर्वक जनरेट हुआ!",
+		"cameraNotReady": "कैमरा तैयार नहीं है",
+		"captureError": "फोटो कैप्चर करने में विफल। कृपया पुनः प्रयास करें।",
+		"cameraPermissionTitle": "कैमरा एक्सेस",
+		"cameraPermissionMessage": "इस स्थान की फोटो लेने के लिए कैमरा एक्सेस की अनुमति दें।",
+		"allowCamera": "कैमरा अनुमति दें",
+		"captureButton": "यह क्या है",
+		"custom": "कस्टम",
+		"category": {
+			"must_do": "ज़रूर करें",
+			"history": "इतिहास",
+			"culture": "संस्कृति",
+			"architecture": "वास्तुकला",
+			"food": "भोजन",
+			"nature": "प्रकृति",
+			"people": "लोग",
+			"cost": "खर्च",
+			"safety": "सुरक्षा"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "यह क्या है",

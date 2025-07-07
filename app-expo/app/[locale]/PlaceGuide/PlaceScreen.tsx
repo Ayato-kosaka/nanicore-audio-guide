@@ -28,7 +28,7 @@ import type {
 } from "@shared/api/generateHighlightGuideFromQuestion.schema";
 import type { CreateHighlightRequest, CreateHighlightResponse } from "@shared/api/createHighlight.schema";
 
-import { PlaceGuideCard, PlaceGuide, GUIDE_CATEGORIES } from "./PlaceGuideCard";
+import { PlaceGuideCard, PlaceGuide, GuideCategory } from "./PlaceGuideCard";
 import { HighlightCard, Highlight } from "./HighlightCard";
 import { CameraScreen } from "./CameraScreen";
 import { BannerAdView } from "@/components/BannerAdView";
@@ -37,11 +37,6 @@ import { useSnackbar } from "@/contexts/SnackbarProvider";
 import { PlaceGuideLoading } from "@/app/[locale]/PlaceGuide/components/PlaceGuideLoading";
 
 const { width } = Dimensions.get("window");
-
-const CATEGORY_DESCRIPTION_MAP = GUIDE_CATEGORIES.reduce<Record<string, string>>((acc, c) => {
-	acc[c.id] = c.description;
-	return acc;
-}, {});
 
 type PlaceData = {
 	id: string;
@@ -129,25 +124,21 @@ export default function PlaceScreen() {
 		}
 	};
 
-	const generatePlaceGuidesFromCategory = async (categoryId: string) => {
+	const generatePlaceGuidesFromCategory = async (category: GuideCategory) => {
 		if (!placeData) return;
 		try {
-			const description = CATEGORY_DESCRIPTION_MAP[categoryId];
-			if (!description) {
-				throw new Error(`Unknown categoryId: ${categoryId}`);
-			}
 			const { guide, audioUrl } = await callCloudFunction<
 				GeneratePlaceGuideFromCategoryRequest,
 				GeneratePlaceGuideFromCategoryResponse
 			>(
 				"generatePlaceGuideFromCategory",
 				{
-					categoryId,
+					categoryId: category.id,
 					placeId: placeData.id,
 					placeName: placeData.name,
 					latitude: parseFloat(params.latitude),
 					longitude: parseFloat(params.longitude),
-					categoryDescription: description,
+					categoryDescription: category.description,
 					languageTag: locale,
 				},
 				"v1",
@@ -157,7 +148,7 @@ export default function PlaceScreen() {
 				id: guide.id,
 				title: guide.title,
 				manuscript: guide.manuscript,
-				category: categoryId,
+				category: guide.category,
 				audioUrl,
 			};
 			setPlaceGuides((prev) => [...prev, newGuide]);

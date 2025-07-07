@@ -28,6 +28,8 @@
 		"generateGuides": "Generate Guide",
 		"loadError": "Sorry, we couldn't load the guides. Please try again.",
 		"generateError": "Sorry, we couldn't generate the guide. Please try again.",
+		"reactionError": "Failed to update like status. Please try again.",
+		"audioError": "Failed to play the audio. Please try again.",
 		"photoAdded": "Photo added! Explore the new image.",
 		"guidesGenerated": "Guide generated successfully!",
 		"cameraNotReady": "Camera is not ready",
@@ -38,6 +40,7 @@
 		"captureButton": "What's this?",
 		"custom": "Custom",
 		"category": {
+			"must_do": "Must Do",
 			"history": "History",
 			"culture": "Culture",
 			"architecture": "Architecture",

@@ -29,6 +29,9 @@ e2e/tmp/
 e2e/.detoxrc.json
 e2e/.env
 
+# --- Shared ---
+shared/prisma/
+
 # --- macOS / OS Junk ---
 .DS_Store
 

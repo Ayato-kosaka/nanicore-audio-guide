@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "Annuler",
+		"ok": "OK",
 		"goStore": "Ouvrir l’App Store"
 	},
 	"Error": {
 		"maintenanceMessage": "Nous sommes actuellement en maintenance.",
 		"unsupportedVersion": "Cette version n'est plus prise en charge."
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "Rechercher un lieu...",
+		"noResultsFound": "Aucun résultat trouvé pour votre recherche",
+		"searchError": "La recherche a échoué. Veuillez réessayer.",
+		"locationPermissionDenied": "Accès à la localisation refusé. Veuillez l’activer dans les paramètres.",
+		"locationError": "Impossible de déterminer votre position. Veuillez réessayer.",
+		"dragToSelect": "Faites glisser la carte pour sélectionner un lieu",
+		"searchPlaces": "Rechercher des lieux",
+		"selectedLocation": "Lieu sélectionné",
+		"nanicore": "C'est quoi ?"
+	},
+	"PlaceGuide": {
+		"loading": "Chargement du guide du lieu...",
+		"takePhoto": "Prendre une photo",
+		"askQuestion": "Poser une question sur ce lieu",
+		"askCustomQuestion": "Poser une question personnalisée",
+		"customQueryPlaceholder": "Que souhaitez-vous savoir sur ce lieu ?",
+		"generateGuides": "Générer le guide",
+		"loadError": "Désolé, nous n'avons pas pu charger les guides. Veuillez réessayer.",
+		"generateError": "Désolé, nous n'avons pas pu générer le guide. Veuillez réessayer.",
+		"reactionError": "Échec de la mise à jour de l'appréciation. Veuillez réessayer.",
+		"audioError": "La lecture audio a échoué. Veuillez réessayer.",
+		"photoAdded": "Photo ajoutée ! Découvrez la nouvelle image.",
+		"guidesGenerated": "Guide généré avec succès !",
+		"cameraNotReady": "La caméra n'est pas prête",
+		"captureError": "Échec de la prise de photo. Veuillez réessayer.",
+		"cameraPermissionTitle": "Accès à la caméra",
+		"cameraPermissionMessage": "Veuillez autoriser l'accès à la caméra pour prendre des photos de ce lieu.",
+		"allowCamera": "Autoriser la caméra",
+		"captureButton": "C'est quoi ?",
+		"custom": "Personnalisé",
+		"category": {
+			"must_do": "À faire",
+			"history": "Histoire",
+			"culture": "Culture",
+			"architecture": "Architecture",
+			"food": "Gastronomie",
+			"nature": "Nature",
+			"people": "Personnes",
+			"cost": "Coût",
+			"safety": "Sécurité"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "C'est quoi ?",

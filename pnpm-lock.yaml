@@ -152,8 +152,8 @@ importers:
         specifier: ~14.11.0
         version: 14.11.0(expo@52.0.47(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@expo/metro-runtime@4.0.1(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1)))(encoding@0.1.13)(graphql@16.8.1)(react-native-webview@13.12.5(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react@18.3.1)
       react-native-maps:
-        specifier: 1.18.0
-        version: 1.18.0(react-native-web@0.19.13(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
+        specifier: 1.20.1
+        version: 1.20.1(react-native-web@0.19.13(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
       react-native-paper:
         specifier: ~5.13.1
         version: 5.13.5(react-native-safe-area-context@4.12.0(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react-native-vector-icons@10.2.0)(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
@@ -8383,9 +8383,9 @@ packages:
       react: "*"
       react-native: "*"
 
-  react-native-maps@1.18.0:
+  react-native-maps@1.20.1:
     resolution:
-      { integrity: sha512-S17nYUqeMptgIPaAZuVRo+eRelPreBBYQWw6jsxU7qQ12p+THSfFaqabcNn7fBmsXhT3T27iIl8ek8v1H8BaGw== }
+      { integrity: sha512-NZI3B5Z6kxAb8gzb2Wxzu/+P2SlFIg1waHGIpQmazDSCRkNoHNY4g96g+xS0QPSaG/9xRBbDNnd2f2/OW6t6LQ== }
     engines: { node: ">=18" }
     peerDependencies:
       react: ">= 17.0.1"
@@ -19111,7 +19111,7 @@ snapshots:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1)
 
-  react-native-maps@1.18.0(react-native-web@0.19.13(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1):
+  react-native-maps@1.20.1(react-native-web@0.19.13(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.25.9)(@babel/preset-env@7.27.2(@babel/core@7.25.9))(@types/react@18.3.23)(encoding@0.1.13)(react@18.3.1))(react@18.3.1):
     dependencies:
       "@types/geojson": 7946.0.16
       react: 18.3.1

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, ComponentRef, useEffect } from "react";
-import { View, StyleSheet, Platform, Dimensions, FlatList, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Platform, FlatList, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { Text, Button, IconButton, Searchbar, List } from "react-native-paper";
 import { convertGooglePlacePredictionTypeToMaterialCommunityIcon } from "../PlaceGuide/GooglePlaceIcon";
@@ -382,11 +382,10 @@ export default function MapScreen() {
 				ref={mapRef}
 				style={styles.map}
 				region={region}
-				onRegionChangeComplete={setRegion}
 				onPoiClick={handlePoiPress}
+				language={locale}
 				showsUserLocation={true}
 				showsMyLocationButton={false}
-				customMapStyle={mapStyle}
 				testID="map-view">
 				{selectedLocation && (
 					<Marker
@@ -407,10 +406,10 @@ export default function MapScreen() {
 			)}
 
 			{/* Bottom Container */}
-			<View style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
+			<View pointerEvents="box-none" style={[styles.bottomContainer, isSearchExpanded && styles.expandedBottomSheet]}>
 				{/* FAB Container*/}
 				{!isSearchExpanded && (
-					<View style={styles.fabContainer}>
+					<View pointerEvents="box-none" style={styles.fabContainer}>
 						<IconButton
 							icon="crosshairs-gps"
 							size={32}
@@ -527,65 +526,6 @@ export default function MapScreen() {
 		</View>
 	);
 }
-
-// Minimal map style configuration
-const mapStyle = [
-	{
-		featureType: "all",
-		elementType: "labels.text.fill",
-		stylers: [{ color: "#9ca5b3" }],
-	},
-	{
-		featureType: "all",
-		elementType: "labels.text.stroke",
-		stylers: [{ visibility: "off" }],
-	},
-	{
-		featureType: "administrative",
-		elementType: "geometry.stroke",
-		stylers: [{ color: "#c9c9c9" }],
-	},
-	{
-		featureType: "administrative",
-		elementType: "labels.text.fill",
-		stylers: [{ color: "#444444" }],
-	},
-	{
-		featureType: "landscape",
-		elementType: "all",
-		stylers: [{ color: "#f2f2f2" }],
-	},
-	{
-		featureType: "poi",
-		elementType: "all",
-		stylers: [{ visibility: "off" }],
-	},
-	{
-		featureType: "road",
-		elementType: "all",
-		stylers: [{ saturation: -100 }, { lightness: 45 }],
-	},
-	{
-		featureType: "road.highway",
-		elementType: "all",
-		stylers: [{ visibility: "simplified" }],
-	},
-	{
-		featureType: "road.arterial",
-		elementType: "labels.icon",
-		stylers: [{ visibility: "off" }],
-	},
-	{
-		featureType: "transit",
-		elementType: "all",
-		stylers: [{ visibility: "off" }],
-	},
-	{
-		featureType: "water",
-		elementType: "all",
-		stylers: [{ color: "#d4d4d4" }, { visibility: "on" }],
-	},
-];
 
 const styles = StyleSheet.create({
 	container: {
