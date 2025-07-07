@@ -21,6 +21,15 @@ import ko_KR from "../locales/ko-KR.json";
 import es_ES from "../locales/es-ES.json";
 import hi_IN from "../locales/hi-IN.json";
 
+// let _: typeof en_US = en_US; // 型チェック用
+// _ = ja_JP; // 型チェック用
+// _ = fr_FR; // 型チェック用
+// _ = zh_CN; // 型チェック用
+// _ = ar_SA; // 型チェック用
+// _ = ko_KR; // 型チェック用
+// _ = es_ES; // 型チェック用
+// _ = hi_IN; // 型チェック用
+
 // 翻訳辞書をロケール形式で登録
 const TRANSLATIONS: Record<string, object> = {
 	"ar-AE": ar_SA,
