@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "취소",
+		"ok": "확인",
 		"goStore": "앱 스토어 열기"
 	},
 	"Error": {
 		"maintenanceMessage": "현재 점검 중입니다.",
 		"unsupportedVersion": "이 버전은 더 이상 지원되지 않습니다."
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "장소 검색...",
+		"noResultsFound": "검색 결과가 없습니다",
+		"searchError": "검색에 실패했습니다. 다시 시도해 주세요.",
+		"locationPermissionDenied": "위치 접근이 거부되었습니다. 설정에서 활성화해 주세요.",
+		"locationError": "현재 위치를 확인할 수 없습니다. 다시 시도해 주세요.",
+		"dragToSelect": "지도를 드래그하여 위치를 선택하세요",
+		"searchPlaces": "장소 검색",
+		"selectedLocation": "선택된 위치",
+		"nanicore": "이게 뭐야?"
+	},
+	"PlaceGuide": {
+		"loading": "장소 가이드 로딩 중...",
+		"takePhoto": "사진 찍기",
+		"askQuestion": "이 장소에 대해 질문하기",
+		"askCustomQuestion": "사용자 질문하기",
+		"customQueryPlaceholder": "이 장소에 대해 무엇이 궁금한가요?",
+		"generateGuides": "가이드 생성",
+		"loadError": "가이드를 불러오지 못했습니다. 다시 시도해 주세요.",
+		"generateError": "가이드를 생성하지 못했습니다. 다시 시도해 주세요.",
+		"reactionError": "좋아요 상태 업데이트에 실패했습니다. 다시 시도해 주세요.",
+		"audioError": "오디오 재생에 실패했습니다. 다시 시도해 주세요.",
+		"photoAdded": "사진이 추가되었습니다! 새 이미지를 확인해 보세요.",
+		"guidesGenerated": "가이드가 성공적으로 생성되었습니다!",
+		"cameraNotReady": "카메라가 준비되지 않았습니다",
+		"captureError": "사진 촬영에 실패했습니다. 다시 시도해 주세요.",
+		"cameraPermissionTitle": "카메라 접근",
+		"cameraPermissionMessage": "이 장소의 사진을 찍으려면 카메라 접근을 허용해 주세요.",
+		"allowCamera": "카메라 허용",
+		"captureButton": "이게 뭐야?",
+		"custom": "사용자 정의",
+		"category": {
+			"must_do": "꼭 해야 할 일",
+			"history": "역사",
+			"culture": "문화",
+			"architecture": "건축",
+			"food": "음식",
+			"nature": "자연",
+			"people": "사람들",
+			"cost": "비용",
+			"safety": "안전"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "이게 뭐야?",

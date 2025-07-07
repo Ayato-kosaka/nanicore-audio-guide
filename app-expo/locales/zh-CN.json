@@ -1,11 +1,55 @@
 {
 	"Common": {
 		"cancel": "取消",
+		"ok": "确定",
 		"goStore": "打开应用商店"
 	},
 	"Error": {
 		"maintenanceMessage": "当前正在维护中。",
-		"unsupportedVersion": "此版本已不再受支持。"
+		"unsupportedVersion": "此版本已不再受支持."
+	},
+	"PlaceMapSelect": {
+		"searchPlaceholder": "搜索地点...",
+		"noResultsFound": "未找到相关搜索结果",
+		"searchError": "搜索失败，请重试。",
+		"locationPermissionDenied": "定位权限被拒绝，请在设置中启用。",
+		"locationError": "无法确定您的位置，请重试。",
+		"dragToSelect": "拖动地图选择位置",
+		"searchPlaces": "搜索地点",
+		"selectedLocation": "已选择的位置",
+		"nanicore": "这是什么？"
+	},
+	"PlaceGuide": {
+		"loading": "地点导览加载中...",
+		"takePhoto": "拍照",
+		"askQuestion": "询问此地点",
+		"askCustomQuestion": "自定义提问",
+		"customQueryPlaceholder": "想了解此地点的什么？",
+		"generateGuides": "生成导览",
+		"loadError": "抱歉，无法加载导览，请重试。",
+		"generateError": "抱歉，无法生成导览，请重试。",
+		"reactionError": "更新点赞状态失败，请重试。",
+		"audioError": "音频播放失败，请重试。",
+		"photoAdded": "照片已添加！查看新图片。",
+		"guidesGenerated": "导览生成成功！",
+		"cameraNotReady": "相机未准备好",
+		"captureError": "拍照失败，请重试。",
+		"cameraPermissionTitle": "相机权限",
+		"cameraPermissionMessage": "请允许相机权限以拍摄此地点的照片。",
+		"allowCamera": "允许相机",
+		"captureButton": "这是什么？",
+		"custom": "自定义",
+		"category": {
+			"must_do": "必做事项",
+			"history": "历史",
+			"culture": "文化",
+			"architecture": "建筑",
+			"food": "美食",
+			"nature": "自然",
+			"people": "人文",
+			"cost": "费用",
+			"safety": "安全"
+		}
 	},
 	"SpotCapture": {
 		"captureButton": "这是什么？",
