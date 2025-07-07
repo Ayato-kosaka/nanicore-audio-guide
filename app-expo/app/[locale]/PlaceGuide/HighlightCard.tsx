@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { IconButton, Text } from "react-native-paper";
+import { IconButton, Portal, Text } from "react-native-paper";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
 import { useLogger } from "@/hooks/useLogger";
@@ -107,12 +107,14 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 				</View>
 			</View>
 
-			<CustomQueryModal
-				visible={showCustomModal}
-				onDismiss={() => setShowCustomModal(false)}
-				onSubmit={handleCustomQuery}
-				loading={isLoading}
-			/>
+			<Portal>
+				<CustomQueryModal
+					visible={showCustomModal}
+					onDismiss={() => setShowCustomModal(false)}
+					onSubmit={handleCustomQuery}
+					loading={isLoading}
+				/>
+			</Portal>
 		</GuideBaseCard>
 	);
 };

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { IconButton, Text } from "react-native-paper";
+import { IconButton, Portal, Text } from "react-native-paper";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -195,12 +195,14 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				))}
 			</View>
 
-			<CustomQueryModal
-				visible={showCustomModal}
-				onDismiss={() => setShowCustomModal(false)}
-				onSubmit={handleCustomQuery}
-				loading={isLoading}
-			/>
+			<Portal>
+				<CustomQueryModal
+					visible={showCustomModal}
+					onDismiss={() => setShowCustomModal(false)}
+					onSubmit={handleCustomQuery}
+					loading={isLoading}
+				/>
+			</Portal>
 		</GuideBaseCard>
 	);
 };
