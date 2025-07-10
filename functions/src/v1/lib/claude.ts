@@ -340,7 +340,7 @@ export const generatePlaceGuideFromCategoryContent = async (
 **HARD RULES**: The content **MUST focus on ${categoryDescription}**
 `;
 	const outputHint = `
-Use the following JSON format.
+HARD RULES: Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
 {
   title: string;
@@ -403,7 +403,7 @@ export const generatePlaceGuideFromQuestionContent = async (
 		question,
 	})}. Output the guide in ${languageTag}.`;
 	const outputHint = `
-Use the following JSON format.
+HARD RULES: Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
 {
   title: string;
@@ -470,7 +470,7 @@ export const generateHighlightGuideFromQuestionContent = async (
 		question,
 	})}. Output the guide in ${languageTag}.`;
 	const outputHint = `
-Use the following JSON format.
+HARD RULES: Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
 {
   title: string;
@@ -542,7 +542,7 @@ export const generateGeneralHighlightGuideContent = async (
 		languageTag,
 	});
 	const outputHint = `
-Use the following JSON format.
+HARD RULES: Use the following JSON format.
 Make sure the value of "tags" is a string array (not a string).
 {
   title: string;

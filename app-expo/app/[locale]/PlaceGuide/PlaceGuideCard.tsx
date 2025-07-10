@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { IconButton, Portal, Text } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -26,6 +27,7 @@ export type PlaceGuideCardProps = {
 	onCategorySelect: (category: GuideCategory) => Promise<void>;
 	onCustomQuestion: (query: string) => Promise<void>;
 	onBackPress: () => void;
+	carouselRef?: React.RefObject<any>;
 };
 
 export const GUIDE_CATEGORIES = [
@@ -42,12 +44,6 @@ export const GUIDE_CATEGORIES = [
 		icon: "book-open-outline",
 	},
 	{
-		id: "culture",
-		label: "Culture",
-		description: "local culture, art and traditions",
-		icon: "palette-outline",
-	},
-	{
 		id: "architecture",
 		label: "Architecture",
 		description: "buildings and architectural style",
@@ -58,6 +54,12 @@ export const GUIDE_CATEGORIES = [
 		label: "Food",
 		description: "famous foods and cuisine",
 		icon: "food-outline",
+	},
+	{
+		id: "culture",
+		label: "Culture",
+		description: "local culture, art and traditions",
+		icon: "palette-outline",
 	},
 	// {
 	// 	id: "nature",
@@ -100,6 +102,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	onCategorySelect,
 	onCustomQuestion,
 	onBackPress,
+	carouselRef,
 }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
@@ -161,7 +164,9 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				ref={guidesScrollViewRef}
 				style={styles.guidesScrollView}
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.guidesContent}>
+				contentContainerStyle={styles.guidesContent}
+				nestedScrollEnabled={Platform.OS === "android"}
+				simultaneousHandlers={carouselRef}>
 				{guides.map((guide, index) => (
 					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
 				))}
