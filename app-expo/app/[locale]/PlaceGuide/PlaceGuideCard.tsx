@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import { IconButton, Portal, Text } from "react-native-paper";
 
 import { useLogger } from "@/hooks/useLogger";
@@ -157,15 +157,16 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 
 	return (
 		<GuideBaseCard imageUri={imageSrc} placeName={placeName} onBack={onBackPress} onImageError={handleImageError}>
-			<ScrollView
-				ref={guidesScrollViewRef}
-				style={styles.guidesScrollView}
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.guidesContent}>
-				{guides.map((guide, index) => (
-					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
-				))}
-			</ScrollView>
+                        <ScrollView
+                                ref={guidesScrollViewRef}
+                                style={styles.guidesScrollView}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={styles.guidesContent}
+                                nestedScrollEnabled={Platform.OS === "android"}>
+                                {guides.map((guide, index) => (
+                                        <GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
+                                ))}
+                        </ScrollView>
 
 			<View style={styles.questionField}>
 				<View style={styles.customQueryButtonWrapper}>
