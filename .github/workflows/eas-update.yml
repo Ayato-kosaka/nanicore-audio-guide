@@ -9,8 +9,8 @@ on:
         default: "production"
         type: choice
         options:
-          - preview
           - production
+          - preview
 
 jobs:
   eas-update:
@@ -55,7 +55,7 @@ jobs:
       - name: 📤 EAS Update to selected channel
         run: |
           echo "Starting EAS update to channel: ${{ github.event.inputs.channel }}"
-          pnpx eas update \
+          pnpx eas-cli update \
             --channel ${{ github.event.inputs.channel }} \
             --message "Update from GitHub Actions: ${{ github.sha }}" \
             --non-interactive
