@@ -6,7 +6,7 @@ on:
       channel:
         description: "Select EAS Update Channel"
         required: true
-        default: "production"
+        default: "preview"
         type: choice
         options:
           - production
