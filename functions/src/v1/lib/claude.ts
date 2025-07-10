@@ -13,15 +13,15 @@ interface ClaudeMessageResponse {
 		type: "text";
 		text: string;
 		citations:
-		| {
-			type: "char_location";
-			cited_text: string;
-			document_index: number; // x > 0
-			document_title: string | null;
-			start_char_index: number; // x > 0
-			end_char_index: number;
-		}[]
-		| null;
+			| {
+					type: "char_location";
+					cited_text: string;
+					document_index: number; // x > 0
+					document_title: string | null;
+					start_char_index: number; // x > 0
+					end_char_index: number;
+			  }[]
+			| null;
 	}[];
 	stop_reason: "end_turn" | "max_tokens" | "stop_sequence" | "tool_use";
 	stop_sequence: string | null;
@@ -102,16 +102,16 @@ export const callClaudeWithPrompt = async ({
 
 	const userContent = imageBase64
 		? [
-			{
-				type: "image",
-				source: {
-					type: "base64",
-					media_type: mimeType,
-					data: imageBase64.replace(/^data:[^,]+,/, ""),
+				{
+					type: "image",
+					source: {
+						type: "base64",
+						media_type: mimeType,
+						data: imageBase64.replace(/^data:[^,]+,/, ""),
+					},
 				},
-			},
-			{ type: "text", text: userText },
-		]
+				{ type: "text", text: userText },
+			]
 		: userText;
 
 	const requestPayload = {
