@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { IconButton, Portal, Text } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { useLogger } from "@/hooks/useLogger";
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -26,6 +27,7 @@ export type PlaceGuideCardProps = {
 	onCategorySelect: (category: GuideCategory) => Promise<void>;
 	onCustomQuestion: (query: string) => Promise<void>;
 	onBackPress: () => void;
+	carouselRef?: React.RefObject<any>;
 };
 
 export const GUIDE_CATEGORIES = [
@@ -100,6 +102,7 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 	onCategorySelect,
 	onCustomQuestion,
 	onBackPress,
+	carouselRef,
 }) => {
 	const { logFrontendEvent } = useLogger();
 	const { isLoading, withLoading } = useWithLoading();
@@ -162,7 +165,8 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 				style={styles.guidesScrollView}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={styles.guidesContent}
-				nestedScrollEnabled={Platform.OS === "android"}>
+				nestedScrollEnabled={Platform.OS === "android"}
+				simultaneousHandlers={carouselRef}>
 				{guides.map((guide, index) => (
 					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
 				))}

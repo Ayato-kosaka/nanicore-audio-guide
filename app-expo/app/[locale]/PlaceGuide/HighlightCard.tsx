@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { IconButton, Portal, Text } from "react-native-paper";
 
 import { useWithLoading } from "@/hooks/useWithLoading";
@@ -29,6 +30,7 @@ export type HighlightCardProps = {
 	highlight: Highlight;
 	onCustomQuestion: (id: string, question: string) => Promise<void>;
 	onBackPress: () => void;
+	carouselRef?: React.RefObject<any>;
 };
 
 /**
@@ -37,7 +39,12 @@ export type HighlightCardProps = {
  * ユーザーが撮影したハイライト画像とガイドを表示するカード。
  * カスタム質問のみを受け付け、ガイドを追加生成する。
  */
-export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCustomQuestion, onBackPress }) => {
+export const HighlightCard: React.FC<HighlightCardProps> = ({
+	highlight,
+	onCustomQuestion,
+	onBackPress,
+	carouselRef,
+}) => {
 	const { isLoading, withLoading } = useWithLoading();
 	const { logFrontendEvent } = useLogger();
 	const [showCustomModal, setShowCustomModal] = useState(false);
@@ -83,16 +90,17 @@ export const HighlightCard: React.FC<HighlightCardProps> = ({ highlight, onCusto
 
 	return (
 		<GuideBaseCard imageUri={imageSrc} onBack={onBackPress} onImageError={handleImageError}>
-                        <ScrollView
-                                ref={scrollRef}
-                                style={styles.guidesScrollView}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={styles.guidesContent}
-                                nestedScrollEnabled={Platform.OS === "android"}>
-                                {highlight.highlightGuides.map((guide, index) => (
-                                        <GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="highlight_guides" />
-                                ))}
-                        </ScrollView>
+			<ScrollView
+				ref={scrollRef}
+				style={styles.guidesScrollView}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.guidesContent}
+				nestedScrollEnabled={Platform.OS === "android"}
+				simultaneousHandlers={carouselRef}>
+				{highlight.highlightGuides.map((guide, index) => (
+					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="highlight_guides" />
+				))}
+			</ScrollView>
 
 			<View style={styles.questionField}>
 				<View style={styles.customQueryButtonWrapper}>
