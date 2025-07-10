@@ -399,6 +399,7 @@ export default function PlaceScreen() {
 							onCategorySelect={generatePlaceGuidesFromCategory}
 							onCustomQuestion={generatePlaceGuidesFromQuestion}
 							onBackPress={() => router.back()}
+							carouselRef={carouselRef}
 						/>
 					</View>
 				);
@@ -410,6 +411,7 @@ export default function PlaceScreen() {
 						highlight={highlight}
 						onCustomQuestion={generateHighlightGuidesFromQuestion}
 						onBackPress={() => router.back()}
+						carouselRef={carouselRef}
 					/>
 				</View>
 			);

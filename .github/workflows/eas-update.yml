@@ -6,11 +6,11 @@ on:
       channel:
         description: "Select EAS Update Channel"
         required: true
-        default: "production"
+        default: "preview"
         type: choice
         options:
-          - preview
           - production
+          - preview
 
 jobs:
   eas-update:
@@ -55,9 +55,10 @@ jobs:
       - name: 📤 EAS Update to selected channel
         run: |
           echo "Starting EAS update to channel: ${{ github.event.inputs.channel }}"
-          pnpx eas update \
+          pnpx eas-cli update \
             --channel ${{ github.event.inputs.channel }} \
             --message "Update from GitHub Actions: ${{ github.sha }}" \
+            --environment ${{ github.event.inputs.channel }} \
             --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
