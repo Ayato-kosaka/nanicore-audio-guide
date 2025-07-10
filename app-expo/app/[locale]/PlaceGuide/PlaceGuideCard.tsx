@@ -42,12 +42,6 @@ export const GUIDE_CATEGORIES = [
 		icon: "book-open-outline",
 	},
 	{
-		id: "culture",
-		label: "Culture",
-		description: "local culture, art and traditions",
-		icon: "palette-outline",
-	},
-	{
 		id: "architecture",
 		label: "Architecture",
 		description: "buildings and architectural style",
@@ -58,6 +52,12 @@ export const GUIDE_CATEGORIES = [
 		label: "Food",
 		description: "famous foods and cuisine",
 		icon: "food-outline",
+	},
+	{
+		id: "culture",
+		label: "Culture",
+		description: "local culture, art and traditions",
+		icon: "palette-outline",
 	},
 	// {
 	// 	id: "nature",
@@ -157,16 +157,16 @@ export const PlaceGuideCard: React.FC<PlaceGuideCardProps> = ({
 
 	return (
 		<GuideBaseCard imageUri={imageSrc} placeName={placeName} onBack={onBackPress} onImageError={handleImageError}>
-                        <ScrollView
-                                ref={guidesScrollViewRef}
-                                style={styles.guidesScrollView}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={styles.guidesContent}
-                                nestedScrollEnabled={Platform.OS === "android"}>
-                                {guides.map((guide, index) => (
-                                        <GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
-                                ))}
-                        </ScrollView>
+			<ScrollView
+				ref={guidesScrollViewRef}
+				style={styles.guidesScrollView}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.guidesContent}
+				nestedScrollEnabled={Platform.OS === "android"}>
+				{guides.map((guide, index) => (
+					<GuideInteractionSection key={guide.id} guide={guide} isFirst={index === 0} targetType="place_guides" />
+				))}
+			</ScrollView>
 
 			<View style={styles.questionField}>
 				<View style={styles.customQueryButtonWrapper}>
