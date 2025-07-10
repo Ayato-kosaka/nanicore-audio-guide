@@ -58,6 +58,7 @@ jobs:
           pnpx eas-cli update \
             --channel ${{ github.event.inputs.channel }} \
             --message "Update from GitHub Actions: ${{ github.sha }}" \
+            --environment ${{ github.event.inputs.channel }} \
             --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
